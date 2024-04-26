@@ -13,8 +13,17 @@
 
 .Hijo {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    justify-content: center;
     background-color: #ffb2b2;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.bienvenida {
+    display: grid;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    grid-template-columns: 1fr;
+    background-color: #ffd0d0;
     padding: 20px;
     border-radius: 10px;
 }
