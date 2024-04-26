@@ -1,0 +1,20 @@
+.Menu {
+    display: grid;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+}
+.Padre {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    background-color: #ffe4e4;
+    padding: 10px;
+}
+
+.Hijo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #ffb2b2;
+    padding: 20px;
+    border-radius: 10px;
+}
