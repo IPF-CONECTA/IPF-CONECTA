@@ -1,8 +1,11 @@
-import server from "./server";
 import "dotenv/config";
+import server from "./server";
 import { databaseConnection } from "./database/main";
 
 const PORT = process.env.PORT || 4000;
+
+
+
 
 databaseConnection();
 
