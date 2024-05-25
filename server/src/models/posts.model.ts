@@ -7,6 +7,7 @@ import {
   BelongsTo,
 } from "sequelize-typescript";
 import User from "./users.model";
+import Forum from "./forums.model";
 
 @Table({
   timestamps: false,
@@ -23,23 +24,31 @@ export default class Post extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  descripion!: string;
-
+  description!: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  create_at!: Date;
+  createdAt!: Date;
 
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  user_id!: number;
-  
+  userId!: number;
+
+  @ForeignKey(() => Forum)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  forumId!: number;
+
+  @BelongsTo(() => Forum)
+  forum!: Forum;
+
   @BelongsTo(() => User)
   user!: User;
-
 }

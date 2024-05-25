@@ -5,8 +5,11 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import Role from "./roles.model";
+import Following from "./followings.model";
+import Social from "./socials.model";
 
 @Table({
   timestamps: false,
@@ -18,6 +21,7 @@ class User extends Model {
     allowNull: false,
   })
   name!: string;
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -42,15 +46,25 @@ class User extends Model {
   })
   email!: string;
 
+  //Role relation
   @ForeignKey(() => Role)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  role_id!: number;
+  roleId!: number;
 
   @BelongsTo(() => Role)
   role!: Role;
+
+  //Following relation
+  @HasMany(() => Following, "followerId")
+  followings!: Following[];
+
+  @HasMany(() => Social, "usersId")
+  socials!: Social[];
+
+
 }
 
 export default User;

@@ -17,14 +17,14 @@ class Like extends Model {
     type: DataType.DATE,
     allowNull: false,
   })
-  liked_at!: Date;
+  likedAt!: Date;
 
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  user_id!: number;
+  userId!: number;
   @BelongsTo(() => User)
   user!: User;
 }

@@ -7,10 +7,12 @@ import { Table, Model, Column, DataType } from "sequelize-typescript";
 
 class Role extends Model {
   @Column({
-    type: DataType.ENUM("admin", "user", "recruiter", "inversor"),
+    type: DataType.STRING,
     allowNull: false,
   })
   rol!: string;
+
+  
 }
 
 export default Role
