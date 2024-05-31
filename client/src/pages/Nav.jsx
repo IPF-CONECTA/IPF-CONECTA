@@ -1,6 +1,6 @@
 import React from "react";
 import "../../public/nav.css";
-import logoImage from "../../public/logoImage.png";
+import logoImage from "../../public/iconoipf.png";
 
 export const Navigation = () => {
   return (
@@ -9,7 +9,6 @@ export const Navigation = () => {
         <a href="#">
           <img src={logoImage} alt="Logo" className="logoImage" />
         </a>
-        <p>IPF - CONECTA</p>
       </div>
       <div className="buttons">
         <button className="register-button">
