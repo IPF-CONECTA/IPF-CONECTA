@@ -29,7 +29,7 @@ export const Menu = () => {
       </div>
 
       <section id="services" className="services-section">
-        <h2>Nuestros Servicios</h2>
+        <h2>Lo que te ofrecemos ✔️</h2>
         <div className="services">
           <div className="service">
             <img
@@ -77,7 +77,7 @@ export const Menu = () => {
       </section>
 
       <section id="testimonials" className="testimonials-section">
-        <h2>Reseñas</h2>
+        <h2>Reseñas✨</h2>
         <div className="testimonials">
           <div className="testimonial">
             <p>"IPF-CONECTA me ayudó a encontrar mi trabajo soñado en una empresa increíble. ¡No podría estar más feliz!"</p>
@@ -98,8 +98,8 @@ export const Menu = () => {
             <p>Puedes registrarte fácilmente haciendo clic en el botón de registro en la parte superior de la página y completando el formulario.</p>
           </div>
           <div className="faq">
-            <h3>¿Hay algún costo asociado?</h3>
-            <p>No, todos nuestros servicios son gratuitos para los egresados del IPF.</p>
+            <h3>Prueba</h3>
+            <p>Esto es una prueba</p>
           </div>
         </div>
       </section>
