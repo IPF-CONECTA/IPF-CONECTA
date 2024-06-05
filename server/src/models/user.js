@@ -1,0 +1,37 @@
+import { sequelize, DataTypes } from '../config/db.js'
+
+export const User = sequelize.define('user', {
+    id: {
+        type: DataTypes.STRING(36),
+        primaryKey: true,
+        allowNull: false
+    },
+    names: {
+        type: DataTypes.STRING(64),
+        allowNull: false,
+    },
+    surnames: {
+        type: DataTypes.STRING(64),
+        allowNull: false,
+    },
+    roleId: {
+        type: DataTypes.INTEGER(),
+        allowNull: false
+    },
+    profileId: {
+        type: DataTypes.INTEGER(),
+        allowNull: false,
+    },
+    password: {
+        type: DataTypes.STRING(20),
+        allowNull: false
+    },
+    verifyCode: {
+        type: DataTypes.STRING(6)
+    },
+    verified: {
+        type: DataTypes.BOOLEAN(),
+        defaultValue: false
+    }
+
+})
