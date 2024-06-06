@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from "../config/db.js";
+import { sequelize, DataTypes } from "../../config/db.js";
 import { Sequelize } from "sequelize";
 
 export const Like = sequelize.define('like', {

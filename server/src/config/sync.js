@@ -1,15 +1,16 @@
 import { sequelize } from "./db.js"
 import { v4 as generateId } from 'uuid';
-import { Role } from "../models/role.js";
-import { User } from "../models/user.js";
-import { Post } from "../models/post.js";
-import { Like } from "../models/like.js";
-import { Report } from "../models/report.js";
-import { ReportReason } from "../models/reportReason.js";
-import { Follower } from "../models/follower.js";
-import { Country } from "../models/country.js";
-import { State } from "../models/state.js";
-import { City } from "../models/city.js";
+import { Role } from "../modules/roles/roleModel.js";
+import { User } from "../modules/users/userModel.js";
+import { Post } from "../modules/posts/postModel.js";
+import { Like } from "../modules/likes/likeModel.js";
+import { Report } from "../modules/reports/reportModel.js";
+import { ReportReason } from "../modules/reports/reportReasonModel.js";
+import { Follower } from "../modules/followers/followerModel.js";
+import { Country } from "../modules/ubications/models/countryModel.js";
+import { State } from "../modules/ubications/models/stateModel.js";
+import { City } from "../modules/ubications/models/cityModel.js";
+import { generateUUID } from "../helpers/generateUUID.js";
 export const createTablesAndRelations = async () => {
     await sequelize.sync({ force: false })
     console.log('Tables created successfully')

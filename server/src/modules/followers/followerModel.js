@@ -1,4 +1,4 @@
-import { DataTypes, sequelize } from "../config/db.js";
+import { DataTypes, sequelize } from "../../config/db.js";
 
 
 export const Follower = sequelize.define('follower', {
