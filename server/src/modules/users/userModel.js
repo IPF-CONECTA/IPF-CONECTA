@@ -15,8 +15,12 @@ export const User = sequelize.define('user', {
         type: DataTypes.STRING(64),
         allowNull: false,
     },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     roleId: {
-        type: DataTypes.INTEGER(),
+        type: DataTypes.UUID,
         allowNull: false
     },
     profileId: {
