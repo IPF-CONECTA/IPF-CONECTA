@@ -22,6 +22,9 @@ export const createUserController = async (req, res) => {
         const newUser = await createUser(user)
         res.status(201).json({ newUser, message: 'Usuario generado con exito' })
     } catch (error) {
+        if (error.message == 'Rol no valido') {
+            res.status(400).json({ message: error.message })
+        }
         res.status(500).json({ message: error.message })
     }
 }

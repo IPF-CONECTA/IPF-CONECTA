@@ -1,4 +1,6 @@
 export const generateVerificationCode = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString(); // Generates a 6-digit code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log('codigo aca ' + code)
+    return code  // Generates a 6-digit code
 };
 

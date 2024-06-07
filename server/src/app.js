@@ -8,6 +8,7 @@ import { connectDB } from './config/db.js';
 const app = express();
 import { createTablesAndRelations } from './config/sync.js';
 import router from './modules/users/userRoutes.js';
+import { routes } from './export.routes.js';
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +18,7 @@ app.use(helmet({
 app.use(morgan('combined'));
 
 
-app.use(router)
+routes(app)
 
 connectDB()
 createTablesAndRelations()

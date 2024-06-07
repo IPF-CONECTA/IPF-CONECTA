@@ -1,4 +1,5 @@
 import { sequelize, DataTypes } from '../../config/db.js'
+import { generateVerificationCode } from '../../helpers/generateCode.js'
 
 export const User = sequelize.define('user', {
     id: {
@@ -28,11 +29,12 @@ export const User = sequelize.define('user', {
         allowNull: true,
     },
     password: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING,
         allowNull: false
     },
     verifyCode: {
-        type: DataTypes.STRING(6)
+        type: DataTypes.INTEGER(6),
+        defaultValue: generateVerificationCode()
     },
     verified: {
         type: DataTypes.BOOLEAN(),
