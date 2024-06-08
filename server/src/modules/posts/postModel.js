@@ -18,11 +18,7 @@ export const Post = sequelize.define('post', {
         allowNull: true,
         type: DataTypes.STRING(36)
     },
-    title: {
-        type: DataTypes.TEXT(),
-        allowNull: true
-    },
-    description: {
+    content: {
         allowNull: false,
         type: DataTypes.TEXT()
     }

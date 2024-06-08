@@ -2,6 +2,7 @@ import { User } from "../users/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { basicRoles } from "../../constant/roles.js";
+import { sendConfirmEmail } from "./mailServices/confirmEmail.js";
 export const authSignUp = async (user) => {
 
     try {
@@ -44,18 +45,28 @@ export const authLogIn = async (user) => {
     }
 }
 
+export const sendVerifyCode = async (userId) => {
+    try {
+        const { verifyCode, email, names } = await User.findByPk(userId);
+        sendConfirmEmail(email, verifyCode, names)
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
 
 export const verifyAccount = async (userId, recibedCode) => {
     try {
-        const user = await User.findByPk(userId);
-        if (user.verified == true) {
+        const { verified, verifyCode } = await User.findByPk(userId);
+
+
+        if (verified == true) {
             throw new Error('Correo ya verificado')
         }
-        else if (user.verifyCode !== recibedCode) {
+        else if (verifyCode !== recibedCode) {
             throw new Error('Codigo incorrecto')
         }
         else {
-
             await User.update({ verified: true }, { where: { id: userId } });
         }
     } catch (error) {

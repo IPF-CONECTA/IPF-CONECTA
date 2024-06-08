@@ -1,4 +1,4 @@
-import { authSignUp, verifyAccount } from "./authServices.js";
+import { authSignUp, sendVerifyCode, verifyAccount } from "./authServices.js";
 import jwt from "jsonwebtoken";
 export const authSignUpController = async (req, res) => {
     const { user } = req.body;
@@ -16,7 +16,7 @@ export const authSignUpController = async (req, res) => {
         }
     }
 };
-
+``
 export const verifyAccountController = async (req, res) => {
     const { recibedCode } = req.body;
     const { token } = req.headers
@@ -27,6 +27,20 @@ export const verifyAccountController = async (req, res) => {
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         await verifyAccount(userId, recibedCode)
         res.status(201).json({ message: 'Cuenta confirmada exitosamente' })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
+export const sendEmailVerificationController = async (req, res) => {
+    const { token } = req.headers
+    try {
+        if (!token) {
+            throw new Error('Inicie sesion para confirmar el correo')
+        }
+        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
+        await sendVerifyCode(userId)
+        res.status(200).json({ message: 'Correo de verificacion enviado correctamente' })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
