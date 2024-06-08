@@ -2,8 +2,10 @@ import { User } from "../users/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { basicRoles } from "../../constant/roles.js";
-import { sendConfirmEmail } from "./mailServices/confirmEmail.js";
-export const authSignUp = async (user) => {
+import { sendRecoverPasswordEmail } from "./mailServices/recoverPassMail.js";
+import { generateVerificationCode } from "../../helpers/generateCode.js";
+import { sendConfirmAccount } from "./mailServices/confirmAccount.js";
+export const authSignUpSvc = async (user) => {
 
     try {
         const existingUser = await User.findOne({ where: { email: user.email } });
@@ -34,7 +36,7 @@ export const authSignUp = async (user) => {
 };
 
 // WORK IN PROCESS
-export const authLogIn = async (user) => {
+export const authLogInSvc = async (user) => {
     try {
         const existingUser = await User.findOne({ where: { email: user.email } })
         if (!existingUser) {
@@ -45,17 +47,17 @@ export const authLogIn = async (user) => {
     }
 }
 
-export const sendVerifyCode = async (userId) => {
+export const sendConfirmAccountSvc = async (userId) => {
     try {
         const { verifyCode, email, names } = await User.findByPk(userId);
-        sendConfirmEmail(email, verifyCode, names)
+        sendConfirmAccount(email, verifyCode, names)
     } catch (error) {
         throw new Error(error.message)
     }
 }
 
 
-export const verifyAccount = async (userId, recibedCode) => {
+export const confirmAccountSvc = async (userId, recibedCode) => {
     try {
         const { verified, verifyCode } = await User.findByPk(userId);
 
@@ -67,9 +69,29 @@ export const verifyAccount = async (userId, recibedCode) => {
             throw new Error('Codigo incorrecto')
         }
         else {
-            await User.update({ verified: true }, { where: { id: userId } });
+            await User.update({ verified: true, verifyCode: null }, { where: { id: userId } });
         }
     } catch (error) {
         throw new Error(error.message)
+    }
+}
+
+export const sendRecoverPasswordSvc = async (email) => {
+    try {
+        const existingAccount = await User.findOne({ where: { email: email } })
+        if (!existingAccount) {
+            throw new Error('No se encontro una cuenta con ese correo electronico')
+        }
+        else {
+            const { email, verifyCode, names } = existingAccount
+            if (verifyCode == null) {
+                verifyCode = generateVerificationCode()
+                console.log(verifyCode)
+                await User.update({ verifyCode: verifyCode }, { where: { email: email } })
+            }
+            await sendRecoverPasswordEmail(email, verifyCode, names)
+        }
+    } catch (error) {
+        throw new Error(error)
     }
 }

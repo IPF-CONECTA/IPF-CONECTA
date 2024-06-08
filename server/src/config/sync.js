@@ -14,11 +14,11 @@ export const createTablesAndRelations = async () => {
     console.log('Tables created successfully')
 
     // await Role.bulkCreate([
-    //     { name: 'superAdmin' },
-    //     { name: 'admin' },
-    //     { name: 'student' },
-    //     { name: 'recruiter' },
-    //     { name: 'investor' }
+    // { name: 'superAdmin' },
+    // { name: 'admin' },
+    // { name: 'student' },
+    // { name: 'recruiter' },
+    // { name: 'investor' }
     // ]);
     // await ReportReason.bulkCreate([
     //     { reason: 'Explotación infantil', severity: 10 },

@@ -34,7 +34,8 @@ export const User = sequelize.define('user', {
     },
     verifyCode: {
         type: DataTypes.INTEGER(6),
-        defaultValue: generateVerificationCode()
+        defaultValue: generateVerificationCode(),
+        allowNull: true
     },
     verified: {
         type: DataTypes.BOOLEAN(),

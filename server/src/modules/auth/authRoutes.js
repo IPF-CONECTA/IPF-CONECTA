@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { authSignUpController, sendEmailVerificationController, verifyAccountController } from './authControllers.js';
+import { authSignUpCtrl, sendConfirmAccountCtrl, sendRecoverPasswordCtrl, confirmAccountCtrl } from './authControllers.js';
 const authRoutes = Router();
 
-authRoutes.post('/registro', authSignUpController)
-authRoutes.post('/verificar-cuenta', verifyAccountController)
-authRoutes.post('/recibir-correo-code', sendEmailVerificationController)
-
+authRoutes.post('/registro', authSignUpCtrl)
+authRoutes.post('/confirmar-cuenta', confirmAccountCtrl)
+authRoutes.post('/recibir-correo-code', sendConfirmAccountCtrl)
+authRoutes.post('/send-recover-code', sendRecoverPasswordCtrl)
 export default authRoutes
 

@@ -1,14 +1,7 @@
-import nodemailer from 'nodemailer'
+import { transporter } from "../../../helpers/nodemailer.js"
 
-let transporter = nodemailer.createTransport({
-    service: process.env.NODEMAILER_SERVICE,
-    auth: {
-        user: process.env.NODEMAILER_USER,
-        pass: process.env.NODEMAILER_PASS
-    }
-})
 
-export const sendConfirmEmail = async (to, confirmCode, names) => {
+export const sendConfirmAccount = async (to, confirmCode, names) => {
     const mailConfig = {
         from: '"IPF CONECTA" <ipfconecta@gmail.com>',
         to: to,

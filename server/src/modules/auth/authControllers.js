@@ -1,9 +1,11 @@
-import { authSignUp, sendVerifyCode, verifyAccount } from "./authServices.js";
 import jwt from "jsonwebtoken";
-export const authSignUpController = async (req, res) => {
+import { authSignUpSvc, confirmAccountSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
+
+
+export const authSignUpCtrl = async (req, res) => {
     const { user } = req.body;
     try {
-        const token = await authSignUp(user)
+        const token = await authSignUpSvc(user)
         res.status(201).json({ message: 'Usuario registrado con exito', token })
     } catch (error) {
         if (error.message.includes("El usuario ya existe")) {
@@ -17,7 +19,7 @@ export const authSignUpController = async (req, res) => {
     }
 };
 ``
-export const verifyAccountController = async (req, res) => {
+export const confirmAccountCtrl = async (req, res) => {
     const { recibedCode } = req.body;
     const { token } = req.headers
     try {
@@ -25,23 +27,37 @@ export const verifyAccountController = async (req, res) => {
             throw new Error('Inicie sesion para confirmar el correo')
         }
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        await verifyAccount(userId, recibedCode)
+        await confirmAccountSvc(userId, recibedCode)
         res.status(201).json({ message: 'Cuenta confirmada exitosamente' })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 }
 
-export const sendEmailVerificationController = async (req, res) => {
+export const sendConfirmAccountCtrl = async (req, res) => {
     const { token } = req.headers
     try {
         if (!token) {
             throw new Error('Inicie sesion para confirmar el correo')
         }
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        await sendVerifyCode(userId)
+        await sendConfirmAccountSvc(userId)
         res.status(200).json({ message: 'Correo de verificacion enviado correctamente' })
     } catch (error) {
         res.status(500).json({ message: error.message })
+    }
+}
+
+export const sendRecoverPasswordCtrl = async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        throw new Error({ message: 'Ingrese un correo electronico para recuperar su contraseña' })
+    }
+    try {
+        await sendRecoverPasswordSvc(email)
+        res.status(200).json({ message: 'El correo fue enviado con exito. Verifique su bandeja de entrada' })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ message: 'Error interno en el servidor' })
     }
 }
