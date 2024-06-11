@@ -1,9 +1,11 @@
-import { sequelize, DataTypes } from '../config/db.js'
+import { sequelize, DataTypes } from '../../config/db.js'
+import { generateVerificationCode } from '../../helpers/generateCode.js'
 
 export const User = sequelize.define('user', {
     id: {
         type: DataTypes.STRING(36),
         primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false
     },
     names: {
@@ -14,20 +16,26 @@ export const User = sequelize.define('user', {
         type: DataTypes.STRING(64),
         allowNull: false,
     },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     roleId: {
-        type: DataTypes.INTEGER(),
+        type: DataTypes.UUID,
         allowNull: false
     },
     profileId: {
         type: DataTypes.INTEGER(),
-        allowNull: false,
+        allowNull: true,
     },
     password: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING,
         allowNull: false
     },
     verifyCode: {
-        type: DataTypes.STRING(6)
+        type: DataTypes.INTEGER(6),
+        defaultValue: generateVerificationCode(),
+        allowNull: true
     },
     verified: {
         type: DataTypes.BOOLEAN(),

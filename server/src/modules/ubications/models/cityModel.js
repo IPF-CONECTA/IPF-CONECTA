@@ -1,8 +1,8 @@
-import { sequelize, DataTypes } from "../config/db.js";
+import { sequelize, DataTypes } from "../../../config/db.js";
 
 export const City = sequelize.define('city', {
     id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
@@ -12,7 +12,7 @@ export const City = sequelize.define('city', {
         collate: 'utf8mb4_unicode_ci',
     },
     state_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
 

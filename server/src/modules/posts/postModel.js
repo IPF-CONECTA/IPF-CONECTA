@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from '../config/db.js'
+import { sequelize, DataTypes } from '../../config/db.js'
 
 export const Post = sequelize.define('post', {
     id: {
@@ -18,11 +18,7 @@ export const Post = sequelize.define('post', {
         allowNull: true,
         type: DataTypes.STRING(36)
     },
-    title: {
-        type: DataTypes.TEXT(),
-        allowNull: true
-    },
-    description: {
+    content: {
         allowNull: false,
         type: DataTypes.TEXT()
     }

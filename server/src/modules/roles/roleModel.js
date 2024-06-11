@@ -1,9 +1,9 @@
-import { sequelize, DataTypes } from "../config/db.js";
+import { sequelize, DataTypes } from "../../config/db.js";
 
 export const Role = sequelize.define('role', {
     id: {
-        type: DataTypes.INTEGER(1),
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
     },

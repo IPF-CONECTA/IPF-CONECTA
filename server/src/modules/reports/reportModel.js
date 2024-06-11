@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from '../config/db.js'
+import { sequelize, DataTypes } from '../../config/db.js'
 
 export const Report = sequelize.define('report', {
     id: {

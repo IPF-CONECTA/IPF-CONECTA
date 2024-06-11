@@ -1,5 +1,5 @@
-import { sequelize, DataTypes } from '../config/db.js';
-import { Country } from './country.js';
+import { sequelize, DataTypes } from '../../../config/db.js';
+import { Country } from './countryModel.js';
 export const State = sequelize.define('state', {
     id: {
         type: DataTypes.INTEGER,
@@ -9,8 +9,6 @@ export const State = sequelize.define('state', {
     name: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci'
     },
     country_id: {
         type: DataTypes.INTEGER,
