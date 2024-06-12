@@ -19,7 +19,6 @@ export const createUser = async (user) => {
         roleId: roleId,
         password: user.password,
         email: user.email,
-        verifyCode: generateVerificationCode(),
     }
     return User.create(user)
 

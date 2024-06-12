@@ -40,10 +40,17 @@ export const authLogInSvc = async (user) => {
     try {
         const existingUser = await User.findOne({ where: { email: user.email } })
         if (!existingUser) {
-            existingUser = await User.findOne({ where: {} })
+            throw new Error('No se encontro una cuenta con ese email')
         }
-    } catch (error) {
+        const validPassword = await bcrypt.compare(user.password, existingUser.password);
+        if (!validPassword) throw new Error("Contraseña incorrecta");
 
+        const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
+
+        return token
+
+    } catch (error) {
+        throw new Error(error)
     }
 }
 
@@ -82,7 +89,6 @@ export const confirmAccountSvc = async (userId, receivedCode) => {
 export const sendRecoverPasswordSvc = async (email) => {
     try {
         const { verifyCode, names, id } = await User.findOne({ where: { email: email } })
-        console.log('email desde SVC' + email)
         if (!id) {
             throw new Error('No se encontro una cuenta con ese correo electronico')
         }

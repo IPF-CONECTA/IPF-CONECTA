@@ -18,7 +18,21 @@ export const authSignUpCtrl = async (req, res) => {
         }
     }
 };
-``
+
+
+export const authLogInCtrl = async (req, res) => {
+    const { user } = req.body;
+    if (!user.email) throw new Error('Ingrese el email para continuar')
+    else if (!user.password) throw new Error('Ingrese la contrase')
+    try {
+
+        const token = await authLogInCtrl(user)
+        res.status(200).json({ message: 'Sesion iniciada correctamente', token })
+
+    } catch (error) {
+        res.status(error.status)
+    }
+}
 export const confirmAccountCtrl = async (req, res) => {
     const { receivedCode } = req.body;
     const { token } = req.headers

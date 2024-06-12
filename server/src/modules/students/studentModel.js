@@ -11,12 +11,6 @@ export const Student = sequelize.define('student', {
         type: DataTypes.STRING(),
         allowNull: true,
     },
-    profilePic: {
-        type: DataTypes.STRING(),
-        allowNull: false,
-        //AQUI TENDRIA QUE IR EL DEFAULT PFP CON EL URL DE CLOUDINARY
-        defaultValue: 'https://socialsphere.atwebpages.com/default-avatar.jpg'
-    },
     openToWork: {
         type: DataTypes.BOOLEAN(),
         defaultValue: false,
