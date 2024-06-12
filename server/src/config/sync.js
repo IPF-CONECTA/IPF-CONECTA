@@ -14,15 +14,15 @@ import { LangLevel, createLangLevels } from "../modules/langs/langLevelsModel.js
 import { Lang, createLangs } from "../modules/langs/langModel.js";
 import { State, createStates } from "../modules/ubications/models/stateModel.js";
 export const createTablesAndRelations = async () => {
-    await sequelize.sync({ force: true })
+    await sequelize.sync({ force: false })
     console.log('Tables created successfully')
-    await createUserStates()
-    await createLangLevels()
-    await createRoles()
-    await createSkills()
-    await createReportReasons()
-    await createLangs()
-    await createCountries()
-    await createStates()
-    await createCities()
+    // await createUserStates()
+    // await createLangLevels()
+    // await createRoles()
+    // await createSkills()
+    // await createReportReasons()
+    // await createLangs()
+    // await createCountries()
+    // await createStates()
+    // await createCities()
 }

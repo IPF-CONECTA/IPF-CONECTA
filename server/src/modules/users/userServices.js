@@ -19,6 +19,7 @@ export const createUser = async (user) => {
         roleId: roleId,
         password: user.password,
         email: user.email,
+        userState: 'none'
     }
     return User.create(user)
 

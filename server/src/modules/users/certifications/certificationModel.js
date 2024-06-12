@@ -26,4 +26,4 @@ export const Certification = sequelize.define('certification', {
         type: DataTypes.STRING,
         allowNull: true
     }
-})
+})  

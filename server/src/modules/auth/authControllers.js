@@ -5,17 +5,13 @@ import { authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccoun
 export const authSignUpCtrl = async (req, res) => {
     const { user } = req.body;
     try {
+        if (!user.email || !user.password || !user.role) {
+            throw new Error('Ingrese los datos necesarios para continuar')
+        }
         const token = await authSignUpSvc(user)
         res.status(201).json({ message: 'Usuario registrado con exito', token })
     } catch (error) {
-        if (error.message.includes("El usuario ya existe")) {
-            res.status(400).json({ message: error.message });
-        } else if (error.message.includes("Rol no valido")) {
-            res.status(400).json({ message: error.message });
-        } else {
-            console.log(error.message)
-            res.status(500).json({ message: "Hubo un error en el servidor." + error.message });
-        }
+        res.status(400).json({ message: error.message })
     }
 };
 
@@ -37,6 +33,9 @@ export const confirmAccountCtrl = async (req, res) => {
     const { receivedCode } = req.body;
     const { token } = req.headers
     try {
+        if (!receivedCode) {
+            throw new Error('Ingrese el codigo de verificacion')
+        }
         if (!token) {
             throw new Error('Inicie sesion para confirmar el correo')
         }
@@ -68,21 +67,29 @@ export const sendRecoverPasswordCtrl = async (req, res) => {
         throw new Error({ message: 'Ingrese un correo electronico para recuperar su contraseña' })
     }
     try {
-        await sendRecoverPasswordSvc(email)
-        res.status(200).json({ message: 'El correo fue enviado con exito. Verifique su bandeja de entrada' })
+        const token = await sendRecoverPasswordSvc(email)
+        res.status(200).json({ message: 'El correo fue enviado con exito. Verifique su bandeja de entrada', token })
     } catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: 'Error interno en el servidor' })
+        res.status(500).json({ message: error.message })
     }
 }
 
 export const recoverPasswordCtrl = async (req, res) => {
-    const { token } = req.headers;
-    const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-    const { receivedCode, newPass, newPassConfirm } = req.body
 
     try {
-        await recoverPasswordSvc(userId, receivedCode, newPass, newPassConfirm)
+        const { token } = req.headers;
+        if (!token) {
+            throw new Error('Hubo un error, vuelva a recuperar su contraseña con su correo. Si el problema persiste, contacte al administrador')
+        }
+        const { email } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
+        const { receivedCode, newPass, newPassConfirm } = req.body
+        if (!receivedCode || !newPass || !newPass) {
+            throw new Error('Ingrese los datos necesarios para continuar')
+        }
+        else if (newPass !== newPassConfirm) {
+            throw new Error('Las contraseñas no coinciden')
+        }
+        await recoverPasswordSvc(email, receivedCode, newPass, newPassConfirm)
         res.status(201).json({ message: 'Contraseña modificada correctamente' })
     } catch (error) {
         res.status(400).json({ message: error.message })

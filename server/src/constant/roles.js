@@ -12,3 +12,4 @@ export const basicRoles = {
     'student': process.env.STUDENT_ID,
     'investor': process.env.INVESTOR_ID
 }
+
