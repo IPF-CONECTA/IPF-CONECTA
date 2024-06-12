@@ -28,6 +28,10 @@ export const User = sequelize.define('user', {
         type: DataTypes.INTEGER(1),
         allowNull: false,
     },
+    about: {
+        type: DataTypes.STRING(),
+        allowNull: true,
+    },
     profilePic: {
         type: DataTypes.STRING(),
         allowNull: false,

@@ -18,8 +18,13 @@ export const Company = sequelize.define('Company', {
     industry: {
         type: DataTypes.INTEGER
     },
+    cityId: {
+        type: DataTypes.INTEGER,
+        allowNull: falses
+    },
     address: {
         type: DataTypes.UUID,
+        allowNull: true
     },
     logo_url: {
         type: DataTypes.STRING(255)
@@ -35,4 +40,3 @@ export const Company = sequelize.define('Company', {
     timestamps: true
 });
 
-module.exports = Company;

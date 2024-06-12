@@ -15,8 +15,8 @@ export const WorkExperiences = sequelize.define('workExperience', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    company: {
-        type: DataTypes.STRING,
+    companyId: {
+        type: DataTypes.UUID,
         allowNull: false
     },
     ubicationId: {
