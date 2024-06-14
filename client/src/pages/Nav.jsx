@@ -1,34 +1,35 @@
 import React from "react";
-import "../../public/nav.css";
+import { Link } from "react-router-dom";
 import logoImage from "../../public/iconoipf.png";
+import "../../public/nav.css"; 
 
-export const Navigation = () => {
+export const Nav = () => {
   return (
     <nav className="nav-container">
       <div className="logo">
-        <a href="#">
+        <Link to="/">
           <img src={logoImage} alt="Logo" className="logoImage" />
-        </a>
+        </Link>
       </div>
       <div className="buttons">
-        <button className="register-button">
+        <Link to="/register" className="register-button">
           <span className="material-symbols-outlined">app_registration</span>
           Registrarse
-        </button>
-        <button className="login-button">
+        </Link>
+        <Link to="/login" className="login-button">
           <span className="material-symbols-outlined">login</span>Iniciar sesión
-        </button>
-        <button className="support-button">
+        </Link>
+        <Link to="/support" className="support-button">
           <span className="material-symbols-outlined">support_agent</span>
           Soporte
-        </button>
-        <button className="community-button">
+        </Link>
+        <Link to="/community" className="community-button">
           <span className="material-symbols-outlined">diversity_3</span>
           Comunidad
-        </button>
-        <button className="messages-button">
+        </Link>
+        <Link to="/messages" className="messages-button">
           <span className="material-symbols-outlined">chat</span>Mensajes
-        </button>
+        </Link>
       </div>
     </nav>
   );

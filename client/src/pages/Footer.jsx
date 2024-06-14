@@ -1,7 +1,8 @@
+import React from "react";
 import "../../public/footer.css";
 import logoImage from "../../public/iconoipf.png";
 
-export const FinPag = () => {
+export const Footer = () => {
   return (
     <div className="FinPag">
       <div className="container">
@@ -10,9 +11,7 @@ export const FinPag = () => {
             <a href="#">
               <img src={logoImage} alt="Logo" className="logoImage" />
             </a>
-            <span className="mb-3 mb-md-0">
-              IPF-CONECTA © 2024
-            </span>
+            <span className="mb-3 mb-md-0">IPF-CONECTA © 2024</span>
           </div>
 
           <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">

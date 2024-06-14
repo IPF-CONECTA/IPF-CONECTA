@@ -1,22 +1,12 @@
-html {
-  margin: 0;
-  padding: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: #F9F6EE;
-}
 
-.Menu {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #2e2e2e;
-}
-
- @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .header-section {
@@ -45,7 +35,7 @@ html {
 
 .bienvenida {
   margin: 10px 0;
-  background-color: #F9F6EE;
+  background-color: #f9f6ee;
   padding: 20px;
   border-radius: 10px;
   font-size: 30px;
@@ -57,7 +47,7 @@ html {
   margin-top: 10px;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4CB853;
+  background-color: #4cb853;
   color: white;
   border: none;
   border-radius: 5px;
@@ -66,7 +56,7 @@ html {
 
 .explore-button:hover,
 .service-button:hover {
-  background-color: #B8DFFF;
+  background-color: #b8dfff;
 }
 
 section {
@@ -83,8 +73,13 @@ section {
 }
 
 @keyframes up-down {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 .services {
@@ -129,7 +124,7 @@ section {
 }
 
 .about-section {
-  background-color: #F9F6EE;
+  background-color: #f9f6ee;
   text-align: center;
 }
 
