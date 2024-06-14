@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from '../../config/db.js'
+import { sequelize, DataTypes } from '../../../config/db.js'
 
 
 export const Company = sequelize.define('Company', {
@@ -7,7 +7,7 @@ export const Company = sequelize.define('Company', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    company_name: {
+    companyName: {
         type: DataTypes.STRING(255),
         allowNull: false
     },
@@ -20,21 +20,23 @@ export const Company = sequelize.define('Company', {
     },
     cityId: {
         type: DataTypes.INTEGER,
-        allowNull: falses
+        allowNull: false
     },
     address: {
-        type: DataTypes.UUID,
+        type: DataTypes.STRING(255),
         allowNull: true
     },
-    logo_url: {
-        type: DataTypes.STRING(255)
+    logoUrl: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        defaultValue: 'https://th.bing.com/th/id/OIP.tu5yvoyO5oYFWYzLVOf-BwHaHa?rs=1&pid=ImgDetMain'
     },
     cantEmployees: {
         type: DataTypes.INTEGER
     },
-    is_verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+    status: {
+        type: DataTypes.ENUM('Pendiente', 'Aprobada', 'Rechazada'),
+        defaultValue: 'Pendiente'
     },
 }, {
     timestamps: true

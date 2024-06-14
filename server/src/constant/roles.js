@@ -1,15 +1,24 @@
+import { Role } from '../modules/roles/roleModel.js'
 
-export const allRoles = {
-    'recruiter': process.env.RECRUITER_ID,
-    'student': process.env.STUDENT_ID,
-    'admin': process.env.ADMIN_ID,
-    'superAdmin': process.env.SUPERADMIN_ID,
-    'investor': process.env.INVESTOR_ID
+export const getRoles = async () => {
+    const roles = await Role.findAll()
+    return {
+        'recruiter': roles.find(role => role.name === 'recruiter').id,
+        'student': roles.find(role => role.name === 'student').id,
+        'investor': roles.find(role => role.name === 'investor').id,
+        'admin': roles.find(role => role.name === 'admin').id,
+        'superAdmin': roles.find(role => role.name === 'superAdmin').id
+    }
+}
+export const getBasicRoles = async () => {
+    const roles = await Role.findAll()
+    return {
+        'recruiter': roles.find(role => role.name === 'recruiter').id,
+        'student': roles.find(role => role.name === 'student').id,
+        'investor': roles.find(role => role.name === 'investor').id
+    }
+
 }
 
-export const basicRoles = {
-    'recruiter': process.env.RECRUITER_ID,
-    'student': process.env.STUDENT_ID,
-    'investor': process.env.INVESTOR_ID
-}
-
+export const ALL_ROLES = await getRoles()
+export const BASIC_ROLES = await getBasicRoles()

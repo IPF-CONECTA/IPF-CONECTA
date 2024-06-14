@@ -9,3 +9,4 @@ export const sendContactCompanyCtrl = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+

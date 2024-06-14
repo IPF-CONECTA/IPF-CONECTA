@@ -1,7 +1,7 @@
 import { User } from "../users/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { basicRoles } from "../../constant/roles.js";
+import { BASIC_ROLES } from "../../constant/roles.js";
 import { sendRecoverPasswordEmail } from "./mailServices/recoverPassMail.js";
 import { generateVerificationCode } from "../../helpers/generateCode.js";
 import { sendConfirmAccount } from "./mailServices/confirmAccount.js";
@@ -12,23 +12,19 @@ export const authSignUpSvc = async (user) => {
 
         if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
 
-
-
-        if (!Object.keys(basicRoles).includes(user.role)) { throw new Error('Rol no valido') }
-
-        const roleId = basicRoles[user.role];
-        const passhash = await bcrypt.hash(user.password, 10);
+        const roleId = BASIC_ROLES[user.role];
 
         const createdUser = await User.create({
             names: user.names,
             surnames: user.surnames,
             email: user.email,
             roleId: roleId,
-            password: passhash,
+            password: user.password,
+            cuil: user.cuil,
             state: 1
         })
         const token = jwt.sign({ userId: createdUser.id }, process.env.TOKEN_SECRET_KEY);
-
+        await sendConfirmAccountSvc(createdUser.id)
         return token
 
     } catch (error) {

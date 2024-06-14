@@ -1,4 +1,4 @@
-import { transporter } from "../../../helpers/nodemailer.js"
+import { transporter } from "../../../../helpers/nodemailer.js"
 
 
 export const sendContactCompany = async (from, name, subject, message) => {

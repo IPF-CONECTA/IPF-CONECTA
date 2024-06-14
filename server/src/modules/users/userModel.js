@@ -16,6 +16,10 @@ export const User = sequelize.define('user', {
         type: DataTypes.STRING(64),
         allowNull: false,
     },
+    cuil: {
+        type: DataTypes.STRING(11),
+        allowNull: true
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,

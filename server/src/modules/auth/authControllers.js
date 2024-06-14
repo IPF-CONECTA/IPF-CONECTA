@@ -1,5 +1,9 @@
 import jwt from "jsonwebtoken";
 import { authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
+import bcrypt from "bcryptjs";
+import { BASIC_ROLES } from "../../constant/roles.js";
+import { getAllCompanies } from "../recruiters/recruiterServices.js";
+import { getUserById } from "../users/userServices.js";
 
 
 export const authSignUpCtrl = async (req, res) => {
@@ -8,8 +12,28 @@ export const authSignUpCtrl = async (req, res) => {
         if (!user.email || !user.password || !user.role) {
             throw new Error('Ingrese los datos necesarios para continuar')
         }
+
+
+        if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
+
+        if (user.role == 'student') {
+            if (!user.cuil) {
+                throw new Error('Ingrese su CUIL')
+            }
+            else if (user.cuil.length !== 11) {
+                throw new Error('El CUIL debe tener 11 digitos')
+            }
+        }
+        else {
+            user.cuil = null
+        }
+
+        user.password = await bcrypt.hash(user.password, 10);
+
         const token = await authSignUpSvc(user)
-        res.status(201).json({ message: 'Usuario registrado con exito', token })
+
+        res.status(201).json({ message: 'Por favor, verifique su cuenta con el codigo que se ha enviado a su correo', token })
+
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -41,7 +65,23 @@ export const confirmAccountCtrl = async (req, res) => {
         }
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         await confirmAccountSvc(userId, receivedCode)
-        res.status(201).json({ message: 'Cuenta confirmada exitosamente' })
+        const user = await getUserById(userId)
+
+        switch (user.roleId) {
+            case BASIC_ROLES.student:
+                if (!user.cuil) throw new Error('Ingrese su CUIL')
+                else if (user.cuil.length !== 11) throw new Error('El CUIL debe tener 11 digitos')
+                res.status(201).json({ message: 'Cuenta confirmada exitosamente' })
+            case BASIC_ROLES.recruiter:
+                try {
+                    const companies = getAllCompanies()
+                    if (companies.length === 0) throw new Error('No se encontraron empresas')
+                    res.status(200).json({ message: 'Cuenta confirmada exitosamente', companies })
+                } catch (error) {
+                    res.status(500).json({ message: error.message })
+                }
+        }
+
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

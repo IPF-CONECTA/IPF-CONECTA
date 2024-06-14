@@ -16,9 +16,12 @@ import { State, createStates } from "../modules/ubications/models/stateModel.js"
 export const createTablesAndRelations = async () => {
     await sequelize.sync({ force: false })
     console.log('Tables created successfully')
+    // ===================================================================================
+    // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
+    // ===================================================================================
+    // await createRoles()
     // await createUserStates()
     // await createLangLevels()
-    // await createRoles()
     // await createSkills()
     // await createReportReasons()
     // await createLangs()

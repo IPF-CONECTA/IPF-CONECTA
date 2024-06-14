@@ -1,6 +1,6 @@
 import { User } from './userModel.js'
 import { generateVerificationCode } from '../../helpers/generateCode.js'
-import { basicRoles } from '../../constant/roles.js';
+import { BASIC_ROLES } from '../../constant/roles.js';
 
 
 export const getUsers = async () => {
@@ -8,9 +8,14 @@ export const getUsers = async () => {
     return users
 }
 
+export const getUserById = async (id) => {
+    const user = await User.findByPk(id)
+    return user
+}
+
 export const createUser = async (user) => {
 
-    if (!Object.keys(basicRoles).includes(user.role)) { throw new Error('Rol no valido') }
+    if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
     const roleId = roles[user.role];
     user = {
