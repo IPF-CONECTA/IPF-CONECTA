@@ -6,6 +6,6 @@
 - Descomenta los bulkCreate en el archivo (./src/config/sync.js) para crear los registros correspondientes
 - Copia el sql (./src/config/world/world.sql) y pegalo en la query del manejador de base de datos que tengas
 
-#### Y listo :)
+#### Y listo :))
 
 ### Estando en desarrollo comenta los bulkCreate, sino se crearan los mismos registros cada vez que se inicie el servidor
