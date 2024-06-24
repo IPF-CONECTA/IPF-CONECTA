@@ -1,10 +1,15 @@
-
+/* nav.css */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #b8dfff;
   padding: 10px;
+}
+
+main {
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .logoImage {
@@ -26,7 +31,6 @@
   color: #4cb853;
   cursor: pointer;
   text-decoration: none;
-  color: inherit;
 }
 
 .buttons a:hover {

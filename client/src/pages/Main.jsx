@@ -1,5 +1,8 @@
 import React from "react";
-import styles from "../../public/main.module.css"; 
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import styles from "../../public/main.module.css";
+import { Link } from "react-router-dom";
 
 export const Main = () => {
   const scrollToSection = (sectionId) => {
@@ -9,24 +12,45 @@ export const Main = () => {
   return (
     <main className={styles.Menu}>
       <div className={styles["header-section"]}>
-        <img
-          className={styles["header-image"]}
-          src="../../public/logoipf.png"
-          alt="IPF Logo"
-        />
+        <Carousel
+          autoPlay={true}
+          infiniteLoop={true}
+          showThumbs={false}
+          showStatus={false}
+          showArrows={false}
+          showIndicators={false}
+          className={styles["header-carousel"]}
+        >
+          <div>
+            <img src="../../public/logoipf.png" alt="IPF Logo" />
+          </div>
+          <div>
+            <img src="../../public/networking.png" alt="Networking" />
+          </div>
+          <div>
+            <img src="../../public/jobs.png" alt="Job Opportunities" />
+          </div>
+        </Carousel>
         <div className={styles["text-and-button"]}>
-          <h1>¿Qué es IPF - CONECTA?</h1>
+          <center>
+            <h1>¡Bienvenido a IPF-CONECTA!</h1>
+          </center>
           <p className={styles.bienvenida}>
-            ¡Bienvenido a IPF-CONECTA! ¿Eres egresado del IPF? ¿Buscas conectar
-            y explorar posibilidades laborales emocionantes? ¡Estás en el lugar
-            correcto! ¡Tu próxima gran oportunidad te espera aquí!
+            <h3>
+              ¡Bienvenido a IPF-CONECTA! Esta es la plataforma donde egresados
+              del IPF, empleadores, inversionistas, reclutadores y tutores se
+              encuentran para conectar y descubrir nuevas oportunidades. ¡Tu
+              próxima gran oportunidad comienza aquí!
+            </h3>
           </p>
-          <button
-            className={styles["explore-button"]}
-            onClick={() => scrollToSection("services")}
-          >
-            Explorar más
-          </button>
+          <center>
+            <button
+              className={styles["explore-button"]}
+              onClick={() => scrollToSection("services")}
+            >
+              Explorar más
+            </button>
+          </center>
         </div>
       </div>
 
@@ -121,10 +145,6 @@ export const Main = () => {
               formulario.
             </p>
           </div>
-          <div className={styles.faq}>
-            <h3>Prueba</h3>
-            <p>Esto es una prueba</p>
-          </div>
         </div>
       </section>
 
@@ -146,12 +166,13 @@ export const Main = () => {
               en diversas áreas que trabajan incansablemente para brindarte las
               mejores oportunidades.
             </p>
-            <button
-              className={styles["service-button"]}
-              onClick={() => scrollToSection("contact-us")}
-            >
-              Contáctanos
-            </button>
+            <center>
+              <button className={styles["service-button"]}>
+                <Link to="/support" className={styles["no-underline"]}>
+                  Contáctanos
+                </Link>
+              </button>
+            </center>
           </div>
         </div>
       </section>
