@@ -1,4 +1,5 @@
-nav {
+/* Navegación */
+nav.nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,10 +31,4 @@ nav {
 
 .buttons a:hover {
   background-color: #d4d4d4;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

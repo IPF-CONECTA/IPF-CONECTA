@@ -1,3 +1,4 @@
+/* Animaciones */
 @keyframes bounce {
   0%,
   100% {
@@ -8,6 +9,17 @@
   }
 }
 
+@keyframes up-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Estilos del carousel */
 .header-carousel {
   width: 40%;
   margin: 0 auto;
@@ -18,6 +30,7 @@
   height: auto;
 }
 
+/* Sección de la cabecera */
 .header-section {
   display: flex;
   justify-content: space-between;
@@ -42,6 +55,7 @@
   margin: 0;
 }
 
+/* Bienvenida */
 .bienvenida {
   margin: 10px 0;
   background-color: #ececec;
@@ -51,6 +65,7 @@
   text-align: center;
 }
 
+/* Botones */
 .explore-button,
 .service-button {
   margin-top: 10px;
@@ -68,11 +83,11 @@
   background-color: #b8dfff;
 }
 
+/* Secciones */
 section {
   width: 100%;
-  padding: 40px 20px;
+  padding: 20px 20px;
   box-sizing: border-box;
-  margin-bottom: 20px;
 }
 
 .services-section,
@@ -81,32 +96,46 @@ section {
   background-color: #fff;
 }
 
-@keyframes up-down {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
+/* Servicios */
 .services {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 20px;
 }
 
 .service {
   text-align: center;
   max-width: 300px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.service:hover {
+  transform: translateY(-10px);
 }
 
 .service-image {
   width: 150px;
   height: 150px;
+  margin-bottom: 10px;
   animation: up-down 2s infinite;
 }
 
+.service h3 {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.service p {
+  font-size: 16px;
+  color: #555;
+}
+/* Testimonios */
 .testimonials {
   display: flex;
   justify-content: space-around;
@@ -118,6 +147,7 @@ section {
   font-style: italic;
 }
 
+/* FAQs */
 .faqs {
   display: flex;
   flex-direction: column;
@@ -132,6 +162,7 @@ section {
   margin-bottom: 10px;
 }
 
+/* Sección sobre nosotros */
 .about-section {
   background-color: #f9f6ee;
   text-align: center;

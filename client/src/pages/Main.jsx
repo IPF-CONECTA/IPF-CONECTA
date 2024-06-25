@@ -55,7 +55,9 @@ export const Main = () => {
       </div>
 
       <section id="services" className={styles["services-section"]}>
-        <h2>Lo que te ofrecemos ✔️</h2>
+        <center>
+          <h2>Lo que ofrecemos ✔️</h2>
+        </center>
         <div className={styles.services}>
           <div className={styles.service}>
             <img
@@ -103,6 +105,42 @@ export const Main = () => {
             <p>
               Obtén asesoramiento de expertos en diversas áreas para avanzar en
               tu carrera.
+            </p>
+            <button
+              className={styles["service-button"]}
+              onClick={() => scrollToSection("expert-guidance")}
+            >
+              Más información
+            </button>
+          </div>
+          <div className={styles.service}>
+            <img
+              src="../../public/ideas.png"
+              alt="Expert Guidance"
+              className={styles["service-image"]}
+            />
+            <h3>Ideas de Proyectos</h3>
+            <p>
+              Encuentra inspiración con nuestra selección de ideas de proyectos
+              innovadores y relevantes para desarrollar.
+            </p>
+            <button
+              className={styles["service-button"]}
+              onClick={() => scrollToSection("expert-guidance")}
+            >
+              Más información
+            </button>
+          </div>
+          <div className={styles.service}>
+            <img
+              src="../../public/lineas.png"
+              alt="Expert Guidance"
+              className={styles["service-image"]}
+            />
+            <h3>Líneas de Investigación</h3>
+            <p>
+              Explora nuestras principales líneas de investigación y descubre
+              cómo puedes contribuir con tus ideas y proyectos.
             </p>
             <button
               className={styles["service-button"]}
