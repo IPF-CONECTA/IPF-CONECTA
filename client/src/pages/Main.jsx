@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from "../../public/main.module.css";
 import { Link } from "react-router-dom";
+import { CustomModal } from "../components/CustoModal";
 
 export const Main = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleButtonClick = (sectionId) => {
+    const isAuthenticated = false; 
+
+    if (isAuthenticated) {
+      scrollToSection(sectionId);
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   return (
@@ -72,7 +85,7 @@ export const Main = () => {
             </p>
             <button
               className={styles["service-button"]}
-              onClick={() => scrollToSection("networking")}
+              onClick={() => handleButtonClick("networking")}
             >
               Más información
             </button>
@@ -90,7 +103,7 @@ export const Main = () => {
             </p>
             <button
               className={styles["service-button"]}
-              onClick={() => scrollToSection("job-opportunities")}
+              onClick={() => handleButtonClick("job-opportunities")}
             >
               Más información
             </button>
@@ -108,7 +121,7 @@ export const Main = () => {
             </p>
             <button
               className={styles["service-button"]}
-              onClick={() => scrollToSection("expert-guidance")}
+              onClick={() => handleButtonClick("expert-guidance")}
             >
               Más información
             </button>
@@ -126,7 +139,7 @@ export const Main = () => {
             </p>
             <button
               className={styles["service-button"]}
-              onClick={() => scrollToSection("expert-guidance")}
+              onClick={() => handleButtonClick("expert-guidance")}
             >
               Más información
             </button>
@@ -144,7 +157,7 @@ export const Main = () => {
             </p>
             <button
               className={styles["service-button"]}
-              onClick={() => scrollToSection("expert-guidance")}
+              onClick={() => handleButtonClick("expert-guidance")}
             >
               Más información
             </button>
@@ -214,6 +227,8 @@ export const Main = () => {
           </div>
         </div>
       </section>
+
+      <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>
   );
 };
