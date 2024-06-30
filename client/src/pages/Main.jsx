@@ -13,7 +13,7 @@ export const Main = () => {
   };
 
   const handleButtonClick = (sectionId) => {
-    const isAuthenticated = false; 
+    const isAuthenticated = false;
 
     if (isAuthenticated) {
       scrollToSection(sectionId);
@@ -48,14 +48,15 @@ export const Main = () => {
           <center>
             <h1>¡Bienvenido a IPF-CONECTA!</h1>
           </center>
-          <p className={styles.bienvenida}>
+          <div className={styles.bienvenida}>
             <h3>
               ¡Bienvenido a IPF-CONECTA! Esta es la plataforma donde egresados
               del IPF, empleadores, inversionistas, reclutadores y tutores se
               encuentran para conectar y descubrir nuevas oportunidades. ¡Tu
               próxima gran oportunidad comienza aquí!
             </h3>
-          </p>
+          </div>
+
           <center>
             <button
               className={styles["explore-button"]}

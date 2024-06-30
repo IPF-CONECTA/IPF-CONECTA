@@ -38,6 +38,7 @@
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .header-image {
@@ -61,14 +62,13 @@
   background-color: #ececec;
   padding: 20px;
   border-radius: 10px;
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
 }
 
 /* Botones */
 .explore-button,
 .service-button {
-  margin-top: 10px;
   padding: 10px 20px;
   font-size: 16px;
   background-color: #4cb853;
@@ -135,10 +135,12 @@ section {
   font-size: 16px;
   color: #555;
 }
+
 /* Testimonios */
 .testimonials {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .testimonial {
@@ -172,6 +174,7 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .about-image {
@@ -196,7 +199,69 @@ section {
 }
 
 .about-section p {
-  font-size: 25px;
+  font-size: 20px;
   margin: 20px auto;
   max-width: 600px;
+}
+
+/* Media Queries */
+
+/* Tablets y dispositivos más pequeños */
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .text-and-button {
+    padding-left: 0;
+  }
+
+  .services {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .testimonials {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-content {
+    flex-direction: column;
+  }
+}
+
+/* Teléfonos móviles y dispositivos más pequeños */
+@media (max-width: 480px) {
+  .header-carousel {
+    width: 100%;
+  }
+
+  .bienvenida {
+    font-size: 16px;
+  }
+
+  .explore-button,
+  .service-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .services {
+    margin: 10px;
+  }
+
+  .service {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .testimonial {
+    max-width: 100%;
+  }
+
+  .about-section p {
+    font-size: 16px;
+  }
 }

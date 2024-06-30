@@ -5,6 +5,7 @@ nav.nav-container {
   align-items: center;
   background-color: #b8dfff;
   padding: 10px;
+  flex-wrap: wrap;
 }
 
 .logoImage {
@@ -15,10 +16,11 @@ nav.nav-container {
 .buttons {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .buttons a {
-  margin-left: 10px;
+  margin: 5px;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
@@ -31,4 +33,14 @@ nav.nav-container {
 
 .buttons a:hover {
   background-color: #d4d4d4;
+}
+
+@media (max-width: 768px) {
+  nav.nav-container {
+    flex-direction: column;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
 }
