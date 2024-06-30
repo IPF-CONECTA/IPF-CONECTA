@@ -1,8 +1,9 @@
 .jobs-sales {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 10px;
-  background-color: #f9f9f9;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 15px;
+  padding: 5%;
+  background-color: #000000;
 }
 
 .job-item {
@@ -29,5 +30,13 @@
   display: inline-block;
   margin-top: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.info {
+  background-color: #1da9f8;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

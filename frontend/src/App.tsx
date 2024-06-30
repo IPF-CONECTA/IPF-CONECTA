@@ -9,14 +9,14 @@ function App() {
         <nav>
           <Link to="/profile">Perfil</Link>
           <br />
-          <Link to="/jobs-sales">Ventas</Link>
+          <Link to="/jobs-sales">Ofertas</Link>
         </nav>
 
         {}
         <Routes>
           <Route path="/profile" element={<Profile />} />
           <Route path="/jobs-sales" element={<JobsSales />} />
-          <Route path="/job/:id" element={<JobDetails/>} />
+          <Route path="/job/:id" element={<JobDetails/>} /> 
           <Route path="*" element={<h1>404</h1>} />
         </Routes>
       </div>
