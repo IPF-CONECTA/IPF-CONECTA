@@ -42,10 +42,6 @@ export const User = sequelize.define('user', {
         //AQUI TENDRIA QUE IR EL DEFAULT PFP CON EL URL DE CLOUDINARY
         defaultValue: 'https://socialsphere.atwebpages.com/default-avatar.jpg'
     },
-    profileId: {
-        type: DataTypes.INTEGER(),
-        allowNull: true,
-    },
     password: {
         type: DataTypes.STRING,
         allowNull: false

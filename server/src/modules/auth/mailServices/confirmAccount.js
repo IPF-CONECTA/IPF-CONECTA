@@ -6,37 +6,44 @@ export const sendConfirmAccount = async (to, confirmCode, names) => {
         from: '"IPF CONECTA" <ipfconecta@gmail.com>',
         to: to,
         subject: 'Confirmación de correo electrónico',
-        html: `
+        html: `<!DOCTYPE html>
+                <html lang="es">
                 <head>
-                    <title>Contacto desde el formulario</title>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Confirmación de Cuenta</title>
                     <style>
-                        body { font-family: Arial, sans-serif; }
-                        .container { padding: 20px; }
-                        .header { background-color: #f4f4f4; padding: 10px; text-align: center; }
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                        .container { width: 80%; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; }
+                        .header { background-color: #4CAF50; color: white; padding: 10px; text-align: center; }
                         .field { margin-bottom: 10px; }
-                        .content { padding: 20px; border: 1px solid #ddd; }
-                        .value { color: #666666; font-size: 16px; margin-bottom: 10px;}
-                        .label {color: #333333; font-size: 24px; margin-bottom: 20px; font-weight: bold;}
+                        .content { padding: 20px; border: 1px solid #ddd; background-color: white; }
+                        .value { margin-left: 10px; }
+                        .label { font-weight: bold; }
+                        .footer { margin-top: 20px; font-size: 0.9em; color: #777; text-align: center; }
                     </style>
                 </head>
-                    <body>
-                        <div class='container'>
-                            <div class='header'>
-                                <h1>Confirma tu correo electrónico en IPF Conecta</h1>
-                            </div>
-                            <div class='content'>
-                                <div class='field'>
-                                    <h2 class='label'>Hola ${names}!</h2>
-                                </div>
-                                <div class='field'>
-                                    <span class='value'>Gracias por registrarte. Por favor, confirma tu correo electrónico ingresando el siguiente código:</span>
-                                </div>
-                                <div class='field'>
-                                    <span class='label'>${confirmCode}</span>
-                                </div>
-                            </div>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h2>Confirmación de Cuenta</h2>
                         </div>
+                        <div class="content">
+                            <p>Hola ${names},</p>
+                            <p>Gracias por registrarte en IPF-CONECTA. Para completar tu registro, por favor confirma tu cuenta utilizando el siguiente código:</p>
+                            <p style="font-size: 1.5em; text-align: center; font-weight: bold;">${confirmCode}</p>
+                            <p>Ingresa este código en la página de confirmación para activar tu cuenta.</p>
+                            <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte.</p>
+                            <p>Atentamente,</p>
+                            <p>El Equipo de IPF-CONECTA</p>
+                        </div>
+                        <div class="footer">
+                            <p>IPF-CONECTA &copy; 2024</p>
+                        </div>
+                    </div>
                 </body>
+                </html>
+
         `
     }
     try {

@@ -2,6 +2,7 @@ import { Role } from '../modules/roles/roleModel.js'
 
 export const getRoles = async () => {
     const roles = await Role.findAll()
+    console.log(roles)
     return {
         'recruiter': roles.find(role => role.name === 'recruiter').id,
         'student': roles.find(role => role.name === 'student').id,

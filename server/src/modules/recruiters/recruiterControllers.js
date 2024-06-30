@@ -23,18 +23,18 @@ export const associateExistingCompanyCtrl = async (req, res) => {
     try {
         const { names } = await User.findByPk(userId)
         await useCompany(userId, companyId)
-        const message = `¡Gracias por registrarte en IPF-CONNECTA, ${names}!
+        const message = `¡Gracias por registrarte en IPF-CONECTA, ${names}!
 
-                        Tu cuenta ha sido creada exitosamente y ahora está en proceso de verificación.
+                        Tu vinculación con la compañía está en proceso de verificación.
 
-                        Recibirás un correo electrónico una vez que tu cuenta haya sido verificada.
+                        Recibirás un correo electrónico una vez que esta haya sido verificada.
 
                         Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte.
 
                         Atentamente,
-                        El Equipo de IPF-CONNECTA
+                        El Equipo de IPF-CONECTA
                         `
-        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu Cuenta Está en Proceso de Verificación', message: message })
+        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu vinculacion con la empresa en proceso de verificación', message: message })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -42,25 +42,25 @@ export const associateExistingCompanyCtrl = async (req, res) => {
 }
 
 export const associateNewCompanyCtrl = async (req, res) => {
-    const { token } = req.headers
-    if (!token) throw new Error('Inicie sesion para asociar la empresa')
-    const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-    const { company } = req.body
-    console.log(company)
     try {
-        const names = await User.findByPk(userId, { attributes: ['names'] })
+        const { token } = req.headers
+        if (!token) throw new Error('Inicie sesion para asociar la empresa')
+        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
+        const { company } = req.body
+        const { names } = await User.findByPk(userId, { attributes: ['names'] })
+        if (!names) throw new Error('Usuario no encontrado')
         await createAssociation(userId, company)
-        const message = `Gracias por registrarte en IPF-CONNECTA, ${names}!
+        const message = `Gracias por registrarte en IPF-CONECTA, ${names}!
         
-                        Tu cuenta ha sido creada exitosamente y ahora está en proceso de verificación.
+                        Tu vinculación con la compañía que has agregado está en proceso de verificación.
 
-                        Recibirás un correo electrónico una vez que tu cuenta haya sido verificada.
+                        Recibirás un correo electrónico una vez que la verificación haya sido completada.
 
                         Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte.
 
                         Atentamente,
-                        El Equipo de IPF-CONNECTA`
-        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu Cuenta Está en Proceso de Verificación', message: message })
+                        El Equipo de IPF-CONECTA`
+        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu vinculacion con la empresa en proceso de verificación', message: message })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

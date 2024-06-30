@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 import { getAllCompanies } from "../recruiters/recruiterServices.js";
 import { getUserById } from "../users/userServices.js";
+import { validarCuil } from "../../helpers/validateCuil.js";
 
 
 export const authSignUpCtrl = async (req, res) => {
@@ -17,12 +18,8 @@ export const authSignUpCtrl = async (req, res) => {
         if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
         if (user.role == 'student') {
-            if (!user.cuil) {
-                throw new Error('Ingrese su CUIL')
-            }
-            else if (user.cuil.length !== 11) {
-                throw new Error('El CUIL debe tener 11 digitos')
-            }
+            console.log('USER CUIL ACA: ' + user.cuil)
+            validarCuil(user.cuil)
         }
         else {
             user.cuil = null

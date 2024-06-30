@@ -2,7 +2,7 @@ import { Association } from "../../../recruiters/associations/associationModel.j
 
 export const getAssociations = async () => {
     try {
-        const associations = await Association.findAll({ where: { status: 'Pendiente' } })
+        const associations = await Association.findAll({ where: { status: 'Pendiente' }, include: ['user', 'company'] })
         if (associations.length == 0) throw new Error('No hay verificaciones pendientes')
         return associations
     } catch (error) {

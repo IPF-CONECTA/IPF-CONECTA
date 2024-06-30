@@ -1,7 +1,7 @@
 import { sequelize, DataTypes } from '../../../config/db.js'
 
 
-export const Company = sequelize.define('Company', {
+export const Company = sequelize.define('company', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -15,7 +15,7 @@ export const Company = sequelize.define('Company', {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    industry: {
+    industryId: {
         type: DataTypes.INTEGER
     },
     cityId: {
@@ -38,6 +38,10 @@ export const Company = sequelize.define('Company', {
         type: DataTypes.ENUM('Pendiente', 'Aprobada', 'Rechazada'),
         defaultValue: 'Pendiente'
     },
+    justification: {
+        type: DataTypes.STRING(255),
+        allowNull: true
+    }
 }, {
     timestamps: true
 });

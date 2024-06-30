@@ -15,9 +15,17 @@ export const Association = sequelize.define('association', {
         type: DataTypes.UUID,
         allowNull: false
     },
+    message: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
     status: {
         type: DataTypes.ENUM('Pendiente', 'Aprobada', 'Rechazada'),
         allowNull: false,
         defaultValue: 'Pendiente'
     },
+    justification: {
+        type: DataTypes.STRING(255),
+        allowNull: true
+    }
 })
