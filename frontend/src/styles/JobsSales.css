@@ -1,0 +1,33 @@
+.jobs-sales {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  background-color: #f9f9f9;
+}
+
+.job-item {
+  background-color: #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.salary {
+  background-color: #4cb845;
+  color: white;
+  padding: 5px 10px;
+  display: inline-block;
+  margin-top: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+.company {
+  background-color: #1da9f8;
+  color: white;
+  padding: 5px 10px;
+  display: inline-block;
+  margin-top: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
