@@ -1,7 +1,7 @@
 /* Contenedor de soporte */
 .support-container {
-  max-width: 600px; /* Reducir el ancho máximo */
-  margin: 20px auto; /* Añadir margen vertical y centrar horizontalmente */
+  max-width: 600px;
+  margin: 20px auto; 
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
