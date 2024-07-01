@@ -10,7 +10,11 @@ export const LangLevel = sequelize.define('langLevel', {
         type: DataTypes.STRING(50),
         allowNull: false
     }
-})
+}, {
+    timestamps: false
+
+}
+)
 
 export const createLangLevels = async () => {
     await LangLevel.bulkCreate([

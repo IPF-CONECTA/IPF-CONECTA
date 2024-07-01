@@ -1,6 +1,6 @@
 import { sequelize, DataTypes } from "../../../../config/db.js";
 
-export const CompanySector = sequelize.define('company_sectors', {
+export const CompanyIndustry = sequelize.define('companyIndustry', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -14,9 +14,9 @@ export const CompanySector = sequelize.define('company_sectors', {
     timestamps: false
 })
 
-export const createCompanySectors = async () => {
-    await CompanySector.sync({ force: true })
-    await CompanySector.bulkCreate([
+export const createCompanyIndustry = async () => {
+    // await CompanyIndustry.sync({ force: true })
+    await CompanyIndustry.bulkCreate([
         { name: 'Administración Pública y Defensa' },
         { name: 'Agricultura, Silvicultura, Pesca y Caza' },
         { name: 'Arte, Entretenimiento y Recreación' },

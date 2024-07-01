@@ -22,9 +22,6 @@ export const State = sequelize.define('state', {
         timestamps: false
     });
 
-State.belongsTo(Country, {
-    foreignKey: 'countryId',
-});
 
 
 export const createStates = async () => {

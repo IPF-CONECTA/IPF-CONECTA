@@ -3,7 +3,7 @@ import { generateVerificationCode } from '../../helpers/generateCode.js'
 
 export const User = sequelize.define('user', {
     id: {
-        type: DataTypes.STRING(36),
+        type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false
@@ -28,8 +28,8 @@ export const User = sequelize.define('user', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    state: {
-        type: DataTypes.INTEGER(1),
+    userStateId: {
+        type: DataTypes.INTEGER(1),// Buscando trabajo / Reclutando / none
         allowNull: false,
     },
     about: {

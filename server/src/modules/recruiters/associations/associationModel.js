@@ -15,7 +15,7 @@ export const Association = sequelize.define('association', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    message: {
+    message: { // MENSAJE QUE EL RECRUITER ENVIA PARA JUSTIFICAR LA ASOCIACION
         type: DataTypes.TEXT,
         allowNull: false
     },
@@ -24,7 +24,7 @@ export const Association = sequelize.define('association', {
         allowNull: false,
         defaultValue: 'Pendiente'
     },
-    justification: {
+    justification: { // JUSTIFICACION DEL ADMINISTRADOR SI LA ASOCIACION ES RECHAZADA
         type: DataTypes.STRING(255),
         allowNull: true
     }

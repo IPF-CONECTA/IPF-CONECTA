@@ -1,7 +1,7 @@
-import { DataTypes, sequelize } from "../../../config/db";
+import { DataTypes, sequelize } from "../../../config/db.js";
 
 
-export const WorkExperiences = sequelize.define('workExperience', {
+export const WorkExperience = sequelize.define('workExperience', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -11,14 +11,15 @@ export const WorkExperiences = sequelize.define('workExperience', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    type_job: {
-        type: DataTypes.UUID,
+    contractType: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     companyId: {
         type: DataTypes.UUID,
         allowNull: false
     },
+
     ubicationId: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -39,7 +40,7 @@ export const WorkExperiences = sequelize.define('workExperience', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    studentId: {
+    userId: {
         type: DataTypes.UUID,
         allowNull: false
     },

@@ -1,5 +1,6 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
 import cityData from './data/cities.json' assert { type: 'json' };
+import { State } from "./stateModel.js";
 
 
 export const City = sequelize.define('city', {
@@ -21,6 +22,7 @@ export const City = sequelize.define('city', {
     timestamps: false,
 
 });
+
 
 export const createCities = async () => {
     try {

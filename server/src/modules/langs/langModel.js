@@ -16,6 +16,8 @@ export const Lang = sequelize.define('lang', {
         type: DataTypes.STRING(50),
         allowNull: false
     }
+}, {
+    timestamps: false
 })
 
 export const createLangs = async () => {

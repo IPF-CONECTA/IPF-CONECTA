@@ -17,7 +17,11 @@ export const ReportReason = sequelize.define('reportReason', {
         type: DataTypes.INTEGER(2),
         allowNull: false
     }
-})
+},
+    {
+        timestamps: false
+    }
+)
 
 export const createReportReasons = async () => {
     try {

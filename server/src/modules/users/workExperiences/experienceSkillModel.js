@@ -1,7 +1,7 @@
-import { sequelize, DataTypes } from "../../../config/db";
+import { sequelize, DataTypes } from "../../../config/db.js";
 
 
-export const skillExperience = sequelize.define('skillExperience', {
+export const ExperienceSkill = sequelize.define('experienceSkill', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,

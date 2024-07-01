@@ -1,16 +1,12 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
 
-export const LangsUser = sequelize.define('langsUser', {
+export const SkillsUser = sequelize.define('skillsUser', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
     },
-    langId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    langLevelId: {
+    skillId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
@@ -18,13 +14,4 @@ export const LangsUser = sequelize.define('langsUser', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false
-
-    }
-}, {
-    timestamps: false
-}
-)
+})
