@@ -3,40 +3,30 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 15px;
   padding: 5%;
-  background-color: #000000;
+  background-color: #202020;
 }
 
-.job-item {
-  background-color: #ccc;
+.job-card {
+  background-color: #e9e9e9;
   border-radius: 5px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.salary {
-  background-color: #4cb845;
-  color: white;
-  padding: 5px 10px;
-  display: inline-block;
-  margin-top: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-}
 
-.company {
-  background-color: #1da9f8;
-  color: white;
-  padding: 5px 10px;
-  display: inline-block;
-  margin-top: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.info {
-  background-color: #1da9f8;
-  color: white;
-  padding: 5px 10px;
-  border: none;
+.info-button {
+  color: #202020;
+  background: none;
+  border: solid #202020 1px;
+  border-radius: 5%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 5px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-button:hover {
+  transition: 0.5s;
+  color: #e9e9e9;
+  background-color: #202020;
 }

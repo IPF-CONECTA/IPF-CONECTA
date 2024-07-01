@@ -7,14 +7,17 @@ export default function JobsSales() {
   return (
     <div className="jobs-sales">
       {offers.map((offer) => (
-        <div key={offer.id} className="job-item">
-          <div>
+        <div key={offer.id} className="job-card">
+          <div className="name">
             <h2>{offer.company.name}</h2>
-            <p>Industria: {offer.company.industry}</p>
+            <h3>{offer.company.industry}</h3>
           </div>
-          <p>Ubicación: {offer.company.location}</p>
+          <div className="info">
+            <h4 className="ubication"> {offer.company.location}</h4>
+            <h5>{offer.jobOffer.type  }</h5>
+          </div>
           <Link to={`/job/${offer.id}`}>
-            <button className="info">Ver más información</button>
+            <button className="info-button">...</button>
           </Link>
         </div>
       ))}
