@@ -13,7 +13,7 @@ export default function JobDetails() {
       <div className="header">
         <div>
           <h2>{offer.company.name}</h2>
-          <h3 className="grey">Compañía: {offer.company.industry}</h3>
+          <h3 className="grey">Compañía: {offer.company.name}</h3>
         </div>
         <div>
           <img
@@ -23,31 +23,39 @@ export default function JobDetails() {
           />
         </div>
       </div>
-      <div className="main">
+      <div className="header">
         <div>
-          <h1>Compañía</h1>
-
-          <p>Lugar: {offer.company.location}</p>
-          <p>Dirección: {offer.company.address}</p>
-          <p>Al rededor de {offer.company.employees} Empleados.</p>
+          <h2>Compañía</h2>
+          <div className="grey">
+            <p>Lugar: {offer.company.location}</p>
+            <p>Dirección: {offer.company.address}</p>
+            <p>Al rededor de {offer.company.employees} Empleados.</p>
+          </div>
         </div>
         <div>
-          <h3>Reclutador</h3>
-          <h4> Nombre: {offer.recruiter.name}</h4>
-          <p>{offer.recruiter.role}</p>
+          <h3 className="recruiter-heading">
+            <img
+              src="https://icons.veryicon.com/png/o/internet--web/55-common-web-icons/person-4.png"
+              alt="icon"
+              className="icon"
+            />
+            Reclutador
+          </h3>
+
+          <div>
+            <p className="grey">{offer.recruiter.name}</p>
+            <p className="grey">{offer.recruiter.avatar}</p>
+          </div>
         </div>
       </div>
 
-      <div className="joboffer">
-
-      <p>Descripción del Puesto: {offer.jobOffer.description}</p>
-      <h3>Ubicación</h3>
-      <p>{offer.jobOffer.location}</p>
-      <h3>Modalidad</h3>
-      <p>{offer.jobOffer.modality}</p>
-      <h3>Posición (Especialización)</h3>
-      <p>{offer.jobOffer.position}</p>
-
+      <h4>Oferta de trabajo:</h4>
+      <div className="joboffer grey">
+        <p>Descripción del Puesto: {offer.jobOffer.description}</p>
+        <p>Lugar: {offer.jobOffer.location}</p>
+        <p>Modalidad: {offer.jobOffer.modality}</p>
+        <p>Puesto de trabajo: {offer.jobOffer.position}</p>
+        <p>Tipo: {offer.jobOffer.type}</p>
       </div>
     </div>
   );

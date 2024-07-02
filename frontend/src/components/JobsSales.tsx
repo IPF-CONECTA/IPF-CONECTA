@@ -14,7 +14,7 @@ export default function JobsSales() {
           </div>
           <div className="info">
             <h4 className="ubication"> {offer.company.location}</h4>
-            <h5>{offer.jobOffer.type  }</h5>
+            <h5 className="type">{offer.jobOffer.type  }</h5>
           </div>
           <Link to={`/job/${offer.id}`}>
             <button className="info-button">...</button>

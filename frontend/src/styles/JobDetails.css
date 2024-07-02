@@ -3,10 +3,11 @@
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: #f3f3f3;
   width: 50%;
-  margin: auto;
-  padding: 2%;
+  margin: 5% auto;
+  padding: 5%;
   box-shadow: 10px 10px 25px 10px rgba(0, 0, 0, 0.1);
   border: solid 1px #cccccc;
+  border-radius: 2px;
 }
 
 .header {
@@ -16,17 +17,32 @@
   padding: 1px;
 }
 
-.logo{
-  width: 120px;
-  height: 120px;
+.logo {
+  width: 100px;
+  height: 100px;
 }
 
 .main {
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
-  align-items: center;
 }
+
 .grey {
-  color: #858585
+  color: #858585;
+}
+
+.recruiter-heading {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.icon {
+  height: 25px;
+  margin-right: 8px;
+}
+
+.recruiter {
+  display: flex;
+  flex-direction: column;
 }
