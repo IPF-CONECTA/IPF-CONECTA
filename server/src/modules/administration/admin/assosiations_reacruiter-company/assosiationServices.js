@@ -1,8 +1,24 @@
 import { Association } from "../../../recruiters/associations/associationModel.js"
+import { Company } from "../../../recruiters/companies/companyModel.js"
+import { User } from "../../../users/userModel.js"
 
 export const getAssociations = async () => {
     try {
-        const associations = await Association.findAll({ where: { status: 'Pendiente' }, include: ['user', 'company'] })
+        const associations = await Association.findAll({
+            where: { status: 'Pendiente' },
+            attributes: ['id'],
+            include: [{
+                model: User,
+                as: 'user',
+                attributes: ['names', 'surnames'],
+            }, {
+
+                model: Company,
+                as: 'company',
+                attributes: ['logoUrl', 'companyName', 'industryId'],
+            }
+            ]
+        })
         if (associations.length == 0) throw new Error('No hay verificaciones pendientes')
         return associations
     } catch (error) {
@@ -12,7 +28,20 @@ export const getAssociations = async () => {
 
 export const getAssociationById = async (id) => {
     try {
-        const association = await Association.findByPk(id)
+        const association = await Association.findByPk(id, {
+            where: { status: 'Pendiente' },
+            attributes: ['id', 'message'],
+            include: [{
+                model: User,
+                as: 'user',
+                attributes: ['id', 'profilePic', 'names', 'surnames', 'email'],
+            }, {
+                model: Company,
+                as: 'company',
+                attributes: ['id', 'logoUrl', 'companyName', 'description', 'industryId', 'cityId', 'address', 'cantEmployees'],
+            }
+            ]
+        })
         if (!association) throw new Error('No se encontro la verificacion')
         return association
     } catch (error) {

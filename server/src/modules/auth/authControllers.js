@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
+import { authLogInSvc, authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
 import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 import { getAllCompanies } from "../recruiters/recruiterServices.js";
@@ -43,7 +43,7 @@ export const authLogInCtrl = async (req, res) => {
     else if (!user.password) throw new Error('Ingrese la contrase')
     try {
 
-        const token = await authLogInCtrl(user)
+        const token = await authLogInSvc(user)
         res.status(200).json({ message: 'Sesion iniciada correctamente', token })
 
     } catch (error) {
@@ -71,8 +71,10 @@ export const confirmAccountCtrl = async (req, res) => {
                 res.status(201).json({ message: 'Cuenta confirmada exitosamente' })
             case BASIC_ROLES.recruiter:
                 try {
-                    const companies = getAllCompanies()
-                    if (companies.length === 0) throw new Error('No se encontraron empresas')
+                    let companies = await getAllCompanies()
+                    if (companies.length === 0) {
+                        companies = 'No se encontraron empresas, agregue una para continuar'
+                    }
                     res.status(200).json({ message: 'Cuenta confirmada exitosamente', companies })
                 } catch (error) {
                     res.status(500).json({ message: error.message })
@@ -116,7 +118,7 @@ export const recoverPasswordCtrl = async (req, res) => {
     try {
         const { token } = req.headers;
         if (!token) {
-            throw new Error('Hubo un error, vuelva a recuperar su contraseña con su correo. Si el problema persiste, contacte al administrador')
+            throw new Error('Vuelva a recuperar su contraseña con su correo. Si el problema persiste, contacte al administrador')
         }
         const { email } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         const { receivedCode, newPass, newPassConfirm } = req.body

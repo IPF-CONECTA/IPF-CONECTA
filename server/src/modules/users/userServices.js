@@ -1,7 +1,7 @@
 import { User } from './userModel.js'
 import { generateVerificationCode } from '../../helpers/generateCode.js'
 import { ALL_ROLES } from '../../constant/roles.js';
-
+import bcrypt from 'bcryptjs'
 
 export const getUsers = async () => {
     const users = await User.findAll()
@@ -17,15 +17,21 @@ export const createUser = async (user) => {
 
     if (!Object.keys(ALL_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
-    const roleId = roles[user.role];
+    const roleId = ALL_ROLES[user.role];
+    const hashpass = await bcrypt.hash(user.password, 10)
+
     user = {
         names: user.names,
         surnames: user.surnames,
         roleId: roleId,
-        password: user.password,
+        password: hashpass,
         email: user.email,
         userState: 'none'
     }
+
+    const existingUser = await User.findOne({ where: { email: user.email } });
+
+    if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
     return User.create(user)
 
 }

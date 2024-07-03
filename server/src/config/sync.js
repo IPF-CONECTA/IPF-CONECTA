@@ -21,22 +21,22 @@ export const createTablesAndRelations = async () => {
     console.time("Db created in:");
     await createRelations()
     console.log('Relations created successfully');
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log('Tables created successfully');
     // ===================================================================================
     // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
     // ===================================================================================
-    await createRoles();
-    await createUserStates();
-    await createLangLevels();
-    await createSkills();
-    await createReportReasons();
-    await createLangs();
-    await createCountries();
-    await createStates();
-    await createCities();
-    await createContractTypes()
-    await createCompanyIndustry();
+    // await createRoles();
+    // await createUserStates();
+    // await createLangLevels();
+    // await createSkills();
+    // await createReportReasons();
+    // await createLangs();
+    // await createCountries();
+    // await createStates();
+    // await createCities();
+    // await createContractTypes()
+    // await createCompanyIndustry();
     console.log('Data created successfully');
     console.timeEnd("Db created in:");
 }

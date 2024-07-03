@@ -1,9 +1,12 @@
 
 import { Router } from 'express';
-import { getAllAssociations } from './associationControllers.js';
+import { getAllAssociations, getAssociationByIdCtrl, updateAssociationCtrl } from './associationControllers.js';
+import { isAdmin } from '../../../../middlewares/jwt/isAdmin.js';
 
 const associationRoutes = Router();
 
-associationRoutes.post('/get-associations', getAllAssociations)
+associationRoutes.get('/get-associations', isAdmin, getAllAssociations)
+associationRoutes.get('/get-association/:id', isAdmin, getAssociationByIdCtrl)
+associationRoutes.post('/update-association/:id/:status', isAdmin, updateAssociationCtrl)
 
 export default associationRoutes;

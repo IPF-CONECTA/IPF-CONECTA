@@ -28,9 +28,14 @@ export const User = sequelize.define('user', {
         type: DataTypes.UUID,
         allowNull: false
     },
+    title: {
+        type: DataTypes.STRING(64),
+        allowNull: true
+    },
     userStateId: {
         type: DataTypes.INTEGER(1),// Buscando trabajo / Reclutando / none
         allowNull: false,
+        defaultValue: 1
     },
     about: {
         type: DataTypes.STRING(),

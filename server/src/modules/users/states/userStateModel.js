@@ -15,9 +15,9 @@ export const UserState = sequelize.define('userState', {
 export const createUserStates = async () => {
     try {
         await UserState.bulkCreate([
+            { userState: 'none' },
             { userState: 'Buscando trabajo' },
             { userState: 'Reclutando' },
-            { userState: 'none' }
         ])
     } catch (error) {
         console.error('Failed to import states:', error);

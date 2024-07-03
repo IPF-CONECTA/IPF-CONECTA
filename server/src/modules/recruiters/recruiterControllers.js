@@ -46,11 +46,11 @@ export const associateNewCompanyCtrl = async (req, res) => {
         const { token } = req.headers
         if (!token) throw new Error('Inicie sesion para asociar la empresa')
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        const { company } = req.body
+        const { company, message } = req.body
         const { names } = await User.findByPk(userId, { attributes: ['names'] })
         if (!names) throw new Error('Usuario no encontrado')
-        await createAssociation(userId, company)
-        const message = `Gracias por registrarte en IPF-CONECTA, ${names}!
+        await createAssociation(message, userId, company)
+        const returnMessage = `Gracias por registrarte en IPF-CONECTA, ${names}!
         
                         Tu vinculación con la compañía que has agregado está en proceso de verificación.
 
@@ -60,7 +60,7 @@ export const associateNewCompanyCtrl = async (req, res) => {
 
                         Atentamente,
                         El Equipo de IPF-CONECTA`
-        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu vinculacion con la empresa en proceso de verificación', message: message })
+        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu vinculacion con la empresa que agregaste está en proceso de verificación', message: returnMessage })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

@@ -13,6 +13,7 @@ export const authSignUpSvc = async (user) => {
         if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
 
         const roleId = BASIC_ROLES[user.role];
+        if (!roleId) { throw new Error('Rol no valido'); }
 
         const createdUser = await User.create({
             names: user.names,
@@ -28,7 +29,10 @@ export const authSignUpSvc = async (user) => {
         return token
 
     } catch (error) {
-        throw new Error("Hubo un error: " + error.message)
+        throw new Error(
+
+
+            error.message)
     }
 };
 

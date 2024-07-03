@@ -17,7 +17,6 @@ import { Company } from "../modules/recruiters/companies/companyModel.js";
 import { Association } from "../modules/recruiters/associations/associationModel.js";
 import { LangsUser } from "../modules/users/langs_user/langsUserModel.js";
 import { SkillsUser } from "../modules/users/skills_user/skillsUserModel.js";
-import { RecruiterCompanies } from "../modules/recruiters/recruiterCompany/recruiterCompanyModel.js";
 import { JobOffer } from "../modules/recruiters/jobOffer/jobOfferModel.js";
 import { ContractType } from "../modules/typeJobs/contractTypeModel.js";
 import { JobOfferSkills } from "../modules/recruiters/jobOffer/jobOfferSkills/jobOfferSkillsModel.js";
@@ -33,9 +32,6 @@ export const createRelations = async () => {
             foreignKey: 'roleId'
         });
         User.hasMany(Post, {
-            foreignKey: 'userId',
-        });
-        User.hasMany(Association, {
             foreignKey: 'userId',
         });
         User.hasMany(LangsUser, {
@@ -122,17 +118,19 @@ export const createRelations = async () => {
         City.hasMany(Company, {
             foreignKey: 'cityId',
         });
-        User.hasMany(RecruiterCompanies, {
-            foreignKey: 'userId',
-        });
-        Company.hasMany(RecruiterCompanies, {
-            foreignKey: 'companyId',
-        });
         Company.hasMany(Association, {
             foreignKey: 'companyId',
         });
         User.hasMany(Association, {
             foreignKey: 'userId',
+        });
+        Association.belongsTo(User, {
+            foreignKey: 'userId',
+            as: 'user'
+        });
+        Association.belongsTo(Company, {
+            foreignKey: 'companyId',
+            as: 'company'
         });
         JobOffer.belongsTo(Company, {
             foreignKey: 'companyId'
