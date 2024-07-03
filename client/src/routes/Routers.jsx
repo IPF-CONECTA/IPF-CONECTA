@@ -5,6 +5,7 @@ import { NotFoundPage } from "../components/NotFoundPage";
 import { LoginPage } from "../components/LoginPage";
 import { RegisterPage } from "../components/RegisterPage";
 import { SupportPage } from "../components/SupportPage";
+import { AdminCompany } from "../components/AdminCompany";
 
 export const Routers = () => {
   return (
@@ -19,6 +20,7 @@ export const Routers = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/support" element={<SupportPage />} />
+        <Route path="/admin" element={<AdminCompany />} />
       </Routes>
     </BrowserRouter>
   );
