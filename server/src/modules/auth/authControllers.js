@@ -10,11 +10,6 @@ import { validarCuil } from "../../helpers/validateCuil.js";
 export const authSignUpCtrl = async (req, res) => {
     const { user } = req.body;
     try {
-        if (!user.email || !user.password || !user.role) {
-            throw new Error('Ingrese los datos necesarios para continuar')
-        }
-
-
         if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
         if (user.role == 'student') {
@@ -49,6 +44,7 @@ export const authLogInCtrl = async (req, res) => {
         res.status(error.status)
     }
 }
+
 export const confirmAccountCtrl = async (req, res) => {
     const { receivedCode } = req.body;
     const { token } = req.headers
