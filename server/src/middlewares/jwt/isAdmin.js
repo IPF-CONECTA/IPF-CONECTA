@@ -9,7 +9,6 @@ export const isAdmin = async (req, res, next) => {
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         const user = await User.findByPk(userId)
         if (!user) throw new Error('No se encontro el usuario, vuelva a iniciar sesion')
-        console.log(user)
         if (user.roleId !== ALL_ROLES.admin) {
             throw new Error('No tiene permisos para realizar esta accion')
         }

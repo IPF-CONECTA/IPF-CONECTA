@@ -4,14 +4,10 @@ import jwt from 'jsonwebtoken'
 export const createNewJobCtrl = async (req, res) => {
     const { token } = req.headers
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-    console.log('USER ID DESDE CTRL')
-    console.log(userId)
     const { jobOffer, skills } = req.body
     try {
         const newJob = await createNewJobSvc(jobOffer, userId)
-        console.log('NEW JOB ACA ', newJob)
         const jobId = newJob.id
-        console.log('JOB ID ACA ' + newJob.id)
         for (let i = 0; i < skills.length; i++) {
             await addJobSkillSvc(jobId, skills[i])
         }

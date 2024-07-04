@@ -18,7 +18,6 @@ export const authSignUpCtrl = async (req, res) => {
         if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
         if (user.role == 'student') {
-            console.log('USER CUIL ACA: ' + user.cuil)
             validarCuil(user.cuil)
         }
         else {

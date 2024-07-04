@@ -13,7 +13,6 @@ export const jobSchema = [
             const { token } = req.headers
             const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
             const company = await Company.findByPk(companyId);
-            console.log(company)
             const existingJob = await Job.findOne({ where: { title: value, companyId: companyId, userId: userId } });
             if (existingJob) {
                 return Promise.reject(`Tienes una publicacion igual de ${value} para la empresa de ${company.companyName}`);
