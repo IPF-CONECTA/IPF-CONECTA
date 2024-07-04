@@ -1,6 +1,6 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
 
-export const JobOffer = sequelize.define('jobOffer', {
+export const Job = sequelize.define('job', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -11,7 +11,7 @@ export const JobOffer = sequelize.define('jobOffer', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    userID: {
+    userId: {
         type: DataTypes.UUID,
         allowNull: false
     },
@@ -23,9 +23,9 @@ export const JobOffer = sequelize.define('jobOffer', {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    location: { // provincia o localidad
+    locationId: { // provincia o localidad
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     contractTypeId: { // full-time, part-time, freelance, etc
         type: DataTypes.INTEGER,

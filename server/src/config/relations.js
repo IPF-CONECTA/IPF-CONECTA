@@ -17,11 +17,12 @@ import { Company } from "../modules/recruiters/companies/companyModel.js";
 import { Association } from "../modules/recruiters/associations/associationModel.js";
 import { LangsUser } from "../modules/users/langs_user/langsUserModel.js";
 import { SkillsUser } from "../modules/users/skills_user/skillsUserModel.js";
-import { JobOffer } from "../modules/recruiters/jobOffer/jobOfferModel.js";
+import { Job } from "../modules/recruiters/job/jobModel.js";
 import { ContractType } from "../modules/typeJobs/contractTypeModel.js";
-import { JobOfferSkills } from "../modules/recruiters/jobOffer/jobOfferSkills/jobOfferSkillsModel.js";
+import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js";
 import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
 import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkillModel.js";
+import { Attachment } from "../modules/posts/postAttachment/attachmentModel.js";
 
 export const createRelations = async () => {
     try {
@@ -63,6 +64,18 @@ export const createRelations = async () => {
         });
         Post.hasMany(Report, {
             foreignKey: 'postId'
+        });
+        Post.hasMany(Attachment, {
+            foreignKey: 'postId',
+            as: 'attachments'
+        });
+        Post.hasMany(Post, {
+            foreignKey: 'postId',
+            as: 'post'
+        })
+        Attachment.belongsTo(Post, {
+            foreignKey: 'postId',
+            as: 'post'
         });
         Report.belongsTo(Post, {
             foreignKey: 'postId'
@@ -132,22 +145,25 @@ export const createRelations = async () => {
             foreignKey: 'companyId',
             as: 'company'
         });
-        JobOffer.belongsTo(Company, {
+        User.hasMany(Job, {
+            foreignKey: 'userId'
+        })
+        Job.belongsTo(Company, {
             foreignKey: 'companyId'
         });
-        Company.hasMany(JobOffer, {
+        Company.hasMany(Job, {
             foreignKey: 'companyId'
         });
-        ContractType.hasMany(JobOffer, {
+        ContractType.hasMany(Job, {
             foreignKey: 'contractTypeId'
         });
-        JobOfferSkills.belongsTo(JobOffer, {
-            foreignKey: 'jobOfferId'
+        JobSkills.belongsTo(Job, {
+            foreignKey: 'jobId'
         });
-        JobOffer.hasMany(JobOfferSkills, {
-            foreignKey: 'jobOfferId'
+        Job.hasMany(JobSkills, {
+            foreignKey: 'jobId'
         });
-        Skill.hasMany(JobOfferSkills, {
+        Skill.hasMany(JobSkills, {
             foreignKey: 'skillId'
         });
         WorkExperience.hasMany(ExperienceSkill, {

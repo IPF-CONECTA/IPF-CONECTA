@@ -6,6 +6,8 @@ import { Like } from "../modules/likes/likeModel.js";
 import { Report } from "../modules/reports/reportModel.js";
 import { ReportReason, createReportReasons } from "../modules/reports/reportReasonModel.js";
 import { Follower } from "../modules/followers/followerModel.js";
+import { Job } from "../modules/recruiters/job/jobModel.js";
+import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js";
 import { Country, createCountries } from "../modules/ubications/models/countryModel.js";
 import { City, createCities } from "../modules/ubications/models/cityModel.js";
 import { Skill, createSkills } from "../modules/skills/skillsModel.js";
@@ -22,6 +24,7 @@ export const createTablesAndRelations = async () => {
     await createRelations()
     console.log('Relations created successfully');
     await sequelize.sync({ force: false });
+    await Job.sync({ force: true })
     console.log('Tables created successfully');
     // ===================================================================================
     // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||

@@ -3,7 +3,6 @@ import { Role } from '../modules/roles/roleModel.js'
 
 export const getRoles = async () => {
     const roles = await Role.findAll()
-    console.log(roles)
     return {
         'recruiter': roles.find(role => role.name === 'recruiter').id,
         'student': roles.find(role => role.name === 'student').id,
@@ -28,8 +27,6 @@ export const getBasicRoles = async () => {
 
 
 // export const getRoles = async () => {
-//     const roles = await Role.findAll()
-//     console.log(roles)
 //     return {
 //         'recruiter': 123,
 //         'student': 123,
@@ -39,7 +36,6 @@ export const getBasicRoles = async () => {
 //     }
 // }
 // export const getBasicRoles = async () => {
-//     const roles = await Role.findAll()
 //     return {
 //         'recruiter': 123,
 //         'student': 123,

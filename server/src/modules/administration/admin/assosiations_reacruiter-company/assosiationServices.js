@@ -51,6 +51,9 @@ export const getAssociationById = async (id) => {
 
 export const updateAssociation = async (id, status) => {
     try {
+        const isApprovedAssociation = await Association.findByPk(id)
+        if (!isApprovedAssociation) throw new Error('No se encontro la asociacion')
+        if (isApprovedAssociation.status == 'Aprobada') throw new Error('La asociacion ya fue aprobada')
         const updatedAssociation = await Association.update({ status }, { where: { id } })
         if (updatedAssociation[0] === 0) throw new Error('Actualización fallida o verificación no encontrada');
         return updatedAssociation

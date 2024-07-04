@@ -12,11 +12,11 @@ export const Post = sequelize.define('post', {
     },
     postId: {
         allowNull: true,
-        type: DataTypes.STRING(36)
+        type: DataTypes.UUID
     },
     forumId: {
         allowNull: true,
-        type: DataTypes.STRING(36)
+        type: DataTypes.UUID
     },
     content: {
         allowNull: false,
