@@ -15,7 +15,7 @@ export const getAssociations = async () => {
 
                 model: Company,
                 as: 'company',
-                attributes: ['logoUrl', 'companyName', 'industryId'],
+                attributes: ['logoUrl', 'name', 'industryId'],
             }
             ]
         })
@@ -38,7 +38,7 @@ export const getAssociationById = async (id) => {
             }, {
                 model: Company,
                 as: 'company',
-                attributes: ['id', 'logoUrl', 'companyName', 'description', 'industryId', 'cityId', 'address', 'cantEmployees'],
+                attributes: ['id', 'logoUrl', 'name', 'description', 'industryId', 'cityId', 'address', 'cantEmployees'],
             }
             ]
         })

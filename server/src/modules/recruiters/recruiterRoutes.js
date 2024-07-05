@@ -4,13 +4,13 @@ import { isApprovedAssociation, isRecruiter } from '../../middlewares/jwt/isRecr
 import { createNewJobCtrl } from './job/jobControllers.js';
 import { jobSchema } from './job/jobSchema.js';
 import { validateSchema } from '../../middlewares/expressValidator.js';
-import { jobSkillSchema } from './job/jobSkills/jobSkillSchema.js';
+import { companySchema } from './companies/companySchema.js';
 const recruiterRoutes = Router();
 
-recruiterRoutes.post('/create-company', isRecruiter, associateNewCompanyCtrl)
+recruiterRoutes.post('/create-company', companySchema, validateSchema, isRecruiter, associateNewCompanyCtrl)
 recruiterRoutes.post('/create-job', jobSchema, validateSchema, isRecruiter, isApprovedAssociation, createNewJobCtrl)
 // LA RUTA DE ARRIBA COMPRUEBA SI HAY UN TRABAJO DUPLICADO CON EL MISMO USUARIO Y EMPRESA
 // LA DE ABAJO ES PARA CONFIRMAR Y CREAR EN CASO DE QUE SE QUIERA CREAR UN TRABAJO CON EL MISMO NOMBRE
-recruiterRoutes.post('/create-duplicated-job', isRecruiter, isApprovedAssociation, createNewJobCtrl)
+recruiterRoutes.post('/create-duplicated-job', isRecruiter, isRecruiter, isApprovedAssociation, createNewJobCtrl)
 
 export default recruiterRoutes

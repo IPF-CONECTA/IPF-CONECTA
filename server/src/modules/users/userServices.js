@@ -14,8 +14,6 @@ export const getUserById = async (id) => {
 
 export const createUser = async (user) => {
     try {
-        if (!Object.keys(ALL_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
-
         const roleId = ALL_ROLES[user.role];
         const hashpass = await bcrypt.hash(user.password, 10)
 

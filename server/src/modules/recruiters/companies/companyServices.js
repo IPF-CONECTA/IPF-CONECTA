@@ -2,11 +2,11 @@ import { Company } from './companyModel.js'
 
 export const createCompany = async (company) => {
     if (!company) throw new Error('Faltan datos')
-    const existingCompany = await Company.findOne({ where: { companyName: company.companyName } })
+    const existingCompany = await Company.findOne({ where: { name: company.name } })
     if (existingCompany) throw new Error('La empresa ya existe')
     try {
         const newCompany = await Company.create({
-            companyName: company.companyName,
+            name: company.name,
             description: company.description,
             industryId: company.industryId,
             cityId: company.cityId,

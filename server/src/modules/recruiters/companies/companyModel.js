@@ -7,7 +7,7 @@ export const Company = sequelize.define('company', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    companyName: {
+    name: {
         type: DataTypes.STRING(255),
         allowNull: false,
         unique: true
@@ -33,7 +33,7 @@ export const Company = sequelize.define('company', {
         defaultValue: 'https://th.bing.com/th/id/OIP.tu5yvoyO5oYFWYzLVOf-BwHaHa?rs=1&pid=ImgDetMain'
     },
     cantEmployees: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
     },
     status: {
         type: DataTypes.ENUM('Pendiente', 'Aprobada', 'Rechazada'),

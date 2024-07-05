@@ -25,12 +25,12 @@ export const emailCompanyVinculationApproved = async (to, name) => {
                 <body>
                     <div class="container">
                         <div class="header">
-                            <h2>Vinculación con ${companyName} Aprobada</h2>
+                            <h2>Vinculación con ${name} Aprobada</h2>
                         </div>
                         <div class="content">
                             <p>Hola ${name},</p>
-                            <p>Nos complace informarte que tu solicitud de vinculación con ${companyName} ha sido aprobada.</p>
-                            <p>Ahora puedes gestionar tus actividades y publicar ofertas laborales en nombre de ${companyName} en nuestra plataforma.</p>
+                            <p>Nos complace informarte que tu solicitud de vinculación con ${name} ha sido aprobada.</p>
+                            <p>Ahora puedes gestionar tus actividades y publicar ofertas laborales en nombre de ${name} en nuestra plataforma.</p>
                             <p>Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nuestro equipo de soporte.</p>
                             <p>Atentamente,</p>
                             <p>El Equipo de IPF-CONECTA</p>
@@ -52,7 +52,7 @@ export const emailCompanyVinculationApproved = async (to, name) => {
 
 
 
-export const emailCompanyVinculationDeclined = async (to, name, companyName) => {
+export const emailCompanyVinculationDeclined = async (to, name, name) => {
     const mailConfig = {
         from: 'ipfconecta@gmail.com',
         to: to,
@@ -76,11 +76,11 @@ export const emailCompanyVinculationDeclined = async (to, name, companyName) => 
                 <body>
                     <div class="container">
                         <div class="header">
-                            <h2>Vinculacion con ${companyName} Rechazado</h2>
+                            <h2>Vinculacion con ${name} Rechazado</h2>
                         </div>
                         <div class="content">
                             <p>Hola ${name},</p>
-                            <p>Lamentamos informarte que la vinculación de tu perfil con ${companyName} ha sido rechazada. Esto puede deberse a que la información proporcionada no cumplía con nuestros criterios de verificación.</p>
+                            <p>Lamentamos informarte que la vinculación de tu perfil con ${name} ha sido rechazada. Esto puede deberse a que la información proporcionada no cumplía con nuestros criterios de verificación.</p>
                             <p>Si crees que esto es un error o tienes preguntas sobre el proceso de verificación, por favor, ponte en contacto con nuestro equipo de soporte para obtener más detalles.</p>
                             <p>Atentamente,</p>
                             <p>El Equipo de IPF-CONECTA</p>
@@ -102,7 +102,7 @@ export const emailCompanyVinculationDeclined = async (to, name, companyName) => 
 }
 
 
-export const emailCompanyDeclined = async (to, name, companyName) => {
+export const emailCompanyDeclined = async (to, name, name) => {
     const mailConfig = {
         from: 'ipfconecta@gmail.com',
         to: to,
@@ -131,7 +131,7 @@ export const emailCompanyDeclined = async (to, name, companyName) => {
                         </div>
                         <div class="content">
                             <p>Hola ${name},</p>
-                            <p>Lamentamos informarte que la compañía ${companyName} que intentaste registrar ha sido rechazada. Esto puede deberse a que la información proporcionada no cumplía con nuestros criterios de verificación.</p>
+                            <p>Lamentamos informarte que la compañía ${name} que intentaste registrar ha sido rechazada. Esto puede deberse a que la información proporcionada no cumplía con nuestros criterios de verificación.</p>
                             <p>Si crees que esto es un error o tienes preguntas sobre el proceso de verificación, por favor, ponte en contacto con nuestro equipo de soporte para obtener más detalles.</p>
                             <p>Atentamente,</p>
                             <p>El Equipo de IPF-CONECTA</p>
@@ -151,7 +151,7 @@ export const emailCompanyDeclined = async (to, name, companyName) => {
     }
 }
 
-export const emailCompanyApproved = async (to, name, companyName) => {
+export const emailCompanyApproved = async (to, name, name) => {
     const mailConfig = {
         from: 'ipfconecta@gmail.com',
         to: to,
@@ -180,8 +180,8 @@ export const emailCompanyApproved = async (to, name, companyName) => {
                         </div>
                         <div class="content">
                             <p>Hola ${name},</p>
-                            <p>Nos complace informarte que tu solicitud de registro de la compañía ${companyName} ha sido aprobada.</p>
-                            <p>Ahora puedes gestionar tus actividades y publicar ofertas laborales en nombre de ${companyName} en nuestra plataforma.</p>
+                            <p>Nos complace informarte que tu solicitud de registro de la compañía ${name} ha sido aprobada.</p>
+                            <p>Ahora puedes gestionar tus actividades y publicar ofertas laborales en nombre de ${name} en nuestra plataforma.</p>
                             <p>Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nuestro equipo de soporte.</p>
                             <p>Atentamente,</p>
                             <p>El Equipo de IPF-CONECTA</p>

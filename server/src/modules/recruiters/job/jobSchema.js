@@ -15,7 +15,7 @@ export const jobSchema = [
             const company = await Company.findByPk(companyId);
             const existingJob = await Job.findOne({ where: { title: value, companyId: companyId, userId: userId } });
             if (existingJob) {
-                return Promise.reject(`Tienes una publicacion igual de ${value} para la empresa de ${company.companyName}`);
+                return Promise.reject(`Tienes una publicacion igual de ${value} para la empresa de ${company.name}`);
             }
         }
         ),
