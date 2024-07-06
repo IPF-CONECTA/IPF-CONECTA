@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 import { getAllCompanies } from "../recruiters/companies/companyServices.js";
 import { getUserById } from "../users/userServices.js";
-import { validarCuil } from "../../helpers/validateCuil.js";
 
 
 export const authSignUpCtrl = async (req, res) => {
@@ -32,7 +31,6 @@ export const authLogInCtrl = async (req, res) => {
     const { user } = req.body;
     try {
         const { token, name } = await authLogInSvc(user)
-        console.log(token)
         if (!token) {
             throw new Error('No se pudo iniciar sesion')
         }

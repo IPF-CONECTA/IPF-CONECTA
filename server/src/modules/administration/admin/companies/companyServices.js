@@ -1,3 +1,4 @@
+import { Association } from "../../../recruiters/associations/associationModel.js"
 import { Company } from "../../../recruiters/companies/companyModel.js"
 
 // ==========================================
@@ -10,8 +11,13 @@ export const getUnverifiedCompaniesSvc = async () => {
             where: {
                 status: 'Pendiente'
             },
-            attributes: ['id', 'logoUrl', 'name', 'industryId', 'cityId']
+            attributes: ['id', 'logoUrl', 'name', 'industryId'],
+            include: [{
+                model: Association,
+                attributes: ['userId']
+            }]
         })
+
         if (companies.length == 0) throw new Error('No hay empresas pendientes de verificación')
         return companies
     } catch (error) {
@@ -22,7 +28,7 @@ export const getUnverifiedCompaniesSvc = async () => {
 export const getUnverifiedCompanyByIdSvc = async (id) => {
     try {
         const company = await Company.findByPk(id, {
-            attributes: ['id', 'name', 'description', 'industryId', 'cityId', 'address', 'logoUrl', 'cantEmployees', 'createdAt']
+            attributes: { exclude: ['status', 'justification', 'updatedAt'] }
         })
         return company
     } catch (error) {
@@ -30,11 +36,11 @@ export const getUnverifiedCompanyByIdSvc = async (id) => {
     }
 }
 
-export const updateCompanyStatusSvc = async (id, status) => {
+export const updateCompanyStatusSvc = async (id, status, justification) => {
     try {
         const existingCompany = await Company.findByPk(id)
         if (!existingCompany) throw new Error('No se encontro la empresa seleccionada')
-        const updatedCompany = await Company.update({ status }, { where: { id } })
+        const updatedCompany = await Company.update({ status, justification }, { where: { id } })
         if (updatedCompany[0] === 0) throw new Error('Actualización fallida o empresa no encontrada');
         return updatedCompany
     } catch (error) {
@@ -51,7 +57,10 @@ export const getAllVerifiedCompanies = async () => {
         const companies = await Company.findAll({
             where: {
                 status: 'Verificada'
-            }
+            },
+            attributes: [
+
+            ]
         })
         if (companies.length == 0) throw new Error('No hay empresas verificadas')
         return companies
