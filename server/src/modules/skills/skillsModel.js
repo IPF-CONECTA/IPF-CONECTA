@@ -1,5 +1,5 @@
 import { DataTypes, sequelize } from "../../config/db.js";
-import skillsData from './skills.json' assert { type: 'json' };
+import { skillData } from './skills.js';
 
 export const Skill = sequelize.define('skill', {
     id: {
@@ -17,8 +17,8 @@ export const Skill = sequelize.define('skill', {
 
 export const createSkills = async () => {
     try {
-        await Skill.bulkCreate(skillsData);
-        console.log(`${skillsData.length} skills imported successfully.`);
+        await Skill.bulkCreate(skillData);
+        console.log(`${skillData.length} skills imported successfully.`);
     } catch (error) {
         console.error('Failed to import skills:', error);
     }

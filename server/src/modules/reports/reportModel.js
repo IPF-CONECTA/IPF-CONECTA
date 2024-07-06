@@ -7,7 +7,7 @@ export const Report = sequelize.define('report', {
         primaryKey: true
     },
     reasonId: {
-        type: DataTypes.INTEGER(2),
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     postId: {

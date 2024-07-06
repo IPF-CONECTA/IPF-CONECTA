@@ -1,5 +1,5 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
-import countryData from './data/countries.json' assert { type: 'json' };
+import { countryData } from './data/countries.js';
 
 
 export const Country = sequelize.define('country', {

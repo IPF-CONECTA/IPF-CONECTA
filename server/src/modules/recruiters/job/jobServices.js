@@ -1,5 +1,9 @@
+import { Op } from "sequelize"
+import { Skill } from "../../skills/skillsModel.js"
+import { User } from "../../users/userModel.js"
 import { Company } from "../companies/companyModel.js"
 import { Job } from "./jobModel.js"
+import { JobSkills } from "./jobSkills/jobSkillsModel.js"
 
 export const createNewJobSvc = async (jobOffer, userId) => {
     try {
@@ -10,6 +14,7 @@ export const createNewJobSvc = async (jobOffer, userId) => {
             companyId: id,
             userId: userId,
             title: jobOffer.title,
+            modalityId: jobOffer.modalityId,
             description: jobOffer.description,
             locationId: jobOffer.locationId,
             contractTypeId: jobOffer.contractTypeId
@@ -18,5 +23,77 @@ export const createNewJobSvc = async (jobOffer, userId) => {
         return newJob
     } catch (error) {
         throw new Error(error.message)
+    }
+}
+
+export const getJobsSvc = async () => {
+    try {
+        const jobs = await Job.findAll({
+            where: {
+                active: 'true'
+            },
+            attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'
+            ]
+        })
+        return jobs
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+export const getJobByIdSvc = async (id) => {
+    try {
+        const job = await Job.findByPk(id, {
+            attributes: { exclude: ['active', 'companyId', 'userId', 'updatedAt'] },
+            include: [{
+                model: Company,
+                attributes: { exclude: ['status', 'justification'] }
+            }, {
+                model: User,
+                attributes: ['id', 'profilePic', 'names', 'surnames']
+            },
+            {
+                model: JobSkills,
+                attributes: ['skillId'],
+                include: [{
+                    model: Skill,
+                    attributes: ['name']
+                }]
+            }
+            ]
+        })
+        return job
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+export const findJobsSvc = async (query) => {
+    try {
+        const jobs = await Job.findAll({
+            where: {
+                [Op.or]: [
+                    { title: { [Op.iLike]: `%${query}%` } }
+                ]
+            },
+            attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
+            include: [{
+                model: JobSkills,
+                required: false, // Considera cambiar a true si solo quieres trabajos con habilidades específicas
+                attributes: ['id'],
+                include: [{
+                    model: Skill,
+                    attributes: ['name'],
+                    where: {
+                        name: { [Op.iLike]: `%${query}%` }
+                    },
+                    required: true // Cambia a true para asegurar que solo se incluyan trabajos con habilidades que coincidan
+                }]
+            }]
+        });
+        return jobs;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error.message);
     }
 }

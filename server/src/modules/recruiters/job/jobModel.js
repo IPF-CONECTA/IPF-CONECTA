@@ -7,6 +7,11 @@ export const Job = sequelize.define('job', {
         primaryKey: true,
         allowNull: false
     },
+    active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false
+    },
     companyId: {
         type: DataTypes.UUID,
         allowNull: false
@@ -26,6 +31,10 @@ export const Job = sequelize.define('job', {
     locationId: { // provincia o localidad
         type: DataTypes.INTEGER,
         allowNull: true
+    },
+    modalityId: { // presencial - remoto - hibrido - flexible
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
     contractTypeId: { // full-time, part-time, freelance, etc
         type: DataTypes.INTEGER,

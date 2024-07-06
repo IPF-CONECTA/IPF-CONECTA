@@ -23,6 +23,7 @@ import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js
 import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
 import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkillModel.js";
 import { Attachment } from "../modules/posts/postAttachment/attachmentModel.js";
+import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 
 export const createRelations = async () => {
     try {
@@ -145,7 +146,14 @@ export const createRelations = async () => {
             foreignKey: 'companyId',
             as: 'company'
         });
+        Modality.hasMany(Job, {
+            foreignKey: 'modalityId',
+            as: 'modality'
+        })
         User.hasMany(Job, {
+            foreignKey: 'userId'
+        })
+        Job.belongsTo(User, {
             foreignKey: 'userId'
         })
         Job.belongsTo(Company, {
@@ -166,6 +174,9 @@ export const createRelations = async () => {
         Skill.hasMany(JobSkills, {
             foreignKey: 'skillId'
         });
+        JobSkills.belongsTo(Skill, {
+            foreignKey: 'skillId'
+        })
         WorkExperience.hasMany(ExperienceSkill, {
             foreignKey: 'experienceId'
         });

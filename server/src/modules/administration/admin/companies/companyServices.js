@@ -22,7 +22,7 @@ export const getCompaniesSvc = async (status) => {
             }]
         })
 
-        if (companies.length == 0) throw new Error('No hay empresas pendientes de verificación')
+        if (companies.length == 0) throw new Error('No se encontraron empresas')
         return companies
     } catch (error) {
         throw new Error(error.message)
@@ -53,6 +53,10 @@ export const updateCompanyStatusSvc = async (id, status, justification) => {
     try {
         const existingCompany = await Company.findByPk(id)
         if (!existingCompany) throw new Error('No se encontro la empresa seleccionada')
+
+        if (status == 'Aprobada') {
+            justification = null
+        }
 
         const updatedCompany = await Company.update({ status, justification }, { where: { id } })
         if (updatedCompany[0] === 0) throw new Error('Actualización fallida o empresa no encontrada');

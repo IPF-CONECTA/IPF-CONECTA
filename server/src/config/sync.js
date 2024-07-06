@@ -19,11 +19,13 @@ import { CompanyIndustry, createCompanyIndustry } from "../modules/recruiters/co
 import { Company } from "../modules/recruiters/companies/companyModel.js";
 import { ContractType, createContractTypes } from "../modules/typeJobs/contractTypeModel.js";
 import { createRelations } from "./relations.js";
+import { Modality, createModalities } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 export const createTablesAndRelations = async () => {
     console.time("Db created in:");
     await createRelations()
     console.log('Relations created successfully');
     await sequelize.sync({ force: false });
+
     console.log('Tables created successfully');
     // ===================================================================================
     // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
@@ -39,6 +41,7 @@ export const createTablesAndRelations = async () => {
     // await createCities();
     // await createContractTypes()
     // await createCompanyIndustry();
+    // await createModalities()
     console.log('Data created successfully');
     console.timeEnd("Db created in:");
 }

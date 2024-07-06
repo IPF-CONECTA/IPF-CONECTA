@@ -33,7 +33,7 @@ export const User = sequelize.define('user', {
         allowNull: true
     },
     userStateId: {
-        type: DataTypes.INTEGER(1),// Buscando trabajo / Reclutando / none
+        type: DataTypes.INTEGER,// Buscando trabajo / Reclutando / none
         allowNull: false,
         defaultValue: 1
     },
@@ -52,7 +52,7 @@ export const User = sequelize.define('user', {
         allowNull: false
     },
     verifyCode: {
-        type: DataTypes.INTEGER(6),
+        type: DataTypes.INTEGER,
         defaultValue: generateVerificationCode(),
         allowNull: true
     },

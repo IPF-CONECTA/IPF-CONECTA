@@ -6,7 +6,7 @@ export const ReportReason = sequelize.define('reportReason', {
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
-        type: DataTypes.INTEGER(2)
+        type: DataTypes.INTEGER
     },
     reason: {
         type: DataTypes.STRING(64),
@@ -14,7 +14,7 @@ export const ReportReason = sequelize.define('reportReason', {
         unique: true
     },
     severity: {
-        type: DataTypes.INTEGER(2),
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 },
