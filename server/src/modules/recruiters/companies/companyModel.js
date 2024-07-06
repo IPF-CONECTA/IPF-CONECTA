@@ -10,7 +10,6 @@ export const Company = sequelize.define('company', {
     name: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true
     },
     description: {
         type: DataTypes.TEXT,

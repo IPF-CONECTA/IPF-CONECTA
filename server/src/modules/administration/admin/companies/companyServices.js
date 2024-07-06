@@ -1,15 +1,16 @@
-import { Company } from "../../../recruiters/companies/companyModel"
+import { Company } from "../../../recruiters/companies/companyModel.js"
 
 // ==========================================
 // || READ/UPDATE COMPANIAS NO VERIFICADAS ||
 // ==========================================
 
-export const getAllNotVerifiedCompanies = async () => {
+export const getUnverifiedCompaniesSvc = async () => {
     try {
         const companies = await Company.findAll({
             where: {
                 status: 'Pendiente'
-            }
+            },
+            attributes: ['id', 'logoUrl', 'name', 'industryId', 'cityId']
         })
         if (companies.length == 0) throw new Error('No hay empresas pendientes de verificación')
         return companies
@@ -18,18 +19,21 @@ export const getAllNotVerifiedCompanies = async () => {
     }
 }
 
-export const getNotVerifiedCompanyById = async (id) => {
+export const getUnverifiedCompanyByIdSvc = async (id) => {
     try {
-        const company = await Company.findByPk(id)
-        if (!company) throw new Error('No se encontro la empresa')
+        const company = await Company.findByPk(id, {
+            attributes: ['id', 'name', 'description', 'industryId', 'cityId', 'address', 'logoUrl', 'cantEmployees', 'createdAt']
+        })
         return company
     } catch (error) {
         throw new Error(error.message)
     }
 }
 
-export const updateCompanyStatus = async (id, status) => {
+export const updateCompanyStatusSvc = async (id, status) => {
     try {
+        const existingCompany = await Company.findByPk(id)
+        if (!existingCompany) throw new Error('No se encontro la empresa seleccionada')
         const updatedCompany = await Company.update({ status }, { where: { id } })
         if (updatedCompany[0] === 0) throw new Error('Actualización fallida o empresa no encontrada');
         return updatedCompany

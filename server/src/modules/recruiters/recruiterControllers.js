@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
-import { createAssociation } from "./recruiterServices.js";
 import { User } from "../users/userModel.js";
 
 export const getAllCompaniesCtrl = async (req, res) => {
     try {
-        const companies = await getAllCompanies()
+        const companies = await getAllCompaniesCtrl()
         if (companies.length === 0) {
             res.status(404).json({ message: 'No se encontraron empresas' })
         }
@@ -41,30 +40,21 @@ export const associateExistingCompanyCtrl = async (req, res) => {
 
 }
 
-export const associateNewCompanyCtrl = async (req, res) => {
-    try {
-        const { token } = req.headers
-        if (!token) throw new Error('Inicie sesion para asociar la empresa')
-        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        const { company, message } = req.body
-        const { names } = await User.findByPk(userId, { attributes: ['names'] })
-        if (!names) throw new Error('Usuario no encontrado')
-        await createAssociation(message, userId, company)
-        const returnMessage = `Gracias por registrarte en IPF-CONECTA, ${names}!
-        
-                        Tu vinculación con la compañía que has agregado está en proceso de verificación.
-
-                        Recibirás un correo electrónico una vez que la verificación haya sido completada.
-
-                        Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nuestro equipo de soporte.
-
-                        Atentamente,
-                        El Equipo de IPF-CONECTA`
-        res.status(201).json({ status: 'Hecho', title: '¡Registro Exitoso! Tu vinculacion con la empresa que agregaste está en proceso de verificación', message: returnMessage })
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-}
+// export const createAssociationAndCompany = async (req, res) => {
+//     try {
+//         const { token } = req.headers
+//         if (!token) throw new Error('Inicie sesion para asociar la empresa')
+//         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
+//         const { company, message } = req.body
+//         const { names } = await User.findByPk(userId, { attributes: ['names'] })
+//         if (!names) throw new Error('Usuario no encontrado')
+//         const association = await createAssociationAndCompanySvc(message, userId, company)
+//         if (!association) throw new Error('Error al asociar la empresa')
+//         res.status(201)
+//     } catch (error) {
+//         res.status(500).json({ message: error.message })
+//     }
+// }
 
 
 

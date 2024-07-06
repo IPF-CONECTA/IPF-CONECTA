@@ -26,7 +26,7 @@ export const getAssociationByIdCtrl = async (req, res) => {
 export const updateAssociationCtrl = async (req, res) => {
     try {
         let { id, status } = req.params;
-        if (!id || !status) throw new Error('Query erronea');
+        if (!id || !status) throw new Error('Error en la solicitud, vuelva a intentarlo');
         if (status !== 'Aprobada' && status !== 'Rechazada') throw new Error('Estado inválido');
         await updateAssociation(id, status);
         status = status.toLowerCase()

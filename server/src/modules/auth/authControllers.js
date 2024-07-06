@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { authLogInSvc, authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
 import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
-import { getAllCompanies } from "../recruiters/recruiterServices.js";
+import { getAllCompanies } from "../recruiters/companies/companyServices.js";
 import { getUserById } from "../users/userServices.js";
 import { validarCuil } from "../../helpers/validateCuil.js";
 
@@ -12,10 +12,7 @@ export const authSignUpCtrl = async (req, res) => {
     try {
         if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
-        if (user.role == 'student') {
-            validarCuil(user.cuil)
-        }
-        else {
+        if (user.role !== 'student') {
             user.cuil = null
         }
 
@@ -33,15 +30,16 @@ export const authSignUpCtrl = async (req, res) => {
 
 export const authLogInCtrl = async (req, res) => {
     const { user } = req.body;
-    if (!user.email) throw new Error('Ingrese el email para continuar')
-    else if (!user.password) throw new Error('Ingrese la contrase')
     try {
-
-        const token = await authLogInSvc(user)
-        res.status(200).json({ message: 'Sesion iniciada correctamente', token })
+        const { token, name } = await authLogInSvc(user)
+        console.log(token)
+        if (!token) {
+            throw new Error('No se pudo iniciar sesion')
+        }
+        res.status(200).json({ message: `Bienvenido/a ${name}`, token })
 
     } catch (error) {
-        res.status(error.status)
+        res.status(500).json({ message: error.message })
     }
 }
 

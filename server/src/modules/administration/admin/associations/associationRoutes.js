@@ -7,6 +7,6 @@ const associationRoutes = Router();
 
 associationRoutes.get('/get-associations', isAdmin, getAllAssociations)
 associationRoutes.get('/get-association/:id', isAdmin, getAssociationByIdCtrl)
-associationRoutes.post('/update-association/:id/:status', isAdmin, updateAssociationCtrl)
+associationRoutes.patch('/update-association/:id/:status', isAdmin, updateAssociationCtrl)
 
 export default associationRoutes;
