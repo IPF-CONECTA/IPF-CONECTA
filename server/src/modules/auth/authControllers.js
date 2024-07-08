@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import { authLogInSvc, authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
 import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
-import { getAllCompanies } from "../recruiters/companies/companyServices.js";
-import { getUserById } from "../users/userServices.js";
+
 
 
 export const authSignUpCtrl = async (req, res) => {
@@ -30,11 +29,11 @@ export const authSignUpCtrl = async (req, res) => {
 export const authLogInCtrl = async (req, res) => {
     const { user } = req.body;
     try {
-        const { token, name } = await authLogInSvc(user)
+        const { token, name, isVerified } = await authLogInSvc(user)
         if (!token) {
             throw new Error('No se pudo iniciar sesion')
         }
-        res.status(200).json({ message: `Bienvenido/a ${name}`, token })
+        res.status(200).json({ message: `Bienvenido/a ${name}`, token, isVerified })
 
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -53,24 +52,7 @@ export const confirmAccountCtrl = async (req, res) => {
         }
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         await confirmAccountSvc(userId, receivedCode)
-        const user = await getUserById(userId)
-
-        switch (user.roleId) {
-            case BASIC_ROLES.student:
-                if (!user.cuil) throw new Error('Ingrese su CUIL')
-                else if (user.cuil.length !== 11) throw new Error('El CUIL debe tener 11 digitos')
-                res.status(201).json({ message: 'Cuenta confirmada exitosamente' })
-            case BASIC_ROLES.recruiter:
-                try {
-                    let companies = await getAllCompanies()
-                    if (companies.length === 0) {
-                        companies = 'No se encontraron empresas, agregue una para continuar'
-                    }
-                    res.status(200).json({ message: 'Cuenta confirmada exitosamente', companies })
-                } catch (error) {
-                    res.status(500).json({ message: error.message })
-                }
-        }
+        res.status(200).json({ message: 'Cuenta confirmada exitosamente' })
 
     } catch (error) {
         res.status(500).json({ message: error.message })

@@ -2,6 +2,7 @@ import { sendContactCompany } from "./mailServices/contactCompany.js";
 import jwt from 'jsonwebtoken'
 import { associateNewCompanySvc } from "../associations/associationServices.js";
 import { User } from "../../users/userModel.js";
+import { getApprovedCompaniesSvc } from "./companyServices.js";
 
 export const sendContactCompanyCtrl = async (req, res) => {
     const { from, name, subject, message } = req.body;
@@ -13,9 +14,9 @@ export const sendContactCompanyCtrl = async (req, res) => {
     }
 }
 
-export const getAllCompaniesCtrl = async (req, res) => {
+export const getApprovedCompaniesCtrl = async (req, res) => {
     try {
-        const companies = await getAllCompaniesCtrl()
+        const companies = await getApprovedCompaniesSvc()
         if (companies.length === 0) {
             res.status(404).json({ message: 'No se encontraron empresas' })
         }

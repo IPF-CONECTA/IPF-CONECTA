@@ -1,6 +1,6 @@
 import { Company } from './companyModel.js'
 
-export const getAllCompanies = async () => {
+export const getApprovedCompaniesSvc = async () => {
     try {
         const companies = await Company.findAll({ where: { status: 'Aprobada' } })
         return companies

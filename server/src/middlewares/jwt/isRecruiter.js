@@ -11,7 +11,9 @@ export const isRecruiter = async (req, res, next) => {
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
 
         const { roleId } = await User.findByPk(userId, { attributes: ['roleId'] })
-
+        console.log('Role id abajo Is recruiter')
+        console.log(roleId)
+        console.log('Role id arriba')
         if (roleId !== ALL_ROLES.recruiter) {
             throw new Error('No tiene permisos para realizar esta accion')
         }

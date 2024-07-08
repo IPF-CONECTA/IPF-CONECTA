@@ -2,7 +2,12 @@ import { getAssociationById, getAssociations, updateAssociation } from "./assosi
 
 export const getAllAssociations = async (req, res) => {
     try {
-        const associations = await getAssociations()
+        const { status } = req.params
+        if (!status) throw new Error('Error en la solicitud, intente de nuevo')
+
+        const validStatus = ['Aprobada', 'Rechazada', 'Pendiente']
+        if (!validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
+        const associations = await getAssociations(status)
         if (associations.length == 0) res.status(404).json({ message: 'No hay verificaciones pendientes' })
         res.status(200).json({ associations })
     } catch (error) {
@@ -22,12 +27,12 @@ export const getAssociationByIdCtrl = async (req, res) => {
         res.status(500).json(error.message)
     }
 }
-
 export const updateAssociationCtrl = async (req, res) => {
     try {
         let { id, status } = req.params;
         if (!id || !status) throw new Error('Error en la solicitud, vuelva a intentarlo');
-        if (status !== 'Aprobada' && status !== 'Rechazada') throw new Error('Estado inválido');
+        const validStatus = ['Aprobada', 'Rechazada']
+        if (!validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
         await updateAssociation(id, status);
         status = status.toLowerCase()
         res.status(201).json({ message: `Asociacion ${status} con exito` })

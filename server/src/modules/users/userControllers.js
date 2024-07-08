@@ -6,7 +6,7 @@ export const getUsersController = async (_req, res) => {
         const users = await getUsers();
 
         if (users.length == 0) {
-            res.status(400).json({ message: 'No se encontraron usuarios' })
+            return res.status(400).json({ message: 'No se encontraron usuarios' })
         }
         res.status(200).json(users);
     } catch (error) {

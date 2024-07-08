@@ -5,6 +5,8 @@ import { BASIC_ROLES } from "../../constant/roles.js";
 import { sendRecoverPasswordEmail } from "./mailServices/recoverPassMail.js";
 import { generateVerificationCode } from "../../helpers/generateCode.js";
 import { sendConfirmAccount } from "./mailServices/confirmAccount.js";
+
+
 export const authSignUpSvc = async (user) => {
 
     try {
@@ -36,7 +38,8 @@ export const authSignUpSvc = async (user) => {
     }
 };
 
-// WORK IN PROCESS
+// Si el usuario que se loguea tiene el campo verified == false, se le envia el correo de confirmacion
+// La funcion retorna isVerified, en el cliente se debe verificar si es true o false para mostrar la pagina correspondiente
 export const authLogInSvc = async (user) => {
     try {
         const existingUser = await User.findOne({ where: { email: user.email } })
@@ -46,9 +49,14 @@ export const authLogInSvc = async (user) => {
         const validPassword = await bcrypt.compare(user.password, existingUser.password);
         if (!validPassword) throw new Error("Contraseña incorrecta");
 
+        const isVerified = existingUser.verified
+        if (!isVerified) {
+            await sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
+        }
+
         const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
 
-        return { token, name: existingUser.names }
+        return { token, name: existingUser.names, isVerified }
 
     } catch (error) {
         throw new Error(error.message)
@@ -85,7 +93,9 @@ export const confirmAccountSvc = async (userId, receivedCode) => {
             throw new Error('Codigo incorrecto')
         }
 
-        await User.update({ verified: true, verifyCode: null }, { where: { id: userId } });
+        const [rowUpdated] = await User.update({ verified: true, verifyCode: null }, { where: { id: userId } });
+
+        if (rowUpdated < 1) throw new Error('Hubo un error al confirmar la cuenta, intentelo de nuevo')
 
     } catch (error) {
         throw new Error(error.message)
@@ -99,7 +109,9 @@ export const sendRecoverPasswordSvc = async (email) => {
             throw new Error('No se encontro una cuenta con ese correo electronico')
         }
         const newVerifyCode = generateVerificationCode()
-        await User.update({ verifyCode: newVerifyCode }, { where: { email: email } })
+
+        const [rowUpdated] = await User.update({ verifyCode: newVerifyCode }, { where: { email: email } })
+        if (rowUpdated < 1) throw new Error('Hubo un error al enviar el correo electronico')
 
         const token = jwt.sign({ email: email }, process.env.TOKEN_SECRET_KEY);
         await sendRecoverPasswordEmail(email, newVerifyCode, names)
@@ -118,7 +130,9 @@ export const recoverPasswordSvc = async (email, receivedCode, newPass) => {
     const passhash = await bcrypt.hash(newPass, 10);
 
     try {
-        User.update({ password: passhash, verifyCode: null }, { where: { email: email, verifyCode: verifyCode } })
+        const [rowUpdated] = await User.update({ password: passhash, verifyCode: null }, { where: { email: email, verifyCode: verifyCode } })
+        if (rowUpdated < 1) throw new Error('Hubo un error al actualizar la contraseña')
+
     } catch (error) {
         throw new Error(error)
     }

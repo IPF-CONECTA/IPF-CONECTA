@@ -2,20 +2,20 @@ import { Association } from "../../../recruiters/associations/associationModel.j
 import { Company } from "../../../recruiters/companies/companyModel.js"
 import { User } from "../../../users/userModel.js"
 
-export const getAssociations = async () => {
+export const getAssociations = async (status) => {
     try {
         const associations = await Association.findAll({
-            where: { status: 'Pendiente' },
+            where: { status: status },
             attributes: ['id'],
             include: [{
                 model: User,
                 as: 'user',
-                attributes: ['names', 'surnames'],
+                attributes: ['id', 'names', 'surnames'],
             }, {
 
                 model: Company,
                 as: 'company',
-                attributes: ['logoUrl', 'name', 'industryId'],
+                attributes: ['id', 'logoUrl', 'name', 'industryId'],
             }
             ]
         })

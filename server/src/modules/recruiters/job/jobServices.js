@@ -32,8 +32,11 @@ export const getJobsSvc = async () => {
             where: {
                 active: 'true'
             },
-            attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'
-            ]
+            attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
+            include: [{
+                model: Company,
+                attributes: ['name']
+            }]
         })
         return jobs
     } catch (error) {
@@ -70,7 +73,7 @@ export const getJobByIdSvc = async (id) => {
 
 export const findJobsSvc = async (query) => {
     try {
-        const jobs = await Job.findAll({
+        let jobs = await Job.findAll({
             where: {
                 [Op.or]: [
                     { title: { [Op.iLike]: `%${query}%` } }
@@ -78,18 +81,9 @@ export const findJobsSvc = async (query) => {
             },
             attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
             include: [{
-                model: JobSkills,
-                required: false, // Considera cambiar a true si solo quieres trabajos con habilidades específicas
-                attributes: ['id'],
-                include: [{
-                    model: Skill,
-                    attributes: ['name'],
-                    where: {
-                        name: { [Op.iLike]: `%${query}%` }
-                    },
-                    required: true // Cambia a true para asegurar que solo se incluyan trabajos con habilidades que coincidan
-                }]
-            }]
+                model: Company,
+                attributes: ['name']
+            }],
         });
         return jobs;
     } catch (error) {

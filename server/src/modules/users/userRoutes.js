@@ -5,8 +5,8 @@ import { userSchema } from './userSchema.js';
 
 const userRoutes = Router();
 
-userRoutes.get('/getUsers', getUsersController)
+userRoutes.get('/get-users', getUsersController)
 
-userRoutes.post('/createUser', userSchema, validateSchema, createUserController)
+userRoutes.post('/create-user', userSchema, validateSchema, createUserController)
 
 export default userRoutes
