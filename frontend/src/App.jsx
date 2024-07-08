@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import JobDetails from "./components/JobsDetails";
 import JobsSales from "./components/JobsSales";
+import StudentProfile from "./components/StudentProfile";
 
 
 function App() {
@@ -10,12 +11,15 @@ function App() {
         <nav>
           <br />
           <Link to="/jobs-sales">Ofertas</Link>
+          <br />  
+          <Link to="/profiles">perfil estudiante</Link>
         </nav>
 
         {}
         <Routes>
           <Route path="/jobs-sales" element={<JobsSales />} />
-          <Route path="/get-job/:id" element={<JobDetails/>} /> 
+          <Route path="/get-job/:id" element={<JobDetails/>} />
+          <Route path="/profiles" element={<StudentProfile/>} />
           <Route path="*" element={<h1>404</h1>} />
         </Routes>
       </div>
