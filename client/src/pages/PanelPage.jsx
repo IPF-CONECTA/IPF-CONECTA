@@ -3,6 +3,7 @@ import RequestForm from "../components/RequestForm";
 import RequestList from "../components/RequestList";
 import { Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../../public/panel.css";
 
 export default function Panel() {
   const [requests, setRequests] = useState([]);
@@ -22,10 +23,10 @@ export default function Panel() {
     setRequests(newRequests);
   };
 
-  const rejectRequest = (index) => {
+  const rejectRequest = (index, reason) => {
     setAlert({
       show: true,
-      message: `Solicitud de ${requests[index].name} rechazada.`,
+      message: `Solicitud de ${requests[index].name} rechazada. Razón: ${reason}`,
       type: "danger",
     });
     const newRequests = requests.filter((_, i) => i !== index);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../../public/panel.css";
 
 export default function RequestList({
   requests,
@@ -7,6 +8,7 @@ export default function RequestList({
   rejectRequest,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -16,10 +18,17 @@ export default function RequestList({
     request.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleRejectRequest = (index) => {
+    const reason = prompt("Por favor, proporciona una razón para el rechazo:");
+    if (reason) {
+      rejectRequest(index, reason);
+    }
+  };
+
   return (
-    <div className="container mt-5">
-      <h1 className="text-center">Panel de Solicitudes</h1>
-      <div className="mb-3">
+    <div className="AdminPanel">
+      <div className="Header">
+        <h1>Panel de Solicitudes</h1>
         <input
           type="text"
           value={searchTerm}
@@ -28,48 +37,63 @@ export default function RequestList({
           placeholder="Buscar por nombre"
         />
       </div>
-      <div
-        className="request-list-container"
-        style={{
-          maxHeight: "400px",
-          overflowX: "auto",
-          overflowY: "auto",
-          marginBottom: "20px",
-          margin: "20px",
-        }}
-      >
-        <ul className="list-group">
-          {filteredRequests.map((request, index) => (
-            <li
-              key={index}
-              className="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <div>
+      <div className="Content">
+        <div className="CompanyList">
+          <h2>Solicitudes Pendientes</h2>
+          <ul className="Companies">
+            {filteredRequests.map((request, index) => (
+              <li
+                key={index}
+                className="Company"
+                onClick={() => setSelectedRequest(request)}
+              >
+                <div>
+                  <img
+                    src={request.image || "https://via.placeholder.com/40"}
+                    alt="Usuario"
+                  />
+                  <div>
+                    <strong>{request.name}</strong>
+                    <p>{request.email}</p>
+                  </div>
+                </div>
                 <img
-                  src={request.image || "https://via.placeholder.com/40"}
-                  alt="Usuario"
-                  className="me-3"
-                  style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                  src={request.logo || "https://via.placeholder.com/40"}
+                  alt="Empresa"
                 />
-                <strong>{request.name}</strong>: {request.message}
-              </div>
-              <div>
                 <button
                   onClick={() => acceptRequest(index)}
-                  className="btn btn-success btn-sm me-2"
+                  className="ApproveButton"
                 >
                   Aceptar
                 </button>
                 <button
-                  onClick={() => rejectRequest(index)}
-                  className="btn btn-danger btn-sm"
+                  onClick={() => handleRejectRequest(index)}
+                  className="RejectButton"
                 >
                   Rechazar
                 </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {selectedRequest && (
+          <div className="CompanyDetails">
+            <h2>Detalles de la Solicitud</h2>
+            <img
+              src={selectedRequest.image || "https://via.placeholder.com/100"}
+              alt="Usuario"
+            />
+            <h3>{selectedRequest.name}</h3>
+            <h4>{selectedRequest.email}</h4>
+            <img
+              src={selectedRequest.logo || "https://via.placeholder.com/100"}
+              alt="Empresa"
+            />
+            <h4>{selectedRequest.companyName}</h4>
+            <p>{selectedRequest.justification}</p>
+          </div>
+        )}
       </div>
     </div>
   );
