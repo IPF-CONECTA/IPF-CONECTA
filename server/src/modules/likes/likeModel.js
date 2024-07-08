@@ -19,4 +19,7 @@ export const Like = sequelize.define('like', {
         type: DataTypes.UUID,
         allowNull: false
     }
-})
+},
+    {
+        timestamps: false
+    })

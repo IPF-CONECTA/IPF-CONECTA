@@ -17,3 +17,17 @@ export const Role = sequelize.define('role', {
 }
 
 )
+
+export const createRoles = async () => {
+    try {
+        await Role.bulkCreate([
+            { name: 'superAdmin' },
+            { name: 'admin' },
+            { name: 'student' },
+            { name: 'recruiter' },
+            { name: 'investor' }
+        ])
+    } catch (error) {
+        console.error('Failed to import roles:', error);
+    }
+}

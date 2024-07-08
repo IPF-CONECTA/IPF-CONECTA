@@ -14,5 +14,14 @@ export const Follower = sequelize.define('follower', {
     followingId: {
         type: DataTypes.UUID,
         allowNull: false
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
     }
-})
+},
+    {
+        timestamps: false
+    }
+)
