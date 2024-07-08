@@ -7,6 +7,9 @@ import { RegisterPage } from "../components/RegisterPage";
 import { SupportPage } from "../components/SupportPage";
 import { AdminCompany } from "../components/AdminCompany";
 import Panel from "../pages/PanelPage";
+import JobDetails from "../components/JobDetails";
+import JobSales from "../components/JobSales";
+import Profile from "../components/Profile";
 
 export const Routers = () => {
   return (
@@ -23,6 +26,9 @@ export const Routers = () => {
         <Route path="/support" element={<SupportPage />} />
         <Route path="/admin" element={<AdminCompany />} />
         <Route path="/panel" element={<Panel />} />
+        <Route path="/job/:id" element={<JobDetails />} />
+        <Route path="/jobs" element={<JobSales />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
