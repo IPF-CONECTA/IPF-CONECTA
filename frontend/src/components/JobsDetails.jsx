@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../styles/JobDetails.css";
-import { industriesMap, contractType, modalityMap } from "../helpers/mapings";
+import { modalityMap, contractType, industriesMap } from "../helpers/maping";
+
 
 export default function JobDetails() {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
 
-  const [job, setJob] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getJobInfo = async () => {
@@ -98,7 +99,7 @@ export default function JobDetails() {
         <h4>Requisitos:</h4>
 
         <ul className="grey">
-          {job.jobSkills.map((jobSkill: any) => (
+          {job.jobSkills.map((jobSkill) => (
             <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>
           ))}
         </ul>
