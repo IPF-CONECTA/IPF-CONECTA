@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/JobsSales.css";
 import axios from "axios";
 import { useState } from "react";
+import { industriesMap, contractType, modalityMap } from "../helpers/mapings";
 
 export default function JobsSales() {
   const [jobs, setJobs] = useState([]);
@@ -12,8 +13,6 @@ export default function JobsSales() {
     });
   };
 
-
-
   return (
     <div className="jobs">
       <h1>Jobs in Sales</h1>
@@ -21,9 +20,15 @@ export default function JobsSales() {
       <div className="jobs-sales">
         {jobs.map((job: any) => (
           <div key={job.id} className="job-card">
+            <h1>{job.company.name}</h1>
             <h2>{job.title}</h2>
-            <p>{job.description}</p>
-            <Link to={`/get-job/${job.id}`}>View Job</Link>
+            <h4 className="grey">{industriesMap[job.contractTypeId]}</h4>
+            <div className="end">
+              <h4 className="type">{contractType[job.contractTypeId]}</h4>
+              <Link to={`/get-job/${job.id}`}>
+                <button className="info-button"> Ver más</button>
+              </Link>
+            </div>
           </div>
         ))}
       </div>
