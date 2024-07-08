@@ -1,10 +1,11 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
+import { countryData } from './data/countries.js';
+
 
 export const Country = sequelize.define('country', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true
     },
     name: {
@@ -12,7 +13,7 @@ export const Country = sequelize.define('country', {
         allowNull: false
     },
 
-    phone_code: {
+    phoneCode: {
         type: DataTypes.STRING(255),
         allowNull: true
     },
@@ -24,3 +25,11 @@ export const Country = sequelize.define('country', {
     timestamps: false
 });
 
+export const createCountries = async () => {
+    try {
+        await Country.bulkCreate(countryData);
+        console.log(`${countryData.length} countries imported successfully.`);
+    } catch (error) {
+        console.error('Failed to import countries:', error);
+    }
+}

@@ -1,10 +1,12 @@
 import { User } from "../users/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { basicRoles } from "../../constant/roles.js";
+import { BASIC_ROLES } from "../../constant/roles.js";
 import { sendRecoverPasswordEmail } from "./mailServices/recoverPassMail.js";
 import { generateVerificationCode } from "../../helpers/generateCode.js";
 import { sendConfirmAccount } from "./mailServices/confirmAccount.js";
+
+
 export const authSignUpSvc = async (user) => {
 
     try {
@@ -12,48 +14,67 @@ export const authSignUpSvc = async (user) => {
 
         if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
 
-
-
-        if (!Object.keys(basicRoles).includes(user.role)) { throw new Error('Rol no valido') }
-
-        const roleId = basicRoles[user.role];
-        const passhash = await bcrypt.hash(user.password, 10);
+        const roleId = BASIC_ROLES[user.role];
+        if (!roleId) { throw new Error('Rol no valido'); }
 
         const createdUser = await User.create({
             names: user.names,
             surnames: user.surnames,
             email: user.email,
             roleId: roleId,
-            password: passhash,
+            password: user.password,
+            cuil: user.cuil,
+            state: 1
         })
         const token = jwt.sign({ userId: createdUser.id }, process.env.TOKEN_SECRET_KEY);
-
+        await sendConfirmAccountSvc(createdUser.id)
         return token
 
     } catch (error) {
-        throw new Error("Hubo un error: " + error.message)
+        throw new Error(
+
+
+            error.message)
     }
 };
 
-// WORK IN PROCESS
+// Si el usuario que se loguea tiene el campo verified == false, se le envia el correo de confirmacion
+// La funcion retorna isVerified, en el cliente se debe verificar si es true o false para mostrar la pagina correspondiente
 export const authLogInSvc = async (user) => {
     try {
         const existingUser = await User.findOne({ where: { email: user.email } })
         if (!existingUser) {
-            existingUser = await User.findOne({ where: {} })
+            throw new Error('No se encontro una cuenta con ese email')
         }
-    } catch (error) {
+        const validPassword = await bcrypt.compare(user.password, existingUser.password);
+        if (!validPassword) throw new Error("Contraseña incorrecta");
 
+        const isVerified = existingUser.verified
+        if (!isVerified) {
+            await sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
+        }
+
+        const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
+
+        return { token, name: existingUser.names, isVerified }
+
+    } catch (error) {
+        throw new Error(error.message)
     }
 }
 
 export const sendConfirmAccountSvc = async (userId) => {
     try {
-        const { verifyCode, email, names } = await User.findByPk(userId);
+        const newVerifyCode = generateVerificationCode()
+        await User.update({ verifyCode: newVerifyCode }, { where: { id: userId } })
+        const { verifyCode, email, names, verified } = await User.findByPk(userId);
+        if (verified == true) {
+            throw new Error('Correo ya verificado')
+        }
         if (!verifyCode || !email || !names) {
             throw new Error('Error interno en el servidor, inicie sesion nuevamente')
         }
-        sendConfirmAccount(email, verifyCode, names)
+        await sendConfirmAccount(email, verifyCode, names)
     } catch (error) {
         throw new Error(error.message)
     }
@@ -72,7 +93,9 @@ export const confirmAccountSvc = async (userId, receivedCode) => {
             throw new Error('Codigo incorrecto')
         }
 
-        await User.update({ verified: true, verifyCode: null }, { where: { id: userId } });
+        const [rowUpdated] = await User.update({ verified: true, verifyCode: null }, { where: { id: userId } });
+
+        if (rowUpdated < 1) throw new Error('Hubo un error al confirmar la cuenta, intentelo de nuevo')
 
     } catch (error) {
         throw new Error(error.message)
@@ -81,35 +104,35 @@ export const confirmAccountSvc = async (userId, receivedCode) => {
 
 export const sendRecoverPasswordSvc = async (email) => {
     try {
-        const { verifyCode, names, id } = await User.findOne({ where: { email: email } })
-        console.log('email desde SVC' + email)
+        const { names, id } = await User.findOne({ where: { email: email } })
         if (!id) {
             throw new Error('No se encontro una cuenta con ese correo electronico')
         }
+        const newVerifyCode = generateVerificationCode()
 
-        if (verifyCode == null) {
-            await User.update({ verifyCode: generateVerificationCode() }, { where: { email: email } })
+        const [rowUpdated] = await User.update({ verifyCode: newVerifyCode }, { where: { email: email } })
+        if (rowUpdated < 1) throw new Error('Hubo un error al enviar el correo electronico')
 
-        }
-        const token = jwt.sign({ userId: id }, process.env.TOKEN_SECRET_KEY);
-        await sendRecoverPasswordEmail(email, verifyCode, names)
+        const token = jwt.sign({ email: email }, process.env.TOKEN_SECRET_KEY);
+        await sendRecoverPasswordEmail(email, newVerifyCode, names)
         return token
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export const recoverPasswordSvc = async (userId, receivedCode, newPass, newPassConfirm) => {
-    const { verifyCode } = await User.findByPk(userId)
-    if (newPass !== newPassConfirm) {
-        throw new Error('Las contraseñas no coinciden')
-    }
-    else if (verifyCode !== receivedCode) {
+export const recoverPasswordSvc = async (email, receivedCode, newPass) => {
+    const { verifyCode } = await User.findOne({ where: { email: email } })
+
+    if (verifyCode !== receivedCode) {
         throw new Error('El codigo ingresado es incorrecto')
     }
+    const passhash = await bcrypt.hash(newPass, 10);
 
     try {
-        User.update({ password: newPass }, { where: { id: userId, verifyCode: verifyCode } })
+        const [rowUpdated] = await User.update({ password: passhash, verifyCode: null }, { where: { email: email, verifyCode: verifyCode } })
+        if (rowUpdated < 1) throw new Error('Hubo un error al actualizar la contraseña')
+
     } catch (error) {
         throw new Error(error)
     }

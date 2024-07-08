@@ -1,5 +1,6 @@
 import { sequelize, DataTypes } from '../../../config/db.js';
-import { Country } from './countryModel.js';
+import { stateData } from './data/states.js';
+
 export const State = sequelize.define('state', {
     id: {
         type: DataTypes.INTEGER,
@@ -10,7 +11,7 @@ export const State = sequelize.define('state', {
         type: DataTypes.STRING(255),
         allowNull: false,
     },
-    country_id: {
+    countryId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
@@ -20,7 +21,13 @@ export const State = sequelize.define('state', {
         timestamps: false
     });
 
-State.belongsTo(Country, {
-    foreignKey: 'country_id',
-});
 
+
+export const createStates = async () => {
+    try {
+        await State.bulkCreate(stateData);
+        console.log(`${stateData.length} states imported successfully.`);
+    } catch (error) {
+        console.error('Failed to import states:', error);
+    }
+}
