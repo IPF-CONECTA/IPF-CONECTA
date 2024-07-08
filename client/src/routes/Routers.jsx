@@ -6,6 +6,7 @@ import { LoginPage } from "../components/LoginPage";
 import { RegisterPage } from "../components/RegisterPage";
 import { SupportPage } from "../components/SupportPage";
 import { AdminCompany } from "../components/AdminCompany";
+import Panel from "../pages/PanelPage";
 
 export const Routers = () => {
   return (
@@ -21,6 +22,7 @@ export const Routers = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/admin" element={<AdminCompany />} />
+        <Route path="/panel" element={<Panel />} />
       </Routes>
     </BrowserRouter>
   );
