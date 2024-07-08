@@ -33,8 +33,15 @@ export const findUbicationSvc = async (query) => {
                 attributes: ['name']
             }],
         })
-
-        return [cities, states]
+        const countries = Country.findAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.iLike]: `%${query}%` } }
+                ]
+            },
+            attributes: ['id', 'name']
+        })
+        return [cities, states, countries]
 
     } catch (error) {
         throw new Error(error.message)
