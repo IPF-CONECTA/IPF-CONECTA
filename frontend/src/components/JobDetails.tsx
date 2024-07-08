@@ -39,6 +39,54 @@ export default function JobDetails() {
     4: "Flexible",
   };
 
+  const contractType: { [key: number]: string } = {
+    1: "Jornada completa",
+    2: "Media jornada",
+    3: "Por horas",
+    4: "Por proyecto",
+    5: "Temporal",
+    6: "Freelance",
+    7: "Voluntariado",
+    8: "Prácticas",
+    9: "Otro",
+  };
+
+  const industriesMap: { [key: number]: string } = {
+    1: "Administración Pública y Defensa",
+    2: "Aeroespacial",
+    3: "Agricultura, Silvicultura, Pesca y Caza",
+    4: "Alimentos y Bebidas",
+    5: "Arte, Entretenimiento y Recreación",
+    6: "Automotriz",
+    7: "Biotecnología",
+    8: "Comercio Mayorista y Minorista",
+    9: "Construcción",
+    10: "Educación",
+    11: "Energía",
+    12: "Farmacéutica",
+    13: "Finanzas",
+    14: "Finanzas y Seguros",
+    15: "Hospitalidad y Turismo",
+    16: "Industria Manufacturera",
+    17: "Información y Comunicaciones",
+    18: "Inmobiliarias y Servicios de Alquiler",
+    19: "IT",
+    20: "Logística y Transporte",
+    21: "Marketing",
+    22: "Media",
+    23: "Medios de Comunicación y Entretenimiento",
+    24: "Minería y Metales",
+    25: "Petróleo y Gas",
+    26: "Productos de Consumo",
+    27: "Salud",
+    28: "Servicios de Alojamiento y Alimentación",
+    29: "Servicios Médicos",
+    30: "Servicios Profesionales, Científicos y Técnicos",
+    31: "Tecnología de la Información y Telecomunicaciones",
+    32: "Textil y Vestimenta",
+    33: "Transporte y Almacenamiento",
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -63,9 +111,14 @@ export default function JobDetails() {
             <p>
               Lugar: {job.company.cityID ?? " No especificado por la empresa-"}
             </p>
+            <p></p>
             <p>Dirección: {job.company.address}</p>
             <p>
               Cuenta con al rededor de: {job.company.cantEmployees} empleados
+            </p>
+            <p>
+              Industria a la que pertenece:{" "}
+              {industriesMap[job.company.industryId]}
             </p>
           </div>
         </div>
@@ -89,6 +142,7 @@ export default function JobDetails() {
       <div className="joboffer grey">
         <p>Descripción del trabajo:{job.description}</p>
         <p>Modalidad: {modalityMap[job.modalityId]}</p>
+        <p>Tipo de contrato: {contractType[job.contractTypeId]}</p>
         <p>Requisitos:</p>
         <ul>
           {job.jobSkills.map((jobSkill: any) => (
