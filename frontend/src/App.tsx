@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/profile" element={<Profile />} />
           <Route path="/jobs-sales" element={<JobsSales />} />
-          <Route path="/job/:id" element={<JobDetails/>} /> 
+          <Route path="/get-job/:id" element={<JobDetails/>} /> 
           <Route path="*" element={<h1>404</h1>} />
         </Routes>
       </div>

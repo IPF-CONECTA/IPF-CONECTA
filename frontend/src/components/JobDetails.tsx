@@ -1,61 +1,100 @@
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { offers } from "../data/ofertas";
+import axios from "axios";
 import "../styles/JobDetails.css";
+
 export default function JobDetails() {
   const { id } = useParams<{ id: string }>();
-  const offer = offers.find((offer) => offer.id === Number(id));
-  if (!offer) {
-    return <h1>Oferta no encontrada</h1>;
+
+  const [job, setJob] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getJobInfo = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/get-job/${id}`);
+        setJob(response.data);
+      } catch (error) {
+        console.error("Error fetching job data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getJobInfo();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
+
+  if (!job) {
+    return <div>Job not found</div>;
+  }
+
+  const modalityMap: { [key: number]: string } = {
+    1: "Presencial",
+    2: "Remoto",
+    3: "Híbrido",
+    4: "Flexible",
+  };
 
   return (
     <div className="container">
       <div className="header">
         <div>
-          <h2>{offer.company.name}</h2>
-          <h3 className="grey">Compañía: {offer.company.name}</h3>
+          <h1>Detalles de la oferta de trabajo</h1>
+          <h2 className="grey">{job.title}</h2>
         </div>
         <div>
           <img
-            src={"https://cdn-icons-png.flaticon.com/512/993/993891.png"}
-            alt={offer.company.name}
+            src={`${job.company.logoUrl}`}
+            alt={job.company.name}
             className="logo"
           />
         </div>
       </div>
+
       <div className="header">
         <div>
           <h2>Compañía</h2>
           <div className="grey">
-            <p>Lugar: {offer.company.location}</p>
-            <p>Dirección: {offer.company.address}</p>
-            <p>Al rededor de {offer.company.employees} Empleados.</p>
+            <h3>Nombre: {job.company.name}</h3>
+            <p>
+              Lugar: {job.company.cityID ?? " No especificado por la empresa-"}
+            </p>
+            <p>Dirección: {job.company.address}</p>
+            <p>
+              Cuenta con al rededor de: {job.company.cantEmployees} empleados
+            </p>
           </div>
         </div>
         <div>
-          <h3 className="recruiter-heading">
+          <h4>Recruiter</h4>
+          <div className="recruiter-heading">
             <img
-              src="https://icons.veryicon.com/png/o/internet--web/55-common-web-icons/person-4.png"
-              alt="icon"
+              src={job.user.profilePic}
+              alt="Recruiter profile"
               className="icon"
             />
-            Reclutador
-          </h3>
-
+          </div>
           <div>
-            <p className="grey">{offer.recruiter.name}</p>
-            <p className="grey">{offer.recruiter.avatar}</p>
+            <div className="grey"> {job.user.names}</div>
+            <div className="grey">{job.user.surnames}</div>
           </div>
         </div>
       </div>
 
-      <h4>Oferta de trabajo:</h4>
+      <h4>Oferta de Trabajo:</h4>
       <div className="joboffer grey">
-        <p>Descripción del Puesto: {offer.jobOffer.description}</p>
-        <p>Lugar: {offer.jobOffer.location}</p>
-        <p>Modalidad: {offer.jobOffer.modality}</p>
-        <p>Puesto de trabajo: {offer.jobOffer.position}</p>
-        <p>Tipo: {offer.jobOffer.type}</p>
+        <p>Descripción del trabajo:{job.description}</p>
+        <p>Modalidad: {modalityMap[job.modalityId]}</p>
+        <p>Requisitos:</p>
+        <ul>
+          {job.jobSkills.map((jobSkill: any) => (
+            <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );

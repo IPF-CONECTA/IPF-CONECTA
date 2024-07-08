@@ -1,26 +1,32 @@
 import { Link } from "react-router-dom";
 import "../styles/JobsSales.css";
-
-import { offers } from "../data/ofertas";
+import axios from "axios";
+import { useState } from "react";
 
 export default function JobsSales() {
+  const [jobs, setJobs] = useState([]);
+
+  const getJobs = () => {
+    axios.get("http://localhost:4000/get-jobs").then((response) => {
+      setJobs(response.data);
+    });
+  };
+
+
+
   return (
-    <div className="jobs-sales">
-      {offers.map((offer) => (
-        <div key={offer.id} className="job-card">
-          <div className="name">
-            <h2>{offer.company.name}</h2>
-            <h3>{offer.company.industry}</h3>
+    <div className="jobs">
+      <h1>Jobs in Sales</h1>
+      <button onClick={getJobs}>Get Jobs</button>
+      <div className="jobs-sales">
+        {jobs.map((job: any) => (
+          <div key={job.id} className="job-card">
+            <h2>{job.title}</h2>
+            <p>{job.description}</p>
+            <Link to={`/get-job/${job.id}`}>View Job</Link>
           </div>
-          <div className="info">
-            <h4 className="ubication"> {offer.company.location}</h4>
-            <h5 className="type">{offer.jobOffer.type  }</h5>
-          </div>
-          <Link to={`/job/${offer.id}`}>
-            <button className="info-button">...</button>
-          </Link>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
