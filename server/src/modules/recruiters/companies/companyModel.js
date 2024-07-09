@@ -16,9 +16,14 @@ export const Company = sequelize.define('company', {
         allowNull: false
     },
     industryId: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
-    cityId: {
+    locationType: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    locationId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },

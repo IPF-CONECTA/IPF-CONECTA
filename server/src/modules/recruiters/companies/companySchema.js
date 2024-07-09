@@ -21,10 +21,10 @@ export const companySchema = [
         .exists()
         .notEmpty()
         .withMessage('Ingrese la descripcion de la empresa'),
-    body('company.cityId')
+    body('company.locationName')
         .exists()
         .notEmpty()
-        .withMessage('Ingrese la ciudad de la empresa'),
+        .withMessage('Ingrese la ubicacion de la empresa'),
     body('company.industryId')
         .exists()
         .notEmpty()
@@ -33,12 +33,6 @@ export const companySchema = [
         .exists()
         .notEmpty()
         .withMessage('Ingrese la direccion de la empresa'),
-    body('company.logoUrl')
-        .exists()
-        .notEmpty()
-        .exists()
-        .isURL()
-        .withMessage('Ingrese el logo de la empresa'),
     body('company.cantEmployees')
         .exists()
         .notEmpty()

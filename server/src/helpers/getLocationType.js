@@ -3,40 +3,47 @@ import { Country } from "../modules/ubications/models/countryModel.js"
 import { State } from "../modules/ubications/models/stateModel.js"
 
 export const getLocationType = async (id, name) => {
-    const city = await City.findOne({
-        where: {
-            id: id,
-            name: name
-        }
-    })
-    if (city) return 'city'
-    else {
-        const state = await State.findOne({
+    try {
+        if (!id || !name) throw new Error('Ingrese la ubicacion de la empresa')
+
+        const city = await City.findOne({
             where: {
                 id: id,
                 name: name
             }
         })
-        if (state) return 'state'
+        if (city) return 'city'
         else {
-            const country = await Country.findAll({
+            const state = await State.findOne({
                 where: {
                     id: id,
                     name: name
                 }
             })
-            if (country) return 'country'
+            if (state) return 'state'
             else {
-                throw new Error('Error al seleccionar la ubicacion')
+                const country = await Country.findAll({
+                    where: {
+                        id: id,
+                        name: name
+                    }
+                })
+                if (country) return 'country'
+                else {
+                    throw new Error('Error al seleccionar la ubicacion')
+                }
             }
-        }
 
+        }
+    } catch (error) {
+        throw new Error(error.message)
     }
 }
-export const getLocation = async (job) => {
-    switch (job.locationType) {
+
+export const getLocation = async (jobOrCompany) => {
+    switch (jobOrCompany.locationType) {
         case 'city':
-            job.dataValues.location = await City.findByPk(job.locationId, {
+            jobOrCompany.dataValues.location = await City.findByPk(jobOrCompany.locationId, {
                 attributes: ['name'],
                 include: [{
                     model: State,
@@ -49,7 +56,7 @@ export const getLocation = async (job) => {
             });
             break;
         case 'state':
-            job.dataValues.location = await State.findByPk(job.locationId, {
+            jobOrCompany.dataValues.location = await State.findByPk(jobOrCompany.locationId, {
                 attributes: ['name'],
                 include: [{
                     model: Country,
@@ -58,22 +65,22 @@ export const getLocation = async (job) => {
             });
             break;
         case 'country':
-            job.dataValues.location = await Country.findByPk(job.locationId, {
+            jobOrCompany.dataValues.location = await Country.findByPk(jobOrCompany.locationId, {
                 attributes: ['name']
             });
             break;
         default:
-            job.dataValues.location = null;
+            jobOrCompany.dataValues.location = null;
     }
-    return job
+    return jobOrCompany
 }
 
-export const getAllLocations = async (jobs) => {
+export const getAllLocations = async (jobsOrCompanies) => {
 
-    for (let job of jobs) {
-        switch (job.locationType) {
+    for (let jobOrCompany of jobsOrCompanies) {
+        switch (jobOrCompany.locationType) {
             case 'city':
-                job.dataValues.location = await City.findByPk(job.locationId, {
+                jobOrCompany.dataValues.location = await City.findByPk(jobOrCompany.locationId, {
                     attributes: ['name'],
                     include: [{
                         model: State,
@@ -86,7 +93,7 @@ export const getAllLocations = async (jobs) => {
                 });
                 break;
             case 'state':
-                job.dataValues.location = await State.findByPk(job.locationId, {
+                jobOrCompany.dataValues.location = await State.findByPk(jobOrCompany.locationId, {
                     attributes: ['name'],
                     include: [{
                         model: Country,
@@ -95,13 +102,13 @@ export const getAllLocations = async (jobs) => {
                 });
                 break;
             case 'country':
-                job.dataValues.location = await Country.findByPk(job.locationId, {
+                jobOrCompany.dataValues.location = await Country.findByPk(jobOrCompany.locationId, {
                     attributes: ['name']
                 });
                 break;
             default:
-                job.dataValues.location = null;
+                jobOrCompany.dataValues.location = null;
         }
     }
-    return jobs;
+    return jobsOrCompanies;
 }
