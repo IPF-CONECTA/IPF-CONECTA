@@ -28,6 +28,11 @@ export const Job = sequelize.define('job', {
         type: DataTypes.TEXT,
         allowNull: false
     },
+    locationType: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
     locationId: { // provincia o localidad
         type: DataTypes.INTEGER,
         allowNull: true

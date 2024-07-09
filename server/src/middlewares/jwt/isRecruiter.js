@@ -10,7 +10,9 @@ export const isRecruiter = async (req, res, next) => {
         if (!token) throw new Error('Inicie sesion para continuar')
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
 
-        const { roleId } = await User.findByPk(userId, { attributes: ['roleId'] })
+        const result = await User.findByPk(userId, { attributes: ['roleId'] })
+        if (!result) throw new Error('Vuelva a iniciar sesion para continuar')
+        const { roleId } = result
         console.log('Role id abajo Is recruiter')
         console.log(roleId)
         console.log('Role id arriba')

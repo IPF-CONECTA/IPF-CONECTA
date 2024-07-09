@@ -4,18 +4,23 @@ import { User } from "../../users/userModel.js"
 import { Company } from "../companies/companyModel.js"
 import { Job } from "./jobModel.js"
 import { JobSkills } from "./jobSkills/jobSkillsModel.js"
+import { getAllLocations, getLocation, getLocationType } from "../../../helpers/getLocationType.js"
+import { ContractType } from "../../typeJobs/contractTypeModel.js"
+import { Modality } from "./jobModalities/modalityModel.js"
 
 export const createNewJobSvc = async (jobOffer, userId) => {
     try {
-        const { companyId: id } = jobOffer
-        const isCompany = await Company.findByPk(id)
+        const isCompany = await Company.findByPk(jobOffer.companyId)
+        const locationType = await getLocationType(jobOffer.locationId, jobOffer.locationName)
+
         if (!isCompany) throw new Error('La empresa seleccionada no existe')
         const newJob = await Job.create({
-            companyId: id,
+            companyId: jobOffer.companyId,
             userId: userId,
             title: jobOffer.title,
             modalityId: jobOffer.modalityId,
             description: jobOffer.description,
+            locationType: locationType,
             locationId: jobOffer.locationId,
             contractTypeId: jobOffer.contractTypeId
         }, { returning: true })
@@ -32,15 +37,24 @@ export const getJobsSvc = async () => {
             where: {
                 active: 'true'
             },
-            attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
+            attributes: ['id', 'title', 'locationType', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
             include: [{
                 model: Company,
                 attributes: ['name']
-            }]
+            }, {
+                model: Modality,
+                attributes: ['name']
+            },
+            {
+                model: ContractType,
+                attributes: ['name']
+            }
+            ]
         })
-        return jobs
+        const jobsWithUbication = await getAllLocations(jobs)
+        return jobsWithUbication
     } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error)
     }
 }
 
@@ -53,7 +67,7 @@ export const getJobByIdSvc = async (id) => {
                 attributes: { exclude: ['status', 'justification'] }
             }, {
                 model: User,
-                attributes: ['id', 'profilePic', 'names', 'surnames']
+                attributes: ['id', 'profilePic', 'names', 'surnames'],
             },
             {
                 model: JobSkills,
@@ -62,10 +76,14 @@ export const getJobByIdSvc = async (id) => {
                     model: Skill,
                     attributes: ['name']
                 }]
+            }, {
+                model: ContractType,
+                attributes: ['name']
             }
             ]
         })
-        return job
+        const jobWithUbication = await getLocation(job)
+        return jobWithUbication
     } catch (error) {
         throw new Error(error.message)
     }
@@ -79,11 +97,19 @@ export const findJobsSvc = async (query) => {
                     { title: { [Op.iLike]: `%${query}%` } }
                 ]
             },
-            attributes: ['id', 'title', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
+            attributes: ['id', 'title', 'locationType', 'locationId', 'modalityId', 'contractTypeId', 'companyId'],
             include: [{
                 model: Company,
                 attributes: ['name']
-            }],
+            }, {
+                model: Modality,
+                attributes: ['name']
+            },
+            {
+                model: ContractType,
+                attributes: ['name']
+            }
+            ]
         });
         return jobs;
     } catch (error) {
