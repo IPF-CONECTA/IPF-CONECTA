@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import styles from "../../public/css/register.module.css";
 
 export const Register = () => {
@@ -7,10 +8,12 @@ export const Register = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    companyName: "",
-    fullName: "",
+    names: "",
+    surnames: "",
+    cuil: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
@@ -26,11 +29,28 @@ export const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registration submitted:", formData);
-    setIsModalOpen(false);
-    // Aquí puedes agregar la lógica para manejar el registro de usuario
+
+    const user = {
+      email: formData.email,
+      password: formData.password,
+      role: role,
+      cuil: role === "student" ? formData.cuil : null,
+      names: role === "student" ? formData.names : formData.names,
+      surnames: role === "student" ? formData.surnames : formData.surnames,
+    };
+    console.log(user);
+    try {
+      const response = await axios.post("http://localhost:4000/auth/signup", {
+        user,
+      });
+      console.log("User registered:", response.data);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setErrorMessage(error.response?.data?.message || "Error en el registro");
+    }
   };
 
   const renderStep = () => {
@@ -70,29 +90,63 @@ export const Register = () => {
       case 3:
         return (
           <form className={styles.formStep}>
-            {role === "reclutador" && (
-              <div className={styles.formGroup}>
-                <label>Nombre de la empresa</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  placeholder="Nombre de la empresa"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                />
-              </div>
+            {role === "recruiter" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Nombre</label>
+                  <input
+                    type="text"
+                    name="names"
+                    placeholder="Nombres"
+                    value={formData.names}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Apellidos</label>
+                  <input
+                    type="text"
+                    name="surnames"
+                    placeholder="Apellidos"
+                    value={formData.surnames}
+                    onChange={handleChange}
+                  />
+                </div>
+              </>
             )}
-            {role === "egresado" && (
-              <div className={styles.formGroup}>
-                <label>Nombre completo</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Nombre completo"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                />
-              </div>
+            {role === "student" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Nombres</label>
+                  <input
+                    type="text"
+                    name="names"
+                    placeholder="Nombres"
+                    value={formData.names}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Apellidos</label>
+                  <input
+                    type="text"
+                    name="surnames"
+                    placeholder="Apellidos"
+                    value={formData.surnames}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>CUIL</label>
+                  <input
+                    type="text"
+                    name="cuil"
+                    placeholder="CUIL"
+                    value={formData.cuil}
+                    onChange={handleChange}
+                  />
+                </div>
+              </>
             )}
             <button
               className={styles.button}
@@ -106,6 +160,7 @@ export const Register = () => {
       case 4:
         return (
           <form className={styles.formStep} onSubmit={handleSubmit}>
+            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
             <button className={styles.button} type="submit">
               Registrarse
             </button>
@@ -122,13 +177,13 @@ export const Register = () => {
       <div className={styles.roleSelectionContainer}>
         <div
           className={styles.roleCard}
-          onClick={() => handleRoleSelection("egresado")}
+          onClick={() => handleRoleSelection("student")}
         >
           Egresado
         </div>
         <div
           className={styles.roleCard}
-          onClick={() => handleRoleSelection("reclutador")}
+          onClick={() => handleRoleSelection("recruiter")}
         >
           Reclutador
         </div>
@@ -149,4 +204,3 @@ export const Register = () => {
     </div>
   );
 };
-
