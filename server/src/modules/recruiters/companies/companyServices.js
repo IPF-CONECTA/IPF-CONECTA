@@ -1,35 +1,37 @@
+import { Op } from 'sequelize'
+import { getAllLocations, getLocation, getLocationType } from '../../../helpers/getLocationType.js'
+import { CompanyIndustry } from './companyIndustry/companyIndustryModel.js'
 import { Company } from './companyModel.js'
 
 export const getApprovedCompaniesSvc = async () => {
     try {
-        const companies = await Company.findAll({ where: { status: 'Aprobada' } })
-        return companies
+        const companies = await Company.findAll({
+            where: { status: 'Aprobada' },
+            attributes: { exclude: ['status', 'justification', 'createdAt', 'updatedAt'] },
+            include: [{
+                model: CompanyIndustry,
+                attributes: ['name']
+            }]
+        })
+        const enrichedCompanies = getAllLocations(companies)
+        return enrichedCompanies
     } catch (error) {
         throw new Error(error.message)
     }
 
 }
 
-export const getCompanyById = async (id) => {
-    try {
-        const company = await Company.findByPk(id)
-        return company
-    } catch (error) {
-        throw new Error(error.message)
-    }
-
-}
 
 export const createCompany = async (company) => {
-    // if (!company) throw new Error('Faltan datos')
-    // const existingCompany = await Company.findOne({ where: { name: company.name } })
-    // if (existingCompany) throw new Error('La empresa ya existe')
+
+    const locationType = await getLocationType(company.locationId, company.locationName)
     try {
         const newCompany = await Company.create({
             name: company.name,
             description: company.description,
             industryId: company.industryId,
-            cityId: company.cityId,
+            locationType: locationType,
+            locationId: company.locationId,
             address: company.address,
             logoUrl: company.logoUrl,
             cantEmployees: company.cantEmployees,
@@ -46,13 +48,45 @@ export const updateCompany = async (company) => {
             name: company.name,
             description: company.description,
             industryId: company.industryId,
-            cityId: company.cityId,
+            locationId: company.locationId,
             address: company.address,
             logoUrl: company.logoUrl,
             cantEmployees: company.cantEmployees,
         }, { where: { id: company.id } })
-        if (!updatedCompany) throw new Error('No se pudo actualizar la empresa')
+        if (updatedCompany.length < 1) throw new Error('No se pudo actualizar la empresa')
         return updatedCompany
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+export const findCompaniesSvc = async (query) => {
+    const companies = await Company.findAll({
+        where: {
+            [Op.or]: [
+                { name: { [Op.iLike]: `%${query}%` } }
+            ]
+        },
+        attributes: ['id', 'name', 'logoUrl']
+    })
+    return companies
+}
+
+export const getCompanyByIdSvc = async (id) => {
+    try {
+        const company = await Company.findByPk(id, {
+            attributes: { exclude: ['status', 'justification', 'updatedAt'] },
+            include: [{
+                model: Association,
+                attributes: ['id'],
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: ['id', 'profilePic', 'names', 'surnames', 'email']
+                }]
+            }]
+        })
+        return company
     } catch (error) {
         throw new Error(error.message)
     }

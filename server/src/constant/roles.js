@@ -27,20 +27,20 @@ export const getBasicRoles = async () => {
 
 
 // export const getRoles = async () => {
-// return {
-// 'recruiter': 123,
-// 'student': 123,
-// 'investor': 123,
-// 'admin': 123,
-// 'superAdmin': 123
-// }
+//     return {
+//         'recruiter': 123,
+//         'student': 123,
+//         'investor': 123,
+//         'admin': 123,
+//         'superAdmin': 123
+//     }
 // }
 // export const getBasicRoles = async () => {
-// return {
-// 'recruiter': 123,
-// 'student': 123,
-// 'investor': 123,
-// }
+//     return {
+//         'recruiter': 123,
+//         'student': 123,
+//         'investor': 123,
+//     }
 
 // }
 

@@ -15,10 +15,10 @@ export const findUbicationSvc = async (query) => {
             attributes: { exclude: ['stateId'] },
             include: [{
                 model: State,
-                attributes: ['name'],
+                attributes: ['id', 'name'],
                 include: [{
                     model: Country,
-                    attributes: ['name']
+                    attributes: ['id', 'name']
                 }]
             }]
         })
@@ -30,10 +30,10 @@ export const findUbicationSvc = async (query) => {
             },
             include: [{
                 model: Country,
-                attributes: ['name']
+                attributes: ['id', 'name']
             }],
         })
-        const countries = Country.findAll({
+        const countries = await Country.findAll({
             where: {
                 [Op.or]: [
                     { name: { [Op.iLike]: `%${query}%` } }
@@ -41,6 +41,7 @@ export const findUbicationSvc = async (query) => {
             },
             attributes: ['id', 'name']
         })
+        console.log(countries)
         return [cities, states, countries]
 
     } catch (error) {

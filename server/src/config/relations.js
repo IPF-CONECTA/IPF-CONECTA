@@ -27,6 +27,7 @@ import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.
 
 export const createRelations = async () => {
     try {
+
         Role.hasMany(User, {
             foreignKey: 'roleId',
         });
@@ -114,6 +115,9 @@ export const createRelations = async () => {
         UserState.hasMany(User, {
             foreignKey: 'userStateId',
         });
+        User.belongsTo(UserState, {
+            foreignKey: 'userStateId'
+        })
         User.hasMany(SkillsUser, {
             foreignKey: 'userId',
         });
@@ -128,9 +132,6 @@ export const createRelations = async () => {
         });
         Company.belongsTo(CompanyIndustry, {
             foreignKey: 'industryId'
-        });
-        City.hasMany(Company, {
-            foreignKey: 'cityId',
         });
         Company.hasMany(Association, {
             foreignKey: 'companyId',
@@ -150,12 +151,69 @@ export const createRelations = async () => {
             foreignKey: 'modalityId',
             as: 'modality'
         })
+        Job.belongsTo(Modality, {
+            foreignKey: 'modalityId'
+        })
         User.hasMany(Job, {
             foreignKey: 'userId'
         })
         Job.belongsTo(User, {
             foreignKey: 'userId'
         })
+        ///////////
+        State.hasMany(Company, {
+            foreignKey: 'locationId',
+            constraints: false,
+            scope: {
+                locationType: 'state',
+            },
+        });
+        Company.belongsTo(State, { foreignKey: 'locationId', constraints: false });
+
+        City.hasMany(Company, {
+            foreignKey: 'locationId',
+            constraints: false,
+            scope: {
+                locationType: 'city',
+            },
+        });
+        Company.belongsTo(City, { foreignKey: 'locationId', constraints: false });
+        Country.hasMany(Company, {
+            foreignKey: 'locationId',
+            constraints: false,
+            scope: {
+                locationType: 'country'
+            }
+        })
+        Company.belongsTo(Country, { foreignKey: 'locationId', constraints: false })
+
+        /////////////////
+        State.hasMany(Job, {
+            foreignKey: 'locationId',
+            constraints: false,
+            scope: {
+                locationType: 'state',
+            },
+        });
+        Job.belongsTo(State, { foreignKey: 'locationId', constraints: false });
+
+        City.hasMany(Job, {
+            foreignKey: 'locationId',
+            constraints: false,
+            scope: {
+                locationType: 'city',
+            },
+        });
+        Job.belongsTo(City, { foreignKey: 'locationId', constraints: false });
+        Country.hasMany(Job, {
+            foreignKey: 'locationId',
+            constraints: false,
+            scope: {
+                locationType: 'country'
+            }
+        })
+        Job.belongsTo(Country, { foreignKey: 'locationId', constraints: false })
+
         Job.belongsTo(Company, {
             foreignKey: 'companyId'
         });
@@ -165,6 +223,9 @@ export const createRelations = async () => {
         ContractType.hasMany(Job, {
             foreignKey: 'contractTypeId'
         });
+        Job.belongsTo(ContractType, {
+            foreignKey: 'contractTypeId'
+        })
         JobSkills.belongsTo(Job, {
             foreignKey: 'jobId'
         });

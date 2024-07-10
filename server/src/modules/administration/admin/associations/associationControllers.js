@@ -27,6 +27,7 @@ export const getAssociationByIdCtrl = async (req, res) => {
         res.status(500).json(error.message)
     }
 }
+
 export const updateAssociationCtrl = async (req, res) => {
     try {
         let { id, status } = req.params;

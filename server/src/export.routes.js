@@ -12,6 +12,6 @@ export const routes = (app) => {
     app.use(companyRoutes);
     app.use(jobRoutes)
     app.use(associationRoutes)
-    app.use(companyAdminRoutes)
+    app.use('/admin', companyAdminRoutes)
     app.use(ubicationRoutes)
 }

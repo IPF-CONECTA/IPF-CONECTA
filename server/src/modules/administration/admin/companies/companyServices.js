@@ -1,4 +1,6 @@
+import { getLocation } from "../../../../helpers/getLocationType.js"
 import { Association } from "../../../recruiters/associations/associationModel.js"
+import { CompanyIndustry } from "../../../recruiters/companies/companyIndustry/companyIndustryModel.js"
 import { Company } from "../../../recruiters/companies/companyModel.js"
 import { User } from "../../../users/userModel.js"
 
@@ -31,7 +33,7 @@ export const getCompaniesSvc = async (status) => {
 
 export const getCompanyByIdSvc = async (id) => {
     try {
-        const company = await Company.findByPk(id, {
+        let company = await Company.findByPk(id, {
             attributes: { exclude: ['status', 'justification', 'updatedAt'] },
             include: [{
                 model: Association,
@@ -40,9 +42,15 @@ export const getCompanyByIdSvc = async (id) => {
                     model: User,
                     as: 'user',
                     attributes: ['id', 'profilePic', 'names', 'surnames', 'email']
-                }]
+                },
+
+                ]
+            }, {
+                model: CompanyIndustry,
+                attributes: ['name']
             }]
         })
+        company = getLocation(company)
         return company
     } catch (error) {
         throw new Error(error.message)
