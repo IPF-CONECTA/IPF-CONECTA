@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import styles from "../../public/css/register.module.css";
+import { useNoti } from "../hooks/useNoti";
 
 export const Register = () => {
+  const noti = useNoti();
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({
@@ -12,13 +16,12 @@ export const Register = () => {
     surnames: "",
     cuil: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
     setStep(2);
-    setIsModalOpen(true);
   };
 
   const handleChange = (e) => {
@@ -40,21 +43,67 @@ export const Register = () => {
       names: role === "student" ? formData.names : formData.names,
       surnames: role === "student" ? formData.surnames : formData.surnames,
     };
-    console.log(user);
+
     try {
       const response = await axios.post("http://localhost:4000/auth/signup", {
         user,
       });
-      console.log("User registered:", response.data);
-      setIsModalOpen(false);
+
+      localStorage.setItem("token", response.data.token);
+      noti(response.data.message, "success");
+      setStep(5);
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error("Error durante el registro:", error);
       setErrorMessage(error.response?.data?.message || "Error en el registro");
+      noti(errorMessage, "error");
+    }
+  };
+
+  const handleVerificationSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:4000/auth/confirm-account",
+        { receivedCode: verificationCode },
+        {
+          headers: {
+            token: token,
+          },
+        }
+      );
+
+      noti(response.data.message, "success");
+      console.log("Usuario verificado:", response.data);
+      setTimeout(() => navigate("/"), 2000);
+    } catch (error) {
+      console.error("Error durante la verificación:", error);
+      const message =
+        error.response?.data?.message || "Error en la verificación";
+      setErrorMessage(message);
+      noti(message, "error");
     }
   };
 
   const renderStep = () => {
     switch (step) {
+      case 1:
+        return (
+          <div className={styles.roleSelectionContainer}>
+            <div
+              className={styles.roleCard}
+              onClick={() => handleRoleSelection("student")}
+            >
+              Egresado
+            </div>
+            <div
+              className={styles.roleCard}
+              onClick={() => handleRoleSelection("recruiter")}
+            >
+              Reclutador
+            </div>
+          </div>
+        );
       case 2:
         return (
           <form className={styles.formStep}>
@@ -166,6 +215,25 @@ export const Register = () => {
             </button>
           </form>
         );
+      case 5:
+        return (
+          <form className={styles.formStep} onSubmit={handleVerificationSubmit}>
+            <div className={styles.formGroup}>
+              <label>Código de Verificación</label>
+              <input
+                type="text"
+                name="verificationCode"
+                placeholder="Código de Verificación"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+              />
+            </div>
+            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+            <button className={styles.button} type="submit">
+              Verificar
+            </button>
+          </form>
+        );
       default:
         return null;
     }
@@ -174,33 +242,7 @@ export const Register = () => {
   return (
     <div className={styles["register-container"]}>
       <h2>Registro</h2>
-      <div className={styles.roleSelectionContainer}>
-        <div
-          className={styles.roleCard}
-          onClick={() => handleRoleSelection("student")}
-        >
-          Egresado
-        </div>
-        <div
-          className={styles.roleCard}
-          onClick={() => handleRoleSelection("recruiter")}
-        >
-          Reclutador
-        </div>
-      </div>
-      {isModalOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <button
-              className={styles.closeButton}
-              onClick={() => setIsModalOpen(false)}
-            >
-              X
-            </button>
-            {renderStep()}
-          </div>
-        </div>
-      )}
+      {renderStep()}
     </div>
   );
 };
