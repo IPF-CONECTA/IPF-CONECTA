@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import JobDetails from "./components/JobsDetails";
 import JobsSales from "./components/JobsSales";
 import StudentProfile from "./components/StudentProfile";
+import { RecruiterPanel } from "./components/RecruiterPanel";
 
 
 function App() {
@@ -13,6 +14,8 @@ function App() {
           <Link to="/jobs-sales">Ofertas</Link>
           <br />  
           <Link to="/profiles">perfil estudiante</Link>
+          <br />
+          <Link to="/recruiter/panel">Panel</Link>
         </nav>
 
         {}
@@ -20,6 +23,7 @@ function App() {
           <Route path="/jobs-sales" element={<JobsSales />} />
           <Route path="/get-job/:id" element={<JobDetails/>} />
           <Route path="/profiles" element={<StudentProfile/>} />
+          <Route path="/recruiter/panel" element={<RecruiterPanel/>}/>
           <Route path="*" element={<h1>404</h1>} />
         </Routes>
       </div>

@@ -13,7 +13,12 @@ export default function JobsSales() {
       setJobs(response.data);
     });
   };
+{
+  jobs.map(job => {
+  console.log()
 
+  })
+}
   return (
     <div className="jobs">
       <h1>Jobs in Sales</h1>
