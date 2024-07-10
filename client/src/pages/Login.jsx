@@ -3,8 +3,11 @@ import { useForm } from "react-hook-form";
 import React from "react";
 import axios from "axios";
 import styles from "../../public/css/login.module.css";
+import { useNoti } from "../hooks/useNoti";
 
 export const Login = () => {
+  const noti = useNoti();
+
   const {
     register,
     handleSubmit,
@@ -13,16 +16,22 @@ export const Login = () => {
     email: "",
     password: "",
   });
+
   async function onSubmit(data) {
-    console.log(data);
-    const response = await axios.post(`http://localhost:4000/auth/login`, {
-      user: {
-        email: data.email,
-        password: data.password,
-      },
-    });
-    console.log(response);
+    try {
+      const response = await axios.post(`http://localhost:4000/auth/login`, {
+        user: {
+          email: data.email,
+          password: data.password,
+        },
+      });
+
+      noti(response.data.message, "success");
+    } catch (error) {
+      noti(response.data.message, "error");
+    }
   }
+
   return (
     <div className={styles["login-container"]}>
       <center>

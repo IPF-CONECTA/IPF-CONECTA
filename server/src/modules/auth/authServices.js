@@ -50,9 +50,9 @@ export const authLogInSvc = async (user) => {
         if (!validPassword) throw new Error("Contraseña incorrecta");
 
         const isVerified = existingUser.verified
-        if (!isVerified) {
-            await sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
-        }
+        // if (!isVerified) {
+        //     sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
+        // }
 
         const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
 
