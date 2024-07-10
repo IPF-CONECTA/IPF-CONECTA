@@ -34,7 +34,7 @@ export const sendContactCompany = async (from, name, subject, message) => {
                                 <span class='label'>Correo Electrónico:</span><span class='value'>${from}</span>
                             </div>
                             <div class='field'>
-                                <span class='label'>Asunto:</span><span class='value'>${subject}</span>
+                                <span class='label'>Descripción del problema:</span><span class='value'>${subject}</span>
                             </div>
                             <div class='field'>
                                 <span class='label'>Mensaje:</span>
@@ -46,8 +46,8 @@ export const sendContactCompany = async (from, name, subject, message) => {
     }
     try {
         await transporter.sendMail(mailConfig)
-        console.log('Correo de confirmacion enviado')
+        console.log('Correo de contacto enviado')
     } catch (error) {
-        throw new Error('Error al enviar el correo de confirmacion: ' + error)
+        throw new Error('Error al enviar el correo de contacto: ' + error)
     }
 }
