@@ -90,8 +90,6 @@ export const confirmAccountSvc = async (userId, receivedCode) => {
   try {
     const { verified, verifyCode } = await User.findByPk(userId);
 
-    console.log(verified, verifyCode, receivedCode);
-
     if (verified == true) {
       throw new Error("Correo ya verificado");
     } else if (verifyCode != receivedCode) {

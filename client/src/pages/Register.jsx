@@ -94,12 +94,22 @@ export const Register = () => {
               className={styles.roleCard}
               onClick={() => handleRoleSelection("student")}
             >
+              <img
+                src="../../public/iconoipf.png"
+                alt="Egresado"
+                className={styles.roleImage}
+              />
               Egresado
             </div>
             <div
               className={styles.roleCard}
               onClick={() => handleRoleSelection("recruiter")}
             >
+              <img
+                src="../../public/iconoipf.png"
+                alt="Reclutador"
+                className={styles.roleImage}
+              />
               Reclutador
             </div>
           </div>
@@ -241,7 +251,7 @@ export const Register = () => {
 
   return (
     <div className={styles["register-container"]}>
-      <h2>Registro</h2>
+      <h2>¡Bienvenido! Elige tu Rol:</h2>
       {renderStep()}
     </div>
   );
