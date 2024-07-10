@@ -56,9 +56,10 @@ export const authLogInSvc = async (user) => {
 
         const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
 
-        return { token, name: existingUser.names, isVerified }
+        return { token, existingUser, isVerified }
 
     } catch (error) {
+        console.log(error)
         throw new Error(error.message)
     }
 }
