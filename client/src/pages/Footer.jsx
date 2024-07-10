@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 export const Footer = () => {
   return (
     <div className="FinPag">
-      <div className="container">
         <footer>
           <div className="d-flex align-items-center">
             <a href="#">
@@ -34,6 +33,5 @@ export const Footer = () => {
           </ul>
         </footer>
       </div>
-    </div>
   );
 };
