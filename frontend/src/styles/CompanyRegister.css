@@ -41,3 +41,26 @@ button {
 button:hover {
   background-color: #333;
 }
+
+.ubication-input {
+  position: relative;
+}
+
+.ubication-suggestions {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.suggestion {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background: #f0f0f0;
+}
