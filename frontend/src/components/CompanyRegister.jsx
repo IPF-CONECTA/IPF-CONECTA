@@ -54,30 +54,34 @@ export default function CompanyRegister() {
 
     const token = localStorage.getItem("token");
 
-    const response = axios.post("http://localhost:4000/create-company", {
-      company: {
-        name: formData.name,
-        description: formData.description,
-        industryId: formData.industry,
-        locationName: formData.ubication,
-        locationId: formData.ubicationId, // Asegúrate de tener este campo en tu formData si es necesario
-        address: formData.address,
-        cantEmployees: formData.cantEmployees,
-      },
-    }, {
-      Headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-        
-      }
-    });
-
-    if (response.status === 200) {
-      alert("Empresa registrada con éxito");
-    }
+    axios
+      .post(
+        "http://localhost:4000/create-company",
+        {
+          company: {
+            name: formData.name,
+            description: formData.description,
+            address: formData.address,
+            locationName: formData.ubication,
+            industryId: formData.industry,
+            cantEmployees: formData.cantEmployees,
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            token: token
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Empresa registrada con éxito");
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating company:", error);
+      });
   }
 
   return (
