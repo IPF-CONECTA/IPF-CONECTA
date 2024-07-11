@@ -176,13 +176,13 @@ export const Register = () => {
       <h2>Registro</h2>
       <div className={styles.roleSelectionContainer}>
         <div
-          className={styles.roleCard}
+          className={`${styles.roleCard} ${styles["roleCard--student"]}`}
           onClick={() => handleRoleSelection("student")}
         >
           Egresado
         </div>
         <div
-          className={styles.roleCard}
+          className={`${styles.roleCard} ${styles["roleCard--recruiter"]}`}
           onClick={() => handleRoleSelection("recruiter")}
         >
           Reclutador
