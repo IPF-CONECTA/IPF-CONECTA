@@ -1,108 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 import styles from "../../public/main.module.css";
+import { useNoti } from "../hooks/useNoti";
 
 export const AdminPanel = () => {
+  const showSnackBar = useNoti();
   const [activeTab, setActiveTab] = useState("approved");
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      setLoading(true);
+
+      try {
+        let endpoint = "";
+        if (activeTab === "approved") {
+          endpoint = "Aprobada";
+        } else if (activeTab === "pending") {
+          endpoint = "Pendiente";
+        } else if (activeTab === "rejected") {
+          endpoint = "Rechazada";
+        }
+
+        const response = await axios.get(
+          `http://localhost:4000/admin/get-companies/${endpoint}`
+        );
+
+        setCompanies(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError("Error al cargar las empresas");
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, [activeTab]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     setSelectedCompany(null);
   };
 
-  const handleCompanyClick = (company) => {
-    setSelectedCompany(company);
-  };
-
-  const handleApprove = () => {
-    // logica para email
-    alert("Empresa aprobada y correo electrónico enviado.");
-    setSelectedCompany(null);
-  };
-
-  const handleReject = () => {
-    const reason = prompt("Por favor ingresa la razón del rechazo:");
-    if (reason) {
-      // logica para email
-      alert("Empresa rechazada y correo electrónico enviado.");
-      setSelectedCompany(null);
+  const handleCompanyClick = async (company) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/admin/get-company/${company.id}`
+      );
+      setSelectedCompany(response.data);
+    } catch (error) {
+      setError("Error al cargar los detalles de la empresa");
     }
   };
 
-  const companies = {
-    approved: [
-      {
-        logo: "../../public/logoipf.png",
-        name: "Empresa Aprobada 1",
-        industry: "Tecnología",
-        user: {
-          uuid: "user-uuid-1",
-          name: "Juan Pérez",
-          email: "juan.perez@example.com",
-          profilePic: "../../public/user1.jpg",
-          cityState: "Ciudad de México, CDMX",
-        },
-        company: {
-          uuid: "company-uuid-1",
-          name: "Empresa Aprobada 1",
-          description: "Descripción de la Empresa Aprobada 1",
-          industry: "Tecnología",
-          cityStateCountry: "Ciudad de México, CDMX, México",
-          address: "Calle Falsa 123",
-          employees: 50,
-        },
-      },
-    ],
-    pending: [
-      {
-        logo: "../../public/logoipf.png",
-        name: "Empresa Pendiente 1",
-        industry: "Marketing",
-        user: {
-          uuid: "user-uuid-2",
-          name: "María López",
-          email: "maria.lopez@example.com",
-          profilePic: "../../public/user2.jpg",
-          cityState: "Monterrey, NL",
-        },
-        company: {
-          uuid: "company-uuid-2",
-          name: "Empresa Pendiente 1",
-          description: "Descripción de la Empresa Pendiente 1",
-          industry: "Marketing",
-          cityStateCountry: "Monterrey, NL, México",
-          address: "Avenida Siempre Viva 742",
-          employees: 30,
-        },
-      },
-    ],
-    rejected: [
-      {
-        logo: "../../public/logoipf.png",
-        name: "Empresa Rechazada 1",
-        industry: "Finanzas",
-        user: {
-          uuid: "user-uuid-3",
-          name: "Carlos Martínez",
-          email: "carlos.martinez@example.com",
-          profilePic: "../../public/user3.jpg",
-          cityState: "Guadalajara, JAL",
-        },
-        company: {
-          uuid: "company-uuid-3",
-          name: "Empresa Rechazada 1",
-          description: "Descripción de la Empresa Rechazada 1",
-          industry: "Finanzas",
-          cityStateCountry: "Guadalajara, JAL, México",
-          address: "Boulevard de los Sueños Rotos 456",
-          employees: 100,
-        },
-      },
-    ],
+  const handleApprove = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:4000/admin/update-company-status/${selectedCompany.id}/Aprobada`
+      );
+      showSnackBar("Empresa aprobada y correo electrónico enviado.", "success");
+      setSelectedCompany(null);
+      setCompanies((prevCompanies) =>
+        prevCompanies.filter((company) => company.id !== selectedCompany.id)
+      );
+    } catch (error) {
+      showSnackBar("Error al aprobar la empresa.", "error");
+    }
   };
 
+  const handleReject = async () => {
+    const justification = prompt("Por favor ingresa la razón del rechazo:");
+    if (justification) {
+      try {
+        await axios.patch(
+          `http://localhost:4000/admin/update-company-status/${selectedCompany.id}/Rechazada`,
+          { justification }
+        );
+        showSnackBar(
+          "Empresa rechazada y correo electrónico enviado.",
+          "error"
+        );
+        setSelectedCompany(null);
+        setCompanies((prevCompanies) =>
+          prevCompanies.filter((company) => company.id !== selectedCompany.id)
+        );
+      } catch (error) {
+        showSnackBar("Error al rechazar la empresa.", "error");
+      }
+    }
+  };
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <main className={styles.AdminPanel}>
+    <div className={styles.AdminPanel}>
       <header className={styles.Header}>
         <button onClick={() => handleTabClick("approved")}>
           Empresas Aprobadas
@@ -125,59 +126,111 @@ export const AdminPanel = () => {
               : "Empresas Rechazadas"}
           </h2>
           <div className={styles.Companies}>
-            {companies[activeTab].map((company, index) => (
+            {companies.map((company) => (
               <div
+                key={company.id}
                 className={styles.Company}
-                key={index}
                 onClick={() => handleCompanyClick(company)}
               >
-                <img src={company.logo} alt={`${company.name} Logo`} />
+                <img src={company.logoUrl} alt={`${company.name} Logo`} />
                 <h3>{company.name}</h3>
-                <p>{company.industry}</p>
-                <p>Solicitado por: {company.user.name}</p>
+                {company.companyIndustry && (
+                  <p>{company.companyIndustry.name}</p>
+                )}
               </div>
             ))}
           </div>
         </div>
 
         {selectedCompany && (
-          <div className={styles.CompanyDetails}>
-            <h3>Detalles de la Empresa</h3>
-            <h4>Datos del usuario</h4>
-            <p>UUID: {selectedCompany.user.uuid}</p>
-            <p>Nombre: {selectedCompany.user.name}</p>
-            <p>Email: {selectedCompany.user.email}</p>
-            <img src={selectedCompany.user.profilePic} alt="Profile" />
-            <p>Ciudad/Estado: {selectedCompany.user.cityState}</p>
-
-            <h4>Datos de la empresa</h4>
-            <p>UUID: {selectedCompany.company.uuid}</p>
-            <img src={selectedCompany.company.logo} alt="Company Logo" />
-            <p>Nombre de la empresa: {selectedCompany.company.name}</p>
-            <p>Descripción: {selectedCompany.company.description}</p>
-            <p>Industria: {selectedCompany.company.industry}</p>
-            <p>
-              Ciudad/Estado/País: {selectedCompany.company.cityStateCountry}
-            </p>
-            <p>Dirección: {selectedCompany.company.address}</p>
-            <p>Cantidad de empleados: {selectedCompany.company.employees}</p>
-
-            {activeTab === "pending" && (
-              <>
+          <div className={styles.ModalContainer}>
+            <div className={styles.ModalContent}>
+              <div className={styles.ModalHeader}>
+                <h3>Detalles de la Empresa</h3>
                 <button
-                  className={styles.ApproveButton}
-                  onClick={handleApprove}
+                  className={styles.CloseButton}
+                  onClick={() => setSelectedCompany(null)}
                 >
-                  Aprobar
+                  Cerrar
                 </button>
-                <button className={styles.RejectButton} onClick={handleReject}>
-                  Rechazar
-                </button>
-              </>
-            )}
+              </div>
+              <div className={styles.DetailSection}>
+                <div className={styles.UserDetails}>
+                  <h4>Usuario que lo solicitó:</h4>
+                  <p>
+                    <strong>UUID:</strong>{" "}
+                    {selectedCompany.associations[0].user.id}
+                  </p>
+                  <p>
+                    <strong>Nombres y Apellidos:</strong>{" "}
+                    {`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}
+                  </p>
+                  <p>
+                    <strong>Email:</strong>{" "}
+                    {selectedCompany.associations[0].user.email}
+                  </p>
+                  <p>
+                    <strong>Foto de Perfil:</strong>{" "}
+                    <img
+                      src={selectedCompany.associations[0].user.profilePic}
+                      alt="Foto de perfil"
+                      className={styles.ProfilePic}
+                    />
+                  </p>
+                </div>
+                <div className={styles.CompanyDetails}>
+                  <h4>Datos de la Empresa:</h4>
+                  <p>
+                    <strong>UUID:</strong> {selectedCompany.id}
+                  </p>
+                  <img
+                    src={selectedCompany.logoUrl}
+                    alt={`${selectedCompany.name} Logo`}
+                    className={styles.CompanyLogo}
+                  />
+                  <p>
+                    <strong>Nombre:</strong> {selectedCompany.name}
+                  </p>
+                  <p>
+                    <strong>Descripción:</strong> {selectedCompany.description}
+                  </p>
+                  <p>
+                    <strong>Industria:</strong>{" "}
+                    {selectedCompany.companyIndustry.name}
+                  </p>
+                  <p>
+                    <strong>Ciudad-Estado-País:</strong>{" "}
+                    {selectedCompany.location}
+                  </p>
+                  <p>
+                    <strong>Dirección:</strong> {selectedCompany.address}
+                  </p>
+                  <p>
+                    <strong>Cantidad de empleados:</strong>{" "}
+                    {selectedCompany.cantEmployees}
+                  </p>
+                </div>
+              </div>
+              {activeTab === "pending" && (
+                <div className={styles.ButtonContainer}>
+                  <button
+                    className={styles.ApproveButton}
+                    onClick={handleApprove}
+                  >
+                    Aprobar
+                  </button>
+                  <button
+                    className={styles.RejectButton}
+                    onClick={handleReject}
+                  >
+                    Rechazar
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 };

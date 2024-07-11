@@ -251,7 +251,7 @@ export const Register = () => {
 
   return (
     <div className={styles["register-container"]}>
-      <h2>¡Bienvenido! Elige tu Rol:</h2>
+      {step === 1 && <h2>¡Bienvenido! Elige tu Rol:</h2>}
       {renderStep()}
     </div>
   );
