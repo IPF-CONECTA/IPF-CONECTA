@@ -27,10 +27,22 @@ export const Support = () => {
         subject: "Consulta de Soporte IPF-Conecta",
         message: issue,
       });
-      noti("¡Correo enviado correctamente!", "success");
-      setTimeout(() => navigate("/"), 2000);
+
+      if (response.status === 200) {
+        noti("¡Correo enviado correctamente!", "success");
+        setTimeout(() => navigate("/"), 1500);
+      } else {
+        setError(
+          "Error al enviar el formulario. Por favor, inténtalo de nuevo."
+        );
+      }
     } catch (error) {
-      noti("Error al enviar el formulario. Por favor, inténtalo de nuevo.", "error");
+      console.error("Error al enviar el formulario:", error);
+      setError("Error al enviar el formulario. Por favor, inténtalo de nuevo.");
+      noti(
+        "Error al enviar el formulario. Por favor, inténtalo de nuevo.",
+        "error"
+      );
     }
   };
 
