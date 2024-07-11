@@ -28,14 +28,17 @@ export const authSignUpCtrl = async (req, res) => {
 
 export const authLogInCtrl = async (req, res) => {
     const { user } = req.body;
+
+
     try {
-        const { token, name, isVerified } = await authLogInSvc(user)
-        if (!token) {
+        const response = await authLogInSvc(user)
+        if (!response.token) {
             throw new Error('No se pudo iniciar sesion')
         }
-        res.status(200).json({ message: `Bienvenido/a ${name}`, token, isVerified })
+        res.status(200).json({ message: `Bienvenido/a ${response.existingUser.names}`, response })
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message })
     }
 }

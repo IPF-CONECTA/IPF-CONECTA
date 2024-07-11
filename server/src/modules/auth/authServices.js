@@ -42,32 +42,28 @@ export const authSignUpSvc = async (user) => {
 // Si el usuario que se loguea tiene el campo verified == false, se le envia el correo de confirmacion
 // La funcion retorna isVerified, en el cliente se debe verificar si es true o false para mostrar la pagina correspondiente
 export const authLogInSvc = async (user) => {
-  try {
-    const existingUser = await User.findOne({ where: { email: user.email } });
-    if (!existingUser) {
-      throw new Error("No se encontro una cuenta con ese email");
+    try {
+        const existingUser = await User.findOne({ where: { email: user.email } })
+        if (!existingUser) {
+            throw new Error('No se encontro una cuenta con ese email')
+        }
+        const validPassword = await bcrypt.compare(user.password, existingUser.password);
+        if (!validPassword) throw new Error("Contraseña incorrecta");
+
+        const isVerified = existingUser.verified
+        // if (!isVerified) {
+        //     sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
+        // }
+
+        const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
+
+        return { token, existingUser, isVerified }
+
+    } catch (error) {
+        console.log(error)
+        throw new Error(error.message)
     }
-    const validPassword = await bcrypt.compare(
-      user.password,
-      existingUser.password
-    );
-    if (!validPassword) throw new Error("Contraseña incorrecta");
-
-    const isVerified = existingUser.verified;
-    // if (!isVerified) {
-    //     sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
-    // }
-
-    const token = jwt.sign(
-      { userId: existingUser.id },
-      process.env.TOKEN_SECRET_KEY
-    );
-
-    return { token, name: existingUser.names, isVerified };
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+}
 
 export const sendConfirmAccountSvc = async (userId) => {
   try {
