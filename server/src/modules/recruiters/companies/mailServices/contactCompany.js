@@ -1,15 +1,14 @@
-import { transporter } from "../../../../helpers/nodemailer.js"
-
+import { transporter } from "../../../../helpers/nodemailer.js";
 
 export const sendContactCompany = async (from, name, subject, message) => {
-    if (!from || !name || !subject || !message) {
-        throw new Error('Rellene los campos para continuar')
-    }
-    const mailConfig = {
-        from: from,
-        to: 'ipfconecta@gmail.com',
-        subject: subject,
-        html: `<head>
+  if (!from || !name || !subject || !message) {
+    throw new Error("Rellene los campos para continuar");
+  }
+  const mailConfig = {
+    from: from,
+    to: "ipfconecta@gmail.com",
+    subject: subject,
+    html: `<head>
                     <title>Contacto desde el formulario</title>
                     <style>
                         body { font-family: Arial, sans-serif; }
@@ -24,7 +23,7 @@ export const sendContactCompany = async (from, name, subject, message) => {
                 <body>
                     <div class='container'>
                     <div class='header'>
-                        <h2>Nuevo mensaje de contacto</h2>
+                        <h2>Nuevo mensaje de consulta</h2>
                     </div>
                         <div class='content'>
                             <div class='field'>
@@ -34,20 +33,16 @@ export const sendContactCompany = async (from, name, subject, message) => {
                                 <span class='label'>Correo Electrónico:</span><span class='value'>${from}</span>
                             </div>
                             <div class='field'>
-                                <span class='label'>Asunto:</span><span class='value'>${subject}</span>
-                            </div>
-                            <div class='field'>
-                                <span class='label'>Mensaje:</span>
-                                <div class='value'>${message}</div>
+                                <span class='label'>Descripción del problema:</span><span class='value'>${message}</span>
                             </div>
                         </div>
                     </div>
-                </body>`
-    }
-    try {
-        await transporter.sendMail(mailConfig)
-        console.log('Correo de confirmacion enviado')
-    } catch (error) {
-        throw new Error('Error al enviar el correo de confirmacion: ' + error)
-    }
-}
+                </body>`,
+  };
+  try {
+    await transporter.sendMail(mailConfig);
+    console.log("Correo de contacto enviado");
+  } catch (error) {
+    throw new Error("Error al enviar el correo de contacto: " + error);
+  }
+};

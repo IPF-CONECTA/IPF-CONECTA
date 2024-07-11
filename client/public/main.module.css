@@ -271,12 +271,11 @@ section {
   flex-direction: column;
   align-items: center;
   background-color: #ececec;
-  min-height: 100vh;
   padding: 20px;
 }
 
 .Header {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .Header button {
@@ -298,8 +297,8 @@ section {
 .Content {
   display: flex;
   width: 100%;
-  max-width: 1200px;
-  gap: 20px;
+  max-width: 1000px;
+  justify-content: space-between;
 }
 
 .CompanyList {
@@ -338,13 +337,52 @@ section {
   margin-bottom: 10px;
 }
 
-.CompanyDetails {
-  flex: 1;
+.ModalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ModalContent {
   background-color: white;
-  border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
+  width: 80%;
+  max-width: 700px;
   text-align: center;
+  position: relative;
+}
+
+.ModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CloseButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.DetailSection {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.UserDetails,
+.CompanyDetails {
+  flex: 1;
+  margin: 1px;
 }
 
 .CompanyDetails img {
@@ -353,21 +391,39 @@ section {
 }
 
 .CompanyDetails h3,
-.CompanyDetails h4 {
+.CompanyDetails h4,
+.UserDetails h4 {
   color: #333;
 }
 
-.CompanyDetails p {
+.CompanyDetails p,
+.UserDetails p {
   color: #555;
   margin: 5px 0;
 }
 
-.ApproveButton {
+.ProfilePic {
+  max-width: 50px;
+  border-radius: 50%;
+}
+
+.CompanyLogo {
+  max-width: 100px;
+}
+
+.ButtonContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ApproveButton,
+.RejectButton {
   background-color: #4cb853;
   border: none;
   color: white;
   padding: 10px 20px;
-  margin: 10px;
   cursor: pointer;
   font-size: 16px;
   border-radius: 5px;
@@ -375,13 +431,6 @@ section {
 
 .RejectButton {
   background-color: #ff4b4b;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
 }
 
 .ApproveButton:hover,
