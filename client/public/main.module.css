@@ -265,3 +265,175 @@ section {
     font-size: 16px;
   }
 }
+
+.AdminPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ececec;
+  padding: 20px;
+}
+
+.Header {
+  margin-bottom: 10px;
+}
+
+.Header button {
+  background-color: #b8dfff;
+  border: none;
+  color: #333;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.Header button:hover {
+  background-color: #4cb853;
+  color: white;
+}
+
+.Content {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  justify-content: space-between;
+}
+
+.CompanyList {
+  flex: 1;
+}
+
+.CompanyList h2 {
+  text-align: center;
+  color: #333;
+}
+
+.Companies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.Company {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.Company:hover {
+  transform: scale(1.05);
+}
+
+.Company img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.ModalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ModalContent {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  position: relative;
+}
+
+.ModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CloseButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.DetailSection {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.UserDetails,
+.CompanyDetails {
+  flex: 1;
+  margin: 1px;
+}
+
+.CompanyDetails img {
+  max-width: 100px;
+  margin: 10px auto;
+}
+
+.CompanyDetails h3,
+.CompanyDetails h4,
+.UserDetails h4 {
+  color: #333;
+}
+
+.CompanyDetails p,
+.UserDetails p {
+  color: #555;
+  margin: 5px 0;
+}
+
+.ProfilePic {
+  max-width: 50px;
+  border-radius: 50%;
+}
+
+.CompanyLogo {
+  max-width: 100px;
+}
+
+.ButtonContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ApproveButton,
+.RejectButton {
+  background-color: #4cb853;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.RejectButton {
+  background-color: #ff4b4b;
+}
+
+.ApproveButton:hover,
+.RejectButton:hover {
+  opacity: 0.8;
+}

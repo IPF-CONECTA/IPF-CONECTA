@@ -6,34 +6,29 @@ import { Link } from "react-router-dom";
 export const Footer = () => {
   return (
     <div className="FinPag">
-      <div className="container">
         <footer>
           <div className="d-flex align-items-center">
-            <a href="#">
-              <img src={logoImage} alt="Logo" className="logoImage" />
-            </a>
-            <span className="mb-3 mb-md-0">IPF-CONECTA © 2024</span>
+            <Link to={"/"}><img src={logoImage} alt="Logo" className="logoImage" /></Link>
+            <span className="mb-3 mb-md-0">IPF-CONECTA © 2024</span> 
           </div>
-
           <ul className="nav list-unstyled d-flex">
             <li className="ms-3">
-              <a href="#">
+              <Link to={"/"}>
                 <span className="material-symbols-outlined">home</span>
-              </a>
+              </Link>
             </li>
             <li className="ms-3">
-              <a href="#">
+              <Link to={"/comunidad"}>
                 <span className="material-symbols-outlined">group</span>
-              </a>
+              </Link>
             </li>
             <li className="ms-3">
-              <a href="#">
+              <Link to={"/support"}>
                 <span className="material-symbols-outlined">info</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </footer>
       </div>
-    </div>
   );
 };

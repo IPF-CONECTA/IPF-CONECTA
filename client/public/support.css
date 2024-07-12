@@ -1,8 +1,8 @@
 /* Contenedor de soporte */
 .support-container {
   max-width: 600px;
-  margin: 20px auto; 
-  padding: 20px;
+  margin: 10px auto; 
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
@@ -11,11 +11,11 @@
 
 .support-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1px;
 }
 
 .form-group label {
@@ -27,7 +27,7 @@
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 8px;
+  padding: 2px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;

@@ -6,7 +6,7 @@ export const getUsersController = async (_req, res) => {
         const users = await getUsers();
 
         if (users.length == 0) {
-            res.status(400).json({ message: 'No se encontraron usuarios' })
+            return res.status(400).json({ message: 'No se encontraron usuarios' })
         }
         res.status(200).json(users);
     } catch (error) {
@@ -19,8 +19,8 @@ export const getUsersController = async (_req, res) => {
 export const createUserController = async (req, res) => {
     const { user } = req.body
     try {
-        const newUser = await createUser(user)
-        res.status(201).json({ newUser, message: 'Usuario generado con exito' })
+        await createUser(user)
+        res.status(201).json({ message: 'Usuario generado con exito' })
     } catch (error) {
         if (error.message == 'Rol no valido') {
             res.status(400).json({ message: error.message })

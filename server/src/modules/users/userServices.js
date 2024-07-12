@@ -1,26 +1,37 @@
 import { User } from './userModel.js'
-import { generateVerificationCode } from '../../helpers/generateCode.js'
-import { basicRoles } from '../../constant/roles.js';
-
+import { ALL_ROLES } from '../../constant/roles.js';
+import bcrypt from 'bcryptjs'
 
 export const getUsers = async () => {
     const users = await User.findAll()
     return users
 }
 
+export const getUserById = async (id) => {
+    const user = await User.findByPk(id)
+    return user
+}
+
 export const createUser = async (user) => {
+    try {
+        const roleId = ALL_ROLES[user.role];
+        const hashpass = await bcrypt.hash(user.password, 10)
 
-    if (!Object.keys(basicRoles).includes(user.role)) { throw new Error('Rol no valido') }
+        user = {
+            names: user.names,
+            surnames: user.surnames,
+            roleId: roleId,
+            password: hashpass,
+            email: user.email,
+            userState: 'none'
+        }
 
-    const roleId = roles[user.role];
-    user = {
-        names: user.names,
-        surnames: user.surnames,
-        roleId: roleId,
-        password: user.password,
-        email: user.email,
-        verifyCode: generateVerificationCode(),
+        const existingUser = await User.findOne({ where: { email: user.email } });
+
+        if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
+        return User.create(user)
+    } catch (error) {
+        console.log(error)
     }
-    return User.create(user)
 
 }

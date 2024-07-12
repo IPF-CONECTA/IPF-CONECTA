@@ -4,13 +4,12 @@ nav.nav-container {
   justify-content: space-between;
   align-items: center;
   background-color: #b8dfff;
-  padding: 10px;
   flex-wrap: wrap;
 }
 
 .logoImage {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
 }
 
 .buttons {

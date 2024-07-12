@@ -5,7 +5,7 @@ import iconoipf from "../../public/iconoipf.png";
 
 export const NotFound = () => {
   return (
-    <div className="not-f ound">
+    <div className="not-found">
       <div className="logo-container">
         <img src={iconoipf} alt="Logo" className="logo" />
       </div>
