@@ -3,7 +3,7 @@ import { set, useForm } from "react-hook-form";
 import React, { useContext, useEffect } from "react";
 import styles from "../../public/css/login.module.css";
 import { authContext } from "../context/auth/Context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const { login, authState } = useContext(authContext);
@@ -50,6 +50,12 @@ export const Login = () => {
           <button type="submit" className={styles.button}>
             Login
           </button>
+        </div>
+        <div className={styles["register-link"]}>
+          <span>¿No tienes cuenta? </span>
+          <Link to="/register" className={styles["register-link-text"]}>
+            Regístrate
+          </Link>
         </div>
       </form>
     </div>

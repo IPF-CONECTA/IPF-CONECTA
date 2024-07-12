@@ -11,6 +11,7 @@ export const Nav = () => {
     await logout();
     navigate("/");
   };
+  console.log(authState);
   return (
     <nav className="nav-container">
       <div className="logo">
@@ -21,10 +22,10 @@ export const Nav = () => {
       <div className="buttons">
         {authState.isLogged ? (
           <>
-            <button onClick={handleLogout}>
+            <button onClick={handleLogout} className="button">
               <span className="material-symbols-outlined">logout</span>
             </button>
-            <Link to="/messages" className="messages-button d-flex">
+            <Link to="/messages" className="messages-button  d-flex">
               <span className="material-symbols-outlined">chat</span>
             </Link>
             {authState.role === "admin" ? (
@@ -37,6 +38,9 @@ export const Nav = () => {
           </>
         ) : (
           <>
+            <Link to="/jobs" className="student-button d-flex">
+              <span className="material-symbols-outlined">work</span>
+            </Link>
             <Link to="/login" className="login-button d-flex">
               <span className="material-symbols-outlined">login</span>
             </Link>

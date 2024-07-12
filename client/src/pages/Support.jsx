@@ -53,8 +53,9 @@ export const Support = () => {
           <h2 className="support-header">Soporte de Usuarios - IPF-Conecta</h2>
           <p>
             Si tienes algún problema o necesitas asistencia, por favor llena el
-            siguiente formulario y nuestro equipo de soporte se pondrá en
-            contacto contigo lo antes posible.
+            <span class="material-symbols-outlined">arrow_forward</span>{" "}
+            formulario y nuestro equipo de soporte se pondrá en contacto contigo
+            lo antes posible.
           </p>
           {error && <p className="error-message">{error}</p>}
           {successMessage && (

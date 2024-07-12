@@ -51,7 +51,7 @@ export const Register = () => {
 
       localStorage.setItem("token", response.data.token);
       noti(response.data.message, "success");
-      setStep(5);
+      setStep(4);
     } catch (error) {
       console.error("Error durante el registro:", error);
       setErrorMessage(error.response?.data?.message || "Error en el registro");
@@ -137,18 +137,29 @@ export const Register = () => {
                 onChange={handleChange}
               />
             </div>
-            <button
-              className={styles.button}
-              type="button"
-              onClick={() => setStep(3)}
-            >
-              Siguiente
-            </button>
+            <div className="d-flex justify-content-between">
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={() => setStep(1)}
+              >
+                <span className="material-symbols-outlined">arrow_back</span>
+              </button>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => setStep(3)}
+              >
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </button>
+            </div>
           </form>
         );
+
+      // En el paso 3, para ambos roles, agregamos un botón para <span class="material-symbols-outlined">arrow_back</span> al paso 2
       case 3:
         return (
-          <form className={styles.formStep}>
+          <form className={styles.formStep} onSubmit={handleSubmit}>
             {role === "recruiter" && (
               <>
                 <div className={styles.formGroup}>
@@ -206,26 +217,22 @@ export const Register = () => {
                   />
                 </div>
               </>
-            )}
-            <button
-              className={styles.button}
-              type="button"
-              onClick={() => setStep(4)}
-            >
-              Siguiente
-            </button>
+            )}{" "}
+            <div className="d-flex justify-content-between">
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={() => setStep(2)}
+              >
+                <span className="material-symbols-outlined">arrow_back</span>
+              </button>
+              <button className="btn btn-primary" type="submit">
+                Registrarse
+              </button>
+            </div>
           </form>
         );
       case 4:
-        return (
-          <form className={styles.formStep} onSubmit={handleSubmit}>
-            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-            <button className={styles.button} type="submit">
-              Registrarse
-            </button>
-          </form>
-        );
-      case 5:
         return (
           <form className={styles.formStep} onSubmit={handleVerificationSubmit}>
             <div className={styles.formGroup}>
@@ -239,9 +246,11 @@ export const Register = () => {
               />
             </div>
             {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-            <button className={styles.button} type="submit">
-              Verificar
-            </button>
+            <div className="d-flex justify-content-center">
+              <button className={styles.button} type="submit">
+                Verificar
+              </button>
+            </div>
           </form>
         );
       default:

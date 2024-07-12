@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/JobsSales.css";
 import axios from "axios";
 import { useState } from "react";
-import { contractType, industriesMap} from "../helpers/mapings.js";
-
+import { contractType, industriesMap } from "../helpers/mapings.js";
 
 export default function JobsSales() {
   const [jobs, setJobs] = useState([]);
@@ -26,7 +25,7 @@ export default function JobsSales() {
             <h4 className="grey">{industriesMap[job.contractTypeId]}</h4>
             <div className="end">
               <h4 className="type">{contractType[job.contractTypeId]}</h4>
-              <Link to={`/get-job/${job.id}`}>
+              <Link to={`/job/${job.id}`}>
                 <button className="info-button"> Ver más</button>
               </Link>
             </div>

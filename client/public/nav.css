@@ -24,13 +24,16 @@ nav.nav-container {
   border: none;
   border-radius: 5px;
   background-color: #f9f6ee;
-  color: #4cb853;
+  /* color: #4cb853; */
   cursor: pointer;
   text-decoration: none;
   color: inherit;
 }
 
 .buttons a:hover {
+  background-color: #d4d4d4;
+}
+.buttons button:hover {
   background-color: #d4d4d4;
 }
 

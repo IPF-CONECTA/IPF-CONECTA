@@ -1,6 +1,7 @@
 .register-container {
   max-width: 400px;
   margin: 20vh auto;
+  height: fit-content;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -12,10 +13,11 @@
 
 .roleImage {
   width: 50px;
-  height: auto; 
+  height: auto;
 }
-
-
+button {
+  width: fit-content;
+}
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -43,15 +45,14 @@
 }
 
 .roleCard--student:hover {
-  background-color: #8AC9B2;
-  animation:rippleOut 0.5s;
-}
-
-.roleCard--recruiter:hover {
-  background-color: #1DA9F8;
+  background-color: #8ac9b2;
   animation: rippleOut 0.5s;
 }
 
+.roleCard--recruiter:hover {
+  background-color: #1da9f8;
+  animation: rippleOut 0.5s;
+}
 
 @keyframes rippleOut {
   0% {

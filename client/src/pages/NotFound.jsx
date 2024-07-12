@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../../public/css/NotFound.css"; 
-import iconoipf from "../../public/iconoipf.png"; 
+import "../../public/css/NotFound.css";
+import iconoipf from "../../public/iconoipf.png";
 
 export const NotFound = () => {
   return (
@@ -13,10 +13,11 @@ export const NotFound = () => {
         <h1>404 - Not Found</h1>
         <p>Lo siento, la página que buscas no existe.</p>
         <Link to="/">
-          <button className="home-button">Volver al Inicio</button>
+          <button className="home-button">
+            <span class="material-symbols-outlined">arrow_back</span> al Inicio
+          </button>
         </Link>
       </div>
     </div>
   );
 };
-
