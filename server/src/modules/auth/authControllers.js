@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { authLogInSvc, authSignUpSvc, confirmAccountSvc, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
+import { authLogInSvc, authSignUpSvc, confirmAccountSvc, getRoles, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
 import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 
@@ -110,4 +110,12 @@ export const recoverPasswordCtrl = async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 
+}
+
+export const verifyToken = async (req, res) => {
+    const existingUser = req.user
+
+    const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
+    const role = await getRoles(existingUser.roleId)
+    return res.status(200).json({ existingUser, token, role })
 }

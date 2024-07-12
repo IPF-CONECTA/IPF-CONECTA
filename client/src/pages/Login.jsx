@@ -1,13 +1,15 @@
 // Login.js
 import { useForm } from "react-hook-form";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import styles from "../../public/css/login.module.css";
 import { useNoti } from "../hooks/useNoti";
+import { authContext } from "../context/auth/Context";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const noti = useNoti();
-
+  const { login, authState } = useContext(authContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,20 +18,12 @@ export const Login = () => {
     email: "",
     password: "",
   });
+  useEffect(() => {
+    if (authState.isLogged) navigate("/");
+  }, [authState.isLogged, navigate]);
 
   async function onSubmit(data) {
-    try {
-      const response = await axios.post(`http://localhost:4000/auth/login`, {
-        user: {
-          email: data.email,
-          password: data.password,
-        },
-      });
-
-      noti(response.data.message, "success");
-    } catch (error) {
-      noti(response.data.message, "error");
-    }
+    await login(data);
   }
 
   return (

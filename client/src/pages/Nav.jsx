@@ -1,9 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logoImage from "../../public/iconoipf.png";
-import "../../public/nav.css"; 
+import "../../public/nav.css";
+import { authContext } from "../context/auth/Context";
 
 export const Nav = () => {
+  const { authState, logout } = useContext(authContext);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
   return (
     <nav className="nav-container">
       <div className="logo">
@@ -12,23 +19,25 @@ export const Nav = () => {
         </Link>
       </div>
       <div className="buttons">
-        <Link to="/register" className="register-button">
-          <span className="material-symbols-outlined">app_registration</span>
-          Registrarse
-        </Link>
-        <Link to="/login" className="login-button">
-          <span className="material-symbols-outlined">login</span>Iniciar sesión
-        </Link>
-        <Link to="/support" className="support-button">
-          <span className="material-symbols-outlined">support_agent</span>
-          Soporte
-        </Link>
-        <Link to="/community" className="community-button">
+        {authState.isLogged ? (
+          <button onClick={handleLogout}>
+            <span className="material-symbols-outlined">logout</span>
+          </button>
+        ) : (
+          <>
+            <Link to="/login" className="login-button d-flex">
+              <span className="material-symbols-outlined">login</span>
+            </Link>
+            <Link to="/support" className="support-button d-flex">
+              <span className="material-symbols-outlined">support_agent</span>
+            </Link>
+          </>
+        )}
+        <Link to="/community" className="community-button d-flex">
           <span className="material-symbols-outlined">diversity_3</span>
-          Comunidad
         </Link>
-        <Link to="/messages" className="messages-button">
-          <span className="material-symbols-outlined">chat</span>Mensajes
+        <Link to="/messages" className="messages-button d-flex">
+          <span className="material-symbols-outlined">chat</span>
         </Link>
       </div>
     </nav>
