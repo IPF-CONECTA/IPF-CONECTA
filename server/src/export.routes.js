@@ -6,6 +6,7 @@ import companyAdminRoutes from "./modules/administration/admin/companies/company
 import jobRoutes from "./modules/recruiters/job/jobRoutes.js";
 import ubicationRoutes from "./modules/ubications/ubicationRoutes.js";
 import associationRoutes from "./modules/recruiters/associations/associationRoutes.js";
+import companyIndustriesRoutes from "./modules/recruiters/companies/companyIndustry/companyIndustryRoutes.js";
 export const routes = (app) => {
     app.use(userRoutes);
     app.use(authRoutes);
@@ -15,4 +16,5 @@ export const routes = (app) => {
     app.use('/admin', associationAdminRoutes)
     app.use('/admin', companyAdminRoutes)
     app.use(ubicationRoutes)
+    app.use(companyIndustriesRoutes)
 }

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "../styles/CompanyRegister.css";
 import axios from "axios";
+import { useNoti } from "../hooks/useNoti";
 
 export default function CompanyRegister() {
+  const noti = useNoti();
+
   const [industries, setIndustries] = useState([]);
   const [ubications, setUbications] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,10 +81,17 @@ export default function CompanyRegister() {
       )
       .then((response) => {
         if (response.status === 201) {
+          noti(response.data.message, "success");
           console.log("Empresa registrada con éxito");
         }
       })
       .catch((error) => {
+        console.log(error);
+        let errorMsg = error.response.data.message;
+        if(!errorMsg) {
+          errorMsg = error.response.data.errors[0].msg
+        }
+        noti(errorMsg, "error"); 
         console.error("Error creating company:", error);
       });
   }
@@ -182,7 +192,6 @@ export default function CompanyRegister() {
           value={formData.cantEmployees}
           onChange={handleInputChange}
           required
-
         />
 
         <button type="submit">Enviar</button>

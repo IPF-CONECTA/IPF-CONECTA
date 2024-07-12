@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import "../styles/JobsSales.css";
 import axios from "axios";
 import { useState } from "react";
-import { contractType, industriesMap } from "../helpers/maping";
-
+import {
+  contractType,
+  industriesMap,
+} from "../../../frontend/src/helpers/maping";
 
 export default function JobsSales() {
   const [jobs, setJobs] = useState([]);
@@ -13,12 +15,7 @@ export default function JobsSales() {
       setJobs(response.data);
     });
   };
-{
-  jobs.map(job => {
-  console.log()
 
-  })
-}
   return (
     <div className="jobs">
       <h1>Jobs in Sales</h1>

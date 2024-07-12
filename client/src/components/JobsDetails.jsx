@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../styles/JobDetails.css";
-import { modalityMap, contractType, industriesMap } from "../helpers/maping";
-
+import {
+  modalityMap,
+  contractType,
+  industriesMap,
+} from "../../../frontend/src/helpers/maping";
 
 export default function JobDetails() {
   const { id } = useParams();
@@ -34,7 +37,7 @@ export default function JobDetails() {
     return <div>Job not found</div>;
   }
 
-  console.log(job.company.logoUrl)
+  console.log(job.company.logoUrl);
 
   return (
     <div className="container">
@@ -49,7 +52,6 @@ export default function JobDetails() {
             alt={job.company.name}
             className="logo"
           />
-
         </div>
       </div>
 
@@ -93,16 +95,14 @@ export default function JobDetails() {
         <p>Descripción del trabajo:{job.description}</p>
         <p>Modalidad: {modalityMap[job.modalityId]}</p>
         <p>Tipo de contrato: {contractType[job.contractTypeId]}</p>
-        
-
       </div>
-        <h4>Requisitos:</h4>
+      <h4>Requisitos:</h4>
 
-        <ul className="grey">
-          {job.jobSkills.map((jobSkill) => (
-            <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>
-          ))}
-        </ul>
+      <ul className="grey">
+        {job.jobSkills.map((jobSkill) => (
+          <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
