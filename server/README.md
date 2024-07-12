@@ -1,11 +1,32 @@
-## Como hacer la build de la base de datos:
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-### Luego de instalar todas las dependencias con npm install:
+# Ejecutar en desarrollo
 
-- Configurar tu uri de postgree (./src/config/db.js), establece tus credenciales en el .env
-- Descomenta los bulkCreate en el archivo (./src/config/sync.js) para crear los registros correspondientes
-- Copia el sql (./src/config/world/world.sql) y pegalo en la query del manejador de base de datos que tengas
+1. Clonar el repositorio.
 
-#### Y listo :)
+2. El la temrinal ejecutar:
 
-### Estando en desarrollo comenta los bulkCreate, sino se crearan los mismos registros cada vez que se inicie el servidor
+```
+npm install
+```
+
+3. Tener NEST CLI en el ordenador, en caso de no tenerlo, ejecutar:
+
+```
+npm i -g @nestjs/cli
+```
+
+5. Clonar el archivo ```.env.template``` y renombrarlo a ```.env```
+
+6. Levantar la base de dato mediante docker.
+
+```
+docker-compose up
+```
+
+7. Levantar el proyecto en modo de desarrollo:
+```
+npm run start:dev
+```

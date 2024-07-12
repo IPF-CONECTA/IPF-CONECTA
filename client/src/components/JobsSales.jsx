@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
-import "../../public/JobSales.css";
+import "../styles/JobsSales.css";
 import axios from "axios";
 import { useState } from "react";
-import {
-  industriesMap,
-  contractType,
-  modalityMap,
-} from "../helpers/mapings.js";
+import { contractType, industriesMap} from "../helpers/mapings.js";
+
 
 export default function JobsSales() {
   const [jobs, setJobs] = useState([]);

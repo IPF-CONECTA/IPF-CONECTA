@@ -7,10 +7,11 @@ import { RegisterPage } from "../components/RegisterPage";
 import { SupportPage } from "../components/SupportPage";
 import { AdminCompany } from "../components/AdminCompany";
 import Panel from "../pages/PanelPage";
-import JobDetails from "../components/JobDetails";
+import JobsDetails from "../components/JobsDetails";
 import JobSales from "../components/JobSales";
 import Profile from "../components/Profile";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
+import CompanyRegister from "../components/CompanyRegister";
 
 export const Routers = () => {
   return (
@@ -26,7 +27,7 @@ export const Routers = () => {
             <Route path="/admin" element={<AdminCompany />} />
           </Route>
           <Route path="/panel" element={<Panel />} />
-          <Route path="/job/:id" element={<JobDetails />} />
+          <Route path="/job/:id" element={<JobsDetails />} />
           <Route path="/jobs" element={<JobSales />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
@@ -34,6 +35,7 @@ export const Routers = () => {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/company/register" element={<CompanyRegister/>}/>
         <Route path="/support" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>
