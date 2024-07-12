@@ -24,7 +24,7 @@ export const getCompaniesSvc = async (status) => {
             }]
         })
 
-        if (companies.length == 0) throw new Error('No se encontraron empresas')
+
         return companies
     } catch (error) {
         throw new Error(error.message)

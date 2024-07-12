@@ -8,9 +8,10 @@ export const getCompaniesCtrl = async (req, res) => {
         const validStatus = ['Aprobada', 'Rechazada', 'Pendiente']
         if (!validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
         const Companies = await getCompaniesSvc(status)
-        if (Companies.length == 0) res.status(404).json({ message: 'No se encontraron empresas sin verificar' })
+        if (Companies.length == 0) return res.status(404).json()
         res.status(200).json(Companies)
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message })
     }
 }
@@ -21,10 +22,11 @@ export const getCompanyByIdCtrl = async (req, res) => {
         if (!isValidUUID(id)) throw new Error('La empresa seleccionada no es valida')
         if (!id) throw new Error('No se seleccionó ninguna empresa')
         const company = await getCompanyByIdSvc(id)
-        if (!company) return res.status(404).json({ message: 'No se encontró la empresa seleccionada' })
+        if (!company) return res.status(404).json()
         res.status(200).json(company)
     } catch (error) {
-        res.status(500).json({ message: 'Error interno en el servidor' })
+        console.log(error)
+        res.status(500).json({ message: error.message })
     }
 }
 

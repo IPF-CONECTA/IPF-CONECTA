@@ -29,11 +29,16 @@ export const AdminPanel = () => {
         const response = await axios.get(
           `http://localhost:4000/admin/get-companies/${endpoint}`
         );
-
-        setCompanies(response.data);
-        setLoading(false);
+        if (response.status === 200) {
+          setCompanies(response.data);
+          setLoading(false);
+        }
       } catch (error) {
-        setError("Error al cargar las empresas");
+        if (error.response.status === 404) {
+          setCompanies([]);
+          showSnackBar("No se encontraron empresas", "info");
+        }
+      } finally {
         setLoading(false);
       }
     };
@@ -52,6 +57,7 @@ export const AdminPanel = () => {
         `http://localhost:4000/admin/get-company/${company.id}`
       );
       setSelectedCompany(response.data);
+      console.log(response);
     } catch (error) {
       setError("Error al cargar los detalles de la empresa");
     }
@@ -82,7 +88,7 @@ export const AdminPanel = () => {
         );
         showSnackBar(
           "Empresa rechazada y correo electrónico enviado.",
-          "error"
+          "success"
         );
         setSelectedCompany(null);
         setCompanies((prevCompanies) =>
@@ -117,31 +123,38 @@ export const AdminPanel = () => {
       </header>
 
       <section className={styles.Content}>
-        <div className={styles.CompanyList}>
-          <h2>
-            {activeTab === "approved"
-              ? "Empresas Aprobadas"
-              : activeTab === "pending"
-              ? "Empresas Pendientes de Aprobación"
-              : "Empresas Rechazadas"}
-          </h2>
-          <div className={styles.Companies}>
-            {companies.map((company) => (
-              <div
-                key={company.id}
-                className={styles.Company}
-                onClick={() => handleCompanyClick(company)}
-              >
-                <img src={company.logoUrl} alt={`${company.name} Logo`} />
-                <h3>{company.name}</h3>
-                {company.companyIndustry && (
-                  <p>{company.companyIndustry.name}</p>
-                )}
-              </div>
-            ))}
+        {error ? (
+          <div>{error}</div>
+        ) : (
+          <div className={styles.CompanyList}>
+            <h2>
+              {activeTab === "approved"
+                ? "Empresas Aprobadas"
+                : activeTab === "pending"
+                ? "Empresas Pendientes de Aprobación"
+                : "Empresas Rechazadas"}
+            </h2>
+            <div className={styles.Companies}>
+              {companies.length === 0 ? (
+                <p>No hay empresas disponibles en esta categoría.</p>
+              ) : (
+                companies.map((company) => (
+                  <div
+                    key={company.id}
+                    className={styles.Company}
+                    onClick={() => handleCompanyClick(company)}
+                  >
+                    <img src={company.logoUrl} alt={`${company.name} Logo`} />
+                    <h3>{company.name}</h3>
+                    {company.companyIndustry && (
+                      <p>{company.companyIndustry.name}</p>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        </div>
-
+        )}
         {selectedCompany && (
           <div className={styles.ModalContainer}>
             <div className={styles.ModalContent}>
@@ -198,10 +211,20 @@ export const AdminPanel = () => {
                     <strong>Industria:</strong>{" "}
                     {selectedCompany.companyIndustry.name}
                   </p>
-                  <p>
-                    <strong>Ciudad-Estado-País:</strong>{" "}
-                    {selectedCompany.location}
-                  </p>
+                  <div>
+                    <div>
+                      <p>
+                        Ubicación:{" "}
+                        {selectedCompany.location[0] === "country"
+                          ? `${selectedCompany.location[1].name}`
+                          : selectedCompany.location[0] === "state"
+                          ? `${selectedCompany.location[1].name}, ${selectedCompany.location[1].country.name}`
+                          : selectedCompany.location[0] === "city"
+                          ? `${selectedCompany.location[1].name}, ${selectedCompany.location[1].state.name}, ${selectedCompany.location[1].state.country.name}`
+                          : "No especificado"}
+                      </p>
+                    </div>
+                  </div>
                   <p>
                     <strong>Dirección:</strong> {selectedCompany.address}
                   </p>

@@ -20,9 +20,21 @@ export const Nav = () => {
       </div>
       <div className="buttons">
         {authState.isLogged ? (
-          <button onClick={handleLogout}>
-            <span className="material-symbols-outlined">logout</span>
-          </button>
+          <>
+            <button onClick={handleLogout}>
+              <span className="material-symbols-outlined">logout</span>
+            </button>
+            <Link to="/messages" className="messages-button d-flex">
+              <span className="material-symbols-outlined">chat</span>
+            </Link>
+            {authState.role === "admin" ? (
+              <Link to="/admin" className="admin-button d-flex">
+                <span className="material-symbols-outlined">
+                  admin_panel_settings
+                </span>
+              </Link>
+            ) : null}
+          </>
         ) : (
           <>
             <Link to="/login" className="login-button d-flex">
@@ -35,9 +47,6 @@ export const Nav = () => {
         )}
         <Link to="/community" className="community-button d-flex">
           <span className="material-symbols-outlined">diversity_3</span>
-        </Link>
-        <Link to="/messages" className="messages-button d-flex">
-          <span className="material-symbols-outlined">chat</span>
         </Link>
       </div>
     </nav>

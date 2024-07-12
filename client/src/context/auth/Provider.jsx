@@ -60,6 +60,8 @@ export const AuthProvider = ({ children }) => {
         role: data.response.role,
       },
     });
+    console.log(data);
+    toast(data.message, "success");
   };
 
   const logout = () => {

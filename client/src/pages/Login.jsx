@@ -1,7 +1,6 @@
 // Login.js
 import { useForm } from "react-hook-form";
 import React, { useContext, useEffect } from "react";
-import axios from "axios";
 import styles from "../../public/css/login.module.css";
 import { useNoti } from "../hooks/useNoti";
 import { authContext } from "../context/auth/Context";

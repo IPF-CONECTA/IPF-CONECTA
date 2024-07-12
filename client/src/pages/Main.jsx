@@ -12,7 +12,6 @@ export const Main = () => {
   return (
     <main className={styles.Menu}>
       <div className={styles["header-section"]}>
-        <Link to="/admin">HOLA</Link>
         <Carousel
           autoPlay={true}
           infiniteLoop={true}

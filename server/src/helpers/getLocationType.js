@@ -43,31 +43,37 @@ export const getLocationType = async (id, name) => {
 export const getLocation = async (jobOrCompany) => {
     switch (jobOrCompany.locationType) {
         case 'city':
-            jobOrCompany.dataValues.location = await City.findByPk(jobOrCompany.locationId, {
-                attributes: ['name'],
-                include: [{
-                    model: State,
+            jobOrCompany.dataValues.location = [
+                'city',
+                await City.findByPk(jobOrCompany.locationId, {
+                    attributes: ['name'],
+                    include: [{
+                        model: State,
+                        attributes: ['name'],
+                        include: [{
+                            model: Country,
+                            attributes: ['name']
+                        }]
+                    }]
+                })];
+            break;
+        case 'state':
+            jobOrCompany.dataValues.location = [
+                'state',
+                await State.findByPk(jobOrCompany.locationId, {
                     attributes: ['name'],
                     include: [{
                         model: Country,
                         attributes: ['name']
                     }]
-                }]
-            });
-            break;
-        case 'state':
-            jobOrCompany.dataValues.location = await State.findByPk(jobOrCompany.locationId, {
-                attributes: ['name'],
-                include: [{
-                    model: Country,
-                    attributes: ['name']
-                }]
-            });
+                })];
             break;
         case 'country':
-            jobOrCompany.dataValues.location = await Country.findByPk(jobOrCompany.locationId, {
-                attributes: ['name']
-            });
+            jobOrCompany.dataValues.location = [
+                'country',
+                await Country.findByPk(jobOrCompany.locationId, {
+                    attributes: ['name']
+                })];
             break;
         default:
             jobOrCompany.dataValues.location = null;
