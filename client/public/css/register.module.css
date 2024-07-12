@@ -42,8 +42,24 @@
   transition: background-color 0.3s ease-in-out;
 }
 
-.roleCard:hover {
-  background-color: #f0f0f0;
+.roleCard--student:hover {
+  background-color: #8AC9B2;
+  animation:rippleOut 0.5s;
+}
+
+.roleCard--recruiter:hover {
+  background-color: #1DA9F8;
+  animation: rippleOut 0.5s;
+}
+
+
+@keyframes rippleOut {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0);
+  }
 }
 
 .formStep {

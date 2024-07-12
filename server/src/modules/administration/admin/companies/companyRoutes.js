@@ -4,8 +4,8 @@ import { getCompaniesCtrl, updateCompanyStatusCtrl, getCompanyByIdCtrl } from '.
 
 const companyAdminRoutes = Router();
 
-companyAdminRoutes.get('/get-companies/:status', isAdmin, getCompaniesCtrl)
-companyAdminRoutes.get('/get-company/:id', isAdmin, getCompanyByIdCtrl)
-companyAdminRoutes.patch('/update-company-status/:id/:status', isAdmin, updateCompanyStatusCtrl)
+companyAdminRoutes.get('/get-companies/:status', getCompaniesCtrl)
+companyAdminRoutes.get('/get-company/:id', getCompanyByIdCtrl)
+companyAdminRoutes.patch('/update-company-status/:id/:status', updateCompanyStatusCtrl)
 
 export default companyAdminRoutes
