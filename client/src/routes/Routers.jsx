@@ -9,9 +9,10 @@ import { AdminCompany } from "../components/AdminCompany";
 import Panel from "../pages/PanelPage";
 import JobsDetails from "../components/JobsDetails";
 import JobSales from "../components/JobSales";
-import Profile from "../components/Profile";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import CompanyRegister from "../components/CompanyRegister";
+import StudentProfile from "../components/StudentProfile";
+import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 
 export const Routers = () => {
   return (
@@ -29,13 +30,14 @@ export const Routers = () => {
           <Route path="/panel" element={<Panel />} />
           <Route path="/job/:id" element={<JobsDetails />} />
           <Route path="/jobs" element={<JobSales />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<StudentProfile />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/company/register" element={<CompanyRegister/>}/>
+        <Route path="/company/register" element={<CompanyRegister />} />
+        <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>
