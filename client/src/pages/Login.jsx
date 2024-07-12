@@ -1,8 +1,7 @@
 // Login.js
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import React, { useContext, useEffect } from "react";
 import styles from "../../public/css/login.module.css";
-import { useNoti } from "../hooks/useNoti";
 import { authContext } from "../context/auth/Context";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +17,11 @@ export const Login = () => {
     password: "",
   });
   useEffect(() => {
-    if (authState.isLogged) navigate("/");
+    if (authState.isLogged) {
+      setTimeout(() => {
+        navigate("/");
+      }, 500);
+    }
   }, [authState.isLogged, navigate]);
 
   async function onSubmit(data) {

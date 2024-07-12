@@ -48,7 +48,7 @@ export const Support = () => {
 
   return (
     <>
-      <main>
+      <main className="d-flex align-items-center">
         <div className="support-container">
           <h2 className="support-header">Soporte de Usuarios - IPF-Conecta</h2>
           <p>

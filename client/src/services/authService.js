@@ -20,7 +20,7 @@ export const authService = {
     },
 
     getToken: () => {
-        return JSON.parse(localStorage.getItem('token'));
+        return localStorage.getItem('token');
     },
 
     setToken: (data) => {

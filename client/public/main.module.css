@@ -113,6 +113,7 @@ section {
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   transition: transform 0.3s;
+  animation: up-down 2s infinite;
 }
 
 .service:hover {
@@ -123,7 +124,6 @@ section {
   width: 150px;
   height: 150px;
   margin-bottom: 10px;
-  animation: up-down 2s infinite;
 }
 
 .service h3 {
@@ -166,8 +166,9 @@ section {
 
 /* Sección sobre nosotros */
 .about-section {
-  background-color: #f9f6ee;
+  background-color: white;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .about-content {

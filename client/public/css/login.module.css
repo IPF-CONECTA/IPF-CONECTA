@@ -1,7 +1,8 @@
 /* login.module.css */
 
 .login-container {
-  max-width: 400px;
+  width: 400px;
+  height: fit-content;
   margin: 110px auto;
   padding: 20px;
   border: 1px solid #ccc;

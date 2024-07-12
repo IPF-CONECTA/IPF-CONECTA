@@ -170,10 +170,7 @@ export const AdminPanel = () => {
               <div className={styles.DetailSection}>
                 <div className={styles.UserDetails}>
                   <h4>Usuario que lo solicitó:</h4>
-                  <p>
-                    <strong>UUID:</strong>{" "}
-                    {selectedCompany.associations[0].user.id}
-                  </p>
+
                   <p>
                     <strong>Nombres y Apellidos:</strong>{" "}
                     {`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}
@@ -193,9 +190,6 @@ export const AdminPanel = () => {
                 </div>
                 <div className={styles.CompanyDetails}>
                   <h4>Datos de la Empresa:</h4>
-                  <p>
-                    <strong>UUID:</strong> {selectedCompany.id}
-                  </p>
                   <img
                     src={selectedCompany.logoUrl}
                     alt={`${selectedCompany.name} Logo`}

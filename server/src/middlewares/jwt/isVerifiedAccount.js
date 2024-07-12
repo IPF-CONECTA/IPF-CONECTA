@@ -23,7 +23,7 @@ export const isToken = async (req, res, next) => {
         const { token } = req.headers
 
         if (!token) throw new Error('Inicie sesion para continuar')
-        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
+        const { userId } = jwt.verify(JSON.parse(token), process.env.TOKEN_SECRET_KEY)
 
         const isUser = await getUserById(userId)
         if (!isUser) {
