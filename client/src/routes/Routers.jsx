@@ -12,7 +12,7 @@ import StudentProfile from "../components/StudentProfile";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import CompanyRegister from "../components/CompanyRegister";
 import JobsSales from "../components/JobsSales";
-
+import Job from "../pages/prueba/jobs";
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -32,6 +32,7 @@ export const Routers = () => {
         <Route path="/job/:id" element={<JobsDetails />} />
         <Route path="/jobs" element={<JobsSales />} />
 
+        <Route path="/pruebas" element={<Job />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
