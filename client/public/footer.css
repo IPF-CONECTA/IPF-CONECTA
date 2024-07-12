@@ -1,0 +1,57 @@
+/* Estilos generales del footer */
+.FinPag {
+  background-color: #b8dfff;
+  padding: 20px 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav li {
+  margin-left: 15px;
+}
+
+.nav li:first-child {
+  margin-left: 0;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    margin-top: 10px;
+    justify-content: flex-start;
+  }
+  
+  .nav li {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .nav li {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+}
