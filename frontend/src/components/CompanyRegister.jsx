@@ -14,6 +14,7 @@ export default function CompanyRegister() {
     ubication: "",
     industry: "",
     cantEmployees: "",
+    message: "",
   });
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function CompanyRegister() {
     e.preventDefault();
 
     const token = localStorage.getItem("token");
-
+    const [locationId, locationName] = formData.ubication.split(";");
     axios
       .post(
         "http://localhost:4000/create-company",
@@ -62,21 +63,22 @@ export default function CompanyRegister() {
             name: formData.name,
             description: formData.description,
             address: formData.address,
-            locationName: formData.ubication,
+            locationName,
+            locationId,
             industryId: formData.industry,
             cantEmployees: formData.cantEmployees,
           },
+          message: formData.message,
         },
         {
           headers: {
-            "Content-Type": "application/json",
-            token: token
+            token: token,
           },
         }
       )
       .then((response) => {
-        if (response.status === 200) {
-          alert("Empresa registrada con éxito");
+        if (response.status === 201) {
+          console.log("Empresa registrada con éxito");
         }
       })
       .catch((error) => {
@@ -94,6 +96,15 @@ export default function CompanyRegister() {
           placeholder="Nombre de la empresa"
           value={formData.name}
           onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="message"
+          placeholder="Asociación"
+          value={formData.message}
+          onChange={handleInputChange}
+          required
         />
         <input
           type="text"
@@ -101,6 +112,7 @@ export default function CompanyRegister() {
           placeholder="Descripción"
           value={formData.description}
           onChange={handleInputChange}
+          required
         />
         <input
           type="email"
@@ -108,6 +120,7 @@ export default function CompanyRegister() {
           placeholder="Correo"
           value={formData.email}
           onChange={handleInputChange}
+          required
         />
         <input
           type="text"
@@ -115,6 +128,7 @@ export default function CompanyRegister() {
           placeholder="Dirección"
           value={formData.address}
           onChange={handleInputChange}
+          required
         />
 
         <input
@@ -123,6 +137,7 @@ export default function CompanyRegister() {
           placeholder="Ubicación"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          required
         />
         {ubications.length > 0 && (
           <select
@@ -130,14 +145,17 @@ export default function CompanyRegister() {
             value={formData.ubication}
             onChange={handleInputChange}
           >
-            <option value="">Seleccione su ubicación</option>
+            <option>Seleccione su ubicación</option>
             {ubications.map((ubication) => (
-              <option key={ubication.id} value={ubication.id}>
+              <option
+                key={ubication.id}
+                value={ubication.id + ";" + ubication.name}
+                required
+              >
                 {ubication.name}, {ubication.state ? ubication.state.name : ""}{" "}
-                de{" "}
                 {ubication.state
-                  ? ubication.state.country.name
-                  : ubication.country.name}
+                  ? ubication?.state?.country?.name
+                  : ubication?.country?.name}
               </option>
             ))}
           </select>
@@ -147,6 +165,7 @@ export default function CompanyRegister() {
           name="industry"
           value={formData.industry}
           onChange={handleInputChange}
+          required
         >
           <option value="">Seleccionar Industria</option>
           {industries.map((industry) => (
@@ -162,6 +181,8 @@ export default function CompanyRegister() {
           placeholder="Número de empleados"
           value={formData.cantEmployees}
           onChange={handleInputChange}
+          required
+
         />
 
         <button type="submit">Enviar</button>
