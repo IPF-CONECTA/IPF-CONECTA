@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../styles/JobDetails.css";
-import {
-  modalityMap,
-  contractType,
-  industriesMap,
-} from "../../../frontend/src/helpers/maping";
+import { contractType, industriesMap, modalityMap } from "../helpers/mapings.js";
 
 export default function JobDetails() {
   const { id } = useParams();

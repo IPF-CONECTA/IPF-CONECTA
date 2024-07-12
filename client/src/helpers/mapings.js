@@ -1,11 +1,11 @@
-export const modalityMap: { [key: number]: string } = {
+export const modalityMap = {
   1: "Presencial",
   2: "Remoto",
   3: "Híbrido",
   4: "Flexible",
 };
 
-export const contractType: { [key: number]: string } = {
+export const contractType = {
   1: "Jornada completa",
   2: "Media jornada",
   3: "Por horas",
@@ -17,7 +17,7 @@ export const contractType: { [key: number]: string } = {
   9: "Otro",
 };
 
-export const industriesMap: { [key: number]: string } = {
+export const industriesMap = {
   1: "Administración Pública y Defensa",
   2: "Aeroespacial",
   3: "Agricultura, Silvicultura, Pesca y Caza",
