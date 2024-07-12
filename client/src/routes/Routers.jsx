@@ -8,11 +8,11 @@ import { SupportPage } from "../components/SupportPage";
 import { AdminCompany } from "../components/AdminCompany";
 import Panel from "../pages/PanelPage";
 import JobsDetails from "../components/JobsDetails";
-import JobSales from "../components/JobSales";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import CompanyRegister from "../components/CompanyRegister";
 import StudentProfile from "../components/StudentProfile";
 import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
+import JobsSales from "../components/JobsSales";
 
 export const Routers = () => {
   return (
@@ -28,11 +28,11 @@ export const Routers = () => {
             <Route path="/admin" element={<AdminCompany />} />
           </Route>
           <Route path="/panel" element={<Panel />} />
-          <Route path="/job/:id" element={<JobsDetails />} />
-          <Route path="/jobs" element={<JobSales />} />
           <Route path="/profile" element={<StudentProfile />} />
         </Route>
 
+          <Route path="/job/:id" element={<JobsDetails />} />
+          <Route path="/jobs" element={<JobsSales />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
