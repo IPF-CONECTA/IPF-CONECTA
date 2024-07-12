@@ -1,7 +1,6 @@
 .FinPag {
   background-color: #b8dfff;
   padding: 20px 0;
-  margin-top: 100px;
 }
 
 footer {
@@ -31,7 +30,7 @@ footer {
     margin-top: 10px;
     justify-content: flex-start;
   }
-  
+
   .nav li {
     margin-left: 10px;
   }
@@ -42,7 +41,7 @@ footer {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .nav li {
     margin-left: 0;
     margin-bottom: 10px;
