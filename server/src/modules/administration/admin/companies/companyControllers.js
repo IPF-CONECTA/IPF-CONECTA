@@ -3,13 +3,18 @@ import { validate as isValidUUID } from 'uuid';
 
 export const getCompaniesCtrl = async (req, res) => {
     try {
+        const pageAsNumber = Number.parseInt(req.query.page)
+        let page = 1
+        if (!Number.isNaN(pageAsNumber) && pageAsNumber > 1) {
+            page = pageAsNumber
+        }
+
         const { status } = req.params
-        if (!status) throw new Error('Error en la solicitud, intente de nuevo')
         const validStatus = ['Aprobada', 'Rechazada', 'Pendiente']
-        if (!validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
-        const Companies = await getCompaniesSvc(status)
-        if (Companies.length == 0) return res.status(404).json()
-        res.status(200).json(Companies)
+        if (!status || !validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
+
+        const Companies = await getCompaniesSvc(status, page - 1)
+        res.status(200).json({ companies: Companies.rows, totalPages: Math.ceil(Companies.count / 12), total: Companies.count })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message })
@@ -26,7 +31,7 @@ export const getCompanyByIdCtrl = async (req, res) => {
         res.status(200).json(company)
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: error.message })
+        res.status(500).jsonK({ message: error.message })
     }
 }
 
@@ -34,6 +39,7 @@ export const updateCompanyStatusCtrl = async (req, res) => {
     const { id, status } = req.params
     const { justification } = req.body
     try {
+        console.log(status)
         if (status !== 'Aprobada' && status !== 'Rechazada') throw new Error('Estado en la solicitud invalido')
         if (!isValidUUID(id)) throw new Error('La empresa seleccionada no es valida')
         if (status == 'Rechazada') {

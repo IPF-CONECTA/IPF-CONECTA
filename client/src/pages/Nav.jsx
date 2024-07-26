@@ -13,10 +13,10 @@ export const Nav = () => {
   };
   console.log(authState);
   return (
-    <nav className="nav-container">
+    <nav className="nav-container d-flex align-items-center">
       <div className="logo">
         <Link to="/">
-          <img src={logoImage} alt="Logo" className="logoImage" />
+          <img src={logoImage} alt="Logo" className="logoImage h-100 w-100" />
         </Link>
       </div>
       <div className="buttons">
@@ -38,9 +38,6 @@ export const Nav = () => {
           </>
         ) : (
           <>
-            <Link to="/jobs" className="student-button d-flex">
-              <span className="material-symbols-outlined">work</span>
-            </Link>
             <Link to="/login" className="login-button d-flex">
               <span className="material-symbols-outlined">login</span>
             </Link>
@@ -49,6 +46,9 @@ export const Nav = () => {
             </Link>
           </>
         )}
+        <Link to="/jobs" className="student-button d-flex">
+          <span className="material-symbols-outlined">work</span>
+        </Link>
         <Link to="/community" className="community-button d-flex">
           <span className="material-symbols-outlined">diversity_3</span>
         </Link>

@@ -303,7 +303,11 @@ section {
 }
 
 .CompanyList {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .CompanyList h2 {
@@ -312,10 +316,9 @@ section {
 }
 
 .Companies {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
 }
 
 .Company {
@@ -380,7 +383,16 @@ section {
   margin-top: 20px;
 }
 
-.UserDetails,
+.DetailModal {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+}
+
+.UserDetails {
+  width: fit-content;
+  padding-left: 20px;
+}
 .CompanyDetails {
   flex: 1;
   margin: 1px;

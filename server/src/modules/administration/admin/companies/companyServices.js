@@ -6,13 +6,16 @@ import { User } from "../../../users/userModel.js"
 
 
 
-export const getCompaniesSvc = async (status) => {
+export const getCompaniesSvc = async (status, page) => {
     try {
-        const companies = await Company.findAll({
+        const companies = await Company.findAndCountAll({
             where: {
                 status: status
             },
+            limit: 12,
+            offset: page * 12,
             attributes: ['id', 'logoUrl', 'name', 'industryId'],
+            distinct: true,
             include: [{
                 model: Association,
                 attributes: ['id'],
@@ -21,13 +24,13 @@ export const getCompaniesSvc = async (status) => {
                     as: 'user',
                     attributes: ['names', 'surnames']
                 }]
-            }]
+            }],
         })
 
 
         return companies
     } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error)
     }
 }
 

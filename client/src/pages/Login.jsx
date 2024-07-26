@@ -26,6 +26,9 @@ export const Login = () => {
 
   async function onSubmit(data) {
     await login(data);
+    if (authState.user.role == "recruiter") {
+      navigate("/company/register");
+    }
   }
 
   return (

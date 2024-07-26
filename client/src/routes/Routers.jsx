@@ -8,9 +8,10 @@ import { SupportPage } from "../components/SupportPage";
 import { AdminCompany } from "../components/AdminCompany";
 import Panel from "../pages/PanelPage";
 import JobsDetails from "../components/JobsDetails";
-import StudentProfile from "../components/StudentProfile";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import CompanyRegister from "../components/CompanyRegister";
+import StudentProfile from "../components/StudentProfile";
+import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 import JobsSales from "../components/JobsSales";
 
 export const Routers = () => {
@@ -32,10 +33,15 @@ export const Routers = () => {
         <Route path="/job/:id" element={<JobsDetails />} />
         <Route path="/jobs" element={<JobsSales />} />
 
+        <Route path="/profile" element={<StudentProfile />} />
+
+        <Route path="/job/:id" element={<JobsDetails />} />
+        <Route path="/jobs" element={<JobsSales />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/company/register" element={<CompanyRegister />} />
+        <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>

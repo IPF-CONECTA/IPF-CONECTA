@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../styles/CompanyRegister.css";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
+import { useNavigate } from "react-router-dom";
 
 export default function CompanyRegister() {
+  const navigate = useNavigate();
   const noti = useNoti();
 
   const [industries, setIndustries] = useState([]);
@@ -83,16 +85,20 @@ export default function CompanyRegister() {
         if (response.status === 201) {
           noti(response.data.message, "success");
           console.log("Empresa registrada con éxito");
+          setTimeout(() => {
+            navigate("/company-confirmed");
+          }, 1500);
         }
       })
       .catch((error) => {
         console.log(error);
         let errorMsg = error.response.data.message;
-        if(!errorMsg) {
-          errorMsg = error.response.data.errors[0].msg
+        if (!errorMsg) {
+          errorMsg = error.response.data.errors[0].msg;
         }
-        noti(errorMsg, "error"); 
+        noti(errorMsg, "error");
         console.error("Error creating company:", error);
+        navigate("/company/register");
       });
   }
 
@@ -111,7 +117,7 @@ export default function CompanyRegister() {
         <input
           type="text"
           name="message"
-          placeholder="Asociación"
+          placeholder="Explica tu rol en la empresa"
           value={formData.message}
           onChange={handleInputChange}
           required
