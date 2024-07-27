@@ -54,9 +54,6 @@ export const AdminPanel = () => {
     getCompanies(currentPage);
   }, [activeTab, currentPage]);
 
-  const lastCompanyIndex = currentPage * 10;
-  const firstCompanyIndex = lastCompanyIndex - 10;
-
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     setCurrentPage(1);
@@ -124,7 +121,7 @@ export const AdminPanel = () => {
 
   return (
     <div className={styles.AdminPanel}>
-      <header className={styles.Header}>
+      <header className={`${styles.Header} pt-3`}>
         {["Aprobada", "Pendiente", "Rechazada"].map((tab) => (
           <button key={tab} onClick={() => handleTabClick(tab)}>
             Empresas {tab}
@@ -132,8 +129,8 @@ export const AdminPanel = () => {
         ))}
       </header>
 
-      <div>
-        <h2>
+      <div className="d-flex flex-column align-items-center justify-content-end h-100">
+        <h2 className="pb-4 pt-4">
           {activeTab === "Aprobada"
             ? "Empresas Aprobadas"
             : activeTab === "Pendiente"
@@ -145,19 +142,35 @@ export const AdminPanel = () => {
             {companies.length === 0 ? (
               <p>No hay empresas disponibles en esta categoría.</p>
             ) : (
-              companies.map((company) => (
-                <div
-                  key={company.id}
-                  className={styles.Company}
-                  onClick={() => handleCompanyClick(company)}
-                >
-                  <img src={company.logoUrl} alt={`${company.name} Logo`} />
-                  <h3>{company.name}</h3>
-                  {company.companyIndustry && (
-                    <p>{company.companyIndustry.name}</p>
-                  )}
-                </div>
-              ))
+              companies.map((company) => {
+                const words = company.name.split(" ");
+                const firstWord = words[0];
+                const restOfName = words.slice(1).join(" ");
+                const displayName =
+                  firstWord.length > 10
+                    ? `${firstWord.substring(0, 10)}-\n${firstWord.substring(
+                        10
+                      )} ${restOfName}`
+                    : company.name;
+
+                return (
+                  <div
+                    key={company.id}
+                    className={styles.Company}
+                    onClick={() => handleCompanyClick(company)}
+                  >
+                    <img src={company.logoUrl} alt={`${company.name} Logo`} />
+                    <h3 style={{ whiteSpace: "pre-wrap" }}>
+                      {displayName.length > 15
+                        ? `${displayName.substring(0, 15)}...`
+                        : displayName}
+                    </h3>
+                    {company.companyIndustry && (
+                      <p>{company.companyIndustry.name}</p>
+                    )}
+                  </div>
+                );
+              })
             )}
           </div>
           <Pagination
