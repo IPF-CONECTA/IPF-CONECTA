@@ -13,8 +13,8 @@ export const getCompaniesCtrl = async (req, res) => {
         const validStatus = ['Aprobada', 'Rechazada', 'Pendiente']
         if (!status || !validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
 
-        const Companies = await getCompaniesSvc(status, page - 1)
-        res.status(200).json({ companies: Companies.rows, totalPages: Math.ceil(Companies.count / 12), total: Companies.count })
+        const companies = await getCompaniesSvc(status, page - 1)
+        res.status(200).json({ companies: companies.rows, totalPages: Math.ceil(companies.count / 12), total: companies.count })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message })

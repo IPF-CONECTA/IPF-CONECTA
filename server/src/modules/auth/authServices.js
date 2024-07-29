@@ -27,6 +27,7 @@ export const authSignUpSvc = async (user) => {
       roleId: roleId,
       password: user.password,
       cuil: user.cuil,
+      userStateId: 1,
       state: 1,
     });
     const token = jwt.sign(

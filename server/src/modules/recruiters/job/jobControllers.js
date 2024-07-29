@@ -45,15 +45,23 @@ export const getJobByIdCtrl = async (req, res) => {
 }
 
 export const findJobsCtrl = async (req, res) => {
-    const { query } = req.params
+    const pageAsNumber = Number.parseInt(req.query.page)
+    let page = 1
+    if (!Number.isNaN(pageAsNumber) && pageAsNumber > 1) {
+        page = pageAsNumber
+    }
+    console.log(page)
+    let { query } = req.query
     if (!query) {
         query = ''
     }
     try {
-        const jobs = await findJobsSvc(query)
+        const jobs = await findJobsSvc(query, page - 1)
+        console.log(jobs.rows);
+        // console.log(jobs, " jobs dedsde el controlador")
         if (jobs.length == 0) return res.status(404).json({ message: 'No se encontraron trabajos para tu busqueda' })
+        res.status(200).json({ jobs: jobs.jobsWithUbication, totalPages: Math.ceil(jobs.count / 6), total: jobs.count })
 
-        res.status(200).json(jobs)
     } catch (error) {
         res.status(500).json(error.message)
     }

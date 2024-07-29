@@ -34,7 +34,7 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setErrorMessage("");
     const user = {
       email: formData.email,
       password: formData.password,

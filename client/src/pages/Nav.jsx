@@ -11,7 +11,6 @@ export const Nav = () => {
     await logout();
     navigate("/");
   };
-  console.log(authState);
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -76,7 +75,7 @@ export const Nav = () => {
               </>
             )}
             <li className="nav-item">
-              <Link to="/jobs" className="nav-link">
+              <Link to="/buscar-empleo" className="nav-link">
                 <span className="material-symbols-outlined">work</span>
               </Link>
             </li>

@@ -23,17 +23,12 @@ export const getApprovedCompaniesSvc = async () => {
 
 
 export const createCompany = async (company) => {
-
-    const locationType = await getLocationType(company.locationId, company.locationName)
     try {
         const newCompany = await Company.create({
             name: company.name,
             description: company.description,
-            industryId: company.industryId,
-            locationType: locationType,
-            locationId: company.locationId,
-            address: company.address,
             logoUrl: company.logoUrl,
+            countryOrigin: company.countryId,
             cantEmployees: company.cantEmployees,
         })
         if (!newCompany) throw new Error('No se pudo crear la empresa')

@@ -24,10 +24,28 @@ import { WorkExperience } from "../modules/users/workExperiences/experiencesMode
 import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkillModel.js";
 import { Attachment } from "../modules/posts/postAttachment/attachmentModel.js";
 import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
+import { CompanyUbication } from "../modules/recruiters/companies/companyIndustry/companyUbications/companyUbication.model.js";
 
 export const createRelations = async () => {
     try {
-
+        CompanyUbication.belongsTo(Company, {
+            foreignKey: 'companyId'
+        });
+        CompanyUbication.belongsTo(Country, {
+            foreignKey: 'countryId'
+        });
+        CompanyUbication.belongsTo(State, {
+            foreignKey: 'stateId'
+        });
+        Company.hasMany(CompanyUbication, {
+            foreignKey: 'companyId'
+        });
+        Country.hasMany(CompanyUbication, {
+            foreignKey: 'countryId'
+        });
+        State.hasMany(CompanyUbication, {
+            foreignKey: 'stateId'
+        });
         Role.hasMany(User, {
             foreignKey: 'roleId',
         });
