@@ -35,17 +35,19 @@ export const authLogInCtrl = async (req, res) => {
         if (!response.token) {
             throw new Error('No se pudo iniciar sesion')
         }
-        res.status(200).json({ message: `Bienvenido/a ${response.existingUser.names}`, response })
+        res.status(200).json({ message: `Bienvenido/a ${response.userInfo.names}`, response })
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: error.message })
+        res.status(400).json({ message: error.message })
     }
 }
 
 export const confirmAccountCtrl = async (req, res) => {
     const { receivedCode } = req.body;
-    const { token } = req.headers
+    let token = req.headers.authorization
+    token = token.split(' ')[1]
+    console.log('Token extraído:', token);
     try {
         if (!receivedCode) {
             throw new Error('Ingrese el codigo de verificacion')
@@ -63,7 +65,9 @@ export const confirmAccountCtrl = async (req, res) => {
 }
 
 export const sendConfirmAccountCtrl = async (req, res) => {
-    const { token } = req.headers
+    let token = req.headers.authorization
+    token = token.split(' ')[1]
+    console.log('Token extraído:', token);
     try {
         if (!token) {
             throw new Error('Inicie sesion para confirmar el correo')
@@ -92,7 +96,9 @@ export const sendRecoverPasswordCtrl = async (req, res) => {
 export const recoverPasswordCtrl = async (req, res) => {
 
     try {
-        const { token } = req.headers;
+        let token = req.headers.authorization
+        token = token.split(' ')[1]
+        console.log('Token extraído:', token);;
         if (!token) {
             throw new Error('Vuelva a recuperar su contraseña con su correo. Si el problema persiste, contacte al administrador')
         }

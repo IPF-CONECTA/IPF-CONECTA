@@ -6,7 +6,7 @@ export default function RequestForm({ addRequest }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [justification, setJustification] = useState("");
+  const [message, setmessage] = useState("");
   const [image, setImage] = useState(null);
   const [logo, setLogo] = useState(null);
 
@@ -16,16 +16,16 @@ export default function RequestForm({ addRequest }) {
       name.trim() === "" ||
       email.trim() === "" ||
       companyName.trim() === "" ||
-      justification.trim() === ""
+      message.trim() === ""
     ) {
       alert("Por favor, completa todos los campos.");
       return;
     }
-    addRequest({ name, email, companyName, justification, image, logo });
+    addRequest({ name, email, companyName, message, image, logo });
     setName("");
     setEmail("");
     setCompanyName("");
-    setJustification("");
+    setmessage("");
     setImage(null);
     setLogo(null);
   };
@@ -78,8 +78,8 @@ export default function RequestForm({ addRequest }) {
         </div>
         <div className="mb-3">
           <textarea
-            value={justification}
-            onChange={(e) => setJustification(e.target.value)}
+            value={message}
+            onChange={(e) => setmessage(e.target.value)}
             className="form-control"
             placeholder="Justificación"
           />

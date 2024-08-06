@@ -6,7 +6,10 @@ import { Association } from "../../modules/recruiters/associations/associationMo
 
 export const isRecruiter = async (req, res, next) => {
     try {
-        const { token } = req.headers
+        let token = req.headers.authorization
+        token = token.split(' ')[1]
+        token = token.replace(/"/g, '');
+
         if (!token) throw new Error('Inicie sesion para continuar')
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
 
@@ -21,13 +24,16 @@ export const isRecruiter = async (req, res, next) => {
         }
         next()
     } catch (error) {
+        console.log('error aca', error)
         res.status(401).json({ message: error.message })
     }
 }
 
 export const isApprovedAssociation = async (req, res, next) => {
     try {
-        const { token } = req.headers
+        let token = req.headers.authorization
+        token = token.split(' ')[1]
+        console.log('Token extraído:', token);
         const { companyId } = req.body.jobOffer
         if (!token) throw new Error('Inicie sesion para continuar')
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)

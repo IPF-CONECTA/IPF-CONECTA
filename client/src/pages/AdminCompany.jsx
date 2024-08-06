@@ -3,8 +3,8 @@ import axios from "axios";
 import styles from "../../public/main.module.css";
 import { useNoti } from "../hooks/useNoti";
 import Pagination from "@mui/material/Pagination";
-
-// Importar componentes de Material-UI
+import { authService } from "../services/authService";
+import DOMPurify from "dompurify";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -22,7 +22,6 @@ export const AdminPanel = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [open, setOpen] = useState(false);
   const [justification, setJustification] = useState("");
 
@@ -32,9 +31,13 @@ export const AdminPanel = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:4000/admin/get-companies/${activeTab}?page=${currentPage}`
+        `http://localhost:4000/admin/get-companies/${activeTab}?page=${currentPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
       );
-      console.log(res);
       setTotalPages(res.data.totalPages);
       if (res.data.companies.length === 0)
         noti("No se encontraron empresas", "info");
@@ -66,6 +69,7 @@ export const AdminPanel = () => {
         `http://localhost:4000/admin/get-company/${company.id}`
       );
       setSelectedCompany(response.data);
+      console.log(response.data);
       setShowFullDescription(false);
     } catch (error) {
       setError("Error al cargar los detalles de la empresa");
@@ -109,9 +113,11 @@ export const AdminPanel = () => {
   };
 
   // Función para alternar mostrar/ocultar descripción completa
-  const toggleDescription = () => {
-    setShowFullDescription(!showFullDescription);
+  const getShortDescription = (description) => {
+    if (description.length <= 100) return description;
+    return description.substring(0, 100) + "...";
   };
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
@@ -190,72 +196,89 @@ export const AdminPanel = () => {
           maxWidth="md"
         >
           <DialogContent className={styles.DetailsModal}>
-            <div className={styles.DetailSection}>
+            <div className={` d-flex flex-column`}>
               <div className={styles.CompanyDetails}>
-                <h4>Datos de la Empresa:</h4>
-                <img
-                  src={selectedCompany.logoUrl}
-                  alt={`${selectedCompany.name} Logo`}
-                  className={styles.CompanyLogo}
-                />
-                <p>
-                  <strong>Nombre:</strong> {selectedCompany.name}
-                </p>
-                <p>
-                  <strong>Descripción:</strong>{" "}
-                  {selectedCompany.description.length > 100 ? (
-                    <>
-                      {showFullDescription
-                        ? selectedCompany.description
-                        : `${selectedCompany.description.substring(0, 100)}...`}
-                      <Button onClick={toggleDescription} color="primary">
-                        {showFullDescription ? "Ocultar" : "Leer más"}
-                      </Button>
-                    </>
-                  ) : (
-                    selectedCompany.description
-                  )}
-                </p>
-                <p>
-                  <strong>Industria:</strong>{" "}
-                  {selectedCompany.companyIndustry.name}
-                </p>
-                <p>
-                  <strong>Ubicación:</strong>{" "}
-                  {selectedCompany.location[0] === "country"
-                    ? `${selectedCompany.location[1].name}`
-                    : selectedCompany.location[0] === "state"
-                    ? `${selectedCompany.location[1].name}, ${selectedCompany.location[1].country.name}`
-                    : selectedCompany.location[0] === "city"
-                    ? `${selectedCompany.location[1].name}, ${selectedCompany.location[1].state.name}, ${selectedCompany.location[1].state.country.name}`
-                    : "No especificado"}
-                </p>
-                <p>
-                  <strong>Dirección:</strong> {selectedCompany.address}
-                </p>
-                <p>
-                  <strong>Cantidad de empleados:</strong>{" "}
-                  {selectedCompany.cantEmployees}
-                </p>
-              </div>
-              <div className={styles.UserDetails}>
-                <h4 className="w-50">Solicitante:</h4>
-                <p className="w-50">
-                  <strong>Nombre:</strong>{" "}
-                  {`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}
-                </p>
-                <p className="w-50">
-                  <strong>Email:</strong>{" "}
-                  {selectedCompany.associations[0].user.email}
-                </p>
-                <p className="w-50">
-                  <strong>Foto de Perfil:</strong>{" "}
+                <div className="d-flex flex-row justify-content-start">
                   <img
-                    src={selectedCompany.associations[0].user.profilePic}
-                    alt="Foto de perfil"
-                    className={styles.ProfilePic}
+                    src={selectedCompany.logoUrl}
+                    alt={`${selectedCompany.name} Logo`}
+                    className={"m-0 me-3"}
+                    height={60}
                   />
-                </p>
+                  <div className="d-flex flex-column ">
+                    <strong className="fs-3">{selectedCompany.name}</strong>
+                    <div className="d-flex">
+                      <p className="fst-italic fw-light pe-2">
+                        {selectedCompany.country.name}
+                      </p>
+                      {selectedCompany.country.emoji}
+                    </div>
+                  </div>
+                </div>
+                <div className="pt-2">
+                  <p className="fw-semibold fs-5">Descripción</p>
+                  <div
+                    className="ps-4"
+                    dangerouslySetInnerHTML={{
+                      __html: showFullDescription
+                        ? DOMPurify.sanitize(selectedCompany.description)
+                        : DOMPurify.sanitize(
+                            getShortDescription(selectedCompany.description)
+                          ),
+                    }}
+                  ></div>
+                  {selectedCompany.description.length > 100 && (
+                    <Button
+                      onClick={() => {
+                        setShowFullDescription(!showFullDescription);
+                      }}
+                      color="primary"
+                    >
+                      {showFullDescription ? "Ocultar" : "Leer más"}
+                    </Button>
+                  )}
+                </div>
+                <hr />
+                <div className="d-flex flex-row justify-content-around pt-2 pb-2">
+                  <div className="d-flex flex-column align-items-center">
+                    Web
+                    {selectedCompany.webUrl ? (
+                      <strong>
+                        <a href={selectedCompany.webUrl}>
+                          {selectedCompany.webUrl}
+                        </a>
+                      </strong>
+                    ) : (
+                      <p>No disponible</p>
+                    )}
+                  </div>
+                  <div className="d-flex flex-column align-items-center">
+                    Industria
+                    <strong>{selectedCompany.companyIndustry.name}</strong>
+                  </div>
+                  <div className="d-flex flex-column align-items-center">
+                    Empleados
+                    <strong>{selectedCompany.cantEmployees}</strong>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div className={`d-flex align-items-center`}>
+                <img
+                  src={selectedCompany.associations[0].user.profilePic}
+                  alt="Foto de perfil"
+                  height={60}
+                  width={60}
+                  className="me-3"
+                />
+                <div>
+                  <p className="w-50">
+                    <strong>{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
+                  </p>
+                  <p className="w-50">
+                    {selectedCompany.associations[0].user.email}
+                  </p>
+                </div>
               </div>
             </div>
           </DialogContent>

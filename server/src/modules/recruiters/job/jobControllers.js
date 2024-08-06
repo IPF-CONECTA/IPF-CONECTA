@@ -3,7 +3,9 @@ import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js"
 import jwt from 'jsonwebtoken'
 
 export const createNewJobCtrl = async (req, res) => {
-    const { token } = req.headers
+    let token = req.headers.authorization
+    token = token.split(' ')[1]
+    console.log('Token extraído:', token);
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
     const { jobOffer, skills } = req.body
 

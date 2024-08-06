@@ -2,6 +2,7 @@ import { getLocation } from "../../../../helpers/getLocationType.js"
 import { Association } from "../../../recruiters/associations/associationModel.js"
 import { CompanyIndustry } from "../../../recruiters/companies/companyIndustry/companyIndustryModel.js"
 import { Company } from "../../../recruiters/companies/companyModel.js"
+import { Country } from "../../../ubications/models/countryModel.js"
 import { User } from "../../../users/userModel.js"
 
 
@@ -22,7 +23,7 @@ export const getCompaniesSvc = async (status, page) => {
                 include: [{
                     model: User,
                     as: 'user',
-                    attributes: ['names', 'surnames']
+                    attributes: ['id', 'names', 'surnames']
                 }]
             }],
         })
@@ -36,7 +37,7 @@ export const getCompaniesSvc = async (status, page) => {
 
 export const getCompanyByIdSvc = async (id) => {
     try {
-        let company = await Company.findByPk(id, {
+        const company = await Company.findByPk(id, {
             attributes: { exclude: ['status', 'justification', 'updatedAt'] },
             include: [{
                 model: Association,
@@ -51,9 +52,11 @@ export const getCompanyByIdSvc = async (id) => {
             }, {
                 model: CompanyIndustry,
                 attributes: ['name']
+            }, {
+                model: Country,
+                attributes: ['name', 'emoji']
             }]
         })
-        company = getLocation(company)
         return company
     } catch (error) {
         throw new Error(error.message)
@@ -62,7 +65,12 @@ export const getCompanyByIdSvc = async (id) => {
 
 export const updateCompanyStatusSvc = async (id, status, justification) => {
     try {
-        const existingCompany = await Company.findByPk(id)
+        const existingCompany = await Company.findByPk(id, {
+            include: [{
+                model: Association,
+                attributes: ['id'],
+            }]
+        })
         if (!existingCompany) throw new Error('No se encontro la empresa seleccionada')
 
         if (status == 'Aprobada') {
@@ -71,7 +79,6 @@ export const updateCompanyStatusSvc = async (id, status, justification) => {
 
         const updatedCompany = await Company.update({ status, justification }, { where: { id } })
         if (updatedCompany[0] === 0) throw new Error('Actualización fallida o empresa no encontrada');
-
         return updatedCompany
     } catch (error) {
         throw new Error(error.message)
@@ -82,6 +89,8 @@ export const deleteCompanySvc = async (id) => {
     try {
         const deletedCompany = await Company.destroy({ where: { id } })
         if (deletedCompany === 0) throw new Error('Eliminación fallida o empresa no encontrada');
+        const deletedAssociations = await Association.destroy({ where: { companyId: id } })
+        if (deletedAssociations === 0) throw new Error('Eliminación fallida o asociaciones no encontradas');
         return deletedCompany
     } catch (error) {
         throw new Error(error.message)

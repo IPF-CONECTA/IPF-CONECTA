@@ -53,13 +53,26 @@ export const authLogInSvc = async (user) => {
     if (!validPassword) throw new Error("Contraseña incorrecta");
 
     const isVerified = existingUser.verified
-    // if (!isVerified) {
+    // if (!isVerified) { COMENTADO EN DESARROLLO
     //     sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
     // }
 
     const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
     const role = await getRoles(existingUser.roleId)
-    return { token, existingUser, isVerified, role }
+
+    const userInfo = {
+      id: existingUser.id,
+      names: existingUser.names,
+      surnames: existingUser.surnames,
+      email: existingUser.email,
+      cuil: existingUser.cuil,
+      title: existingUser.title,
+      userStateId: existingUser.userStateId,
+      about: existingUser.about,
+      profilePic: existingUser.profilePic,
+      state: existingUser.state,
+    }
+    return { token, userInfo, isVerified, role }
 
   } catch (error) {
     console.log(error)
@@ -161,7 +174,6 @@ export const getRoles = async (id) => {
     if (!role) {
       throw new Error('No se encontro el rol')
     }
-    console.log(role.name)
     return role.name
   } catch (error) {
     throw new Error(error.message)

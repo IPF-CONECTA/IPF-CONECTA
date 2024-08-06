@@ -19,6 +19,14 @@ export const Company = sequelize.define('company', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    countryOriginId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    webUrl: {
+        type: DataTypes.STRING(255),
+        allowNull: true
+    },
     logoUrl: {
         type: DataTypes.STRING(255),
         allowNull: false,

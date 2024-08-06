@@ -8,8 +8,6 @@ import { useNoti } from "../hooks/useNoti";
 import axios from "axios";
 import styles from "../../public/css/jobCard.module.css";
 export const JobCard = ({ job, onClick, selectedJob }) => {
-  console.log(selectedJob);
-  console.log(job.id, "job id");
   return (
     <>
       <article

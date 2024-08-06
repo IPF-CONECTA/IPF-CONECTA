@@ -28,8 +28,10 @@ export const createCompany = async (company) => {
             name: company.name,
             description: company.description,
             logoUrl: company.logoUrl,
-            countryOrigin: company.countryId,
+            industryId: company.industryId,
+            countryOriginId: company.countryOriginId,
             cantEmployees: company.cantEmployees,
+            webUrl: company.webUrl,
         })
         if (!newCompany) throw new Error('No se pudo crear la empresa')
         return newCompany

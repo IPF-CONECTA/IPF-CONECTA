@@ -68,7 +68,7 @@ export const Register = () => {
         { receivedCode: verificationCode },
         {
           headers: {
-            token: token,
+            authorization: `Bearer ${authService.getToken()}`,
           },
         }
       );

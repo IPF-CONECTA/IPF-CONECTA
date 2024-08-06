@@ -1,4 +1,6 @@
-import { getCompaniesSvc, getCompanyByIdSvc, updateCompanyStatusSvc } from "./companyServices.js"
+import { Company } from "../../../recruiters/companies/companyModel.js";
+import { updateAssociation } from "../associations/assosiationServices.js";
+import { deleteCompanySvc, getCompaniesSvc, getCompanyByIdSvc, updateCompanyStatusSvc } from "./companyServices.js"
 import { validate as isValidUUID } from 'uuid';
 
 export const getCompaniesCtrl = async (req, res) => {
@@ -45,10 +47,23 @@ export const updateCompanyStatusCtrl = async (req, res) => {
         if (status == 'Rechazada') {
             if (!justification) throw new Error('Justifique el motivo del rechazo')
             if (justification.length < 5) throw new Error('La justificacion debe tener al menos 5 caracteres')
+            return await updateCompanyStatusSvc(id, status, justification)
         }
         if (status == 'Aprobada' && justification) throw new Error('No debe presentar justificacion si aprueba la empresa')
-        await updateCompanyStatusSvc(id, status)
+        const { association } = await updateCompanyStatusSvc(id, status)
+        await updateAssociation(association.id, 'Rechazada', 'La empresa fue rechazada, verifique su correo electronico para mas detalles')
         res.status(201).json({ message: 'La empresa fue actualizada correctamente' })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
+export const deleteCompanyCtrl = async (req, res) => {
+    const { id } = req.params
+    try {
+        if (!isValidUUID(id)) return res.status(400).json({ message: 'La empresa seleccionada no es valida' })
+        await deleteCompanySvc(id);
+        res.status(200).json({ message: 'La empresa fue eliminada correctamente' })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

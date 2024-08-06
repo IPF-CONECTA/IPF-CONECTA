@@ -29,7 +29,6 @@ export const JobSearch = () => {
     e.preventDefault();
     setQuery(e.target.searchBar.value);
     const data = await getJobs(e.target.searchBar.value);
-    console.log(data);
     setJobs(data.jobs);
     setCantJobs(data.total);
     setCurrentPage(1);
@@ -49,7 +48,6 @@ export const JobSearch = () => {
   const handleCardClick = async (id) => {
     try {
       setSelectedJob(id);
-      console.log(selectedJob);
     } catch (error) {
       console.log(error);
       noti("Error al cargar los detalles de la oferta de trabajo", "danger");

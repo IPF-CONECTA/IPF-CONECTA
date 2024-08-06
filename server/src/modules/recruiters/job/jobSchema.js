@@ -10,7 +10,9 @@ export const jobSchema = [
         .withMessage('El titulo debe tener entre 5 y 100 caracteres')
         .custom(async (value, { req }) => {
             const { companyId } = req.body.jobOffer;
-            const { token } = req.headers
+            let token = req.headers.authorization
+            token = token.split(' ')[1]
+            console.log('Token extraído:', token);
             const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
             const company = await Company.findByPk(companyId);
             const existingJob = await Job.findOne({ where: { title: value, companyId: companyId, userId: userId } });

@@ -58,7 +58,6 @@ export default function CompanyRegister() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
     const [locationId, locationName] = formData.ubication.split(";");
     axios
       .post(
@@ -77,14 +76,13 @@ export default function CompanyRegister() {
         },
         {
           headers: {
-            token: token,
+            authorization: `Bearer ${authService.getToken()}`,
           },
         }
       )
       .then((response) => {
         if (response.status === 201) {
           noti(response.data.message, "success");
-          console.log("Empresa registrada con éxito");
           setTimeout(() => {
             navigate("/company-confirmed");
           }, 1500);

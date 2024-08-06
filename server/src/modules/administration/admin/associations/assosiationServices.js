@@ -1,25 +1,26 @@
 import { Association } from "../../../recruiters/associations/associationModel.js"
 import { Company } from "../../../recruiters/companies/companyModel.js"
+import { Country } from "../../../ubications/models/countryModel.js";
 import { User } from "../../../users/userModel.js"
 
 export const getAssociations = async (status) => {
     try {
         const associations = await Association.findAll({
             where: { status: status },
-            attributes: ['id'],
+            attributes: ['id', 'status', 'message'],
             include: [{
                 model: User,
                 as: 'user',
-                attributes: ['id', 'names', 'surnames'],
+                attributes: ['id', 'names', 'surnames', 'profilePic', 'email'],
             }, {
 
                 model: Company,
                 as: 'company',
-                attributes: ['id', 'logoUrl', 'name', 'industryId'],
+                where: { status: status },
+                attributes: ['id', 'name', 'logoUrl',],
             }
             ]
-        })
-        if (associations.length == 0) throw new Error('No hay verificaciones pendientes')
+        });
         return associations
     } catch (error) {
         throw new Error(error.message)
@@ -38,7 +39,11 @@ export const getAssociationById = async (id) => {
             }, {
                 model: Company,
                 as: 'company',
-                attributes: ['id', 'logoUrl', 'name', 'description', 'industryId', 'cityId', 'address', 'cantEmployees'],
+                attributes: ['id', 'logoUrl', 'name', 'description', 'industryId', 'webUrl', 'cantEmployees', 'countryOriginId'],
+                include: [{
+                    model: Country,
+                    attributes: ['name', 'emoji']
+                }]
             }
             ]
         })
@@ -49,13 +54,14 @@ export const getAssociationById = async (id) => {
     }
 }
 
-export const updateAssociation = async (id, status) => {
+export const updateAssociation = async (id, status, justification) => {
     try {
         const isApprovedAssociation = await Association.findByPk(id)
         if (!isApprovedAssociation) throw new Error('No se encontro la asociacion')
         if (isApprovedAssociation.status == 'Aprobada') throw new Error('La asociacion ya fue aprobada')
-        const updatedAssociation = await Association.update({ status }, { where: { id } })
-        if (updatedAssociation[0] === 0) throw new Error('Actualización fallida o verificación no encontrada');
+        const updatedAssociation = await Association.update({ status, justification }, { where: { id } })
+        const updatedCompany = await Company.update({ status }, { where: { id: isApprovedAssociation.companyId } })
+        if (updatedAssociation[0] === 0 && updatedCompany[0] === 0) throw new Error('Actualización fallida o verificación no encontrada');
         return updatedAssociation
     } catch (error) {
         throw new Error(error.message)

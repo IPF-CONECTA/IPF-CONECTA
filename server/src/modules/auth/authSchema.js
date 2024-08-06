@@ -1,5 +1,4 @@
 import { body } from "express-validator";
-import { User } from "../users/userModel.js";
 export const authLoginSchema = [
     body('user.email')
         .isEmail().withMessage('Ingrese un email valido'),

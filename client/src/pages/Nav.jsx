@@ -49,13 +49,22 @@ export const Nav = () => {
                   </Link>
                 </li>
                 {authState.role === "admin" && (
-                  <li className="nav-item">
-                    <Link to="/admin" className="nav-link">
-                      <span className="material-symbols-outlined">
-                        admin_panel_settings
-                      </span>
-                    </Link>
-                  </li>
+                  <>
+                    <li className="nav-item">
+                      <Link to="/admin" className="nav-link">
+                        <span className="material-symbols-outlined">
+                          admin_panel_settings
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/panel" className="nav-link">
+                        <span className="material-symbols-outlined">
+                          admin_panel_settings
+                        </span>
+                      </Link>
+                    </li>
+                  </>
                 )}
               </>
             ) : (

@@ -25,8 +25,8 @@ export const Login = () => {
   }, [authState.isLogged, navigate]);
 
   async function onSubmit(data) {
-    await login(data);
-    if (authState.user.role == "recruiter") {
+    const role = await login(data);
+    if (role && role == "recruiter") {
       navigate("/company/register");
     }
   }

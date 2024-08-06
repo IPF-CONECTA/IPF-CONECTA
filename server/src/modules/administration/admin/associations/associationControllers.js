@@ -8,7 +8,7 @@ export const getAllAssociations = async (req, res) => {
         const validStatus = ['Aprobada', 'Rechazada', 'Pendiente']
         if (!validStatus.includes(status)) throw new Error('Error en la solicitud, intente de nuevo')
         const associations = await getAssociations(status)
-        if (associations.length == 0) res.status(404).json({ message: 'No hay verificaciones pendientes' })
+        if (associations.length == 0) return res.status(404).json({ message: 'No se encontraron asociaciones' })
         res.status(200).json({ associations })
     } catch (error) {
         res.status(500).json({ message: error.message })
