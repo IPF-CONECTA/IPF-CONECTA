@@ -34,7 +34,7 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setErrorMessage("");
     const user = {
       email: formData.email,
       password: formData.password,
@@ -68,7 +68,7 @@ export const Register = () => {
         { receivedCode: verificationCode },
         {
           headers: {
-            token: token,
+            authorization: `Bearer ${authService.getToken()}`,
           },
         }
       );

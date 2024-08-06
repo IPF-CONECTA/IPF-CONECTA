@@ -4,33 +4,57 @@ import RequestList from "../components/RequestList";
 import { Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../public/panel.css";
+import { getVerifications } from "../services/adminServices";
+import { Nav } from "./Nav";
+import { useNoti } from "../hooks/useNoti";
+import { set } from "react-hook-form";
 
 export default function Panel() {
-  const [requests, setRequests] = useState([]);
+  const [associations, setAssociations] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [tab, setTab] = useState("Pendiente");
+  const noti = useNoti();
 
-  const addRequest = (request) => {
-    setRequests([...requests, request]);
+  useEffect(() => {
+    setAssociations([]);
+
+    const getAssociations = async () => {
+      const { data, statusCode } = await getVerifications(tab);
+      if (statusCode === 404) {
+        return noti("No se encontraron asociaciones", "warning");
+      }
+      if (statusCode !== 200) {
+        return noti("Error al obtener las solicitudes", "error");
+      }
+      setAssociations(data);
+    };
+
+    getAssociations();
+  }, [tab]);
+
+  const handleTabClick = async (tab) => {
+    setTab(tab);
+    setAssociations([]);
   };
 
   const acceptRequest = (index) => {
     setAlert({
       show: true,
-      message: `Solicitud de ${requests[index].name} aceptada.`,
+      message: `Solicitud de ${associations[index].name} aceptada.`,
       type: "success",
     });
-    const newRequests = requests.filter((_, i) => i !== index);
-    setRequests(newRequests);
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
   };
 
   const rejectRequest = (index, reason) => {
     setAlert({
       show: true,
-      message: `Solicitud de ${requests[index].name} rechazada. Razón: ${reason}`,
+      message: `Solicitud de ${associations[index].name} rechazada. Razón: ${reason}`,
       type: "danger",
     });
-    const newRequests = requests.filter((_, i) => i !== index);
-    setRequests(newRequests);
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
   };
 
   useEffect(() => {
@@ -44,24 +68,42 @@ export default function Panel() {
   }, [alert]);
 
   return (
-    <div>
-      <RequestForm addRequest={addRequest} />
-      {alert.show && (
-        <div className="container mt-3">
-          <Alert
-            variant={alert.type}
-            onClose={() => setAlert({ show: false, message: "", type: "" })}
-            dismissible
-          >
-            {alert.message}
-          </Alert>
-        </div>
-      )}
-      <RequestList
-        requests={requests}
-        acceptRequest={acceptRequest}
-        rejectRequest={rejectRequest}
-      />
-    </div>
+    <>
+      <Nav />
+      <div>
+        <button
+          className="btn btn-success"
+          onClick={() => handleTabClick("Pendiente")}
+        >
+          Pendientes
+        </button>
+        <button
+          className="btn btn-success"
+          onClick={() => handleTabClick("Aprobada")}
+        >
+          Aprobadas
+        </button>
+        <button
+          className="btn btn-success"
+          onClick={() => handleTabClick("Rechazada")}
+        >
+          Rechazadas
+        </button>
+        {/*<RequestForm addRequest={addRequest} />
+        {alert.show && (
+          <div className="container mt-3">
+            <Alert
+              variant={alert.type}
+              onClose={() => setAlert({ show: false, message: "", type: "" })}
+              dismissible
+            >
+              {alert.message}
+            </Alert>
+          </div>
+        )} */}
+
+        <RequestList associations={associations} />
+      </div>
+    </>
   );
 }

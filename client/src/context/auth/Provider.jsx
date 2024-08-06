@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
       return dispatch({
         type: "LOGIN",
         payload: {
-          user: data.existingUser,
+          user: data.userInfo,
           isVerified: data.isVerified,
           token: data.token,
           isLogged: true,
@@ -42,26 +42,23 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (credentials) => {
-    let { email, password } = credentials;
-    console.log(email, password);
-
-    const { data, status } = await authService.login(credentials);
-    if (status != 200) {
-      return toast("Error al iniciar sesión", "error");
+    const res = await authService.login(credentials);
+    if (res.status != 200) {
+      return toast(res.message, "error");
     }
-    authService.setToken(data.response.token);
+    authService.setToken(res.data.response.token);
     dispatch({
       type: "LOGIN",
       payload: {
-        user: data.response.existingUser,
-        isVerified: data.response.isVerified,
-        token: data.response.token,
+        user: res.data.response.userInfo,
+        isVerified: res.data.response.isVerified,
+        token: res.data.response.token,
         isLogged: true,
-        role: data.response.role,
+        role: res.data.response.role,
       },
     });
-    console.log(data);
-    toast(data.message, "success");
+    toast(res.data.message, "success");
+    return res.data.response.role;
   };
 
   const logout = () => {

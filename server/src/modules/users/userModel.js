@@ -35,7 +35,6 @@ export const User = sequelize.define('user', {
     userStateId: {
         type: DataTypes.INTEGER,// Buscando trabajo / Reclutando / none
         allowNull: false,
-        defaultValue: 1
     },
     about: {
         type: DataTypes.STRING(),

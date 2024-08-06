@@ -1,53 +1,65 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSnackbar } from "notistack";
 import styles from "../../public/main.module.css";
 import { useNoti } from "../hooks/useNoti";
+import Pagination from "@mui/material/Pagination";
+import { authService } from "../services/authService";
+import DOMPurify from "dompurify";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 export const AdminPanel = () => {
-  const showSnackBar = useNoti();
-  const [activeTab, setActiveTab] = useState("approved");
+  const noti = useNoti();
+  const [activeTab, setActiveTab] = useState("Aprobada");
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [justification, setJustification] = useState("");
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      setLoading(true);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
-      try {
-        let endpoint = "";
-        if (activeTab === "approved") {
-          endpoint = "Aprobada";
-        } else if (activeTab === "pending") {
-          endpoint = "Pendiente";
-        } else if (activeTab === "rejected") {
-          endpoint = "Rechazada";
+  const getCompanies = async (currentPage) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/admin/get-companies/${activeTab}?page=${currentPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
         }
-
-        const response = await axios.get(
-          `http://localhost:4000/admin/get-companies/${endpoint}`
-        );
-        if (response.status === 200) {
-          setCompanies(response.data);
-          setLoading(false);
-        }
-      } catch (error) {
-        if (error.response.status === 404) {
-          setCompanies([]);
-          showSnackBar("No se encontraron empresas", "info");
-        }
-      } finally {
-        setLoading(false);
+      );
+      setTotalPages(res.data.totalPages);
+      if (res.data.companies.length === 0)
+        noti("No se encontraron empresas", "info");
+      setCompanies(res.status === 200 ? res.data.companies : []);
+    } catch (error) {
+      if (error.res?.status === 404) {
+        setCompanies([]);
+        noti("No se encontraron empresas", "info");
+      } else {
+        setError("Error al cargar las empresas");
       }
-    };
-
-    fetchCompanies();
-  }, [activeTab]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getCompanies(currentPage);
+  }, [activeTab, currentPage]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+    setCurrentPage(1);
     setSelectedCompany(null);
   };
 
@@ -57,197 +69,269 @@ export const AdminPanel = () => {
         `http://localhost:4000/admin/get-company/${company.id}`
       );
       setSelectedCompany(response.data);
-      console.log(response);
+      console.log(response.data);
+      setShowFullDescription(false);
     } catch (error) {
       setError("Error al cargar los detalles de la empresa");
     }
   };
 
-  const handleApprove = async () => {
+  const handleCompanyStatus = async (id, status, justification) => {
     try {
+      if (status === "Rechazada" && !justification) {
+        throw new Error("Por favor, ingrese un mensaje.");
+      }
       await axios.patch(
-        `http://localhost:4000/admin/update-company-status/${selectedCompany.id}/Aprobada`
+        `http://localhost:4000/admin/update-company-status/${id}/${status}`,
+        { justification }
       );
-      showSnackBar("Empresa aprobada y correo electrónico enviado.", "success");
+      noti(`Empresa ${status.toLowerCase()} con éxito`, "success");
       setSelectedCompany(null);
       setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== selectedCompany.id)
+        prevCompanies.filter((company) => company.id !== id)
       );
     } catch (error) {
-      showSnackBar("Error al aprobar la empresa.", "error");
+      console.log(error);
+      noti(
+        error.response?.data?.message || "Error al actualizar la empresa",
+        "error"
+      );
     }
   };
 
-  const handleReject = async () => {
-    const justification = prompt("Por favor ingresa la razón del rechazo:");
-    if (justification) {
-      try {
-        await axios.patch(
-          `http://localhost:4000/admin/update-company-status/${selectedCompany.id}/Rechazada`,
-          { justification }
-        );
-        showSnackBar(
-          "Empresa rechazada y correo electrónico enviado.",
-          "success"
-        );
-        setSelectedCompany(null);
-        setCompanies((prevCompanies) =>
-          prevCompanies.filter((company) => company.id !== selectedCompany.id)
-        );
-      } catch (error) {
-        showSnackBar("Error al rechazar la empresa.", "error");
-      }
-    }
+  const handleOpenModal = () => {
+    setOpen(true);
   };
 
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const confirmRejection = () => {
+    handleCompanyStatus(selectedCompany.id, "Rechazada", justification);
+    handleCloseModal();
+  };
+
+  // Función para alternar mostrar/ocultar descripción completa
+  const getShortDescription = (description) => {
+    if (description.length <= 100) return description;
+    return description.substring(0, 100) + "...";
+  };
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles.AdminPanel}>
-      <header className={styles.Header}>
-        <button onClick={() => handleTabClick("approved")}>
-          Empresas Aprobadas
-        </button>
-        <button onClick={() => handleTabClick("pending")}>
-          Empresas pendientes de aprobación
-        </button>
-        <button onClick={() => handleTabClick("rejected")}>
-          Empresas rechazadas
-        </button>
+      <header className={`${styles.Header} pt-3`}>
+        {["Aprobada", "Pendiente", "Rechazada"].map((tab) => (
+          <button key={tab} onClick={() => handleTabClick(tab)}>
+            Empresas {tab}
+          </button>
+        ))}
       </header>
 
-      <section className={styles.Content}>
-        {error ? (
-          <div>{error}</div>
-        ) : (
-          <div className={styles.CompanyList}>
-            <h2>
-              {activeTab === "approved"
-                ? "Empresas Aprobadas"
-                : activeTab === "pending"
-                ? "Empresas Pendientes de Aprobación"
-                : "Empresas Rechazadas"}
-            </h2>
-            <div className={styles.Companies}>
-              {companies.length === 0 ? (
-                <p>No hay empresas disponibles en esta categoría.</p>
-              ) : (
-                companies.map((company) => (
+      <div className="d-flex flex-column align-items-center justify-content-end h-100">
+        <h2 className="pb-4 pt-4">
+          {activeTab === "Aprobada"
+            ? "Empresas Aprobadas"
+            : activeTab === "Pendiente"
+            ? "Empresas Pendientes de Aprobación"
+            : "Empresas Rechazadas"}
+        </h2>
+        <div className={styles.CompanyList}>
+          <div className={styles.Companies}>
+            {companies.length === 0 ? (
+              <p>No hay empresas disponibles en esta categoría.</p>
+            ) : (
+              companies.map((company) => {
+                const words = company.name.split(" ");
+                const firstWord = words[0];
+                const restOfName = words.slice(1).join(" ");
+                const displayName =
+                  firstWord.length > 10
+                    ? `${firstWord.substring(0, 10)}-\n${firstWord.substring(
+                        10
+                      )} ${restOfName}`
+                    : company.name;
+
+                return (
                   <div
                     key={company.id}
                     className={styles.Company}
                     onClick={() => handleCompanyClick(company)}
                   >
                     <img src={company.logoUrl} alt={`${company.name} Logo`} />
-                    <h3>{company.name}</h3>
+                    <h3 style={{ whiteSpace: "pre-wrap" }}>
+                      {displayName.length > 15
+                        ? `${displayName.substring(0, 15)}...`
+                        : displayName}
+                    </h3>
                     {company.companyIndustry && (
                       <p>{company.companyIndustry.name}</p>
                     )}
                   </div>
-                ))
-              )}
-            </div>
+                );
+              })
+            )}
           </div>
-        )}
-        {selectedCompany && (
-          <div className={styles.ModalContainer}>
-            <div className={styles.ModalContent}>
-              <div className={styles.ModalHeader}>
-                <h3>Detalles de la Empresa</h3>
-                <button
-                  className={styles.CloseButton}
-                  onClick={() => setSelectedCompany(null)}
-                >
-                  Cerrar
-                </button>
-              </div>
-              <div className={styles.DetailSection}>
-                <div className={styles.UserDetails}>
-                  <h4>Usuario que lo solicitó:</h4>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </div>
+      </div>
 
-                  <p>
-                    <strong>Nombres y Apellidos:</strong>{" "}
-                    {`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}
-                  </p>
-                  <p>
-                    <strong>Email:</strong>{" "}
-                    {selectedCompany.associations[0].user.email}
-                  </p>
-                  <p>
-                    <strong>Foto de Perfil:</strong>{" "}
-                    <img
-                      src={selectedCompany.associations[0].user.profilePic}
-                      alt="Foto de perfil"
-                      className={styles.ProfilePic}
-                    />
-                  </p>
-                </div>
-                <div className={styles.CompanyDetails}>
-                  <h4>Datos de la Empresa:</h4>
+      {/* Modal de Detalles de la Empresa */}
+      {selectedCompany && (
+        <Dialog
+          open={Boolean(selectedCompany)}
+          onClose={() => setSelectedCompany(null)}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogContent className={styles.DetailsModal}>
+            <div className={` d-flex flex-column`}>
+              <div className={styles.CompanyDetails}>
+                <div className="d-flex flex-row justify-content-start">
                   <img
                     src={selectedCompany.logoUrl}
                     alt={`${selectedCompany.name} Logo`}
-                    className={styles.CompanyLogo}
+                    className={"m-0 me-3"}
+                    height={60}
                   />
-                  <p>
-                    <strong>Nombre:</strong> {selectedCompany.name}
-                  </p>
-                  <p>
-                    <strong>Descripción:</strong> {selectedCompany.description}
-                  </p>
-                  <p>
-                    <strong>Industria:</strong>{" "}
-                    {selectedCompany.companyIndustry.name}
-                  </p>
-                  <div>
-                    <div>
-                      <p>
-                        Ubicación:{" "}
-                        {selectedCompany.location[0] === "country"
-                          ? `${selectedCompany.location[1].name}`
-                          : selectedCompany.location[0] === "state"
-                          ? `${selectedCompany.location[1].name}, ${selectedCompany.location[1].country.name}`
-                          : selectedCompany.location[0] === "city"
-                          ? `${selectedCompany.location[1].name}, ${selectedCompany.location[1].state.name}, ${selectedCompany.location[1].state.country.name}`
-                          : "No especificado"}
+                  <div className="d-flex flex-column ">
+                    <strong className="fs-3">{selectedCompany.name}</strong>
+                    <div className="d-flex">
+                      <p className="fst-italic fw-light pe-2">
+                        {selectedCompany.country.name}
                       </p>
+                      {selectedCompany.country.emoji}
                     </div>
                   </div>
-                  <p>
-                    <strong>Dirección:</strong> {selectedCompany.address}
+                </div>
+                <div className="pt-2">
+                  <p className="fw-semibold fs-5">Descripción</p>
+                  <div
+                    className="ps-4"
+                    dangerouslySetInnerHTML={{
+                      __html: showFullDescription
+                        ? DOMPurify.sanitize(selectedCompany.description)
+                        : DOMPurify.sanitize(
+                            getShortDescription(selectedCompany.description)
+                          ),
+                    }}
+                  ></div>
+                  {selectedCompany.description.length > 100 && (
+                    <Button
+                      onClick={() => {
+                        setShowFullDescription(!showFullDescription);
+                      }}
+                      color="primary"
+                    >
+                      {showFullDescription ? "Ocultar" : "Leer más"}
+                    </Button>
+                  )}
+                </div>
+                <hr />
+                <div className="d-flex flex-row justify-content-around pt-2 pb-2">
+                  <div className="d-flex flex-column align-items-center">
+                    Web
+                    {selectedCompany.webUrl ? (
+                      <strong>
+                        <a href={selectedCompany.webUrl}>
+                          {selectedCompany.webUrl}
+                        </a>
+                      </strong>
+                    ) : (
+                      <p>No disponible</p>
+                    )}
+                  </div>
+                  <div className="d-flex flex-column align-items-center">
+                    Industria
+                    <strong>{selectedCompany.companyIndustry.name}</strong>
+                  </div>
+                  <div className="d-flex flex-column align-items-center">
+                    Empleados
+                    <strong>{selectedCompany.cantEmployees}</strong>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div className={`d-flex align-items-center`}>
+                <img
+                  src={selectedCompany.associations[0].user.profilePic}
+                  alt="Foto de perfil"
+                  height={60}
+                  width={60}
+                  className="me-3"
+                />
+                <div>
+                  <p className="w-50">
+                    <strong>{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
                   </p>
-                  <p>
-                    <strong>Cantidad de empleados:</strong>{" "}
-                    {selectedCompany.cantEmployees}
+                  <p className="w-50">
+                    {selectedCompany.associations[0].user.email}
                   </p>
                 </div>
               </div>
-              {activeTab === "pending" && (
-                <div className={styles.ButtonContainer}>
-                  <button
-                    className={styles.ApproveButton}
-                    onClick={handleApprove}
-                  >
-                    Aprobar
-                  </button>
-                  <button
-                    className={styles.RejectButton}
-                    onClick={handleReject}
-                  >
-                    Rechazar
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
-        )}
-      </section>
+          </DialogContent>
+
+          {activeTab === "Pendiente" && (
+            <DialogActions>
+              <Button color="secondary" onClick={handleOpenModal}>
+                Rechazar
+              </Button>
+              <Button
+                color="primary"
+                onClick={() =>
+                  handleCompanyStatus(selectedCompany.id, "Aprobada")
+                }
+              >
+                Aprobar
+              </Button>
+            </DialogActions>
+          )}
+        </Dialog>
+      )}
+
+      {/* Modal de justificación */}
+      <Dialog open={open} onClose={handleCloseModal}>
+        <DialogTitle>Rechazar Empresa</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Por favor, ingresa la razón del rechazo para la empresa.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Justificación"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={justification}
+            onChange={(e) => setJustification(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Cancelar
+          </Button>
+          <Button
+            onClick={confirmRejection}
+            color="secondary"
+            disabled={!justification.trim()}
+          >
+            Confirmar Rechazo
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -11,47 +11,90 @@ export const Nav = () => {
     await logout();
     navigate("/");
   };
-  console.log(authState);
   return (
-    <nav className="nav-container">
-      <div className="logo">
-        <Link to="/">
-          <img src={logoImage} alt="Logo" className="logoImage" />
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">
+          <img
+            src={logoImage}
+            alt="Logo"
+            width="35"
+            height="40"
+            className="d-inline-block align-text-top"
+          />
         </Link>
-      </div>
-      <div className="buttons">
-        {authState.isLogged ? (
-          <>
-            <button onClick={handleLogout} className="button">
-              <span className="material-symbols-outlined">logout</span>
-            </button>
-            <Link to="/messages" className="messages-button  d-flex">
-              <span className="material-symbols-outlined">chat</span>
-            </Link>
-            {authState.role === "admin" ? (
-              <Link to="/admin" className="admin-button d-flex">
-                <span className="material-symbols-outlined">
-                  admin_panel_settings
-                </span>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {authState.isLogged ? (
+              <>
+                <li className="nav-item">
+                  <button onClick={handleLogout} className="btn nav-link">
+                    <span className="material-symbols-outlined">logout</span>
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <Link to="/messages" className="nav-link">
+                    <span className="material-symbols-outlined">chat</span>
+                  </Link>
+                </li>
+                {authState.role === "admin" && (
+                  <>
+                    <li className="nav-item">
+                      <Link to="/admin" className="nav-link">
+                        <span className="material-symbols-outlined">
+                          admin_panel_settings
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/panel" className="nav-link">
+                        <span className="material-symbols-outlined">
+                          admin_panel_settings
+                        </span>
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    <span className="material-symbols-outlined">login</span>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/support" className="nav-link">
+                    <span className="material-symbols-outlined">
+                      support_agent
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
+            <li className="nav-item">
+              <Link to="/buscar-empleo" className="nav-link">
+                <span className="material-symbols-outlined">work</span>
               </Link>
-            ) : null}
-          </>
-        ) : (
-          <>
-            <Link to="/jobs" className="student-button d-flex">
-              <span className="material-symbols-outlined">work</span>
-            </Link>
-            <Link to="/login" className="login-button d-flex">
-              <span className="material-symbols-outlined">login</span>
-            </Link>
-            <Link to="/support" className="support-button d-flex">
-              <span className="material-symbols-outlined">support_agent</span>
-            </Link>
-          </>
-        )}
-        <Link to="/community" className="community-button d-flex">
-          <span className="material-symbols-outlined">diversity_3</span>
-        </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/community" className="nav-link">
+                <span className="material-symbols-outlined">diversity_3</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );

@@ -11,7 +11,10 @@ export const authService = {
             return { data: res.data, status: res.status }
         } catch (error) {
 
-            return error.response.status || error.code
+            const errorMsg = error.response.data.message
+            const errorStatus = error.response.status || error.code
+
+            return { message: errorMsg, status: errorStatus }
         }
     },
 
@@ -24,17 +27,17 @@ export const authService = {
     },
 
     setToken: (data) => {
-        localStorage.setItem('token', JSON.stringify(data));
+        localStorage.setItem('token', data);
     },
 
     removeToken: () => {
         localStorage.removeItem('token');
     },
-    verifyToken: async (token) => {
+    verifyToken: async () => {
         try {
             const res = await axios.get(`http://localhost:4000/auth/verify-token`, {
                 headers: {
-                    token: token
+                    authorization: `Bearer ${authService.getToken()}`,
                 }
             });
             return { data: res.data, status: res.status }

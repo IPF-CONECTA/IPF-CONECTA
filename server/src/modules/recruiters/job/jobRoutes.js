@@ -15,6 +15,6 @@ jobRoutes.get('/get-jobs', getJobsCtrl)
 
 jobRoutes.get('/get-job/:id', getJobByIdCtrl)
 
-jobRoutes.get('/search-jobs/:query', findJobsCtrl)
+jobRoutes.get('/job/search', findJobsCtrl)
 
 export default jobRoutes

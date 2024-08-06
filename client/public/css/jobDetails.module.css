@@ -1,0 +1,26 @@
+.jobDetails {
+  position: relative; /* Cambiado de fixed a relative */
+  top: auto; /* Removido */
+  right: auto; /* Removido */
+  width: 100%; /* Ajusta el ancho según sea necesario */
+  height: 100vh; /* Cambiado de 100vh a auto */
+  overflow-y: auto;
+  background-color: #fff;
+  z-index: 1000;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.noCaret::after {
+  display: none;
+}
+
+.bookmark {
+  width: 24.02px;
+  height: 24px;
+}
+.bookmark:hover {
+  color: #a1a1a1;
+}

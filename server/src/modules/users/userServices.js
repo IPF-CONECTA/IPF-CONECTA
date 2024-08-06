@@ -23,7 +23,7 @@ export const createUser = async (user) => {
             roleId: roleId,
             password: hashpass,
             email: user.email,
-            userState: 'none'
+            userStateId: 1
         }
 
         const existingUser = await User.findOne({ where: { email: user.email } });

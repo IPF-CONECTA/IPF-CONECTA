@@ -44,5 +44,9 @@ export const Job = sequelize.define('job', {
     contractTypeId: { // full-time, part-time, freelance, etc
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    aplicationLink: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 })

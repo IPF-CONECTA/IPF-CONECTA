@@ -48,3 +48,19 @@ export const findUbicationSvc = async (query) => {
         throw new Error(error.message)
     }
 }
+
+export const findCountrySvc = async (name) => {
+    try {
+        const country = await Country.findAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.iLike]: `%${name}%` } }
+                ]
+            },
+            attributes: ['id', 'name', 'emoji']
+        })
+        return country
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}

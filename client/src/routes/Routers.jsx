@@ -7,12 +7,14 @@ import { RegisterPage } from "../components/RegisterPage";
 import { SupportPage } from "../components/SupportPage";
 import { AdminCompany } from "../components/AdminCompany";
 import Panel from "../pages/PanelPage";
-import JobsDetails from "../components/JobsDetails";
-import StudentProfile from "../components/StudentProfile";
+// import JobsDetails from "../components/JobsDetails";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import CompanyRegister from "../components/CompanyRegister";
-import JobsSales from "../components/JobsSales";
-import Job from "../pages/prueba/jobs";
+import StudentProfile from "../components/StudentProfile";
+import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
+// import JobsSales from "../components/JobsSales";
+import { JobSearchPage } from "../pages/JobSearch";
+
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -26,17 +28,21 @@ export const Routers = () => {
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin" element={<AdminCompany />} />
           </Route>
-          <Route path="/panel" element={<Panel />} />
           <Route path="/profile" element={<StudentProfile />} />
         </Route>
-        <Route path="/job/:id" element={<JobsDetails />} />
-        <Route path="/jobs" element={<JobsSales />} />
+        {/* <Route path="/trabajo/:id" element={<JobsDetails />} /> */}
+        {/* <Route path="/trabajos" element={<JobsSales />} /> */}
+        <Route path="/panel" element={<Panel />} />
 
-        <Route path="/pruebas" element={<Job />} />
+        <Route path="/profile" element={<StudentProfile />} />
+        <Route path="/buscar-empleo" element={<JobSearchPage />} />
+        {/* <Route path="/trabajo/:id" element={<JobsDetails />} /> */}
+        {/* <Route path="/trabajos" element={<JobsSales />} /> */}
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/company/register" element={<CompanyRegister />} />
+        <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>
