@@ -12,7 +12,6 @@ import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryMod
 export const createNewJobSvc = async (jobOffer, userId) => {
     try {
         const isCompany = await Company.findByPk(jobOffer.companyId)
-        const locationType = await getLocationType(jobOffer.locationId, jobOffer.locationName)
 
         if (!isCompany) throw new Error('La empresa seleccionada no existe')
         const newJob = await Job.create({
@@ -21,8 +20,6 @@ export const createNewJobSvc = async (jobOffer, userId) => {
             title: jobOffer.title,
             modalityId: jobOffer.modalityId,
             description: jobOffer.description,
-            locationType: locationType,
-            locationId: jobOffer.locationId,
             contractTypeId: jobOffer.contractTypeId,
             aplicationLink: jobOffer.aplicationLink,
         }, { returning: true })
@@ -39,7 +36,7 @@ export const getJobsSvc = async () => {
             where: {
                 active: 'true'
             },
-            attributes: ['id', 'title', 'locationType', 'locationId', 'modalityId', 'contractTypeId', 'companyId', 'createdAt', 'aplicationLink'],
+            attributes: ['id', 'title', 'modalityId', 'contractTypeId', 'companyId', 'createdAt', 'aplicationLink'],
             include: [{
                 model: Company,
                 attributes: ['name']
@@ -109,7 +106,7 @@ export const findJobsSvc = async (query, page) => {
             limit: 6,
             offset: page * 6,
             distinct: true,
-            attributes: ['id', 'title', 'locationType', 'locationId', 'modalityId', 'contractTypeId', 'companyId', 'createdAt'],
+            attributes: ['id', 'title', 'modalityId', 'contractTypeId', 'companyId', 'createdAt'],
             include: [{
                 model: Company,
                 attributes: ['name', 'logoUrl']

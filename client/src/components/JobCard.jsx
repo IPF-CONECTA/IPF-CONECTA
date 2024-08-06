@@ -35,7 +35,6 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
           </button>
         </div>
         <p>{job.title}</p>
-        <p>{job.location.state.name}</p>
         <div className="d-flex justify-content-between">
           <p className="grey">{job.modality.name}</p>
           <p className="pe-1">{getTime(job.createdAt)}</p>
