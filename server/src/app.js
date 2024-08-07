@@ -10,7 +10,6 @@ import { createTablesAndRelations } from "./config/sync.js";
 import router from "./modules/users/userRoutes.js";
 import { routes } from "./export.routes.js";
 
-import { v2 as cloudinary } from "cloudinary";
 
 app.use(cors());
 app.use(express.json());
@@ -20,12 +19,6 @@ app.use(
   })
 );
 app.use(morgan("combined"));
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 routes(app);
 
