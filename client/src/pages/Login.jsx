@@ -27,7 +27,7 @@ export const Login = () => {
   async function onSubmit(data) {
     const role = await login(data);
     if (role && role == "recruiter") {
-      navigate("/company/register");
+      navigate("/seleccionar-compañia");
     }
   }
 
