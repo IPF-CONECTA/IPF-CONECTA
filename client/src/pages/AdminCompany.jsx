@@ -272,24 +272,24 @@ export const AdminPanel = () => {
               </div>
               <hr />
               <div className={`d-flex align-items-center`}>
-                <button
+                {/* <button
                   className="btn p-0"
                   onClick={() => alert(selectedCompany.associations[0].user.id)}
-                >
-                  <img
+                > */}
+                  {/* <img
                     src={selectedCompany.associations[0].user.profilePic}
                     alt="Foto de perfil"
                     height={60}
                     width={60}
                     className="rounded-pill me-3"
-                  />
-                </button>
-                <div>
+                  /> */}
+                {/* </button> */}
+                {/* <div>
                   <strong className="fs-5 w-100">{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
                   <p className="w-50 text-muted">
                     {selectedCompany.associations[0].user.email}
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </DialogContent>

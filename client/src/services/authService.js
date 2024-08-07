@@ -40,7 +40,7 @@ export const authService = {
                     authorization: `Bearer ${authService.getToken()}`,
                 }
             });
-            return { data: res.data, status: res.status }
+            return { data: res.data.json(), status: res.status }
         } catch (error) {
             console.log(error)
             return error.response.status || error.code
