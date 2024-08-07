@@ -5,7 +5,7 @@ export const Attachment = sequelize.define('attachment', {
     id: {
         type: DataTypes.UUID,
         allowNull: false,
-        defaultValue: UUIDV4,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
     postId: {

@@ -28,7 +28,7 @@ export const JobDetails = ({ jobId }) => {
             <div className="d-flex">
               <img
                 src={selectedJob.company.logoUrl}
-                className="pe-3"
+                className="me-3 rounded-pill"
                 height={"35px"}
                 alt="logo"
               />

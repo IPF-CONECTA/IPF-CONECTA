@@ -120,7 +120,6 @@ export const findJobsSvc = async (query, page) => {
             }
             ]
         });
-        const jobsWithUbication = await getAllLocations(jobs.rows)
         return { jobsWithUbication, count: jobs.count };
     } catch (error) {
         console.log(error);
