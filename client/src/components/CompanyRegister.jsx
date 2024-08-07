@@ -3,23 +3,20 @@ import "../styles/CompanyRegister.css";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../services/authService";
 
 export default function CompanyRegister() {
   const navigate = useNavigate();
   const noti = useNoti();
 
   const [industries, setIndustries] = useState([]);
-  const [ubications, setUbications] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    email: "",
-    address: "",
-    ubication: "",
-    industry: "",
+    industryId: "",
+    countryOriginId: "",
     cantEmployees: "",
-    message: "",
   });
 
   useEffect(() => {
@@ -29,23 +26,10 @@ export default function CompanyRegister() {
   }, []);
 
   useEffect(() => {
-    if (searchTerm.length > 2) {
-      axios
-        .get(`http://localhost:4000/find-ubication/${searchTerm}`)
-        .then((response) => {
-          // Flatten the array structure from the API response
-          const allUbications = response.data.flat();
-          // Filter and limit to first 40 results
-          let filteredUbications = allUbications.slice(0, 40);
-          setUbications(filteredUbications);
-        })
-        .catch((error) => {
-          console.error("Error fetching ubications:", error);
-        });
-    } else {
-      setUbications([]);
-    }
-  }, [searchTerm]);
+    axios.get("http://localhost:4000/countries").then((response) => {
+      setCountries(response.data);
+    });
+  }, []);
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -58,7 +42,6 @@ export default function CompanyRegister() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const [locationId, locationName] = formData.ubication.split(";");
     axios
       .post(
         "http://localhost:4000/create-company",
@@ -66,11 +49,9 @@ export default function CompanyRegister() {
           company: {
             name: formData.name,
             description: formData.description,
-            address: formData.address,
-            locationName,
-            locationId,
-            industryId: formData.industry,
             cantEmployees: formData.cantEmployees,
+            industryId: formData.industryId,
+            countryOriginId: formData.countryOriginId,
           },
           message: formData.message,
         },
@@ -101,105 +82,63 @@ export default function CompanyRegister() {
   }
 
   return (
-    <div className="container">
+    <form className="container" onSubmit={handleSubmit}>
       <h1>Registro de Empresa</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Nombre de la empresa"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="message"
-          placeholder="Explica tu rol en la empresa"
-          value={formData.message}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Descripción"
-          value={formData.description}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Correo"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Dirección"
-          value={formData.address}
-          onChange={handleInputChange}
-          required
-        />
+      <input
+        type="text"
+        name="name"
+        placeholder="Nombre de la empresa"
+        value={formData.name}
+        onChange={handleInputChange}
+        required
+      />
+      <input
+        type="text"
+        name="description"
+        placeholder="Descripción"
+        value={formData.description}
+        onChange={handleInputChange}
+        required
+      />
 
-        <input
-          type="text"
-          name="ubication"
-          placeholder="Ubicación"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          required
-        />
-        {ubications.length > 0 && (
-          <select
-            name="ubication"
-            value={formData.ubication}
-            onChange={handleInputChange}
-          >
-            <option>Seleccione su ubicación</option>
-            {ubications.map((ubication) => (
-              <option
-                key={ubication.id}
-                value={ubication.id + ";" + ubication.name}
-                required
-              >
-                {ubication.name}, {ubication.state ? ubication.state.name : ""}{" "}
-                {ubication.state
-                  ? ubication?.state?.country?.name
-                  : ubication?.country?.name}
-              </option>
-            ))}
-          </select>
-        )}
+      <select
+        name="industryId"
+        value={formData.industryId}
+        onChange={handleInputChange}
+        required
+      >
+        <option value="">Seleccionar Industria</option>
+        {industries.map((industry) => (
+          <option key={industry.id} value={industry.id}>
+            {industry.name}
+          </option>
+        ))}
+      </select>
 
-        <select
-          name="industry"
-          value={formData.industry}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="">Seleccionar Industria</option>
-          {industries.map((industry) => (
-            <option key={industry.id} value={industry.id}>
-              {industry.name}
-            </option>
-          ))}
-        </select>
+      <select
+        name="countryOriginId"
+        value={formData.countryOriginId}
+        onChange={handleInputChange}
+        required
+      >
+        <option value="">Seleccionar País</option>
+        {countries.map((country) => (
+          <option key={country.id} value={country.id}>
+            {country.name}
+          </option>
+        ))}
+      </select>
 
-        <input
-          type="number"
-          name="cantEmployees"
-          placeholder="Número de empleados"
-          value={formData.cantEmployees}
-          onChange={handleInputChange}
-          required
-        />
-
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
+      <input
+        type="number"
+        name="cantEmployees"
+        placeholder="Número de empleados"
+        value={formData.cantEmployees}
+        onChange={handleInputChange}
+        required
+      />
+      <input type="file" name="logoUrl" />
+      <button type="submit">Enviar</button>
+    </form>
   );
 }

@@ -81,17 +81,24 @@ export const AdminPanel = () => {
       if (status === "Rechazada" && !justification) {
         throw new Error("Por favor, ingrese un mensaje.");
       }
-      await axios.patch(
+      console.log("antes del patch");
+      const response = await axios.patch(
         `http://localhost:4000/admin/update-company-status/${id}/${status}`,
-        { justification }
+        { justification },
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
       );
+      console.log("después del patch");
       noti(`Empresa ${status.toLowerCase()} con éxito`, "success");
       setSelectedCompany(null);
       setCompanies((prevCompanies) =>
         prevCompanies.filter((company) => company.id !== id)
       );
     } catch (error) {
-      console.log(error);
+      console.error("Error al actualizar el estado de la empresa:", error);
       noti(
         error.response?.data?.message || "Error al actualizar la empresa",
         "error"
@@ -195,20 +202,20 @@ export const AdminPanel = () => {
           fullWidth
           maxWidth="md"
         >
-          <DialogContent className={styles.DetailsModal}>
+          <DialogContent>
             <div className={` d-flex flex-column`}>
               <div className={styles.CompanyDetails}>
                 <div className="d-flex flex-row justify-content-start">
                   <img
                     src={selectedCompany.logoUrl}
-                    alt={`${selectedCompany.name} Logo`}
-                    className={"m-0 me-3"}
+                    alt={`${selectedCompany.name}`}
+                    className={"m-0 me-3 rounded-pill"}
                     height={60}
                   />
                   <div className="d-flex flex-column ">
                     <strong className="fs-3">{selectedCompany.name}</strong>
                     <div className="d-flex">
-                      <p className="fst-italic fw-light pe-2">
+                      <p className="fst-italic text-muted pe-2">
                         {selectedCompany.country.name}
                       </p>
                       {selectedCompany.country.emoji}
@@ -216,9 +223,9 @@ export const AdminPanel = () => {
                   </div>
                 </div>
                 <div className="pt-2">
-                  <p className="fw-semibold fs-5">Descripción</p>
+                  <p className="text-muted fw-bold">Descripción</p>
                   <div
-                    className="ps-4"
+                    className="ps-2"
                     dangerouslySetInnerHTML={{
                       __html: showFullDescription
                         ? DOMPurify.sanitize(selectedCompany.description)
@@ -229,6 +236,7 @@ export const AdminPanel = () => {
                   ></div>
                   {selectedCompany.description.length > 100 && (
                     <Button
+                      className="ps-2"
                       onClick={() => {
                         setShowFullDescription(!showFullDescription);
                       }}
@@ -241,7 +249,7 @@ export const AdminPanel = () => {
                 <hr />
                 <div className="d-flex flex-row justify-content-around pt-2 pb-2">
                   <div className="d-flex flex-column align-items-center">
-                    Web
+                    <p className="text-muted">Web</p>
                     {selectedCompany.webUrl ? (
                       <strong>
                         <a href={selectedCompany.webUrl}>
@@ -253,32 +261,35 @@ export const AdminPanel = () => {
                     )}
                   </div>
                   <div className="d-flex flex-column align-items-center">
-                    Industria
+                    <p className="text-muted">Industria</p>
                     <strong>{selectedCompany.companyIndustry.name}</strong>
                   </div>
                   <div className="d-flex flex-column align-items-center">
-                    Empleados
+                    <p className="text-muted">Empleados</p>
                     <strong>{selectedCompany.cantEmployees}</strong>
                   </div>
                 </div>
               </div>
               <hr />
               <div className={`d-flex align-items-center`}>
-                <img
-                  src={selectedCompany.associations[0].user.profilePic}
-                  alt="Foto de perfil"
-                  height={60}
-                  width={60}
-                  className="me-3"
-                />
-                <div>
-                  <p className="w-50">
-                    <strong>{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
-                  </p>
-                  <p className="w-50">
+                {/* <button
+                  className="btn p-0"
+                  onClick={() => alert(selectedCompany.associations[0].user.id)}
+                > */}
+                  {/* <img
+                    src={selectedCompany.associations[0].user.profilePic}
+                    alt="Foto de perfil"
+                    height={60}
+                    width={60}
+                    className="rounded-pill me-3"
+                  /> */}
+                {/* </button> */}
+                {/* <div>
+                  <strong className="fs-5 w-100">{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
+                  <p className="w-50 text-muted">
                     {selectedCompany.associations[0].user.email}
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </DialogContent>

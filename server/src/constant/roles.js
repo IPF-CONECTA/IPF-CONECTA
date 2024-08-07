@@ -1,5 +1,4 @@
-import { Role } from '../modules/roles/roleModel.js'
-
+import { Role } from "../modules/roles/roleModel.js";
 
 export const getRoles = async () => {
     const roles = await Role.findAll()
@@ -25,24 +24,22 @@ export const getBasicRoles = async () => {
 // || SI SE INICIA POR PRIMERA VEZ LA BD O SE REINICIA, DESCOMENTAR LO DE ABAJO Y COMENTAR EL CODIGO CON LLAMADAS A LA BD ||
 // =========================================================================================================================
 
-
 // export const getRoles = async () => {
-//     return {
-//         'recruiter': 123,
-//         'student': 123,
-//         'investor': 123,
-//         'admin': 123,
-//         'superAdmin': 123
-//     }
-// }
+//   return {
+//     recruiter: 123,
+//     student: 123,
+//     investor: 123,
+//     admin: 123,
+//     superAdmin: 123,
+//   };
+// };
 // export const getBasicRoles = async () => {
-//     return {
-//         'recruiter': 123,
-//         'student': 123,
-//         'investor': 123,
-//     }
+//   return {
+//     recruiter: 123,
+//     student: 123,
+//     investor: 123,
+//   };
+// };
 
-// }
-
-export const ALL_ROLES = await getRoles()
-export const BASIC_ROLES = await getBasicRoles()
+export const ALL_ROLES = await getRoles();
+export const BASIC_ROLES = await getBasicRoles();
