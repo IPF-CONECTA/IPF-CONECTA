@@ -63,7 +63,7 @@ export const JobDetails = ({ jobId }) => {
                   bookmark
                 </span>{" "}
               </button>
-              <button className="btn btn-success">
+              <button className="btn ps-2 btn-success">
                 <strong>Postularse</strong>
               </button>
             </div>

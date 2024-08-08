@@ -21,7 +21,7 @@ export const CompanyUbication = sequelize.define('companyUbication', {
         allowNull: false
     },
     cityId: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.INTEGER,
         allowNull: true
     },
     address: {

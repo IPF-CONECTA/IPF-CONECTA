@@ -26,8 +26,11 @@ export const isToken = async (req, res, next) => {
         let token = req.headers.authorization
         console.log(token)
         if (!token) throw new Error('Inicie sesion para continuar')
+<<<<<<< HEAD
         token = token.split(' ')[1]
 
+=======
+>>>>>>> 4460fb9bedcb00e508bbf83086f404bcac0ec9b3
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
 
         const isUser = await getUserById(userId)

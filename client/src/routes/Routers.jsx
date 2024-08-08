@@ -15,6 +15,7 @@ import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
 import { Feed } from "@mui/icons-material";
+import { SelectCompanyPage } from "../pages/SelectCompanyPage";
 
 export const Routers = () => {
   return (
@@ -41,7 +42,8 @@ export const Routers = () => {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/company/register" element={<CompanyRegister />} />
+        <Route path="/registro-de-compañia" element={<CompanyRegister />} />
+        <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>
