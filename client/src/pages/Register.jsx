@@ -3,11 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "../../public/css/register.module.css";
 import { useNoti } from "../hooks/useNoti";
-<<<<<<< HEAD
 import { authService } from "../services/authService";
-=======
-import {authService} from "../services/authService";
->>>>>>> 4460fb9bedcb00e508bbf83086f404bcac0ec9b3
+
 export const Register = () => {
   const noti = useNoti();
   const navigate = useNavigate();
