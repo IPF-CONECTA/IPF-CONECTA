@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PostList from "../components/PostList";
 import RecomendedAccounts from "../components/RecomendedAccounts";
 
-const Home = () => {
+const Feed = () => {
   useEffect(() => {});
   return (
     <main>
@@ -12,4 +12,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Feed;
