@@ -14,7 +14,7 @@ import StudentProfile from "../components/StudentProfile";
 import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
-import SelectCompany from "../pages/SelectCompany";
+import { SelectCompanyPage } from "../pages/SelectCompanyPage";
 
 export const Routers = () => {
   return (
@@ -43,7 +43,7 @@ export const Routers = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CompanyRegister />} />
-        <Route path="/seleccionar-compañia" element={<SelectCompany />} />
+        <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>

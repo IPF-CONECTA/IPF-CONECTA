@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { associateNewCompanyCtrl, findCompanyCtrl, getApprovedCompaniesCtrl, sendContactCompanyCtrl } from "./companyControllers.js";
+import {
+  associateNewCompanyCtrl,
+  findCompanyCtrl,
+  getApprovedCompaniesCtrl,
+  sendContactCompanyCtrl,
+} from "./companyControllers.js";
 import { companySchema } from "./companySchema.js";
 import { validateSchema } from "../../../middlewares/expressValidator.js";
 import { isRecruiter } from "../../../middlewares/jwt/isRecruiter.js";
@@ -8,11 +13,17 @@ import { getCompanyByIdCtrl } from "../../administration/admin/companies/company
 
 const companyRoutes = Router();
 
-companyRoutes.get('/get-companies', getApprovedCompaniesCtrl)
-companyRoutes.get('/find-companies/:query', findCompanyCtrl)
-companyRoutes.get('/get-company/:id', getCompanyByIdCtrl)
-companyRoutes.post('/create-company', isRecruiter, companySchema, validateSchema, associateNewCompanyCtrl)
+companyRoutes.get("/get-companies", getApprovedCompaniesCtrl);
+companyRoutes.get("/find-companies/:query", findCompanyCtrl);
+companyRoutes.get("/get-company/:id", getCompanyByIdCtrl);
+companyRoutes.post(
+  "/create-company",
+  isRecruiter,
+  companySchema,
+  validateSchema,
+  associateNewCompanyCtrl
+);
 
-companyRoutes.post('/contact', sendContactCompanyCtrl)
+companyRoutes.post("/contact", sendContactCompanyCtrl);
 
 export default companyRoutes;
