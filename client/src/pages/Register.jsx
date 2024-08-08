@@ -41,8 +41,8 @@ export const Register = () => {
       password: formData.password,
       role: role,
       cuil: role === "student" ? formData.cuil : null,
-      names: role === "student" ? formData.names : formData.names,
-      surnames: role === "student" ? formData.surnames : formData.surnames,
+      names: formData.names,
+      surnames: formData.surnames,
     };
 
     try {
@@ -92,32 +92,35 @@ export const Register = () => {
         return (
           <div className={styles.roleSelectionContainer}>
             <div
-              className={styles.roleCard}
+              className={`${styles.roleCard} ${styles.student}`}
               onClick={() => handleRoleSelection("student")}
             >
               <img
-                src="../../public/iconoipf.png"
+                src="../../public/egresado.png"
                 alt="Egresado"
                 className={styles.roleImage}
               />
-              Egresado
+              <h3>Egresado</h3>
+              <p>Regístrate como estudiante egresado.</p>
             </div>
             <div
-              className={styles.roleCard}
+              className={`${styles.roleCard} ${styles.recruiter}`}
               onClick={() => handleRoleSelection("recruiter")}
             >
               <img
-                src="../../public/iconoipf.png"
+                src="../../public/recruiter.png"
                 alt="Reclutador"
                 className={styles.roleImage}
               />
-              Reclutador
+              <h3>Reclutador</h3>
+              <p>Regístrate como reclutador de empresas.</p>
             </div>
           </div>
         );
       case 2:
         return (
           <form className={styles.formStep}>
+            <h2>Información de la Cuenta</h2>
             <div className={styles.formGroup}>
               <label>Email</label>
               <input
@@ -126,6 +129,7 @@ export const Register = () => {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
+                className={styles.input}
               />
             </div>
             <div className={styles.formGroup}>
@@ -136,18 +140,19 @@ export const Register = () => {
                 placeholder="Contraseña"
                 value={formData.password}
                 onChange={handleChange}
+                className={styles.input}
               />
             </div>
-            <div className="d-flex justify-content-between">
+            <div className={styles.navigationButtons}>
               <button
-                className="btn btn-secondary"
+                className={styles.secondaryButton}
                 type="button"
                 onClick={() => setStep(1)}
               >
                 <span className="material-symbols-outlined">arrow_back</span>
               </button>
               <button
-                className="btn btn-primary"
+                className={styles.primaryButton}
                 type="button"
                 onClick={() => setStep(3)}
               >
@@ -156,78 +161,54 @@ export const Register = () => {
             </div>
           </form>
         );
-
-      // En el paso 3, para ambos roles, agregamos un botón para <span class="material-symbols-outlined">arrow_back</span> al paso 2
       case 3:
         return (
           <form className={styles.formStep} onSubmit={handleSubmit}>
-            {role === "recruiter" && (
-              <>
-                <div className={styles.formGroup}>
-                  <label>Nombre</label>
-                  <input
-                    type="text"
-                    name="names"
-                    placeholder="Nombres"
-                    value={formData.names}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Apellidos</label>
-                  <input
-                    type="text"
-                    name="surnames"
-                    placeholder="Apellidos"
-                    value={formData.surnames}
-                    onChange={handleChange}
-                  />
-                </div>
-              </>
-            )}
+            <h2>Datos Personales</h2>
+            <div className={styles.formGroup}>
+              <label>Nombres</label>
+              <input
+                type="text"
+                name="names"
+                placeholder="Nombres"
+                value={formData.names}
+                onChange={handleChange}
+                className={styles.input}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Apellidos</label>
+              <input
+                type="text"
+                name="surnames"
+                placeholder="Apellidos"
+                value={formData.surnames}
+                onChange={handleChange}
+                className={styles.input}
+              />
+            </div>
             {role === "student" && (
-              <>
-                <div className={styles.formGroup}>
-                  <label>Nombres</label>
-                  <input
-                    type="text"
-                    name="names"
-                    placeholder="Nombres"
-                    value={formData.names}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Apellidos</label>
-                  <input
-                    type="text"
-                    name="surnames"
-                    placeholder="Apellidos"
-                    value={formData.surnames}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>CUIL</label>
-                  <input
-                    type="text"
-                    name="cuil"
-                    placeholder="CUIL"
-                    value={formData.cuil}
-                    onChange={handleChange}
-                  />
-                </div>
-              </>
-            )}{" "}
-            <div className="d-flex justify-content-between">
+              <div className={styles.formGroup}>
+                <label>CUIL</label>
+                <input
+                  type="text"
+                  name="cuil"
+                  placeholder="CUIL"
+                  value={formData.cuil}
+                  onChange={handleChange}
+                  className={styles.input}
+                />
+              </div>
+            )}
+            <div className={styles.navigationButtons}>
               <button
-                className="btn btn-secondary"
+                className={styles.secondaryButton}
                 type="button"
                 onClick={() => setStep(2)}
               >
                 <span className="material-symbols-outlined">arrow_back</span>
               </button>
-              <button className="btn btn-primary" type="submit">
+              <button className={styles.primaryButton} type="submit">
                 Registrarse
               </button>
             </div>
@@ -236,6 +217,7 @@ export const Register = () => {
       case 4:
         return (
           <form className={styles.formStep} onSubmit={handleVerificationSubmit}>
+            <h2>Verificación de Cuenta</h2>
             <div className={styles.formGroup}>
               <label>Ingrese el Código de Verificación</label>
               <input
@@ -244,11 +226,12 @@ export const Register = () => {
                 placeholder="Código de Verificación"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
+                className={styles.input}
               />
             </div>
             {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-            <div className="d-flex justify-content-center">
-              <button className={styles.button} type="submit">
+            <div className={styles.navigationButtonsVerify}>
+              <button className={styles.primaryButton} type="submit">
                 Verificar
               </button>
             </div>
@@ -260,8 +243,7 @@ export const Register = () => {
   };
 
   return (
-    <div className={styles["register-container"]}>
-      {step === 1 && <h2>¡Bienvenido! Elige tu Rol:</h2>}
+    <div className={styles.registerContainer}>
       {renderStep()}
     </div>
   );

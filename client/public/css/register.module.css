@@ -1,16 +1,30 @@
-.register-container {
-  max-width: 400px;
-  margin: 20vh auto;
-  height: fit-content;
+.registerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 20px;
-  animation: slideIn 0.5s ease-in-out;
-  text-align: center;
+  background-color: #f9f9f9;
 }
 
-.roleImage {
-  width: 50px;
-  height: auto;
+.roleSelectionContainer {
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+  flex-wrap: wrap;
+  padding: 20px;
 }
+
+.roleCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 button {
   width: fit-content;
 }
@@ -31,23 +45,15 @@ button {
   margin-top: 20px;
 }
 
-.roleCard {
-  padding: 20px;
-  width: 110px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+
+.roleCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.roleCard--student:hover {
-  background-color: #8ac9b2;
-  animation: rippleOut 0.5s;
-}
-
-.roleCard--recruiter:hover {
-  background-color: #1da9f8;
-  animation: rippleOut 0.5s;
+.roleImage {
+  width: 200px;
+  margin-bottom: 10px;
 }
 
 @keyframes rippleOut {
@@ -58,77 +64,67 @@ button {
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0);
   }
 }
-
 .formStep {
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: "Arial", sans-serif;
-}
-
-.formStep h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.formStep input[type="text"],
-.formStep input[type="password"],
-.formStep input[type="email"] {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.formStep button {
-  width: 100px;
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
   padding: 10px;
-  background-color: #007bff;
-  color: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  width: 100%;
+}
+
+.primaryButton {
+  background-color: #2fff00;
+  color: #000000;
+  padding: 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
-.formStep button:hover {
-  background-color: #0056b3;
+.primaryButton:hover {
+  background-color: #7b9852;
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.secondaryButton {
+  background-color: #2fff00;
+  color: #000;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.secondaryButton:hover {
+  background-color: #7b9852;
+}
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigationButtonsVerify {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-.modalContent {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
-  position: relative;
-}
-
-.closeButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
 }
