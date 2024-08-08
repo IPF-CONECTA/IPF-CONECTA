@@ -237,7 +237,7 @@ export const Register = () => {
         return (
           <form className={styles.formStep} onSubmit={handleVerificationSubmit}>
             <div className={styles.formGroup}>
-              <label>Código de Verificación</label>
+              <label>Ingrese el Código de Verificación</label>
               <input
                 type="text"
                 name="verificationCode"
