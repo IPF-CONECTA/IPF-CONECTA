@@ -5,6 +5,6 @@ import { isToken } from "../../../middlewares/jwt/isVerifiedAccount.js";
 
 const associationRoutes = Router()
 
-        associationRoutes.post('/associate-company', isToken, isRecruiter, associateCompanyCtrl)
+associationRoutes.post('/associate-company', isToken, isRecruiter, associateCompanyCtrl)
 
 export default associationRoutes
