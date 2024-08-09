@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-const RecomendedAccounts = (accounts) => {
+export const RecomendedAccounts = (accounts) => {
   return (
     <aside>
       <Card>

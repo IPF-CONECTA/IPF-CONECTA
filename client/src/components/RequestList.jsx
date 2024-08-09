@@ -8,11 +8,11 @@ import Button from "@mui/material/Button";
 import { updateAssociationStatus } from "../services/adminServices";
 import { useNoti } from "../hooks/useNoti";
 
-export default function RequestList({
+export const RequestList = ({
   associations = [],
   acceptAssociation,
   rejectAssociation,
-}) {
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAssociation, setSelectedAssociation] = useState(
     associations[0]
@@ -152,7 +152,7 @@ export default function RequestList({
       </div>
     </div>
   );
-}
+};
 // export default function RequestLists({
 //   associations = [],
 //   acceptAssociation,

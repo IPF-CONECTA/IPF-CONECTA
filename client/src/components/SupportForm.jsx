@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../../public/nav.css";
 import "../../public/support.css";
 
-export const Support = () => {
+export const SupportForm = () => {
   const noti = useNoti();
   const navigate = useNavigate();
   const [name, setName] = useState("");

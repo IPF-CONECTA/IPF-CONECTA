@@ -1,13 +1,11 @@
-import  SelectCompany from '../components/SelectCompany'
-import { Nav } from "../pages/Nav"
-import { Footer } from "../pages/Footer"
+import { Nav, Footer, SelectCompany } from "../components";
 
 export const SelectCompanyPage = () => {
   return (
     <>
-    <Nav />
-    <SelectCompany />
-    <Footer />
+      <Nav />
+      <SelectCompany />
+      <Footer />
     </>
-  )
-}
+  );
+};

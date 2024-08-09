@@ -42,7 +42,7 @@ export const authService = {
       return { data: res.data.json(), status: res.status };
     } catch (error) {
       console.log(error);
-      return error.response.status || error.code;
+      return error
     }
   },
 };

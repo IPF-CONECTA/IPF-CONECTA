@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import PostList from "../components/PostList";
-import RecomendedAccounts from "../components/RecomendedAccounts";
-
-const Feed = () => {
+import { PostList, RecomendedAccounts } from "../components";
+export const FeedPage = () => {
   useEffect(() => {});
   return (
     <main>

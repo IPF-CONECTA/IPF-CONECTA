@@ -5,7 +5,7 @@ import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 
-export default function CompanyRegister() {
+export const CreateCompanyForm = () => {
   const navigate = useNavigate();
   const noti = useNoti();
 
@@ -141,4 +141,4 @@ export default function CompanyRegister() {
       <button type="submit">Enviar</button>
     </form>
   );
-}
+};

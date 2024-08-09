@@ -5,7 +5,7 @@ import styles from "../../public/css/login.module.css";
 import { authContext } from "../context/auth/Context";
 import { Link, useNavigate } from "react-router-dom";
 
-export const Login = () => {
+export const LoginForm = () => {
   const { login, authState } = useContext(authContext);
   const navigate = useNavigate();
   const {
@@ -32,11 +32,11 @@ export const Login = () => {
   }
 
   return (
-    <div className={styles["login-container"]}>
+    <div className="container">
       <center>
         <h2>Iniciar Sesión</h2>
       </center>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className="container" onSubmit={handleSubmit(onSubmit)}>
         <div className={styles["form-group"]}>
           <label htmlFor="email" className={styles.label}>
             Email

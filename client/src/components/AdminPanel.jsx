@@ -276,7 +276,7 @@ export const AdminPanel = () => {
                   className="btn p-0"
                   onClick={() => alert(selectedCompany.associations[0].user.id)}
                 > */}
-                  {/* <img
+                {/* <img
                     src={selectedCompany.associations[0].user.profilePic}
                     alt="Foto de perfil"
                     height={60}

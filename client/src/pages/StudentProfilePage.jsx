@@ -60,7 +60,7 @@ const languages = [
   },
 ];
 
-export default function StudentProfile() {
+export default function StudentProfilePage() {
   return (
     <div className="profile-container">
       <div className="profile-sidebar">

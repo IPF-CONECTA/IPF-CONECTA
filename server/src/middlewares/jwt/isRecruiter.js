@@ -9,8 +9,6 @@ export const isRecruiter = async (req, res, next) => {
     token = token.authorization.split(" ")[1];
     token = token.replace(/['"]+/g, "");
 
-    console.log(token);
-
     if (!token) throw new Error("Inicie sesion para continuar");
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
 
@@ -23,6 +21,7 @@ export const isRecruiter = async (req, res, next) => {
     if (roleId !== ALL_ROLES.recruiter) {
       throw new Error("No tiene permisos para realizar esta accion");
     }
+    console.log("--------PASO VALIDACIÖN IS RECRUITER ----------");
     next();
   } catch (error) {
     console.log("error aca", error);
@@ -53,6 +52,7 @@ export const isApprovedAssociation = async (req, res, next) => {
       );
     next();
   } catch (error) {
+    console.error(error);
     res.status(401).json({ message: error.message });
   }
 };

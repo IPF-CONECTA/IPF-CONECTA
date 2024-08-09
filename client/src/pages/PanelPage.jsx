@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import RequestForm from "../components/RequestForm";
-import RequestList from "../components/RequestList";
-import { Alert } from "react-bootstrap";
+import { Nav, RequestList } from "../components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../public/panel.css";
 import { getVerifications } from "../services/adminServices";
-import { Nav } from "./Nav";
 import { useNoti } from "../hooks/useNoti";
-import { set } from "react-hook-form";
 
-export default function Panel() {
+export const PanelPage = () => {
   const [associations, setAssociations] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [tab, setTab] = useState("Pendiente");
@@ -106,4 +102,4 @@ export default function Panel() {
       </div>
     </>
   );
-}
+};
