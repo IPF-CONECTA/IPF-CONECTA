@@ -11,7 +11,7 @@ export const createNewJobCtrl = async (req, res) => {
   let token = req.headers.authorization;
   token = token.split(' ')[1];
   token = token.replace(/"/g, '');
-  const {userId} = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+  const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
   const { jobOffer, skills } = req.body;
 
   try {
@@ -69,14 +69,16 @@ export const findJobsCtrl = async (req, res) => {
   }
   try {
     const jobs = await findJobsSvc(query, page - 1);
-    console.log(jobs.rows);
+    console.log(jobs.data);
     // console.log(jobs, " jobs dedsde el controlador")
-    if (jobs.length == 0)
+    if (jobs.count == 0)
       return res
         .status(404)
         .json({ message: "No se encontraron trabajos para tu busqueda" });
+
+    console.log(jobs.data)
     res.status(200).json({
-      jobs: jobs.jobsWithUbication,
+      jobs: jobs.data.rows,
       totalPages: Math.ceil(jobs.count / 6),
       total: jobs.count,
     });

@@ -1,8 +1,13 @@
 import { createPostSvc, getPostsSvc } from "./postServices.js";
 
 export const getPostsCtrl = async (req, res) => {
+    console.log("SE EJECUTO EL CONTROLADOR")
     try {
-        const { page } = req.query;
+        const pageAsNumber = Number.parseInt(req.query.page)
+        let page = 1
+        if (!Number.isNaN(pageAsNumber) && pageAsNumber > 1) {
+            page = pageAsNumber;
+        }
         const posts = await getPostsSvc(page - 1);
         if (posts.count === 0) return res.status(404).json({ message: "No hay publicaciones" });
 
