@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
+} from "@/components/ui/ ";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
