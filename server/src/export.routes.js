@@ -8,6 +8,7 @@ import ubicationRoutes from "./modules/ubications/ubicationRoutes.js";
 import associationRoutes from "./modules/recruiters/associations/associationRoutes.js";
 import companyIndustriesRoutes from "./modules/recruiters/companies/companyIndustry/companyIndustryRoutes.js";
 import skillsRoutes from "./modules/skills/skillsRoutes.js";
+import postRoutes from "./modules/posts/postRoutes.js";
 export const routes = (app) => {
     app.use(userRoutes);
     app.use(authRoutes);
@@ -19,4 +20,5 @@ export const routes = (app) => {
     app.use(ubicationRoutes)
     app.use(companyIndustriesRoutes)
     app.use(skillsRoutes)
+    app.use(postRoutes)
 }

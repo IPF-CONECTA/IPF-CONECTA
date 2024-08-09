@@ -46,10 +46,10 @@ export const associateNewCompanyCtrl = async (req, res) => {
 }
 
 export const findCompanyCtrl = async (req, res) => {
-    const { query } = req.params
-    if (!query) query = ''
+    let { company } = req.query
+    if (!company) company = ''
     try {
-        const companies = await findCompaniesSvc(query)
+        const companies = await findCompaniesSvc(company)
         if (companies.length == 0) return res.status(404).json({ message: 'No se encontraron trabajos para tu busqueda' })
 
         res.status(200).json(companies)

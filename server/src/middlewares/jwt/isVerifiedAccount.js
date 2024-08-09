@@ -5,13 +5,14 @@ import { getUserById } from '../../modules/users/userServices.js'
 export const isVerifiedAccount = async (req, res, next) => {
     try {
         let token = req.headers.authorization
-        token = token.split(' ')[1]
-        console.log('Token extraído:', token);
         if (!token) throw new Error('Inicie sesion para continuar')
+        token = token.split(' ')[1]
+        console.log(token)
         const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
         const verified = await User.findByPk(userId, {
             attributes: ['verified']
         })
+        console.log(verified)
         if (!verified) {
             throw new Error('Confirme su correo electronico para continuar')
         }
@@ -23,11 +24,12 @@ export const isVerifiedAccount = async (req, res, next) => {
 export const isToken = async (req, res, next) => {
     try {
         let token = req.headers.authorization
-        token = token.split(' ')[1]
-        console.log('Token extraído:', token);
-
+        console.log(token)
         if (!token) throw new Error('Inicie sesion para continuar')
-        const { userId } = jwt.verify(JSON.parse(token), process.env.TOKEN_SECRET_KEY)
+
+        token = token.split(' ')[1]
+
+        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
 
         const isUser = await getUserById(userId)
         if (!isUser) {

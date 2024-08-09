@@ -57,13 +57,15 @@ export const updateCompany = async (company) => {
     }
 }
 
-export const findCompaniesSvc = async (query) => {
+export const findCompaniesSvc = async (company) => {
     const companies = await Company.findAll({
         where: {
             [Op.or]: [
-                { name: { [Op.iLike]: `%${query}%` } }
-            ]
+                { name: { [Op.iLike]: `%${company}%` } }
+            ],
+            status: 'Aprobada'
         },
+        limit: 6,
         attributes: ['id', 'name', 'logoUrl']
     })
     return companies

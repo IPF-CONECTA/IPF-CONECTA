@@ -50,6 +50,7 @@ export const sendConfirmAccount = async (to, confirmCode, names) => {
         await transporter.sendMail(mailConfig)
         console.log('Correo de confirmacion enviado')
     } catch (error) {
+        console.log(error)
         throw new Error('Error al enviar el correo de confirmacion: ' + error)
     }
 }

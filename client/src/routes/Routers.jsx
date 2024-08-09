@@ -15,7 +15,8 @@ import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
 import { Feed } from "@mui/icons-material";
-import { SelectCompanyPage } from "../pages/SelectCompanyPage";
+
+import { SelectCompanyPage }  from "../pages/SelectCompanyPage";
 
 export const Routers = () => {
   return (

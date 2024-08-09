@@ -39,6 +39,13 @@ export const Nav = () => {
             {authState.isLogged ? (
               <>
                 <li className="nav-item">
+                  <Link to="/home" className="nav-link">
+                    <span className="material-symbols-outlined">
+                      diversity_3
+                    </span>
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <button onClick={handleLogout} className="btn nav-link">
                     <span className="material-symbols-outlined">logout</span>
                   </button>
@@ -89,9 +96,7 @@ export const Nav = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/community" className="nav-link">
-                <span className="material-symbols-outlined">diversity_3</span>
-              </Link>
+              <Link to="/community" className="nav-link"></Link>
             </li>
           </ul>
         </div>
