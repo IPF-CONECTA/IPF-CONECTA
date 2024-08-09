@@ -44,7 +44,6 @@ export const Register = () => {
       names: formData.names,
       surnames: formData.surnames,
     };
-
     try {
       const response = await axios.post("http://localhost:4000/auth/signup", {
         user,

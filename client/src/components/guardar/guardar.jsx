@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSavedJobs } from '../context/SavedJobContext';
+import { useSavedJobs } from './jobContext';
 
 const JobCard = ({ job }) => {
   const { saveJob } = useSavedJobs();

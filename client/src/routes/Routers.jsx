@@ -15,7 +15,7 @@ import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
 import { Feed } from "@mui/icons-material";
-
+import { Trabajo } from '/src/components/guardar/trabajo.jsx';
 import { SelectCompanyPage }  from "../pages/SelectCompanyPage";
 
 export const Routers = () => {
@@ -34,9 +34,9 @@ export const Routers = () => {
           <Route path="/profile" element={<StudentProfile />} />
           <Route path="/home" element={<Feed />} />
         </Route>
-
+  
         <Route path="/panel" element={<Panel />} />
-
+        <Route path="/Trabajo" element={<Trabajo />} />
         <Route path="/profile" element={<StudentProfile />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
