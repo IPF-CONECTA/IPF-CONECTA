@@ -17,5 +17,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // Desactivar advertencia para React no usado
+    'no-unused-vars': ['warn', { varsIgnorePattern: 'React' }],
   },
-}
+};

@@ -14,7 +14,9 @@ import StudentProfile from "../components/StudentProfile";
 import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
-import Guardar from "../components/guardar";
+import { Feed } from "@mui/icons-material";
+import { SelectCompanyPage } from "../pages/SelectCompanyPage";
+
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -29,21 +31,18 @@ export const Routers = () => {
             <Route path="/admin" element={<AdminCompany />} />
           </Route>
           <Route path="/profile" element={<StudentProfile />} />
+          <Route path="/home" element={<Feed />} />
         </Route>
-        {/* <Route path="/trabajo/:id" element={<JobsDetails />} /> */}
-        {/* <Route path="/trabajos" element={<JobsSales />} /> */}
+
         <Route path="/panel" element={<Panel />} />
 
         <Route path="/profile" element={<StudentProfile />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
-        {/* <Route path="/trabajo/:id" element={<JobsDetails />} /> */}
-        {/* <Route path="/trabajos" element={<JobsSales />} /> */}
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/guardar" element={<Guardar/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CompanyRegister />} />
-        <Route path="/seleccionar-compañia" element={<SelectCompany />} />
+        <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>
