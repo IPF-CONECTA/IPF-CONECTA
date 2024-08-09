@@ -14,8 +14,8 @@ import StudentProfile from "../components/StudentProfile";
 import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
-import { Feed } from "@mui/icons-material";
 import { SelectCompanyPage } from "../pages/SelectCompanyPage";
+import Feed from "../pages/Feed";
 
 export const Routers = () => {
   return (
@@ -31,7 +31,7 @@ export const Routers = () => {
             <Route path="/admin" element={<AdminCompany />} />
           </Route>
           <Route path="/profile" element={<StudentProfile />} />
-          <Route path="/home" element={<Feed />} />
+          <Route path="/inicio" element={<Feed />} />
         </Route>
 
         <Route path="/panel" element={<Panel />} />

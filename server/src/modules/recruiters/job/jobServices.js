@@ -120,7 +120,7 @@ export const findJobsSvc = async (query, page) => {
             }
             ]
         });
-        return { jobsWithUbication, count: jobs.count };
+        return { data: jobs, count: jobs.count };
     } catch (error) {
         console.log(error);
         throw new Error(error.message);
