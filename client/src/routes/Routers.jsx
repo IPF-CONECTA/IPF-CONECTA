@@ -14,8 +14,7 @@ import StudentProfile from "../components/StudentProfile";
 import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
-import SelectCompany from "../pages/SelectCompany";
-
+import Guardar from "../components/guardar";
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -40,6 +39,7 @@ export const Routers = () => {
         {/* <Route path="/trabajo/:id" element={<JobsDetails />} /> */}
         {/* <Route path="/trabajos" element={<JobsSales />} /> */}
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/guardar" element={<Guardar/>}/>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CompanyRegister />} />
