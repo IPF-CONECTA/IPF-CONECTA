@@ -26,18 +26,28 @@ export const isVerifiedAccount = async (req, res, next) => {
   }
 };
 export const isToken = async (req, res, next) => {
-  try {
-    let token = req.headers.authorization;
+    try {
+        let token = req.headers.authorization
+        console.log(req.headers.authorization)
+        if (!token) {
+            console.log('NO ES USUARIO HABILITADO -================================================')
+            console.log(token)
+            throw new Error('Inicie sesion para continuar')
+        }
 
-    token = token.split(" ")[1];
-    token = token.replace(/['"]+/g, "");
+        token = token.split(' ')[1]
 
-    if (!token) throw new Error("Inicie sesion para continuar");
-    const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
 
-    const isUser = await getUserById(userId);
-    if (!isUser) {
-      throw new Error("Error al verificar el token, inicie sesion nuevamente");
+        const isUser = await getUserById(userId)
+        if (!isUser) {
+            throw new Error('Error al verificar el token, inicie sesion nuevamente')
+        }
+        console.log('SI ES USUARIO HABILITADO')
+        req.user = isUser
+        next()
+    } catch (error) {
+        res.status(401).json({ message: error.message })
     }
     req.user = isUser;
     console.log("--------PASO VALIDACIÖN IS TOKEN ----------");

@@ -136,13 +136,15 @@ export const RequestList = ({
             <DialogActions>
               <Button
                 color="secondary"
-                onClick={() => handleRejectAssociation(selectedAssociation.id)}
+                onClick={() => handleAssociationStatus(selectedAssociation.id)}
               >
                 Rechazar
               </Button>
               <Button
                 color="primary"
-                onClick={() => handleApproveAssociation(selectedAssociation.id)}
+                onClick={() =>
+                  handleAssociationStatus(selectedAssociation.id, "Aprobada")
+                }
               >
                 Aprobar
               </Button>

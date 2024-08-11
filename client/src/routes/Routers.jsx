@@ -1,19 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
-import {
-  AdminPanel,
-  CompanyConfirmedPage,
-  CreateCompanyPage,
-  FeedPage,
-  JobSearchPage,
-  LoginPage,
-  MainPage,
-  NotFoundPage,
-  PanelPage,
-  RegisterPage,
-  SelectCompanyPage,
-} from "../pages";
+import CompanyRegister from "../components/CompanyRegister";
+import StudentProfile from "../components/StudentProfile";
+import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
+// import JobsSales from "../components/JobsSales";
+import { JobSearchPage } from "../pages/JobSearch";
+import { SelectCompanyPage } from "../pages/SelectCompanyPage";
+import Feed from "../pages/Feed";
 
 export const Routers = () => {
   return (
@@ -28,8 +22,8 @@ export const Routers = () => {
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin" element={<AdminPanel />} />
           </Route>
-          <Route path="/profile" element={<StudentProfilePage />} />
-          <Route path="/home" element={<FeedPage />} />
+          <Route path="/profile" element={<StudentProfile />} />
+          <Route path="/inicio" element={<Feed />} />
         </Route>
 
         <Route path="/panel" element={<PanelPage />} />

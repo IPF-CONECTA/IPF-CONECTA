@@ -4,7 +4,7 @@ import { isToken } from "../../middlewares/jwt/isVerifiedAccount.js";
 
 const postRoutes = Router();
 
-postRoutes.get("/inicio", isToken, getPostsCtrl)
+postRoutes.get("/post", isToken, getPostsCtrl)
 postRoutes.post("/post", isToken, createPostCtrl)
 
 export default postRoutes;

@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PostCard from "./PostCard";
-
-const PostList = (posts) => {
+import styles from "../../public/css/feed.module.css";
+const PostList = ({ posts }) => {
   return (
-    <div>
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+    <div className="w-50 overflow-y-auto d-flex flex-column align-items-center">
+      <div className="w-100 d-flex justify-content-center p-3">
+        <form action="" className={`w-75 d-flex flex-row ${styles.postForm}`}>
+          <input
+            type="text"
+            className="m-0 me-2"
+            placeholder="Que estas pensando"
+          />
+          <div className="h-100 d-flex align-items-center">
+            <button className="btn btn-dark h-100 fw-bold">Post</button>
+          </div>
+        </form>
+      </div>
+      <div className="w-100 d-flex flex-column flex-grow-1 align-items-center">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </div>
     </div>
   );
 };

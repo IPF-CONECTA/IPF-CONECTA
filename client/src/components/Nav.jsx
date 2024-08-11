@@ -39,7 +39,7 @@ export const Nav = () => {
             {authState.isLogged ? (
               <>
                 <li className="nav-item">
-                  <Link to="/home" className="nav-link">
+                  <Link to="/inicio" className="nav-link">
                     <span className="material-symbols-outlined">
                       diversity_3
                     </span>

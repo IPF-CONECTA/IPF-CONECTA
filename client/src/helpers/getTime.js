@@ -10,7 +10,7 @@ moment.updateLocale('es', {
         mm: '%d m',
         h: 'una hora',
         hh: '%d h',
-        d: 'un día',
+        d: 'ayer',
         dd: '%d d',
         M: 'un mes',
         MM: '%d m',

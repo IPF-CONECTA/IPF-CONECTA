@@ -1,15 +1,40 @@
 import { User } from './userModel.js'
 import { ALL_ROLES } from '../../constant/roles.js';
+import { BASIC_ROLES } from '../../constant/roles.js';
 import bcrypt from 'bcryptjs'
+import { Follower } from '../followers/followerModel.js';
 
 export const getUsers = async () => {
     const users = await User.findAll()
     return users
 }
 
+export const getRecomendedUsersSvc = async () => {
+    const users = await User.findAll({
+        where: {
+            roleId: BASIC_ROLES.student || BASIC_ROLES.recruiter
+        }
+    })
+    return users
+}
+
 export const getUserById = async (id) => {
     const user = await User.findByPk(id)
     return user
+}
+
+export const getUserInfoSvc = async (id, followingId) => {
+    const user = await User.findByPk(followingId, {
+        attributes: ['id', 'names', 'surnames', 'email', 'profilePic'],
+    })
+    console.log('si se encontro')
+    const following = await Follower.findOne({
+        where: {
+            followingId: user.id,
+            followerId: id
+        }
+    })
+    return { user, following }
 }
 
 export const createUser = async (user) => {
@@ -35,3 +60,4 @@ export const createUser = async (user) => {
     }
 
 }
+

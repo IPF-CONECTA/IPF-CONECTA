@@ -24,16 +24,18 @@ export const JobSearch = () => {
     if (jobs.length > 0) {
       setSelectedJob(jobs[0].id);
     }
+    console.log(jobs);
   }, [jobs]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setQuery(e.target.searchBar.value);
     const data = await getJobs(e.target.searchBar.value);
+    console.log(data);
     setJobs(data.jobs);
     setCantJobs(data.total);
     setCurrentPage(1);
     setTotalPages(data.totalPages);
-    if (data.jobs.length === 0) {
+    if (data.total === 0) {
       setJobs([]);
       setSelectedJob(null);
       noti("No se encontraron trabajos con ese nombre", "info");
@@ -89,7 +91,7 @@ export const JobSearch = () => {
       <section className={`${styles.jobsContainer} w-75`}>
         <aside className="d-flex flex-column">
           <div className="d-flex flex-column align-items-start">
-            {jobs.length === 0 ? (
+            {jobs.count === 0 ? (
               <h2>No se encontraron trabajos :(</h2>
             ) : (
               <>
@@ -102,16 +104,17 @@ export const JobSearch = () => {
                     ``
                   )}
 
-                  {jobs.map((job) => (
-                    <JobCard
-                      selectedJob={selectedJob}
-                      onClick={() => {
-                        handleCardClick(job.id);
-                      }}
-                      key={job.id}
-                      job={job}
-                    />
-                  ))}
+                  {jobs &&
+                    jobs.map((job) => (
+                      <JobCard
+                        selectedJob={selectedJob}
+                        onClick={() => {
+                          handleCardClick(job.id);
+                        }}
+                        key={job.id}
+                        job={job}
+                      />
+                    ))}
                 </>
               </>
             )}

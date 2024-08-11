@@ -13,17 +13,10 @@ import { getCompanyByIdCtrl } from "../../administration/admin/companies/company
 
 const companyRoutes = Router();
 
-companyRoutes.get("/get-companies", getApprovedCompaniesCtrl);
-companyRoutes.get("/find-companies/:query", findCompanyCtrl);
-companyRoutes.get("/get-company/:id", getCompanyByIdCtrl);
-companyRoutes.post(
-  "/create-company",
-  isRecruiter,
-  companySchema,
-  validateSchema,
-  associateNewCompanyCtrl
-);
-
+companyRoutes.get('/get-companies', getApprovedCompaniesCtrl)
+companyRoutes.get('/find-companies', findCompanyCtrl)
+companyRoutes.get('/get-company/:id', getCompanyByIdCtrl)
+companyRoutes.post('/create-company', isRecruiter, companySchema, validateSchema, associateNewCompanyCtrl)
 companyRoutes.post("/contact", sendContactCompanyCtrl);
 
 export default companyRoutes;
