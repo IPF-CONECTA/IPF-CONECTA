@@ -20,14 +20,14 @@ export const getUserInfoCtrl = async (req, res) => {
     const { id } = req.user
     const { followingId } = req.params
     try {
-        const { user, following } = await getUserInfoSvc(id, followingId)
+        const { user, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, followingId)
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }
         if (!following) {
-            return res.status(200).json({ user, isFollowing: false })
+            return res.status(200).json({ user, isFollowing: false, cantFollowers, cantFollowing })
         }
-        res.status(200).json({ user, isFollowing: true })
+        res.status(200).json({ user, isFollowing: true, cantFollowers, cantFollowing })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message })

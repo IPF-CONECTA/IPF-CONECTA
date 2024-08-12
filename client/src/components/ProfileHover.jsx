@@ -1,37 +1,85 @@
-import React from "react";
+// src/components/ProfileHover.jsx
+import React, { useState } from "react";
+import styles from "../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
+import { followOrUnfollow } from "../services/feedServices";
 
-const ProfileHover = () => {
+export const ProfileHover = ({
+  profile,
+  handleMouseEnter,
+  handleMouseLeave,
+  profileInfoRef,
+}) => {
+  const [profileInfo, setProfile] = useState(profile);
+
+  const handleFollowOrUnfollow = async (id) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      isFollowing: !prevProfile.isFollowing,
+    }));
+    const { data, statusCode } = await followOrUnfollow(profile.user.id);
+    if (statusCode !== 201) {
+      noti(data, "error");
+    }
+  };
+
   return (
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={profileInfoRef}
-      className={`position-absolute border rounded p-2 bg-white d-flex align-items-center m-3 ${styles.profileInfo}`}
+      className={`position-absolute border rounded p-3 bg-white d-flex flex-column align-items-center m-3 ${styles.profileInfo}`}
     >
-      <img
-        src={`${profileInfo.profilePic}`}
-        width={70}
-        height={70}
-        className="rounded-circle me-2"
-        alt="profile pic"
-      />
+      <div className="d-flex justify-content-between align-items-center w-100">
+        <img
+          src={`${profileInfo.user.profilePic}`}
+          width={70}
+          height={70}
+          className="rounded-circle"
+          alt="profile pic"
+        />
+        <div className="d-flex flex-column w-50">
+          {profileInfo.isFollowing === false ? (
+            <button
+              className="btn btn-info text-light w-100 fw-bold"
+              onClick={() => {
+                handleFollowOrUnfollow(profileInfo.user.id);
+              }}
+            >
+              Follow
+            </button>
+          ) : (
+            <button
+              className="btn btn-outline-info text-muted w-100 fw-bold"
+              onClick={() => {
+                handleFollowOrUnfollow(profileInfo.user.id);
+              }}
+            >
+              Unfollow
+            </button>
+          )}
+        </div>
+      </div>
       <div className={`d-flex flex-column ${styles.username}`}>
         <span className="fs-4">
-          {profileInfo.names} {profileInfo.surnames}
+          {profileInfo.user.names} {profileInfo.user.surnames}
         </span>
-        {profileInfo.title ? (
-          <span className="text-muted">{profileInfo.title}</span>
+        {profileInfo.user.title ? (
+          <span className="text-muted">{profileInfo.user.title}</span>
         ) : (
           <span className="text-muted fs-5">Sin titulo</span>
         )}
-        <span className="text-muted">{profileInfo.email}</span>
-      </div>
-      <div className="d-flex flex-column h-75 ps-2 align-items-center">
-        <button className="btn btn-dark w-100 mb-2 fw-bold">Seguir</button>
-        <button className="btn btn-danger w-100 fw-bold">Block</button>
+        <span className="text-muted">{profileInfo.user.email}</span>
+        <div className="d-flex">
+          <div className="pe-3">
+            <span className="fw-bold">{profileInfo.cantFollowers}</span>
+            <span className="text-muted"> Seguidores</span>
+          </div>
+          <div>
+            <span className="fw-bold">{profileInfo.cantFollowing}</span>
+            <span className="text-muted"> Siguiendo</span>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
-
-export default ProfileHover;

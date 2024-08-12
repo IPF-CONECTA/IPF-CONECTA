@@ -5,14 +5,19 @@ const PostList = ({ posts }) => {
   return (
     <div className="w-50 overflow-y-auto d-flex flex-column align-items-center">
       <div className="w-100 d-flex justify-content-center p-3">
-        <form action="" className={`w-75 d-flex flex-row ${styles.postForm}`}>
+        <form action="" className={`w-100 d-flex flex-row ${styles.postForm}`}>
           <input
             type="text"
             className="m-0 me-2"
             placeholder="Que estas pensando"
           />
           <div className="h-100 d-flex align-items-center">
-            <button className="btn btn-dark h-100 fw-bold">Post</button>
+            <button className="btn btn-secondary d-flex align-items-center h-100 me-1">
+              <span class="material-symbols-outlined">attachment</span>
+            </button>
+            <button className="btn btn-info text-light px-3 h-100 fw-bold">
+              Post
+            </button>
           </div>
         </form>
       </div>
