@@ -11,12 +11,14 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [logo, setLogo] = useState(null)
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     industryId: "",
     countryOriginId: "",
     cantEmployees: "",
+    logoUrl: "",
   });
 
   useEffect(() => {
@@ -39,6 +41,10 @@ export const CreateCompanyForm = () => {
     }));
   }
 
+  function handleImageChange(e) {
+    setLogo(e.target.files[0])
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -52,6 +58,7 @@ export const CreateCompanyForm = () => {
             cantEmployees: formData.cantEmployees,
             industryId: formData.industryId,
             countryOriginId: formData.countryOriginId,
+            logoUrl: formData.logoUrl,
           },
           message: formData.message,
         },
@@ -77,7 +84,6 @@ export const CreateCompanyForm = () => {
         }
         noti(errorMsg, "error");
         console.error("Error creating company:", error);
-        navigate("/company/register");
       });
   }
 
@@ -137,7 +143,7 @@ export const CreateCompanyForm = () => {
         onChange={handleInputChange}
         required
       />
-      <input type="file" name="logoUrl" />
+      <input type="file" value={formData.logoUrl} name="logoUrl" />
       <button type="submit">Enviar</button>
     </form>
   );

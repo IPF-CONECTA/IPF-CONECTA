@@ -3,8 +3,9 @@ export * from "./CreateCompanyForm";
 export * from "./Footer";
 export * from "./Main";
 export * from "./JobCard";
+export * from "./JobDetails";
 export * from "./JobSearch";
-export * from "./"
+export * from "./JobsSales"
 export * from "./JobsSales";
 export * from "./Layout";
 export * from "./LoginForm";

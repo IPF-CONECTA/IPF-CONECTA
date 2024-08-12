@@ -1,6 +1,6 @@
 import { AdminPanel, Footer, Nav } from "../components";
 
-export const AdminCompany = () => {
+export const AdminPanelPage = () => {
   return (
     <>
       <Nav />

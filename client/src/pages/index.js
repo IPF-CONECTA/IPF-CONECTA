@@ -1,7 +1,8 @@
 export * from "./AdminPanelPage";
 export * from "./CompanyConfirmedPage";
 export * from "./CompanyRegisterPage";
-export * from "./FeedPage";
+export * from "./FeedPage"
+export * from "./HomePage";
 export * from "./JobsDetailsPage"
 export * from "./JobSearchPage";
 export * from "./LoginPage";
@@ -9,5 +10,5 @@ export * from "./NotFoundPage";
 export * from "./PanelPage";
 export * from "./RegisterPage";
 export * from "./SelectCompanyPage";
-export * from "./StudentProfilePage";
+export * from "./StudentProfilePage"
 export * from "./SupportPage";

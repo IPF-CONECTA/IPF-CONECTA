@@ -48,6 +48,9 @@ export const SelectCompany = () => {
           },
         }
       );
+      noti("Solicitud enviada, espere a que un administrador apruebe la empresa.", "success");
+      //redireccionar al principio
+      navigate("/");
     } catch (error) {
       console.log(error);
       noti(`Error: ${error}`, "error");
@@ -111,7 +114,7 @@ export const SelectCompany = () => {
               <div className="text-center">
                 <button
                   className="btn btn-outline-success "
-                  onClick={() => navigate("/registro-de-compania")}
+                  onClick={() => navigate("/registro-de-compañia")}
                 >
                   Solicitar creación de empresa
                 </button>
