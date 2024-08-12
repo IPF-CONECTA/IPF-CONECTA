@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { JobCard } from "./JobCard";
 import { getJobs } from "../services/jobServices";
 import { useNoti } from "../hooks/useNoti";
-import { JobDetails } from "./JobsDetails";
+import { JobDetailsPage } from "../pages/JobsDetailsPage";
 import styles from "../../public/css/jobSearch.module.css";
 export const JobSearch = () => {
   const [totalPages, setTotalPages] = useState(1);
@@ -134,7 +134,7 @@ export const JobSearch = () => {
             )}
           </div>
         </aside>
-        {selectedJob && <JobDetails jobId={selectedJob} />}
+        {selectedJob && <JobDetailsPage jobId={selectedJob} />}
       </section>
     </main>
   );

@@ -6,7 +6,7 @@ import { authContext } from "../context/auth/Context";
 import { Link, useNavigate } from "react-router-dom";
 import { useNoti } from "../hooks/useNoti";
 
-export const Login = () => {
+export const LoginForm = () => {
   const { login, authState } = useContext(authContext);
   const navigate = useNavigate();
   const noti = useNoti();

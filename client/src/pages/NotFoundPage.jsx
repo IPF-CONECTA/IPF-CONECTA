@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../../public/css/NotFound.css";
 import iconoipf from "../../public/iconoipf.png";
 
-export const NotFound = () => {
+export const NotFoundPage= () => {
   return (
     <div className="not-found">
       <div className="logo-container">

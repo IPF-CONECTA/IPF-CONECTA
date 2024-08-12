@@ -60,7 +60,7 @@ const languages = [
   },
 ];
 
-export default function StudentProfile() {
+export const StudentProfilePage = () => {
   return (
     <div className="profile-container">
       <div className="profile-sidebar">
@@ -87,9 +87,7 @@ export default function StudentProfile() {
           </p>
         </div>
         <section className="languages">
-          <h3>
-            IDIOMAS:
-          </h3>
+          <h3>IDIOMAS:</h3>
           {languages.map((idiom) => (
             <div key={idiom.id} className="languages-item">
               <h4>{idiom.name}</h4>
@@ -98,9 +96,7 @@ export default function StudentProfile() {
           ))}
         </section>
         <div className="Social-medias">
-          <h3>
-           REDES SOCIALES:
-          </h3>
+          <h3>REDES SOCIALES:</h3>
           {socialMedias.map((social) => (
             <a key={social.id} href={social.url} className="social-media">
               {social.name}
@@ -124,9 +120,7 @@ export default function StudentProfile() {
           ))}
         </section>
         <section className="education">
-          <h3>
-            EDUCACIÓN:
-          </h3>
+          <h3>EDUCACIÓN:</h3>
           {educations.map((edu) => (
             <div key={edu.id} className="education-item">
               <h4>{edu.title}</h4>
@@ -136,8 +130,7 @@ export default function StudentProfile() {
             </div>
           ))}
         </section>
-
       </div>
     </div>
   );
-}
+};

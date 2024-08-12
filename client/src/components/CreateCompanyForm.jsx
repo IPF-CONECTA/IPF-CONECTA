@@ -5,18 +5,20 @@ import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 
-export default function CompanyRegister() {
+export const CreateCompanyForm = () => {
   const navigate = useNavigate();
   const noti = useNoti();
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [logo, setLogo] = useState(null)
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     industryId: "",
     countryOriginId: "",
     cantEmployees: "",
+    logoUrl: "",
   });
 
   useEffect(() => {
@@ -39,6 +41,10 @@ export default function CompanyRegister() {
     }));
   }
 
+  function handleImageChange(e) {
+    setLogo(e.target.files[0])
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -52,6 +58,7 @@ export default function CompanyRegister() {
             cantEmployees: formData.cantEmployees,
             industryId: formData.industryId,
             countryOriginId: formData.countryOriginId,
+            logoUrl: formData.logoUrl,
           },
           message: formData.message,
         },
@@ -77,7 +84,6 @@ export default function CompanyRegister() {
         }
         noti(errorMsg, "error");
         console.error("Error creating company:", error);
-        navigate("/company/register");
       });
   }
 
@@ -137,8 +143,8 @@ export default function CompanyRegister() {
         onChange={handleInputChange}
         required
       />
-      <input type="file" name="logoUrl" />
+      <input type="file" value={formData.logoUrl} name="logoUrl" />
       <button type="submit">Enviar</button>
     </form>
   );
-}
+};

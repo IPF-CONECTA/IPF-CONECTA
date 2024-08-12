@@ -5,7 +5,7 @@ import styles from "../../public/css/register.module.css";
 import { useNoti } from "../hooks/useNoti";
 import { authService } from "../services/authService";
 
-export const Register = () => {
+export const RegisterForm = () => {
   const noti = useNoti();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
