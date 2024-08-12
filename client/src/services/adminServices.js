@@ -17,10 +17,10 @@ export const getVerifications = async (status) => {
     }
 }
 
-export const updateAssociationStatus = async (index, status, justification = null) => {
+export const updateAssociationStatus = async (id, status, justification = null) => {
     try {
-        const res = await axios.put(
-            `http://localhost:4000/admin/update-association-status/${index}/${status}`,
+        const res = await axios.patch(
+            `http://localhost:4000/admin/update-association-status/${id}/${status}`,
             { justification },
             {
                 headers: {

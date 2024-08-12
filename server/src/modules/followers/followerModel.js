@@ -4,6 +4,7 @@ import { DataTypes, sequelize } from "../../config/db.js";
 export const Follower = sequelize.define('follower', {
     id: {
         type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
     },

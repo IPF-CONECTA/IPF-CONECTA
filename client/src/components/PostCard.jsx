@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { followOrUnfollow, getProfileInfo } from "../services/feedServices";
 import styles from "../../public/css/postCard.module.css";
 import { useNoti } from "../hooks/useNoti";
+import { getTime } from "../helpers/getTime";
 const PostCard = (post) => {
+  console.log(post);
   const [showProfileInfo, setShowProfileInfo] = useState(false);
   const [profileInfo, setProfileInfo] = useState(null);
   const timeoutRef = useRef(null);
@@ -12,12 +14,14 @@ const PostCard = (post) => {
     console.log(profileInfo);
   }, [profileInfo]);
   const handleFollowOrUnfollow = async (id) => {
-    console.log(profileInfo);
+    setProfileInfo((prevProfileInfo) => ({
+      ...prevProfileInfo,
+      isFollowing: !prevProfileInfo.isFollowing,
+    }));
     const { data, statusCode } = await followOrUnfollow(profileInfo.user.id);
-    if (statusCode !== 200) {
+    if (statusCode !== 201) {
       noti(data, "error");
     }
-    noti(data, "success");
   };
   const handleShowProfileInfo = (boolean, id) => {
     if (timeoutRef.current) {
@@ -53,12 +57,12 @@ const PostCard = (post) => {
     setProfileInfo(null);
   };
   return (
-    <article className="d-flex flex-column w-75  border rounded p-4 mb-3  ">
+    <article className="d-flex flex-column w-75 border rounded p-4 mb-3  ">
       <header className="position-relative">
         <div className="avatar d-flex align-items-center">
           <div>
             <img
-              className="me-2 rounded-circle"
+              className="me-3 rounded-circle"
               width={50}
               height={50}
               onMouseEnter={() =>
@@ -71,12 +75,15 @@ const PostCard = (post) => {
               alt={post.post.user.names}
             />
           </div>
-          <div className={`d-flex flex-column ${styles.usernames}`}>
+          <div className={`d-flex flex-column w-100 ${styles.usernames}`}>
             {post.post.user.title ? (
               <>
-                <div>
-                  <span className="fw-bold fs-6">{post.post.user.names}</span>
-                  <span className="fs-4">{post.post.user.surnames}</span>
+                <div className="d-flex flex-column justify-content-between">
+                  <div>
+                    <span className="fw-bold fs-6">{post.post.user.names}</span>
+                    <span className="fs-4">{post.post.user.surnames}</span>
+                  </div>
+                  <span>{getTime(post.post.createdAt)}</span>
                 </div>
                 <span className="text-muted fw-lighter">
                   {post.post.user.title}
@@ -84,9 +91,12 @@ const PostCard = (post) => {
               </>
             ) : (
               <>
-                <span className="fw-bold fs-5       ">
-                  {post.post.user.names} {post.post.user.surnames}
-                </span>
+                <div className="w-100 d-flex justify-content-between">
+                  <span className="fw-bold fs-5       ">
+                    {post.post.user.names} {post.post.user.surnames}
+                  </span>
+                  <span>{getTime(post.post.createdAt)}</span>
+                </div>
               </>
             )}
             <span>{post.post.user.title}</span>
@@ -97,15 +107,38 @@ const PostCard = (post) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             ref={profileInfoRef}
-            className={`position-absolute border rounded p-2 bg-white d-flex align-items-center m-3 ${styles.profileInfo}`}
+            className={`position-absolute border rounded p-2 bg-white d-flex flex-column justify-content-center p-3 ${styles.profileInfo}`}
           >
-            <img
-              src={`${profileInfo.user.profilePic}`}
-              width={70}
-              height={70}
-              className="rounded-circle me-2"
-              alt="profile pic"
-            />
+            <div className="d-flex align-items-start justify-content-between">
+              <img
+                src={`${profileInfo.user.profilePic}`}
+                width={65}
+                height={65}
+                className="rounded-circle me-2"
+                alt="profile pic"
+              />
+              <div className="d-flex flex-column h-75 w-50 ps-2 align-items-center">
+                {profileInfo.isFollowing === false ? (
+                  <button
+                    className="btn btn-dark w-100 mb-2 fw-bold"
+                    onClick={() => {
+                      handleFollowOrUnfollow(profileInfo.id);
+                    }}
+                  >
+                    Follow
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-outline-dark w-100 mb-2 fw-bold"
+                    onClick={() => {
+                      handleFollowOrUnfollow(profileInfo.id);
+                    }}
+                  >
+                    Unfollow
+                  </button>
+                )}
+              </div>
+            </div>
             <div className={`d-flex flex-column ${styles.username}`}>
               <span className="fs-4">
                 {profileInfo.user.names} {profileInfo.user.surnames}
@@ -116,28 +149,6 @@ const PostCard = (post) => {
                 <span className="text-muted fs-5">Sin titulo</span>
               )}
               <span className="text-muted">{profileInfo.user.email}</span>
-            </div>
-            <div className="d-flex flex-column h-75 ps-2 align-items-center">
-              {profileInfo.isFollowing === false ? (
-                <button
-                  className="btn btn-dark w-100 mb-2 fw-bold"
-                  onClick={() => {
-                    handleFollowOrUnfollow(profileInfo.id);
-                  }}
-                >
-                  Seguir
-                </button>
-              ) : (
-                <button
-                  className="btn btn-outline-dark w-100 mb-2 fw-bold"
-                  onClick={() => {
-                    handleFollowOrUnfollow(profileInfo.id);
-                  }}
-                >
-                  Dejar de seguir
-                </button>
-              )}
-              <button className="btn btn-danger w-100 fw-bold">Block</button>
             </div>
           </div>
         )}

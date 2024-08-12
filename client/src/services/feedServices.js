@@ -64,16 +64,20 @@ export const getProfileInfo = async (id) => {
 
 export const followOrUnfollow = async (idToFollow) => {
     try {
-        const res = axios.post(`http://localhost:4000/follow/${idToFollow}`, {
-            headers: {
-                authorization: `Bearer ${authService.getToken()}`,
-            },
-        });
-
+        console.log(authService.getToken())
+        const res = await axios.post(`http://localhost:4000/follow/${idToFollow}`,
+            {},
+            {
+                headers: {
+                    authorization: `Bearer ${authService.getToken()}`,
+                },
+            }
+        );
         const data = res.data;
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
+        console.log(error)
         return {
             data: error.data.message, statusCode: error.response?.status
         };

@@ -39,7 +39,7 @@ const RecomendedAccounts = ({ accounts }) => {
                   )}
                 </div>
               </div>
-              <button className="btn btn-dark h-25">Seguir</button>
+              <button className="btn btn-dark h-25">Follow</button>
             </div>
           ))}
         </div>
