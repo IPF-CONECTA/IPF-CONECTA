@@ -9,6 +9,7 @@ const PostCard = (post) => {
   const timeoutRef = useRef(null);
   const profileRef = useRef(null);
 
+  console.log(post);
   const handleShowProfile = (boolean, id) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -110,12 +111,21 @@ const PostCard = (post) => {
       <footer className="">
         <button className="btn p-0 d-flex align-items-center">
           <span class="material-symbols-outlined">thumb_up</span>
+          {post.post.likes.length > -1 && (
+            <span className="ms-2">{post.post.likes.length}</span>
+          )}
         </button>
         <button className="btn p-0 d-flex align-items-center">
           <span className="material-symbols-outlined">chat_bubble</span>{" "}
+          {post.post.comments.length > -1 && (
+            <span className="ms-2">{post.post.comments.length}</span>
+          )}
         </button>
         <button className="btn p-0 d-flex align-items-center">
           <span className="material-symbols-outlined">repeat</span>{" "}
+          {post.post.reposts.length > -1 && (
+            <span className="ms-2">{post.post.reposts.length}</span>
+          )}
         </button>
       </footer>
     </article>

@@ -1,4 +1,3 @@
-import { UUIDV4 } from "sequelize";
 import { DataTypes, sequelize } from "../../../config/db.js";
 
 export const Attachment = sequelize.define('attachment', {

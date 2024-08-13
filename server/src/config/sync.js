@@ -2,7 +2,7 @@ import { sequelize } from "./db.js";
 import { createRoles } from "../modules/roles/roleModel.js";
 import { User } from "../modules/users/userModel.js";
 import { Post } from "../modules/posts/postModel.js";
-import { Like } from "../modules/likes/likeModel.js";
+import { Like } from "../modules/posts/likes/likeModel.js";
 import { Report } from "../modules/reports/reportModel.js";
 import {
   ReportReason,
@@ -44,12 +44,13 @@ import {
   Modality,
   createModalities,
 } from "../modules/recruiters/job/jobModalities/modalityModel.js";
+import { Repost } from "../modules/posts/reposts/repostModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
-  // await Job.sync({ force: true });
+  // await Repost.sync({ force: true });
 
   console.log("Tables created successfully");
 
