@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import styles from "../../public/css/homeNav.module.css";
 const HomeNav = () => {
   return (
-    <aside className="w-25 position-fixed top-0 start-0 h-100">
-      <div className="d-flex flex-column justify-content-around align-items-center h-100">
+    <aside className={`w-25 position-fixed top-0 h-100 ${styles.homeNav}`}>
+      <div className="d-flex flex-column justify-content-around align-items-start h-100">
         <div>
           <Link
             to="/inicio"
@@ -76,8 +76,8 @@ const HomeNav = () => {
               <img
                 src="/iconoipf.png"
                 className="pe-3"
-                width={40}
-                height={40}
+                width={56}
+                height={50}
                 alt="IPFC logo"
               />
               <span className="fs-4 fw-bold">Volver</span>

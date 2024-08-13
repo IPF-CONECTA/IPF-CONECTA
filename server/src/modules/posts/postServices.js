@@ -1,27 +1,54 @@
 import { Attachment } from "./postAttachment/attachmentModel.js"
 import { Post } from "./postModel.js"
 import { User } from "../users/userModel.js"
+import { Like } from "../likes/likeModel.js"
+import { Repost } from "./reposts/repostModel.js"
 
 export const getPostsSvc = async (page) => {
     try {
-        const posts = await Post.findAndCountAll({
+        let data = await Post.findAndCountAll({
             limit: 10,
-            order: [['createdAt', 'DESC']],
             offset: page * 10,
+            order: [['createdAt', 'DESC']],
             include: [{
                 model: User,
+                as: 'user',
                 attributes: ['id', 'profilePic', 'names', 'surnames']
             },
             {
                 model: Attachment,
                 as: 'attachments',
                 attributes: ['url', 'type']
-            }
-            ]
+            },
+            {
+                model: Like,
+                as: 'likes',
+                attributes: ['id'],
+            },
+            {
+                model: Repost,
+                as: 'reposts',
+                attributes: ['id'],
+            },
+            {
+                model: Post,
+                as: 'comments',
+                attributes: ['id', 'content', 'createdAt', 'userId'],
+                limit: 2,
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: ['id', 'profilePic', 'names', 'surnames']
+                }]
+            },
+
+            ],
         })
-        console.log(posts)
-        return posts
+        console.log(data)
+
+        return { count: data.count, rows: data.rows }
     } catch (error) {
+        console.log(error)
         return error.message
     }
 }

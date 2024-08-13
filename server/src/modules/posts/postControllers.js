@@ -9,6 +9,7 @@ export const getPostsCtrl = async (req, res) => {
             page = pageAsNumber;
         }
         const posts = await getPostsSvc(page - 1);
+        console.log(posts)
         if (posts.count === 0) return res.status(404).json({ message: "No hay publicaciones" });
 
         res.status(200).json(posts);

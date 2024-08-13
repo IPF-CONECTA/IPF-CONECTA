@@ -1,26 +1,21 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HomePage } from "../components/HomePage";
-import { NotFoundPage } from "../components/NotFoundPage";
-import { LoginPage } from "../components/LoginPage";
-import { RegisterPage } from "../components/RegisterPage";
-import { SupportPage } from "../components/SupportPage";
-import { AdminCompany } from "../components/AdminCompany";
-import Panel from "../pages/PanelPage";
-// import JobsDetails from "../components/JobsDetails";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
-import CompanyRegister from "../components/CompanyRegister";
-import StudentProfile from "../components/StudentProfile";
-import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
-// import JobsSales from "../components/JobsSales";
-import { JobSearchPage } from "../pages/JobSearch";
-import { Feed } from "@mui/icons-material";
-import { SelectCompanyPage }  from "../pages/SelectCompanyPage";
-import Feeed from "../pages/Feed";
-
-//pruebas
-
-import { Trabajo } from '/src/components/guardar/trabajo.jsx';
+import {
+  AdminPanelPage,
+  CompanyConfirmedPage,
+  FeedPage,
+  HomePage,
+  JobSearchPage,
+  SelectCompanyPage,
+  StudentProfilePage,
+  PanelPage,
+  NotFoundPage,
+  LoginPage,
+  RegisterPage,
+  CreateCompanyPage,
+  SupportPage
+} from "../pages";
 
 export const Routers = () => {
   return (
@@ -33,21 +28,20 @@ export const Routers = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<AdminRoutes />}>
-            <Route path="/admin" element={<AdminCompany />} />
+            <Route path="/admin" element={<AdminPanelPage />} />
           </Route>
-          <Route path="/profile" element={<StudentProfile />} />
-          <Route path="/inicio" element={<Feeed />} /> </Route>
-  
-          <Route path="/Trabajo" element={<Trabajo />} />
+          <Route path="/profile" element={<StudentProfilePage />} />
+          <Route path="/inicio" element={<FeedPage />} />
+        </Route>
 
+        <Route path="/panel" element={<PanelPage />} />
 
-        <Route path="/panel" element={<Panel />} />
-        <Route path="/profile" element={<StudentProfile />} />
+        <Route path="/profile" element={<StudentProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/registro-de-compañia" element={<CompanyRegister />} />
+        <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />

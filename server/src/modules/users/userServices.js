@@ -27,14 +27,23 @@ export const getUserInfoSvc = async (id, followingId) => {
     const user = await User.findByPk(followingId, {
         attributes: ['id', 'names', 'surnames', 'email', 'profilePic'],
     })
-    console.log('si se encontro')
     const following = await Follower.findOne({
         where: {
             followingId: user.id,
             followerId: id
         }
     })
-    return { user, following }
+    const cantFollowers = await Follower.count({
+        where: {
+            followingId: user.id
+        }
+    })
+    const cantFollowing = await Follower.count({
+        where: {
+            followerId: user.id
+        }
+    })
+    return { user, following, cantFollowers, cantFollowing }
 }
 
 export const createUser = async (user) => {

@@ -83,3 +83,22 @@ export const followOrUnfollow = async (idToFollow) => {
         };
     }
 }
+
+export const like = async (id) => {
+    try {
+        const res = await axios.post(`http://localhost:4000/like/${id}`,
+            {},
+            {
+                headers: {
+                    authorization: `Bearer ${authService.getToken()}`,
+                },
+            }
+        );
+        const statusCode = res.status;
+        return { statusCode };
+    } catch (error) {
+        return {
+            data: error.data.message, statusCode: error.response?.status
+        };
+    }
+}

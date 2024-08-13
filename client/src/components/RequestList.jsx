@@ -7,18 +7,21 @@ import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import { updateAssociationStatus } from "../services/adminServices";
 import { useNoti } from "../hooks/useNoti";
+import { useNavigate } from "react-router-dom";
 
-export default function RequestList({
+export const RequestList = ({
   associations = [],
   acceptAssociation,
   rejectAssociation,
-}) {
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAssociation, setSelectedAssociation] = useState(
     associations[0]
   );
   const [open, setOpen] = useState(false);
   const noti = useNoti();
+
+  const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -142,9 +145,11 @@ export default function RequestList({
               </Button>
               <Button
                 color="primary"
-                onClick={() =>
-                  handleAssociationStatus(selectedAssociation.id, "Aprobada")
-                }
+                onClick={() => {
+                  handleAssociationStatus(selectedAssociation.id, "Aprobada");
+                  noti("Solicitud aprobada", "success");
+                  navigate("/panelñ");
+                }}
               >
                 Aprobar
               </Button>
@@ -154,7 +159,7 @@ export default function RequestList({
       </div>
     </div>
   );
-}
+};
 // export default function RequestLists({
 //   associations = [],
 //   acceptAssociation,

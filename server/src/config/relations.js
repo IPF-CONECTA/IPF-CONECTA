@@ -25,6 +25,7 @@ import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkil
 import { Attachment } from "../modules/posts/postAttachment/attachmentModel.js";
 import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { CompanyUbication } from "../modules/recruiters/companies/companyIndustry/companyUbications/companyUbication.model.js";
+import { Repost } from "../modules/posts/reposts/repostModel.js";
 
 export const createRelations = async () => {
     try {
@@ -63,6 +64,7 @@ export const createRelations = async () => {
         });
         User.hasMany(Post, {
             foreignKey: 'userId',
+            as: 'posts'
         });
         User.hasMany(LangsUser, {
             foreignKey: 'userId',
@@ -77,8 +79,16 @@ export const createRelations = async () => {
             foreignKey: 'userId'
         });
         Post.belongsTo(User, {
-            foreignKey: 'userId'
+            foreignKey: 'userId',
+            as: 'user'
         });
+        Post.hasMany(Repost, {
+            foreignKey: 'postId',
+            as: 'reposts'
+        })
+        User.hasMany(Repost, {
+            foreignKey: 'userId'
+        })
         Post.hasMany(Like, {
             foreignKey: 'postId'
         });
@@ -86,7 +96,8 @@ export const createRelations = async () => {
             foreignKey: 'postId'
         });
         User.hasMany(Like, {
-            foreignKey: 'userId'
+            foreignKey: 'userId',
+            as: 'likes'
         });
         Like.belongsTo(User, {
             foreignKey: 'userId'
@@ -100,7 +111,7 @@ export const createRelations = async () => {
         });
         Post.hasMany(Post, {
             foreignKey: 'postId',
-            as: 'post'
+            as: 'comments'
         })
         Attachment.belongsTo(Post, {
             foreignKey: 'postId',

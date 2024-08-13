@@ -20,3 +20,4 @@ export const followOrUnfollowSvc = async (id, idToFollow) => {
         throw new Error(error.message);
     }
 }
+

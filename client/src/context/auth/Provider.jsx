@@ -44,7 +44,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const res = await authService.login(credentials);
     if (res.status != 200) {
-      return toast(res.message, "error");
+
+      return toast("error", "error");
     }
     authService.setToken(res.data.response.token);
     dispatch({

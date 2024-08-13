@@ -5,7 +5,7 @@ import { getPosts } from "../services/feedServices";
 import { useNoti } from "../hooks/useNoti";
 import { getAccounts } from "../services/feedServices";
 import HomeNav from "../components/HomeNav";
-const Feeed = () => {
+export const FeedPage = () => {
   const noti = useNoti();
   const [posts, setPosts] = useState([]);
   const [accounts, setAccounts] = useState([]);
@@ -42,4 +42,3 @@ const Feeed = () => {
   );
 };
 
-export default Feeed;
