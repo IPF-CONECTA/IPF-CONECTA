@@ -15,9 +15,12 @@ import { CompanyConfirmedPage } from "../pages/CompanyConfirmed";
 // import JobsSales from "../components/JobsSales";
 import { JobSearchPage } from "../pages/JobSearch";
 import { Feed } from "@mui/icons-material";
-import { Trabajo } from '/src/components/guardar/trabajo.jsx';
 import { SelectCompanyPage }  from "../pages/SelectCompanyPage";
 import Feeed from "../pages/Feed";
+
+//pruebas
+
+import { Trabajo } from '/src/components/guardar/trabajo.jsx';
 
 export const Routers = () => {
   return (
@@ -33,11 +36,12 @@ export const Routers = () => {
             <Route path="/admin" element={<AdminCompany />} />
           </Route>
           <Route path="/profile" element={<StudentProfile />} />
-          <Route path="/inicio" element={<Feeed />} />
-        </Route>
+          <Route path="/inicio" element={<Feeed />} /> </Route>
   
+          <Route path="/Trabajo" element={<Trabajo />} />
+
+
         <Route path="/panel" element={<Panel />} />
-        <Route path="/Trabajo" element={<Trabajo />} />
         <Route path="/profile" element={<StudentProfile />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />

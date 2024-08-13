@@ -10,6 +10,7 @@ import companyIndustriesRoutes from "./modules/recruiters/companies/companyIndus
 import skillsRoutes from "./modules/skills/skillsRoutes.js";
 import postRoutes from "./modules/posts/postRoutes.js";
 import followerRoutes from "./modules/followers/followerRoutes.js";
+import repostRoutes from "./modules/posts/reposts/repostRoutes.js";
 export const routes = (app) => {
     app.use(userRoutes);
     app.use(authRoutes);
@@ -23,4 +24,5 @@ export const routes = (app) => {
     app.use(skillsRoutes)
     app.use('/feed', postRoutes)
     app.use(followerRoutes)
+    app.use(repostRoutes)
 }
