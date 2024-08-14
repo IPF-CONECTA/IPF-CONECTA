@@ -15,7 +15,7 @@ export const getPosts = async () => {
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
-        console.error("Error al obtener los posts:", error);
+        // console.error("Error al obtener los posts:", error);
         return { data: [], statusCode: error.response?.status, message: error.response?.data?.message };
     }
 }
@@ -35,7 +35,7 @@ export const getAccounts = async () => {
     } catch (error) {
         console.error("Error al obtener los posts:", error);
         return {
-            data: [], statusCode: error.response?.status
+            data: [], statusCode: error.response?.status, message: error.response?.data?.message
         };
     }
 }
