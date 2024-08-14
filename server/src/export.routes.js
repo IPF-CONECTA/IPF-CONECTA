@@ -11,6 +11,7 @@ import skillsRoutes from "./modules/skills/skillsRoutes.js";
 import postRoutes from "./modules/posts/postRoutes.js";
 import followerRoutes from "./modules/followers/followerRoutes.js";
 import repostRoutes from "./modules/posts/reposts/repostRoutes.js";
+import likeRoutes from "./modules/posts/likes/likeRoutes.js";
 export const routes = (app) => {
     app.use(userRoutes);
     app.use(authRoutes);
@@ -25,4 +26,5 @@ export const routes = (app) => {
     app.use('/feed', postRoutes)
     app.use(followerRoutes)
     app.use(repostRoutes)
+    app.use(likeRoutes)
 }

@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "../../public/css/recomendedAccounts.module.css";
 const RecomendedAccounts = ({ accounts }) => {
-  useEffect(() => {
-    console.log("ACCOUNTS STATE");
-    console.log(accounts);
-  }, [accounts]);
-
   return (
     <aside
       className={`w-25 border rounded py-5 ${styles.container} position-fixed end-0`}

@@ -3,6 +3,7 @@ import { ALL_ROLES } from '../../constant/roles.js';
 import { BASIC_ROLES } from '../../constant/roles.js';
 import bcrypt from 'bcryptjs'
 import { Follower } from '../followers/followerModel.js';
+import { Op } from 'sequelize';
 
 export const getUsers = async () => {
     const users = await User.findAll()
@@ -12,8 +13,12 @@ export const getUsers = async () => {
 export const getRecomendedUsersSvc = async () => {
     const users = await User.findAll({
         where: {
-            roleId: BASIC_ROLES.student || BASIC_ROLES.recruiter
-        }
+            [Op.or]: [
+                { roleId: BASIC_ROLES.recruiter },
+                { roleId: BASIC_ROLES.student }
+            ]
+        },
+        limit: 5
     })
     return users
 }

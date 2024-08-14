@@ -1,15 +1,15 @@
-import { sequelize, DataTypes } from "../../config/db.js";
-import { Sequelize } from "sequelize";
+import { sequelize, DataTypes } from "../../../config/db.js";
 
 export const Like = sequelize.define('like', {
     id: {
         type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
     },
     likedAt: {
         type: DataTypes.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: DataTypes.NOW
     },
     postId: {
         type: DataTypes.UUID,

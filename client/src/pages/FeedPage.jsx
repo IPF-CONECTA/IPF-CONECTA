@@ -11,10 +11,8 @@ export const FeedPage = () => {
   const [accounts, setAccounts] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {
-      console.log("fetching posts");
       const { data, statusCode } = await getPosts();
       if (statusCode !== 200) {
-        console.log(statusCode);
         return;
       }
       setPosts(data);
@@ -41,4 +39,3 @@ export const FeedPage = () => {
     </>
   );
 };
-

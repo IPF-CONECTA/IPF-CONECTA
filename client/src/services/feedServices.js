@@ -10,9 +10,8 @@ export const getPosts = async () => {
                 },
             }
         );
+        console.log(res)
         const data = res.data.rows;
-        console.log('POSTS: ==============')
-        console.log(data)
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
@@ -31,8 +30,6 @@ export const getAccounts = async () => {
             }
         );
         const data = res.data;
-        console.log('ACCOUNTS: ==============')
-        console.log(data)
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
