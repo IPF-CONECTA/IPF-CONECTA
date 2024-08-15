@@ -15,6 +15,15 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  
+  function showPass() {
+    var x = document.getElementById("myInput");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
 
   useEffect(() => {
     if (authState.isLogged) {
@@ -30,6 +39,7 @@ export const LoginForm = () => {
       navigate("/seleccionar-compañia");
     }
   }
+
 
   return (
     <div className={styles["login-container"]}>
@@ -50,8 +60,10 @@ export const LoginForm = () => {
             <label htmlFor="password" className={styles.label}>
               Contraseña
             </label>
-            <input type="password" required {...register("password")} />
+            <input type="password"  id="myInput" required  {...register("password")} />
             {errors.password && <span className={styles["error-message"]}>{errors.password.message}</span>}
+            <input type="checkbox" onClick= {showPass}/>
+
           </div>
           <div className={styles["form-group"]}>
             <button type="submit" className={styles.button}>

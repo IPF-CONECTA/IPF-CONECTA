@@ -1,7 +1,7 @@
 import { Attachment } from "./postAttachment/attachmentModel.js"
 import { Post } from "./postModel.js"
 import { User } from "../users/userModel.js"
-import { Like } from "../likes/likeModel.js"
+import { Like } from "../posts/likes/likeModel.js"
 import { Repost } from "./reposts/repostModel.js"
 
 export const getPostsSvc = async (page) => {

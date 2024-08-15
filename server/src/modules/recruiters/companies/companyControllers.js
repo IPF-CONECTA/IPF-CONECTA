@@ -6,6 +6,8 @@ import { findCompaniesSvc, getApprovedCompaniesSvc } from "./companyServices.js"
 import { getCompanyByIdSvc } from "../../administration/admin/companies/companyServices.js";
 import { validate as isValidUUID } from 'uuid';
 
+import { Company } from './companyModel.js';
+import { upload } from "../../../multerConfig.js";
 export const sendContactCompanyCtrl = async (req, res) => {
     const { from, name, subject, message } = req.body;
     try {
@@ -15,6 +17,29 @@ export const sendContactCompanyCtrl = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+// Controlador para subir el logo y crear una empresa
+export const uploadCompanyLogo = async (req, res) => {
+  try {
+    const { name, description, industryId, countryOriginId, cantEmployees } = req.body;
+
+    // Tomar la ruta del logo si se subió
+    const logoUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const newCompany = await Company.create({
+      name,
+      description,
+      industryId,
+      countryOriginId,
+      cantEmployees,
+      logoUrl
+    });
+
+    res.status(201).json({ message: "Empresa creada correctamente", company: newCompany });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const getApprovedCompaniesCtrl = async (req, res) => {
     try {

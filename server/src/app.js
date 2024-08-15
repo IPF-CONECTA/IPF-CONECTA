@@ -11,6 +11,7 @@ import router from "./modules/users/userRoutes.js";
 import { routes } from "./export.routes.js";
 
 
+
 app.use(cors());
 app.use(express.json());
 app.use(
@@ -20,8 +21,12 @@ app.use(
 );
 app.use(morgan("combined"));
 
-routes(app);
+// Exponer la carpeta `uploads` de forma pública
+app.use('/uploads', express.static('uploads'));
 
+
+
+routes(app);
 connectDB();
 createTablesAndRelations();
 app.listen(process.env.PORT, () => {

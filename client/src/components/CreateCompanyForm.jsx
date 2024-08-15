@@ -11,14 +11,13 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [logo, setLogo] = useState(null)
+  const [logo, setLogo] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     industryId: "",
     countryOriginId: "",
     cantEmployees: "",
-    logoUrl: "",
   });
 
   useEffect(() => {
@@ -42,32 +41,29 @@ export const CreateCompanyForm = () => {
   }
 
   function handleImageChange(e) {
-    setLogo(e.target.files[0])
+    setLogo(e.target.files[0]); // Guardamos el archivo en el estado
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("cantEmployees", formData.cantEmployees);
+    data.append("industryId", formData.industryId);
+    data.append("countryOriginId", formData.countryOriginId);
+    if (logo) {
+      data.append("logo", logo); // Agregamos la imagen si existe
+    }
+
     axios
-      .post(
-        "http://localhost:4000/create-company",
-        {
-          company: {
-            name: formData.name,
-            description: formData.description,
-            cantEmployees: formData.cantEmployees,
-            industryId: formData.industryId,
-            countryOriginId: formData.countryOriginId,
-            logoUrl: formData.logoUrl,
-          },
-          message: formData.message,
+      .post("http://localhost:4000/create-company", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${authService.getToken()}`,
         },
-        {
-          headers: {
-            authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      )
+      })
       .then((response) => {
         if (response.status === 201) {
           noti(response.data.message, "success");
@@ -77,11 +73,7 @@ export const CreateCompanyForm = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
-        let errorMsg = error.response.data.message;
-        if (!errorMsg) {
-          errorMsg = error.response.data.errors[0].msg;
-        }
+        let errorMsg = error.response?.data?.message || "Error creando la empresa";
         noti(errorMsg, "error");
         console.error("Error creating company:", error);
       });
@@ -143,7 +135,10 @@ export const CreateCompanyForm = () => {
         onChange={handleInputChange}
         required
       />
-      <input type="file" value={formData.logoUrl} name="logoUrl" />
+
+      {/* Aquí no usamos value en el input file */}
+      <input type="file" name="logoUrl" onChange={handleImageChange} />
+
       <button type="submit">Enviar</button>
     </form>
   );

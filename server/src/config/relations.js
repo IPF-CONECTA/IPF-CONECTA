@@ -1,7 +1,7 @@
 import { Role } from "../modules/roles/roleModel.js";
 import { User } from "../modules/users/userModel.js";
 import { Post } from "../modules/posts/postModel.js";
-import { Like } from "../modules/likes/likeModel.js";
+import { Like } from "../modules/posts/likes/likeModel.js";
 import { Report } from "../modules/reports/reportModel.js";
 import { ReportReason } from "../modules/reports/reportReasonModel.js";
 import { Follower } from "../modules/followers/followerModel.js";
