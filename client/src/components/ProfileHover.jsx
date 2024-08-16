@@ -1,7 +1,7 @@
 // src/components/ProfileHover.jsx
 import React, { useState } from "react";
 import styles from "../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
-import { followOrUnfollow } from "../services/feedServices";
+import { useFollow } from "../hooks/useFollow";
 
 export const ProfileHover = ({
   profile,
@@ -9,18 +9,7 @@ export const ProfileHover = ({
   handleMouseLeave,
   profileInfoRef,
 }) => {
-  const [profileInfo, setProfile] = useState(profile);
-
-  const handleFollowOrUnfollow = async (id) => {
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      isFollowing: !prevProfile.isFollowing,
-    }));
-    const { data, statusCode } = await followOrUnfollow(profile.user.id);
-    if (statusCode !== 201) {
-      noti(data, "error");
-    }
-  };
+  const { profileInfo, handleFollowOrUnfollow } = useFollow(profile);
 
   return (
     <div

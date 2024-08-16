@@ -48,11 +48,12 @@ export const createUserController = async (req, res) => {
 }
 
 export const getRecomendedUsersController = async (_req, res) => {
+    const { id } = _req.user
     try {
-        const users = await getRecomendedUsersSvc();
+        const users = await getRecomendedUsersSvc(id);
 
         if (users.length == 0) {
-            return res.status(400).json({ message: 'No se encontraron usuarios' })
+            return res.status(404).json({ message: 'No se encontraron usuarios' })
         }
         res.status(200).json(users);
     } catch (error) {

@@ -5,24 +5,23 @@ import { getPosts } from "../services/feedServices";
 import { useNoti } from "../hooks/useNoti";
 import { getAccounts } from "../services/feedServices";
 import HomeNav from "../components/HomeNav";
+import { set } from "react-hook-form";
 export const FeedPage = () => {
-  const noti = useNoti();
   const [posts, setPosts] = useState([]);
   const [accounts, setAccounts] = useState([]);
+  const [error, setError] = useState({ message: null, statusCode: null });
   useEffect(() => {
     const fetchPosts = async () => {
-      console.log("fetching posts");
       const { data, statusCode } = await getPosts();
       if (statusCode !== 200) {
-        console.log(statusCode);
         return;
       }
       setPosts(data);
     };
     const fetchAccounts = async () => {
-      const { data, statusCode } = await getAccounts();
+      const { data, statusCode, message } = await getAccounts();
       if (statusCode !== 200) {
-        noti("Error al obtener los posts", "error");
+        setError({ message, statusCode });
         return;
       }
       setAccounts(data);
@@ -36,9 +35,8 @@ export const FeedPage = () => {
       <main className="d-flex justify-content-center w-100 ">
         <HomeNav />
         <PostList posts={posts} />
-        <RecomendedAccounts accounts={accounts} />
+        <RecomendedAccounts error={error} accounts={accounts} />
       </main>
     </>
   );
 };
-

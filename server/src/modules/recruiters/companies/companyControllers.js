@@ -18,28 +18,7 @@ export const sendContactCompanyCtrl = async (req, res) => {
     }
 }
 
-// Controlador para subir el logo y crear una empresa
-export const uploadCompanyLogo = async (req, res) => {
-  try {
-    const { name, description, industryId, countryOriginId, cantEmployees } = req.body;
 
-    // Tomar la ruta del logo si se subió
-    const logoUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-    const newCompany = await Company.create({
-      name,
-      description,
-      industryId,
-      countryOriginId,
-      cantEmployees,
-      logoUrl
-    });
-
-    res.status(201).json({ message: "Empresa creada correctamente", company: newCompany });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 export const getApprovedCompaniesCtrl = async (req, res) => {
     try {
@@ -54,21 +33,29 @@ export const getApprovedCompaniesCtrl = async (req, res) => {
 }
 export const associateNewCompanyCtrl = async (req, res) => {
     try {
-        let token = req.headers.authorization
-        token = token.split(' ')[1]
-        console.log('Token extraído:', token);
-        if (!token) throw new Error('Inicie sesion para asociar la empresa')
-        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        const { company, message } = req.body
-        const { names } = await User.findByPk(userId, { attributes: ['names'] })
-        if (!names) throw new Error('Usuario no encontrado')
-        const association = await associateNewCompanySvc(message, userId, company)
-        if (!association) throw new Error('Error al asociar la empresa')
-        res.status(201).json({ message: 'Empresa asociada correctamente' })
+      const { name, description, cantEmployees, industryId, countryOriginId } = req.body;
+      const logoUrl = req.file ? `/uploads/${req.file.filename}` : null;
+  
+      // Crear la empresa con los datos proporcionados, incluyendo el logo
+      const newCompany = await Company.create({
+        name,
+        description,
+        cantEmployees,
+        industryId,
+        countryOriginId,
+        logoUrl, // Guardar la ruta del logo en la base de datos
+      });
+  
+      return res.status(201).json({
+        message: "Empresa creada exitosamente",
+        company: newCompany,
+      });
     } catch (error) {
-        res.status(500).json({ message: error.message })
+      console.error(error);
+      return res.status(500).json({ message: "Error al crear la empresa" });
     }
-}
+  };
+  
 
 export const findCompanyCtrl = async (req, res) => {
     let { company } = req.query

@@ -1,10 +1,11 @@
 import multer from "multer";
 import path from "path";
-// import { __dirname } from "./helpers/__dirname";
+import { __dirname } from "./helpers/__dirname.js";
+
 // Configuración de almacenamiento para Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../uploads')); // Carpeta donde se guardarán las imágenes
+    cb(null, path.join(__dirname, 'uploads/')); // Asegúrate de que esta ruta sea correcta
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { followOrUnfollow, getProfileInfo } from "../services/feedServices";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { getProfileInfo, like } from "../services/feedServices";
 import styles from "../../public/css/postCard.module.css";
 import { getTime } from "../helpers/getTime";
 import { ProfileHover } from "./ProfileHover";
@@ -8,8 +8,28 @@ const PostCard = (post) => {
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
   const profileRef = useRef(null);
+  const [liked, setLiked] = useState(false);
 
-  console.log(post);
+  const handleLike = async () => {
+    const { statusCode } = await like(post.post.id);
+    if (statusCode !== 201 && statusCode !== 204) {
+      return;
+    }
+    if (statusCode === 201) {
+      post.post.likes.length++;
+      setLiked(true);
+    } else if (statusCode === 204) {
+      setLiked(false);
+      if (post.post.likes.length > 0) {
+        post.post.likes.length--;
+      }
+    }
+  };
+
+  useEffect(() => {
+    setLiked(post.post.liked);
+  }, []);
+
   const handleShowProfile = (boolean, id) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -31,8 +51,8 @@ const PostCard = (post) => {
       setProfile(data);
     }, 500);
   };
+
   const handleMouseEnter = () => {
-    console.log(profile);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -109,23 +129,47 @@ const PostCard = (post) => {
           ))}
       </div>
       <footer className="">
+        <div className="d-flex w-25">
+          <button
+            onClick={handleLike}
+            className="btn p-0 d-flex align-items-center "
+          >
+            {liked ? (
+              <span class={`material-symbols-outlined ${styles.filledIcon}`}>
+                thumb_up
+              </span>
+            ) : (
+              <span class="material-symbols-outlined">thumb_up</span>
+            )}
+          </button>
+          <span className={`${styles.numberContainer} ms-2`}>
+            {post.post.likes.length > 0 && (
+              <span>{post.post.likes.length}</span>
+            )}
+          </span>
+        </div>
+        <div className="d-flex w-25">
+          <button className="btn p-0 d-flex align-items-center">
+            <span className="material-symbols-outlined">chat_bubble</span>{" "}
+          </button>
+          <span className={`${styles.numberContainer}  ms-2`}>
+            {post.post.comments.length > 0 && (
+              <span>{post.post.comments.length}</span>
+            )}
+          </span>
+        </div>
+        <div className="d-flex w-25">
+          <button className="btn p-0 d-flex align-items-center">
+            <span className="material-symbols-outlined">repeat</span>{" "}
+          </button>
+          <span className={`${styles.numberContainer} ms-2`}>
+            {post.post.reposts.length > 0 && (
+              <span>{post.post.reposts.length}</span>
+            )}
+          </span>
+        </div>
         <button className="btn p-0 d-flex align-items-center">
-          <span class="material-symbols-outlined">thumb_up</span>
-          {post.post.likes.length > -1 && (
-            <span className="ms-2">{post.post.likes.length}</span>
-          )}
-        </button>
-        <button className="btn p-0 d-flex align-items-center">
-          <span className="material-symbols-outlined">chat_bubble</span>{" "}
-          {post.post.comments.length > -1 && (
-            <span className="ms-2">{post.post.comments.length}</span>
-          )}
-        </button>
-        <button className="btn p-0 d-flex align-items-center">
-          <span className="material-symbols-outlined">repeat</span>{" "}
-          {post.post.reposts.length > -1 && (
-            <span className="ms-2">{post.post.reposts.length}</span>
-          )}
+          <span className="material-symbols-outlined">bookmark</span>
         </button>
       </footer>
     </article>

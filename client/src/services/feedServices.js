@@ -10,13 +10,12 @@ export const getPosts = async () => {
                 },
             }
         );
+        console.log(res)
         const data = res.data.rows;
-        console.log('POSTS: ==============')
-        console.log(data)
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
-        console.error("Error al obtener los posts:", error);
+        // console.error("Error al obtener los posts:", error);
         return { data: [], statusCode: error.response?.status, message: error.response?.data?.message };
     }
 }
@@ -31,14 +30,12 @@ export const getAccounts = async () => {
             }
         );
         const data = res.data;
-        console.log('ACCOUNTS: ==============')
-        console.log(data)
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
         console.error("Error al obtener los posts:", error);
         return {
-            data: [], statusCode: error.response?.status
+            data: [], statusCode: error.response?.status, message: error.response?.data?.message
         };
     }
 }

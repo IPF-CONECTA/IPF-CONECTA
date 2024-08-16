@@ -3,19 +3,44 @@ import { ALL_ROLES } from '../../constant/roles.js';
 import { BASIC_ROLES } from '../../constant/roles.js';
 import bcrypt from 'bcryptjs'
 import { Follower } from '../followers/followerModel.js';
+import { Op } from 'sequelize';
 
 export const getUsers = async () => {
     const users = await User.findAll()
     return users
 }
 
-export const getRecomendedUsersSvc = async () => {
+export const getRecomendedUsersSvc = async (userId) => {
+    const following = await Follower.findAll({
+        where: {
+            followerId: userId
+        },
+        attributes: ['followingId']
+    })
+    const followedUserIds = following.map(follower => follower.followingId);
+
     const users = await User.findAll({
         where: {
-            roleId: BASIC_ROLES.student || BASIC_ROLES.recruiter
-        }
-    })
-    return users
+            [Op.and]: [
+                {
+                    id: { [Op.notIn]: followedUserIds }
+                },
+                {
+                    [Op.or]: [
+                        { roleId: BASIC_ROLES.recruiter },
+                        { roleId: BASIC_ROLES.student }
+                    ]
+                }
+            ]
+        },
+        attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+        limit: 5
+    });
+
+    console.log('====================================================');
+    console.log(users);
+    console.log('====================================================');
+    return users;
 }
 
 export const getUserById = async (id) => {

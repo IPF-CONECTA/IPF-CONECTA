@@ -6,7 +6,7 @@ export const likeCtrl = async (req, res) => {
     try {
         const like = await likeSvc(id, postId);
         if (like) return res.status(201).json({ message: "Like dado" });
-        res.status(400).json({ message: "Error al dar like" });
+        res.status(204).json({ message: "Like eliminado" });
     } catch (error) {
         res.status(500).json(error.message);
     }

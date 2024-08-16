@@ -69,6 +69,15 @@ const HomeNav = () => {
         </div>
         <div>
           <Link
+            to="/guardados"
+            className="text-muted text-decoration-none d-flex align-items-center"
+          >
+            <span class="material-symbols-outlined fs-1 pe-3">bookmark</span>{" "}
+            <span className="fs-4 fw-bold">Guardados</span>
+          </Link>
+        </div>
+        <div>
+          <Link
             className="text-muted text-decoration-none d-flex align-items-center"
             to={"/"}
           >
