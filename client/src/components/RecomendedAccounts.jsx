@@ -13,7 +13,6 @@ const RecomendedAccounts = ({ accounts, error }) => {
         <div className="d-flex flex-column align-items-center">
           {error.statusCode !== null ? (
             <>
-              {console.log(error)}
               <span className="fs-5s fw-bold">{error.statusCode}</span>
               <span className="text-muted">{error.message}</span>
             </>

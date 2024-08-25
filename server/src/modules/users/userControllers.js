@@ -1,5 +1,5 @@
 
-import { createUser, getUserInfoSvc, getRecomendedUsersSvc, getUsers } from './userServices.js';
+import { createUser, getUserInfoSvc, getRecomendedUsersSvc, getUsers, getUserById } from './userServices.js';
 
 export const getUsersController = async (_req, res) => {
     try {
@@ -17,17 +17,18 @@ export const getUsersController = async (_req, res) => {
 };
 
 export const getUserInfoCtrl = async (req, res) => {
-    const { id } = req.user
+    const { id } = req.user.profile
     const { followingId } = req.params
     try {
-        const { user, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, followingId)
-        if (!user) {
+        if (id == followingId) return res.status(400).json()
+        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, followingId)
+        if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }
         if (!following) {
-            return res.status(200).json({ user, isFollowing: false, cantFollowers, cantFollowing })
+            return res.status(200).json({ profile, isFollowing: false, cantFollowers, cantFollowing })
         }
-        res.status(200).json({ user, isFollowing: true, cantFollowers, cantFollowing })
+        res.status(200).json({ profile, isFollowing: true, cantFollowers, cantFollowing })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message })
@@ -47,11 +48,12 @@ export const createUserController = async (req, res) => {
     }
 }
 
-export const getRecomendedUsersController = async (_req, res) => {
-    const { id } = _req.user
+export const getRecomendedUsersController = async (req, res) => {
+    const { id } = req.user
     try {
-        const users = await getRecomendedUsersSvc(id);
-
+        const user = await getUserById(id)
+        console.log(user)
+        const users = await getRecomendedUsersSvc(user.profile.id);
         if (users.length == 0) {
             return res.status(404).json({ message: 'No se encontraron usuarios' })
         }

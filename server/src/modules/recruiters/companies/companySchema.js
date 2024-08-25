@@ -38,12 +38,6 @@ export const companySchema = [
         .exists()
         .notEmpty()
         .withMessage('Seleccione el pais de origen de la empresa'),
-    body('company.logoUrl')
-        .exists()
-        .notEmpty()
-        .withMessage('Ingrese el logo de la empresa')
-        .isURL()
-        .withMessage('Por favor suba el logo de la empresa'),
     body('message')
         .exists()
         .notEmpty()

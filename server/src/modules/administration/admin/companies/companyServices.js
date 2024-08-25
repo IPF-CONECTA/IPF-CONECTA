@@ -1,4 +1,5 @@
 import { getLocation } from "../../../../helpers/getLocationType.js"
+import { Profile } from "../../../profile/profileModel.js"
 import { Association } from "../../../recruiters/associations/associationModel.js"
 import { CompanyIndustry } from "../../../recruiters/companies/companyIndustry/companyIndustryModel.js"
 import { Company } from "../../../recruiters/companies/companyModel.js"
@@ -21,8 +22,8 @@ export const getCompaniesSvc = async (status, page) => {
                 model: Association,
                 attributes: ['id'],
                 include: [{
-                    model: User,
-                    as: 'user',
+                    model: Profile,
+                    as: 'profile',
                     attributes: ['id', 'names', 'surnames']
                 }]
             }],
@@ -43,8 +44,8 @@ export const getCompanyByIdSvc = async (id) => {
                 model: Association,
                 attributes: ['id'],
                 include: [{
-                    model: User,
-                    as: 'user',
+                    model: Profile,
+                    as: 'profile',
                     attributes: ['id', 'profilePic', 'names', 'surnames', 'email']
                 },
 

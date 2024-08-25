@@ -15,7 +15,7 @@ export const Like = sequelize.define('like', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     }

@@ -10,7 +10,6 @@ export const getPosts = async () => {
                 },
             }
         );
-        console.log(res)
         const data = res.data.rows;
         const statusCode = res.status;
         return { data, statusCode };
@@ -61,7 +60,6 @@ export const getProfileInfo = async (id) => {
 
 export const followOrUnfollow = async (idToFollow) => {
     try {
-        console.log(authService.getToken())
         const res = await axios.post(`http://localhost:4000/follow/${idToFollow}`,
             {},
             {
@@ -97,5 +95,40 @@ export const like = async (id) => {
         return {
             data: error.data.message, statusCode: error.response?.status
         };
+    }
+}
+
+export const postSvc = async (post, postId = null) => {
+    try {
+        const res = await axios.post(`http://localhost:4000/feed/post`, {
+            post: {
+                content: post,
+                postId: postId,
+            }
+        }, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return res.status
+    } catch (error) {
+        console.log(error)
+        return error.status
+    }
+}
+
+export const repostSvc = async (postId) => {
+    try {
+        const res = await axios.post('http://localhost:4000/repost', {
+            postId
+        }, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return res.status
+    } catch (error) {
+        console.log(error)
+        return error.status
     }
 }

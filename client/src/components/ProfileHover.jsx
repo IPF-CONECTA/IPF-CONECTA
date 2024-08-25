@@ -10,7 +10,6 @@ export const ProfileHover = ({
   profileInfoRef,
 }) => {
   const { profileInfo, handleFollowOrUnfollow } = useFollow(profile);
-
   return (
     <div
       onMouseEnter={handleMouseEnter}
@@ -20,7 +19,7 @@ export const ProfileHover = ({
     >
       <div className="d-flex justify-content-between align-items-center w-100">
         <img
-          src={`${profileInfo.user.profilePic}`}
+          src={`${profileInfo.profile.profilePic}`}
           width={70}
           height={70}
           className="rounded-circle"
@@ -31,7 +30,7 @@ export const ProfileHover = ({
             <button
               className="btn btn-info text-light w-100 fw-bold"
               onClick={() => {
-                handleFollowOrUnfollow(profileInfo.user.id);
+                handleFollowOrUnfollow(profileInfo.profile.id);
               }}
             >
               Follow
@@ -40,7 +39,7 @@ export const ProfileHover = ({
             <button
               className="btn btn-outline-info text-muted w-100 fw-bold"
               onClick={() => {
-                handleFollowOrUnfollow(profileInfo.user.id);
+                handleFollowOrUnfollow(profileInfo.profile.id);
               }}
             >
               Unfollow
@@ -50,14 +49,14 @@ export const ProfileHover = ({
       </div>
       <div className={`d-flex flex-column ${styles.username}`}>
         <span className="fs-4">
-          {profileInfo.user.names} {profileInfo.user.surnames}
+          {profileInfo.names} {profileInfo.surnames}
         </span>
-        {profileInfo.user.title ? (
-          <span className="text-muted">{profileInfo.user.title}</span>
+        {profileInfo.title ? (
+          <span className="text-muted">{profileInfo.title}</span>
         ) : (
           <span className="text-muted fs-5">Sin titulo</span>
         )}
-        <span className="text-muted">{profileInfo.user.email}</span>
+        <span className="text-muted">{profileInfo.profile.user.email}</span>
         <div className="d-flex">
           <div className="pe-3">
             <span className="fw-bold">{profileInfo.cantFollowers}</span>

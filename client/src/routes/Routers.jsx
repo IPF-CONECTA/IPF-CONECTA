@@ -8,13 +8,13 @@ import {
   HomePage,
   JobSearchPage,
   SelectCompanyPage,
-  StudentProfilePage,
   PanelPage,
   NotFoundPage,
   LoginPage,
   RegisterPage,
   CreateCompanyPage,
-  SupportPage
+  SupportPage,
+  ProfilePage,
 } from "../pages";
 
 export const Routers = () => {
@@ -30,13 +30,12 @@ export const Routers = () => {
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin" element={<AdminPanelPage />} />
           </Route>
-          <Route path="/profile" element={<StudentProfilePage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/inicio" element={<FeedPage />} />
         </Route>
 
         <Route path="/panel" element={<PanelPage />} />
 
-        <Route path="/profile" element={<StudentProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
         <Route path="*" element={<NotFoundPage />} />

@@ -1,87 +1,168 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../public/css/homeNav.module.css";
 const HomeNav = () => {
+  const [selectedPage, setSelectedPage] = useState("inicio");
   return (
-    <aside className={`w-25 position-fixed top-0 h-100 ${styles.homeNav}`}>
-      <div className="d-flex flex-column justify-content-around align-items-start h-100">
-        <div>
+    <aside className={`position-fixed top-0 h-100 ${styles.homeNav}`}>
+      <div
+        className={`d-flex flex-column justify-content-around align-items-start h-100 ${styles.buttons}`}
+      >
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("inicio");
+          }}
+        >
           <Link
+            className={
+              selectedPage === "inicio"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
             to="/inicio"
-            className="text-muted text-decoration-none d-flex align-items-center"
           >
-            <span class="material-symbols-outlined fs-1 pe-3">home</span>
-            <span className="fs-4 fw-bold">Inicio</span>
+            <span className="material-symbols-outlined fs-1 pe-3">home</span>
+            <span>Inicio</span>
           </Link>
         </div>
-        <div>
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("perfil");
+          }}
+        >
           <Link
             to="/perfil"
-            className="text-muted text-decoration-none d-flex align-items-center"
+            className={
+              selectedPage === "perfil"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
-            <span class="material-symbols-outlined fs-1 pe-3">person</span>{" "}
+            <span className="material-symbols-outlined fs-1 pe-3">person</span>{" "}
             <span className="fs-4 fw-bold">Perfil</span>
           </Link>
         </div>
-        <div>
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("comunidad");
+          }}
+        >
           <Link
             to="/comunidad"
-            className="text-muted text-decoration-none d-flex align-items-center"
+            className={
+              selectedPage === "comunidad"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
-            <span class="material-symbols-outlined fs-1 pe-3">groups</span>{" "}
+            <span className="material-symbols-outlined fs-1 pe-3">groups</span>{" "}
             <span className="fs-4 fw-bold">Comunidad</span>
           </Link>
         </div>
-        <div>
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("empleo");
+          }}
+        >
           <Link
             to="/buscar-empleo"
-            className="text-muted text-decoration-none d-flex align-items-center"
+            className={
+              selectedPage === "empleo"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
-            <span class="material-symbols-outlined fs-1 pe-3">work</span>{" "}
+            <span className="material-symbols-outlined fs-1 pe-3">work</span>{" "}
             <span className="fs-4 fw-bold">Empleos</span>
           </Link>
         </div>
-        <div>
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("mensajes");
+          }}
+        >
           <Link
             to="/mensajes"
-            className="text-muted text-decoration-none d-flex align-items-center"
+            className={
+              selectedPage === "mensajes"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
-            <span class="material-symbols-outlined fs-1 pe-3">chat</span>{" "}
+            <span className="material-symbols-outlined fs-1 pe-3">chat</span>{" "}
             <span className="fs-4 fw-bold">Mensajes</span>
           </Link>
         </div>
-        <div>
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("soporte");
+          }}
+        >
           <Link
             to="/soporte"
-            className="text-muted text-decoration-none d-flex align-items-center"
+            className={
+              selectedPage === "soporte"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
-            <span class="material-symbols-outlined fs-1 pe-3">
+            <span className="material-symbols-outlined fs-1 pe-3">
               support_agent
             </span>{" "}
             <span className="fs-4 fw-bold">Soporte</span>
           </Link>
         </div>
-        <div>
-          <Link className="text-muted text-decoration-none d-flex align-items-center">
-            <span class="material-symbols-outlined fs-1 pe-3">settings</span>{" "}
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("ajustes");
+          }}
+        >
+          <Link
+            className={
+              selectedPage === "ajustes"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
+          >
+            <span className="material-symbols-outlined fs-1 pe-3">
+              settings
+            </span>{" "}
             <span className="fs-4 fw-bold">Ajustes</span>
           </Link>
         </div>
-        <div>
+        <div
+          className={`${styles.button}`}
+          onClick={() => {
+            setSelectedPage("guardados");
+          }}
+        >
           <Link
             to="/guardados"
-            className="text-muted text-decoration-none d-flex align-items-center"
+            className={
+              selectedPage === "guardados"
+                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
-            <span class="material-symbols-outlined fs-1 pe-3">bookmark</span>{" "}
+            <span className="material-symbols-outlined fs-1 pe-3">
+              bookmark
+            </span>{" "}
             <span className="fs-4 fw-bold">Guardados</span>
           </Link>
         </div>
-        <div>
+        <div className={`${styles.button}`}>
           <Link
             className="text-muted text-decoration-none d-flex align-items-center"
             to={"/"}
           >
-            <span class="fs-1 pe-3">
+            <span className="fs-1 pe-3">
               <img
                 src="/iconoipf.png"
                 className="pe-3"

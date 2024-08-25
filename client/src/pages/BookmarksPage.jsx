@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PostList from "../components/PostList";
 import RecomendedAccounts from "../components/RecomendedAccounts";
-import { getAccounts } from "../services/feedServices";
+
 import HomeNav from "../components/HomeNav";
-export const FeedPage = () => {
+export const BookmarksPage = () => {
   const [accounts, setAccounts] = useState([]);
-  const [error, setError] = useState({ message: null, statusCode: null });
   useEffect(() => {
     const fetchAccounts = async () => {
       const { data, statusCode, message } = await getAccounts();

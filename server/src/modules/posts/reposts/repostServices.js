@@ -1,23 +1,24 @@
 import { Repost } from "./repostModel.js";
 
-export const repostSvc = async (userId, postId) => {
+export const repostSvc = async (profileId, postId) => {
     try {
         const isRepost = await Repost.findOne({
             where: {
-                userId,
+                profileId,
                 postId
             }
         })
         if (!isRepost) {
             const repost = await Repost.create({
-                userId,
+                profileId,
                 postId
             });
             if (!repost) throw new Error("Hubo un error al compartir esta publicación");
+            return repost
         }
         const deletedRepost = await Repost.destroy({
             where: {
-                userId,
+                profileId,
                 postId
             }
         })

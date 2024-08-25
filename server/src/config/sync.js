@@ -69,6 +69,8 @@ export const createTablesAndRelations = async () => {
   // await createContractTypes()
   // await createCompanyIndustry();
   // await createModalities()
+
+
   console.log("Data created successfully");
   console.timeEnd("Db created in:");
 };

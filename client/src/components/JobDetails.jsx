@@ -42,7 +42,7 @@ export const JobDetails = ({ jobId }) => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <span class="material-symbols-outlined">more_horiz</span>
+                  <span className="material-symbols-outlined">more_horiz</span>
                 </button>
                 <ul className={`dropdown-menu `}>
                   <li className="d-flex flex-column">
@@ -94,4 +94,4 @@ export const JobDetails = ({ jobId }) => {
     </aside>
   );
 };
-0
+0;
