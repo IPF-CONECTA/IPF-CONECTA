@@ -38,8 +38,8 @@ export const companySchema = [
         .exists()
         .notEmpty()
         .withMessage('Seleccione el pais de origen de la empresa'),
-    body('message')
-        .exists()
-        .notEmpty()
-        .withMessage('Rellene los campos faltantes')
+    // body('message')
+    //     .exists()
+    //     .notEmpty()
+    //     .withMessage('Rellene los campos faltantes')
 ]

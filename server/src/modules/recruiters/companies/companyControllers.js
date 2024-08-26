@@ -5,6 +5,7 @@ import { User } from "../../users/userModel.js";
 import { findCompaniesSvc, getApprovedCompaniesSvc } from "./companyServices.js";
 import { getCompanyByIdSvc } from "../../administration/admin/companies/companyServices.js";
 import { validate as isValidUUID } from 'uuid';
+import { Profile } from "../../profile/profileModel.js";
 
 export const sendContactCompanyCtrl = async (req, res) => {
     const { from, name, subject, message } = req.body;
@@ -29,15 +30,11 @@ export const getApprovedCompaniesCtrl = async (req, res) => {
 }
 export const associateNewCompanyCtrl = async (req, res) => {
     try {
-        let token = req.headers.authorization
-        token = token.split(' ')[1]
-        console.log('Token extraído:', token);
-        if (!token) throw new Error('Inicie sesion para asociar la empresa')
-        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
+        const {id} = req.user.profile
         const { company, message } = req.body
-        const { names } = await User.findByPk(userId, { attributes: ['names'] })
+        const { names } = await Profile.findByPk(id, { attributes: ['names'] })
         if (!names) throw new Error('Usuario no encontrado')
-        const association = await associateNewCompanySvc(message, userId, company)
+        const association = await associateNewCompanySvc(message, id, company)
         if (!association) throw new Error('Error al asociar la empresa')
         res.status(201).json({ message: 'Empresa asociada correctamente' })
     } catch (error) {
