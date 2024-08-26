@@ -15,16 +15,12 @@ export const isRecruiter = async (req, res, next) => {
     const result = await User.findByPk(userId, { attributes: ["roleId"] });
     if (!result) throw new Error("Vuelva a iniciar sesion para continuar");
     const { roleId } = result;
-    console.log("Role id abajo Is recruiter");
-    console.log(roleId);
-    console.log("Role id arriba");
+
     if (roleId !== ALL_ROLES.recruiter) {
       throw new Error("No tiene permisos para realizar esta accion");
     }
-    console.log("--------PASO VALIDACIÖN IS RECRUITER ----------");
     next();
   } catch (error) {
-    console.log("error aca", error);
     res.status(401).json({ message: error.message });
   }
 };
@@ -33,7 +29,6 @@ export const isApprovedAssociation = async (req, res, next) => {
   try {
     let token = req.headers.authorization;
     token = token.split(" ")[1];
-    console.log("Token extraído:", token);
     const { companyId } = req.body.jobOffer;
     if (!token) throw new Error("Inicie sesion para continuar");
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);

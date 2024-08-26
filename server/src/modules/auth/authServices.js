@@ -107,7 +107,6 @@ export const sendConfirmAccountSvc = async (userId) => {
         attributes: ['names']
       }]
     });
-    console.log(user)
     if (!user.verifyCode || !user.email || !user.profile.names) {
       throw new Error("Error interno en el servidor, inicie sesion nuevamente");
     }
@@ -116,6 +115,7 @@ export const sendConfirmAccountSvc = async (userId) => {
     }
     await sendConfirmAccount(user.email, user.verifyCode, user.profile.names);
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 };

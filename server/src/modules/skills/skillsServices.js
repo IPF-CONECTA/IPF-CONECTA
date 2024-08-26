@@ -10,7 +10,6 @@ export const findSkillSvc = async (query) => {
                 }
             }
         })
-        console.log(results)
         return results
     } catch (error) {
         console.error(error)

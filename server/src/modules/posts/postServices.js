@@ -86,3 +86,56 @@ export const createPostSvc = async (post, profileId) => {
         throw new Error(error.message)
     }
 }
+
+export const getPostByIdSvc = async (postId, profileId) => {
+    try {
+        const profile = await Profile.findByPk(profileId)
+
+        const post = await Post.findByPk(postId, {
+            include: [
+                {
+                    model: Profile,
+                    attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+                    as: 'profile',
+                    include: {
+                        model: User,
+                        attributes: ['email']
+                    }
+                },
+                {
+                    model: Attachment,
+                    as: 'attachments',
+                    attributes: ['url', 'type']
+                },
+                {
+                    model: Like,
+                    as: 'likes',
+                    attributes: ['id', 'profileId'],
+                },
+                {
+                    model: Repost,
+                    as: 'reposts',
+                    attributes: ['id', 'profileId'],
+                },
+                {
+                    model: Post,
+                    as: 'comments',
+                    attributes: ['id', 'content', 'createdAt', 'profileId'],
+                    limit: 2,
+                    include: {
+                        model: Profile,
+                        attributes: ['id', 'names', 'surnames', 'profilePic'],
+                        as: 'profile',
+                    }
+                },
+            ]
+        })
+
+        post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
+        post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
+        console.log(post.profile)
+        return post
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}

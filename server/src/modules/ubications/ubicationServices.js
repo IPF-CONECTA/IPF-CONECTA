@@ -40,7 +40,6 @@ export const findUbicationSvc = async (query) => {
       },
       attributes: ["id", "name"],
     });
-    console.log(countries);
     return [cities, states, countries];
   } catch (error) {
     throw new Error(error.message);

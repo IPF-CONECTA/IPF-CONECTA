@@ -62,21 +62,17 @@ export const findJobsCtrl = async (req, res) => {
   if (!Number.isNaN(pageAsNumber) && pageAsNumber > 1) {
     page = pageAsNumber;
   }
-  console.log(page);
   let { query } = req.query;
   if (!query) {
     query = "";
   }
   try {
     const jobs = await findJobsSvc(query, page - 1);
-    console.log(jobs.data);
-    // console.log(jobs, " jobs dedsde el controlador")
     if (jobs.count == 0)
       return res
         .status(404)
         .json({ message: "No se encontraron trabajos para tu busqueda" });
 
-    console.log(jobs.data)
     res.status(200).json({
       jobs: jobs.data.rows,
       totalPages: Math.ceil(jobs.count / 6),

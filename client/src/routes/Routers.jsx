@@ -16,6 +16,7 @@ import {
   SupportPage,
   ProfilePage,
 } from "../pages";
+import { PostPage } from "../pages/PostPage";
 
 export const Routers = () => {
   return (
@@ -32,6 +33,7 @@ export const Routers = () => {
           </Route>
           <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/inicio" element={<FeedPage />} />
+          <Route path="/post/:postId" element={<PostPage />} />
         </Route>
 
         <Route path="/panel" element={<PanelPage />} />

@@ -7,11 +7,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { authContext } from "../context/auth/Context";
 import { postSvc } from "../services/feedServices";
+import { useNavigate } from "react-router-dom";
 const PostCard = ({ post }) => {
-  console.log(post);
+  const navigate = useNavigate();
   const { authState } = useContext(authContext);
   const [showProgress, setShowProgress] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -119,6 +119,9 @@ const PostCard = ({ post }) => {
   return (
     <>
       <article
+        onClick={() => {
+          navigate(`/post/${post.id}`);
+        }}
         className={`d-flex flex-column w-75 border border-bottom-0  p-3 `}
       >
         <header className="position-relative">

@@ -1,0 +1,9 @@
+.formInput {
+  text-align: start;
+  height: 100%;
+  min-height: 50px;
+  max-height: 100px;
+}
+.formInputFocused:focus {
+  outline: none;
+}
