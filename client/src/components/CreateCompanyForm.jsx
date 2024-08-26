@@ -13,6 +13,7 @@ export const CreateCompanyForm = () => {
   const [countries, setCountries] = useState([]);
   const [logo, setLogo] = useState(null)
   const [formData, setFormData] = useState({
+    message: "",
     name: "",
     description: "",
     industryId: "",
@@ -143,6 +144,13 @@ export const CreateCompanyForm = () => {
         onChange={handleInputChange}
         required
       />
+      <input
+        type="text"
+        name="message"
+        placeholder="Mensaje"
+        value={formData.message}
+        onChange={handleInputChange}
+        required/>
       <input type="file" value={formData.logoUrl} name="logoUrl" />
       <button type="submit">Enviar</button>
     </form>
