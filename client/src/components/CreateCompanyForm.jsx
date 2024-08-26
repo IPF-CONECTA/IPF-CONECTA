@@ -152,7 +152,7 @@ export const CreateCompanyForm = () => {
         onChange={handleInputChange}
         required/>
       <input type="file" value={formData.logoUrl} name="logoUrl" />
-      <button type="submit">Enviar</button>
+      <center><button type="submit">Enviar</button></center>
     </form>
   );
 };

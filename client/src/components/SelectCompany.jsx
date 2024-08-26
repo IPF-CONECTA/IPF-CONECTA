@@ -52,7 +52,6 @@ export const SelectCompany = () => {
         "Solicitud enviada, espere a que un administrador apruebe la empresa.",
         "success"
       );
-      //redireccionar al principio
       navigate("/");
     } catch (error) {
       console.log(error);

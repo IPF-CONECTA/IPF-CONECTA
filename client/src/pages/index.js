@@ -12,3 +12,4 @@ export * from "./RegisterPage";
 export * from "./SelectCompanyPage";
 export * from "./ProfilePage"
 export * from "./SupportPage";
+export * from "./CreateJobsFormPage";

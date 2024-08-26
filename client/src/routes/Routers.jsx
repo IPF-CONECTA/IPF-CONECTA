@@ -15,6 +15,7 @@ import {
   CreateCompanyPage,
   SupportPage,
   ProfilePage,
+  CreateJobsFormPage
 } from "../pages";
 import { PostPage } from "../pages/PostPage";
 
@@ -47,6 +48,7 @@ export const Routers = () => {
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
+        <Route path="/create-job" element={<CreateJobsFormPage />} />
       </Routes>
     </BrowserRouter>
   );
