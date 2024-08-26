@@ -70,7 +70,7 @@ export const createRelations = async () => {
             foreignKey: 'roleId'
         });
         Profile.hasMany(Post, {
-            foreignKey: 'userId',
+            foreignKey: 'profileId',
             as: 'posts'
         });
         Profile.hasMany(LangsUser, {

@@ -3,7 +3,7 @@ import { authService } from "./authService";
 
 export const getPosts = async () => {
     try {
-        const res = await axios.get("http://localhost:4000/feed/post",
+        const res = await axios.get("http://localhost:4000/feed/posts",
             {
                 headers: {
                     authorization: `Bearer ${authService.getToken()}`,
@@ -130,5 +130,20 @@ export const repostSvc = async (postId) => {
     } catch (error) {
         console.log(error)
         return error.status
+    }
+}
+
+export const getPost = async (postId) => {
+    try {
+        const res = await axios.get(`http://localhost:4000/feed/post/${postId}`, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        console.log(res)
+        return res.data
+    } catch (error) {
+        console.log(error)
+        return error.status, error.message
     }
 }

@@ -1,7 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../public/css/recomendedAccounts.module.css";
 import AccountCard from "./AccountCard";
-const RecomendedAccounts = ({ accounts, error }) => {
+import { getAccounts } from "../services/feedServices";
+const RecomendedAccounts = () => {
+  const [accounts, setAccounts] = useState([]);
+  const [error, setError] = useState({ message: null, statusCode: null });
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      const { data, statusCode, message } = await getAccounts();
+      if (statusCode !== 200) {
+        setError({ message, statusCode });
+        return;
+      }
+      setAccounts(data);
+    };
+    fetchAccounts();
+  }, []);
   return (
     <aside
       className={`w-25 border rounded py-5 ${styles.container} position-fixed`}

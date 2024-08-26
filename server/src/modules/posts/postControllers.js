@@ -1,4 +1,4 @@
-import { createPostSvc, getPostsSvc } from "./postServices.js";
+import { createPostSvc, getPostByIdSvc, getPostsSvc } from "./postServices.js";
 
 export const getPostsCtrl = async (req, res) => {
     const { id } = req.user.profile;
@@ -15,6 +15,20 @@ export const getPostsCtrl = async (req, res) => {
         res.status(200).json(posts);
     } catch (error) {
         res.status(500).json(error.message);
+    }
+}
+
+export const getPostByIdCtrl = async (req, res) => {
+    const { id } = req.user.profile;
+    const { postId } = req.params;
+
+    try {
+        const post = await getPostByIdSvc(postId, id)
+        if (!post) return res.status(404).json()
+        res.status(200).json(post)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json()
     }
 }
 

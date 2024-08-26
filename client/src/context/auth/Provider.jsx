@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
       const { data, status } = await authService.verifyToken(token);
       if (status != 200) {
         authService.removeToken();
-        return toast("Inicie sesion nuevamente", "error");
+        return noti("Inicie sesion nuevamente", "error");
       }
       return dispatch({
         type: "LOGIN",
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
       });
     }
   };
-  const toast = useNoti();
+  const noti = useNoti();
 
   const initialState = {
     user: {},
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const res = await authService.login(credentials);
     if (res.status != 200) {
-      return toast(res.message, "error");
+      return noti(res.message || "error", "error");
     }
     authService.setToken(res.data.response.token);
     dispatch({
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         role: res.data.response.role,
       },
     });
-    toast(res.data.message, "success");
+    noti(res.data.message, "success");
     return res.data.response.role;
   };
 
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       type: "LOGOUT",
     });
     authService.logout();
-    toast("Sesión cerrada", "success");
+    noti("Sesión cerrada", "success");
   };
 
   return (
