@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import Select from 'react-select';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from '../../public/css/CreateJobsForm.module.css';
 
 export const CreateJobsForm = () => {
   const navigate = useNavigate();
@@ -153,45 +153,45 @@ export const CreateJobsForm = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="w-100" style={{ maxWidth: '600px' }}>
-        <h1 className="mb-4 text-center">Crear oferta laboral</h1>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h1 className={styles.title}>Crear oferta laboral</h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">Título</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Título</label>
             <input
               type="text"
               name="title"
-              className="form-control"
+              className={styles.formControl}
               value={formData.title}
               onChange={handleInputChange}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Descripción</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Descripción</label>
             <input
               type="text"
               name="description"
-              className="form-control"
+              className={styles.formControl}
               value={formData.description}
               onChange={handleInputChange}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Salario</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Salario</label>
             <input
               type="text"
               name="salary"
-              className="form-control"
+              className={styles.formControl}
               value={formData.salary}
               onChange={handleInputChange}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Empresa</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Empresa</label>
             <select
               name="companyId"
-              className="form-select"
+              className={styles.formSelect}
               value={formData.companyId}
               onChange={handleInputChange}
             >
@@ -203,11 +203,11 @@ export const CreateJobsForm = () => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Modalidad</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Modalidad</label>
             <select
               name="modalityId"
-              className="form-select"
+              className={styles.formSelect}
               value={formData.modalityId}
               onChange={handleInputChange}
             >
@@ -219,11 +219,11 @@ export const CreateJobsForm = () => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Tipo de contrato</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Tipo de contrato</label>
             <select
               name="contractTypeId"
-              className="form-select"
+              className={styles.formSelect}
               value={formData.contractTypeId}
               onChange={handleInputChange}
             >
@@ -235,22 +235,20 @@ export const CreateJobsForm = () => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Skills</label>
-            <div className="mb-3">
-              <Select
-                isMulti
-                options={skillOptions}
-                value={selectedSkills}
-                onChange={handleSkillChange}
-                placeholder="Selecciona las skills"
-                noOptionsMessage={() => "No hay skills disponibles"}
-                onInputChange={handleSearchChange}
-                filterOption={customFilter}
-              />
-            </div>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Habilidades</label>
+            <Select
+              isMulti
+              options={skillOptions}
+              value={selectedSkills}
+              onChange={handleSkillChange}
+              placeholder="Busca y Selecciona tus habilidades"
+              noOptionsMessage={() => "No hay habilidades disponibles"}
+              onInputChange={handleSearchChange}
+              filterOption={customFilter}
+            />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Crear oferta</button>
+          <button type="submit" className={styles.submitButton}>Crear oferta</button>
         </form>
       </div>
     </div>
