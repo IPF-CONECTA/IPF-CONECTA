@@ -20,8 +20,8 @@ export const ProfileHover = ({
       <div className="d-flex justify-content-between align-items-center w-100">
         <img
           src={`${profileInfo.profile.profilePic}`}
-          width={70}
-          height={70}
+          width={40}
+          height={40}
           className="rounded-circle"
           alt="profile pic"
         />
@@ -48,13 +48,11 @@ export const ProfileHover = ({
         </div>
       </div>
       <div className={`d-flex flex-column ${styles.username}`}>
-        <span className="fs-4">
-          {profileInfo.names} {profileInfo.surnames}
+        <span className="fs-6 fw-semibold">
+          {profileInfo.profile.names} {profileInfo.profile.surnames}
         </span>
-        {profileInfo.title ? (
-          <span className="text-muted">{profileInfo.title}</span>
-        ) : (
-          <span className="text-muted fs-5">Sin titulo</span>
+        {profileInfo.profile.title && (
+          <span className="text-muted fs-6">{profileInfo.title}</span>
         )}
         <span className="text-muted">{profileInfo.profile.user.email}</span>
         <div className="d-flex">

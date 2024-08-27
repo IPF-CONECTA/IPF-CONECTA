@@ -23,7 +23,8 @@ const PostCard = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [reposted, setReposted] = useState(false);
   const [showAnswerModal, setShowAnswerModal] = useState(false);
-  const handleLike = async () => {
+  const handleLike = async (event) => {
+    event.stopPropagation();
     const { statusCode } = await like(post.id);
     if (statusCode !== 201 && statusCode !== 204) {
       return;
@@ -39,7 +40,8 @@ const PostCard = ({ post }) => {
     }
   };
 
-  const handleRepost = async () => {
+  const handleRepost = async (event) => {
+    event.stopPropagation();
     const status = await repostSvc(post.id);
     console.log(status);
     if (status !== 201 && status !== 204) {
@@ -63,6 +65,7 @@ const PostCard = ({ post }) => {
 
   const handleComment = async (event) => {
     event.preventDefault();
+    event.stopPropagation();
     const status = await postSvc(content, post.id);
     if (status !== 201) {
       return noti("Hubo un error al publicar el post", "error");
@@ -131,8 +134,8 @@ const PostCard = ({ post }) => {
                 className="me-2 rounded-circle"
                 width={50}
                 height={50}
-                onMouseEnter={() => handleShowProfile(true, post.profileId)}
-                onMouseLeave={() => handleShowProfile(false, post.profileId)}
+                onMouseEnter={() => handleShowProfile(true, post.profile.id)}
+                onMouseLeave={() => handleShowProfile(false, post.profile.id)}
                 src={post.profile.profilePic}
                 alt={post.profile.names}
               />
@@ -217,7 +220,8 @@ const PostCard = ({ post }) => {
           <div className="d-flex align-items-center">
             <button
               className="btn p-0 d-flex align-items-center"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setShowAnswerModal(true);
               }}
             >
@@ -299,7 +303,7 @@ const PostCard = ({ post }) => {
               </div>
             </div>
             <div className="d-flex pt-3">
-              {authState.user.profilePic ? (
+              {authState.user && authState.user.profilePic ? (
                 <img
                   src={authState.user.profilePic}
                   alt="your profile picture"

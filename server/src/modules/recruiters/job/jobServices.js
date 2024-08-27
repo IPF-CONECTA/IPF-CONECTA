@@ -5,7 +5,7 @@ import { Company } from "../companies/companyModel.js"
 import { Job } from "./jobModel.js"
 import { JobSkills } from "./jobSkills/jobSkillsModel.js"
 import { getAllLocations, getLocation, getLocationType } from "../../../helpers/getLocationType.js"
-import { ContractType } from "../../typeJobs/contractTypeModel.js"
+import { ContractType } from "./contractTypes/contractTypeModel.js"
 import { Modality } from "./jobModalities/modalityModel.js"
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js"
 

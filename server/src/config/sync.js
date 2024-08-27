@@ -38,7 +38,7 @@ import { Company } from "../modules/recruiters/companies/companyModel.js";
 import {
   ContractType,
   createContractTypes,
-} from "../modules/typeJobs/contractTypeModel.js";
+} from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { createRelations } from "./relations.js";
 import {
   Modality,

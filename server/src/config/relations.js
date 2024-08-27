@@ -18,7 +18,7 @@ import { Association } from "../modules/recruiters/associations/associationModel
 import { LangsUser } from "../modules/users/langs_user/langsUserModel.js";
 import { SkillsUser } from "../modules/users/skills_user/skillsUserModel.js";
 import { Job } from "../modules/recruiters/job/jobModel.js";
-import { ContractType } from "../modules/typeJobs/contractTypeModel.js";
+import { ContractType } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js";
 import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
 import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkillModel.js";
