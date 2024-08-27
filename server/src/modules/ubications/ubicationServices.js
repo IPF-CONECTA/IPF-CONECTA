@@ -60,10 +60,28 @@ export const findCountrySvc = async (name) => {
   }
 };
 
-export const findAllCountriesSvc = async (req, res) => {
+export const findAllCountriesSvc = async () => {
   try {
     const countries = await Country.findAll({});
     return countries;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const findAllCitiesSvc = async () => {
+  try {
+    const cities = await City.findAll({});
+    return cities;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const findAllStatesSvc = async () => {
+  try {
+    const states = await State.findAll({});
+    return states;
   } catch (error) {
     throw new Error(error.message);
   }
