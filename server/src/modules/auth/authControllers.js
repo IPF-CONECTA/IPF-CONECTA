@@ -38,7 +38,7 @@ export const authLogInCtrl = async (req, res) => {
         res.status(200).json({ message: `Bienvenido/a ${response.userInfo.names}`, response })
 
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
         res.status(400).json({ message: error.message })
     }
 }
@@ -47,7 +47,6 @@ export const confirmAccountCtrl = async (req, res) => {
     const { receivedCode } = req.body;
     let token = req.headers.authorization
     token = token.split(' ')[1]
-    console.log('Token extraído:', token);
     try {
         if (!receivedCode) {
             throw new Error('Ingrese el codigo de verificacion')
@@ -67,7 +66,6 @@ export const confirmAccountCtrl = async (req, res) => {
 export const sendConfirmAccountCtrl = async (req, res) => {
     let token = req.headers.authorization
     token = token.split(' ')[1]
-    console.log('Token extraído:', token);
     try {
         if (!token) {
             throw new Error('Inicie sesion para confirmar el correo')
@@ -98,7 +96,6 @@ export const recoverPasswordCtrl = async (req, res) => {
     try {
         let token = req.headers.authorization
         token = token.split(' ')[1]
-        console.log('Token extraído:', token);;
         if (!token) {
             throw new Error('Vuelva a recuperar su contraseña con su correo. Si el problema persiste, contacte al administrador')
         }

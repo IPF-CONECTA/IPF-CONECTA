@@ -1,7 +1,7 @@
 import { likeSvc } from "./likeServices.js";
 
 export const likeCtrl = async (req, res) => {
-    const { id } = req.user;
+    const { id } = req.user.profile;
     const { postId } = req.params;
     try {
         const like = await likeSvc(id, postId);

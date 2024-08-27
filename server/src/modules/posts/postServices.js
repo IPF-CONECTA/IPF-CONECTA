@@ -3,50 +3,59 @@ import { Post } from "./postModel.js"
 import { User } from "../users/userModel.js"
 import { Like } from "../posts/likes/likeModel.js"
 import { Repost } from "./reposts/repostModel.js"
+import { Profile } from "../profile/profileModel.js"
 
-export const getPostsSvc = async (page, userId) => {
+export const getPostsSvc = async (page, id) => {
+    const profile = await Profile.findByPk(id)
     try {
         let data = await Post.findAndCountAll({
             limit: 10,
             offset: page * 10,
+            where: {
+                postId: null
+            },
             order: [['createdAt', 'DESC']],
-            include: [{
-                model: User,
-                as: 'user',
-                attributes: ['id', 'profilePic', 'names', 'surnames']
-            },
-            {
-                model: Attachment,
-                as: 'attachments',
-                attributes: ['url', 'type']
-            },
-            {
-                model: Like,
-                as: 'likes',
-                attributes: ['id', 'userId'],
-            },
-            {
-                model: Repost,
-                as: 'reposts',
-                attributes: ['id', 'userId'],
-            },
-            {
-                model: Post,
-                as: 'comments',
-                attributes: ['id', 'content', 'createdAt', 'userId'],
-                limit: 2,
-                include: [{
-                    model: User,
-                    as: 'user',
-                    attributes: ['id', 'profilePic', 'names', 'surnames']
-                }]
-            },
+            include: [
+                {
+                    model: Profile,
+                    attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+                    as: 'profile',
+                    include: {
+                        model: User,
+                        attributes: ['email']
+                    }
+                },
+                {
+                    model: Attachment,
+                    as: 'attachments',
+                    attributes: ['url', 'type']
+                },
+                {
+                    model: Like,
+                    as: 'likes',
+                    attributes: ['id', 'profileId'],
+                },
+                {
+                    model: Repost,
+                    as: 'reposts',
+                    attributes: ['id', 'profileId'],
+                },
+                {
+                    model: Post,
+                    as: 'comments',
+                    attributes: ['id', 'content', 'createdAt', 'profileId'],
+                    include: {
+                        model: Profile,
+                        attributes: ['id', 'names', 'surnames', 'profilePic'],
+                        as: 'profile',
+                    }
+                },
 
             ],
         })
         data.rows.map(post => {
-            post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.userId === userId);
-            post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.userId === userId);
+            post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
+            post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
         })
         return { count: data.count, rows: data.rows }
     } catch (error) {
@@ -55,22 +64,128 @@ export const getPostsSvc = async (page, userId) => {
     }
 }
 
-export const createPostSvc = async (body, userId) => {
+export const createPostSvc = async (post, profileId) => {
     try {
-        const post = await Post.create({
-            userId: userId,
-            content: body.content,
-            forumId: body.forumId ? body.forumId : null,
-            postId: body.postId ? body.postId : null,
+        const createdPost = await Post.create({
+            profileId: profileId,
+            content: post.content,
+            forumId: post.forumId ? post.forumId : null,
+            postId: post.postId ? post.postId : null,
         })
-        if (body.attachments) {
-            for (let i = 0; i < body.attachments.length; i++) {
+        if (post.attachments) {
+            for (let i = 0; i < post.attachments.length; i++) {
                 await Attachment.create({
                     postId: post.id,
-                    url: body.attachments[i]
+                    url: post.attachments[i]
                 })
             }
         }
+        return createdPost
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+export const getPostByIdSvc = async (postId, profileId) => {
+    try {
+        const profile = await Profile.findByPk(profileId)
+
+        const post = await Post.findByPk(postId, {
+            include: [
+                {
+                    model: Profile,
+                    attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+                    as: 'profile',
+                    include: {
+                        model: User,
+                        attributes: ['email']
+                    }
+                },
+                {
+                    model: Attachment,
+                    as: 'attachments',
+                    attributes: ['url', 'type']
+                },
+                {
+                    model: Like,
+                    as: 'likes',
+                    attributes: ['id', 'profileId'],
+                },
+                {
+                    model: Repost,
+                    as: 'reposts',
+                    attributes: ['id', 'profileId'],
+                },
+                {
+                    model: Post,
+                    as: 'comments',
+                    attributes: ['id', 'content', 'createdAt', 'profileId'],
+                    include: [
+                        {
+                            model: Profile,
+                            attributes: ['id', 'names', 'surnames', 'profilePic'],
+                            as: 'profile',
+                            include: {
+                                model: User,
+                                attributes: ['email']
+                            }
+                        },
+                        {
+                            model: Attachment,
+                            as: 'attachments',
+                            attributes: ['url', 'type']
+                        },
+                        {
+                            model: Like,
+                            as: 'likes',
+                            attributes: ['id', 'profileId'],
+                        },
+                        {
+                            model: Repost,
+                            as: 'reposts',
+                            attributes: ['id', 'profileId'],
+                        }, {
+                            model: Post,
+                            as: 'comments',
+                            include: [
+                                {
+                                    model: Profile,
+                                    attributes: ['id', 'names', 'surnames', 'profilePic'],
+                                    as: 'profile',
+                                    include: {
+                                        model: User,
+                                        attributes: ['email']
+                                    }
+                                },
+                                {
+                                    model: Attachment,
+                                    as: 'attachments',
+                                    attributes: ['url', 'type']
+                                },
+                                {
+                                    model: Like,
+                                    as: 'likes',
+                                    attributes: ['id', 'profileId'],
+                                },
+                                {
+                                    model: Repost,
+                                    as: 'reposts',
+                                    attributes: ['id', 'profileId'],
+                                }
+                            ]
+
+                        }
+                    ]
+                },
+            ]
+        })
+        post.comments.map(post => {
+            post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
+            post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
+        })
+        post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
+        post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
+        console.log(post.profile)
         return post
     } catch (error) {
         throw new Error(error.message)

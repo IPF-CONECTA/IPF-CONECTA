@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../../public/css/NotFound.css";
 import iconoipf from "../../public/iconoipf.png";
 
-export const NotFoundPage= () => {
+export const NotFoundPage = () => {
   return (
     <div className="not-found">
       <div className="logo-container">
@@ -14,7 +14,8 @@ export const NotFoundPage= () => {
         <p>Lo siento, la página que buscas no existe.</p>
         <Link to="/">
           <button className="home-button">
-            <span class="material-symbols-outlined">arrow_back</span> al Inicio
+            <span className="material-symbols-outlined">arrow_back</span> al
+            Inicio
           </button>
         </Link>
       </div>

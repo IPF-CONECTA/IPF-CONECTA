@@ -1,3 +1,24 @@
 .postForm {
   max-width: none;
+  height: 50px;
+}
+
+.formcontainer {
+  height: 5px;
+}
+.formInput {
+  text-align: start;
+  height: 100%;
+  min-height: 50px;
+  max-height: 100px;
+}
+.formInputFocused {
+  text-align: start;
+  height: 100px;
+  min-height: 50px;
+  max-height: 100px;
+}
+
+.formInputFocused:focus {
+  outline: none;
 }

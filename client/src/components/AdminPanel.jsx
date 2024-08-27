@@ -69,7 +69,6 @@ export const AdminPanel = () => {
         `http://localhost:4000/admin/get-company/${company.id}`
       );
       setSelectedCompany(response.data);
-      console.log(response.data);
       setShowFullDescription(false);
     } catch (error) {
       setError("Error al cargar los detalles de la empresa");
@@ -81,7 +80,6 @@ export const AdminPanel = () => {
       if (status === "Rechazada" && !justification) {
         throw new Error("Por favor, ingrese un mensaje.");
       }
-      console.log("antes del patch");
       const response = await axios.patch(
         `http://localhost:4000/admin/update-company-status/${id}/${status}`,
         { justification },
@@ -91,7 +89,6 @@ export const AdminPanel = () => {
           },
         }
       );
-      console.log("después del patch");
       noti(`Empresa ${status.toLowerCase()} con éxito`, "success");
       setSelectedCompany(null);
       setCompanies((prevCompanies) =>

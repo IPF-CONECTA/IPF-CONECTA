@@ -10,5 +10,5 @@ export * from "./NotFoundPage";
 export * from "./PanelPage";
 export * from "./RegisterPage";
 export * from "./SelectCompanyPage";
-export * from "./StudentProfilePage"
+export * from "./ProfilePage"
 export * from "./SupportPage";

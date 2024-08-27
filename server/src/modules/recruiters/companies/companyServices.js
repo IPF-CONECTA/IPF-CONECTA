@@ -2,6 +2,7 @@ import { Op } from 'sequelize'
 import { getAllLocations, getLocation, getLocationType } from '../../../helpers/getLocationType.js'
 import { CompanyIndustry } from './companyIndustry/companyIndustryModel.js'
 import { Company } from './companyModel.js'
+import { Profile } from '../../profile/profileModel.js'
 
 export const getApprovedCompaniesSvc = async () => {
     try {
@@ -79,8 +80,8 @@ export const getCompanyByIdSvc = async (id) => {
                 model: Association,
                 attributes: ['id'],
                 include: [{
-                    model: User,
-                    as: 'user',
+                    model: Profile,
+                    as: 'profile',
                     attributes: ['id', 'profilePic', 'names', 'surnames', 'email']
                 }]
             }]

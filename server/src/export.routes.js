@@ -12,6 +12,8 @@ import postRoutes from "./modules/posts/postRoutes.js";
 import followerRoutes from "./modules/followers/followerRoutes.js";
 import repostRoutes from "./modules/posts/reposts/repostRoutes.js";
 import likeRoutes from "./modules/posts/likes/likeRoutes.js";
+import contractTypeRoutes from "./modules/recruiters/job/contractTypes/contractTypesRoutes.js";
+import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoutes.js";
 export const routes = (app) => {
     app.use(userRoutes);
     app.use(authRoutes);
@@ -27,4 +29,6 @@ export const routes = (app) => {
     app.use(followerRoutes)
     app.use(repostRoutes)
     app.use(likeRoutes)
+    app.use(contractTypeRoutes)
+    app.use(modalityRoutes)
 }

@@ -4,6 +4,7 @@ import { getJobs } from "../services/jobServices";
 import { useNoti } from "../hooks/useNoti";
 import { JobDetailsPage } from "../pages/JobsDetailsPage";
 import styles from "../../public/css/jobSearch.module.css";
+import { JobDetails } from "./JobDetails";
 export const JobSearch = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,8 +25,8 @@ export const JobSearch = () => {
     if (jobs.length > 0) {
       setSelectedJob(jobs[0].id);
     }
-    console.log(jobs);
   }, [jobs]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setQuery(e.target.searchBar.value);
@@ -134,7 +135,7 @@ export const JobSearch = () => {
             )}
           </div>
         </aside>
-        {selectedJob && <JobDetailsPage jobId={selectedJob} />}
+        {selectedJob && <JobDetails jobId={selectedJob} />}
       </section>
     </main>
   );

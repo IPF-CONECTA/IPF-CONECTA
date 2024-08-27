@@ -4,16 +4,18 @@ import { BASIC_ROLES } from '../../constant/roles.js';
 import bcrypt from 'bcryptjs'
 import { Follower } from '../followers/followerModel.js';
 import { Op } from 'sequelize';
+import { Profile } from '../profile/profileModel.js';
+import { sequelize } from '../../config/db.js';
 
 export const getUsers = async () => {
     const users = await User.findAll()
     return users
 }
 
-export const getRecomendedUsersSvc = async (userId) => {
+export const getRecomendedUsersSvc = async (profileId) => {
     const following = await Follower.findAll({
         where: {
-            followerId: userId
+            followerId: profileId
         },
         attributes: ['followingId']
     })
@@ -21,57 +23,75 @@ export const getRecomendedUsersSvc = async (userId) => {
 
     const users = await User.findAll({
         where: {
-            [Op.and]: [
-                {
-                    id: { [Op.notIn]: followedUserIds }
-                },
-                {
-                    [Op.or]: [
-                        { roleId: BASIC_ROLES.recruiter },
-                        { roleId: BASIC_ROLES.student }
-                    ]
-                }
-            ]
+            [Op.or]: [
+                { roleId: BASIC_ROLES.recruiter },
+                { roleId: BASIC_ROLES.student },
+            ],
+            id: {
+                [Op.ne]: profileId,
+            }
         },
-        attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
-        limit: 5
+        attributes: ['id'],
+        limit: 5,
+        include: {
+            model: Profile,
+            attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+            where: {
+                id: {
+                    [Op.notIn]: [...followedUserIds, profileId],
+                }
+            }
+        }
     });
 
-    console.log('====================================================');
-    console.log(users);
-    console.log('====================================================');
     return users;
 }
 
 export const getUserById = async (id) => {
-    const user = await User.findByPk(id)
+    const user = await User.findByPk(id, {
+        include: {
+            model: Profile,
+            attributes: ['id', 'names', 'surnames', 'profilePic', 'title']
+        }
+    })
     return user
 }
 
 export const getUserInfoSvc = async (id, followingId) => {
-    const user = await User.findByPk(followingId, {
-        attributes: ['id', 'names', 'surnames', 'email', 'profilePic'],
-    })
-    const following = await Follower.findOne({
-        where: {
-            followingId: user.id,
-            followerId: id
-        }
-    })
-    const cantFollowers = await Follower.count({
-        where: {
-            followingId: user.id
-        }
-    })
-    const cantFollowing = await Follower.count({
-        where: {
-            followerId: user.id
-        }
-    })
-    return { user, following, cantFollowers, cantFollowing }
+    try {
+        const profile = await Profile.findByPk(followingId, {
+            attributes: ['id', 'profilePic', 'names', 'surnames', 'title'],
+            include: {
+                model: User,
+                attributes: ['email']
+            }
+        })
+
+        const following = await Follower.findOne({
+            where: {
+                followingId: profile.id,
+                followerId: id
+            }
+        })
+        const cantFollowers = await Follower.count({
+            where: {
+                followingId: profile.id
+            }
+        })
+        const cantFollowing = await Follower.count({
+            where: {
+                followerId: profile.id
+            }
+        })
+        return { profile, following, cantFollowers, cantFollowing }
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
 }
 
 export const createUser = async (user) => {
+    const t = await sequelize.transaction();
     try {
         const roleId = ALL_ROLES[user.role];
         const hashpass = await bcrypt.hash(user.password, 10)
@@ -88,7 +108,21 @@ export const createUser = async (user) => {
         const existingUser = await User.findOne({ where: { email: user.email } });
 
         if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
-        return User.create(user)
+        const createdUser = await User.create({
+            email: user.email,
+            roleId: roleId,
+            password: hashpass
+
+        }, { transaction: t })
+        const profile = await Profile.create({
+            userId: createdUser.id,
+            names: user.names,
+            surnames: user.surnames,
+            userStateId: 1,
+            state: 1,
+        }, { transaction: t });
+
+        await t.commit();
     } catch (error) {
         console.log(error)
     }

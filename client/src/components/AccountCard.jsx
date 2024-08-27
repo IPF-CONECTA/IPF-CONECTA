@@ -4,14 +4,13 @@ import { getProfileInfo } from "../services/feedServices";
 import { useFollow } from "../hooks/useFollow";
 
 const AccountCard = ({ account }) => {
-  console.log(account);
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
   const profileRef = useRef(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const { profileInfo, handleFollowOrUnfollow } = useFollow(account);
-  console.log(profileInfo);
+
   const handleShowProfile = (boolean, id) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -57,10 +56,10 @@ const AccountCard = ({ account }) => {
           width={50}
           height={50}
           className="rounded-circle me-2"
-          src={account.profilePic}
-          alt={account.names}
-          onMouseEnter={() => handleShowProfile(true, account.id)}
-          onMouseLeave={() => handleShowProfile(false, account.id)}
+          src={account.profile.profilePic}
+          alt={account.profile.names}
+          onMouseEnter={() => handleShowProfile(true, account.profile.id)}
+          onMouseLeave={() => handleShowProfile(false, account.profile.id)}
         />
         {profile && (
           <ProfileHover
@@ -71,9 +70,11 @@ const AccountCard = ({ account }) => {
           />
         )}
         <div className=" d-flex flex-column">
-          <span className="fs-5">{account.names + " " + account.surnames}</span>
-          {account.title ? (
-            <span className="text-muted">{account.title}</span>
+          <span className="fs-5">
+            {account.profile.names + " " + account.profile.surnames}
+          </span>
+          {account.profile.title ? (
+            <span className="text-muted">{account.profile.title}</span>
           ) : (
             <span className="text-muted">Sin titulo</span>
           )}
@@ -85,7 +86,7 @@ const AccountCard = ({ account }) => {
             className="btn btn-outline-info text-muted w-100 fw-bold"
             onClick={() => {
               setIsFollowing(false);
-              handleFollowOrUnfollow(profileInfo.id);
+              handleFollowOrUnfollow(profileInfo.profile.id);
             }}
           >
             Unfollow
@@ -95,7 +96,7 @@ const AccountCard = ({ account }) => {
             className="btn btn-info text-light w-100 fw-bold"
             onClick={() => {
               setIsFollowing(true);
-              handleFollowOrUnfollow(profileInfo.id);
+              handleFollowOrUnfollow(profileInfo.profile.id);
             }}
           >
             Follow
