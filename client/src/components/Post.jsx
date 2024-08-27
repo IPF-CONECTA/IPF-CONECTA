@@ -1,45 +1,23 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  getPost,
-  getProfileInfo,
-  like,
-  repostSvc,
-} from "../services/feedServices";
-import styles from "../../public/css/postCard.module.css";
+import React, { useEffect, useRef, useState } from "react";
+import { getProfileInfo, like, repostSvc } from "../services/feedServices";
+import styles from "../../public/css/postById.module.css";
 import { getTime } from "../helpers/getTime";
 import { ProfileHover } from "./ProfileHover";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import { authContext } from "../context/auth/Context";
-import { useNoti } from "../hooks/useNoti";
-const Post = ({ postId }) => {
-  const [post, setPost] = useState(null);
-  const { authState } = useContext(authContext);
-  const [showProgress, setShowProgress] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [content, setContent] = useState("");
+
+const Post = ({ post }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
   const profileRef = useRef(null);
   const [liked, setLiked] = useState(false);
   const [reposted, setReposted] = useState(false);
-  const noti = useNoti();
+
   useEffect(() => {
-    const fetchPost = async () => {
-      const post = await getPost(postId);
-      if (post.message) {
-        return noti(post.message, "error");
-      }
-      setPost(post);
+    if (post) {
       setLiked(post.liked);
       setReposted(post.reposted);
-    };
-    fetchPost();
-    console.log(post);
-  }, [postId]);
+    }
+  }, [post]);
 
   const handleLike = async () => {
     const { statusCode } = await like(post.id);
@@ -111,12 +89,9 @@ const Post = ({ postId }) => {
   return (
     <>
       {post && (
-        <div className="d-flex flex-column align-items-center w-50">
-          <div className="w-75 py-3 border border-bottom-0">
-            <span class="material-symbols-outlined ps-2">arrow_back</span>
-          </div>
+        <div className="d-flex flex-column align-items-center w-75">
           <article
-            className={`d-flex flex-column w-75 border border-bottom  p-3`}
+            className={`d-flex flex-column w-100 border border-bottom  p-3`}
           >
             <header className="position-relative">
               <div className="avatar d-flex align-items-center">
@@ -125,9 +100,11 @@ const Post = ({ postId }) => {
                     className="me-2 rounded-circle"
                     width={50}
                     height={50}
-                    onMouseEnter={() => handleShowProfile(true, post.profileId)}
+                    onMouseEnter={() =>
+                      handleShowProfile(true, post.profile.id)
+                    }
                     onMouseLeave={() =>
-                      handleShowProfile(false, post.profileId)
+                      handleShowProfile(false, post.profile.id)
                     }
                     src={post.profile.profilePic}
                     alt={post.profile.names}
@@ -249,18 +226,6 @@ const Post = ({ postId }) => {
               </button>
             </footer>
           </article>
-          <form action="" className="w-75 border d-flex align-items-end p-0">
-            <input
-              type="text"
-              name=""
-              className=""
-              placeholder="Escriba su comentario..."
-              id=""
-            />
-            <button className="btn btn-info text-light fw-bold">
-              Comentar
-            </button>
-          </form>
         </div>
       )}
     </>

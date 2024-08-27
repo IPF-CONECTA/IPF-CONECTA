@@ -44,7 +44,6 @@ export const getPostsSvc = async (page, id) => {
                     model: Post,
                     as: 'comments',
                     attributes: ['id', 'content', 'createdAt', 'profileId'],
-                    limit: 2,
                     include: {
                         model: Profile,
                         attributes: ['id', 'names', 'surnames', 'profilePic'],
@@ -121,16 +120,69 @@ export const getPostByIdSvc = async (postId, profileId) => {
                     model: Post,
                     as: 'comments',
                     attributes: ['id', 'content', 'createdAt', 'profileId'],
-                    limit: 2,
-                    include: {
-                        model: Profile,
-                        attributes: ['id', 'names', 'surnames', 'profilePic'],
-                        as: 'profile',
-                    }
+                    include: [
+                        {
+                            model: Profile,
+                            attributes: ['id', 'names', 'surnames', 'profilePic'],
+                            as: 'profile',
+                            include: {
+                                model: User,
+                                attributes: ['email']
+                            }
+                        },
+                        {
+                            model: Attachment,
+                            as: 'attachments',
+                            attributes: ['url', 'type']
+                        },
+                        {
+                            model: Like,
+                            as: 'likes',
+                            attributes: ['id', 'profileId'],
+                        },
+                        {
+                            model: Repost,
+                            as: 'reposts',
+                            attributes: ['id', 'profileId'],
+                        }, {
+                            model: Post,
+                            as: 'comments',
+                            include: [
+                                {
+                                    model: Profile,
+                                    attributes: ['id', 'names', 'surnames', 'profilePic'],
+                                    as: 'profile',
+                                    include: {
+                                        model: User,
+                                        attributes: ['email']
+                                    }
+                                },
+                                {
+                                    model: Attachment,
+                                    as: 'attachments',
+                                    attributes: ['url', 'type']
+                                },
+                                {
+                                    model: Like,
+                                    as: 'likes',
+                                    attributes: ['id', 'profileId'],
+                                },
+                                {
+                                    model: Repost,
+                                    as: 'reposts',
+                                    attributes: ['id', 'profileId'],
+                                }
+                            ]
+
+                        }
+                    ]
                 },
             ]
         })
-
+        post.comments.map(post => {
+            post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
+            post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
+        })
         post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
         post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
         console.log(post.profile)

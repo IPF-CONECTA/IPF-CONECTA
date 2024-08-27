@@ -3,7 +3,21 @@
   height: 100%;
   min-height: 50px;
   max-height: 100px;
+  border: none !important;
 }
-.formInputFocused:focus {
+.formInput:focus {
   outline: none;
+  text-align: start;
+  height: 100%;
+  min-height: 50px;
+  max-height: 100px;
+}
+
+.form {
+  border-radius: 0;
+  box-shadow: none;
+}
+.smallText {
+  height: min-content;
+  font-size: 13px;
 }
