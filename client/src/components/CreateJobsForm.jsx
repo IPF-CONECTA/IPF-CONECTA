@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
+import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const CreateJobsForm = () => {
@@ -13,6 +14,7 @@ export const CreateJobsForm = () => {
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [modalities, setModalities] = useState([]);
   const [contractTypes, setContractTypes] = useState([]);
+  const [search, setSearch] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -65,9 +67,14 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
+    if (search.length === 0) {
+      setSkills([]);
+      return;
+    }
+
     axios.get("http://localhost:4000/find-skills", {
         params: {
-          query: "",
+          query: search,
         },
     })
       .then((response) => {
@@ -77,7 +84,7 @@ export const CreateJobsForm = () => {
         console.error("Error fetching skills:", error);
         noti("Error fetching skills", "danger");
       });
-  }, []);
+  }, [search]);
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -87,25 +94,15 @@ export const CreateJobsForm = () => {
     }));
   }
 
-  function handleSkillChange(e) {
-    const skillId = e.target.value;
-    const selectedSkill = skills.find(skill => skill.id === skillId);
-
-    if (selectedSkill && !selectedSkills.includes(selectedSkill)) {
-      setSelectedSkills([...selectedSkills, selectedSkill]);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        skills: [...prevFormData.skills, selectedSkill.id],
-      }));
-    }
+  function handleSearchChange(value) {
+    setSearch(value);
   }
 
-  function removeSkill(skillId) {
-    const updatedSkills = selectedSkills.filter(skill => skill.id !== skillId);
-    setSelectedSkills(updatedSkills);
+  function handleSkillChange(selectedOptions) {
+    setSelectedSkills(selectedOptions);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      skills: updatedSkills.map(skill => skill.id),
+      skills: selectedOptions.map(option => option.value),
     }));
   }
 
@@ -145,6 +142,15 @@ export const CreateJobsForm = () => {
         noti("Error creating job", "danger");
       });
   }
+
+  const skillOptions = skills.map(skill => ({
+    value: skill.id,
+    label: skill.name,
+  }));
+
+  const customFilter = (option, searchText) => {
+    return option.label.toLowerCase().includes(searchText.toLowerCase());
+  };
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
@@ -231,31 +237,17 @@ export const CreateJobsForm = () => {
           </div>
           <div className="mb-3">
             <label className="form-label">Skills</label>
-            <select
-              name="skill"
-              className="form-select"
-              onChange={handleSkillChange}
-            >
-              <option value="">Selecciona una skill</option>
-              {skills.map((skill) => (
-                <option key={skill.id} value={skill.id}>
-                  {skill.name}
-                </option>
-              ))}
-            </select>
-            <div className="mt-3">
-              {selectedSkills.map((skill) => (
-                <span key={skill.id} className="badge bg-primary me-2">
-                  {skill.name} 
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-light ms-2"
-                    onClick={() => removeSkill(skill.id)}
-                  >
-                    &times;
-                  </button>
-                </span>
-              ))}
+            <div className="mb-3">
+              <Select
+                isMulti
+                options={skillOptions}
+                value={selectedSkills}
+                onChange={handleSkillChange}
+                placeholder="Selecciona las skills"
+                noOptionsMessage={() => "No hay skills disponibles"}
+                onInputChange={handleSearchChange}
+                filterOption={customFilter}
+              />
             </div>
           </div>
           <button type="submit" className="btn btn-primary w-100">Crear oferta</button>
