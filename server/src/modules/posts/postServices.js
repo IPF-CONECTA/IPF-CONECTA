@@ -88,7 +88,7 @@ export const createPostSvc = async (post, profileId) => {
 
 export const getPostByIdSvc = async (postId, profileId) => {
     try {
-        const profile = await Profile.findByPk(profileId)
+        const profile = await Profile.findByPk(profileId);
 
         const post = await Post.findByPk(postId, {
             include: [
@@ -118,8 +118,8 @@ export const getPostByIdSvc = async (postId, profileId) => {
                 },
                 {
                     model: Post,
-                    as: 'comments',
-                    attributes: ['id', 'content', 'createdAt', 'profileId'],
+                    as: 'parentPost',
+                    attributes: ['id', 'content', 'createdAt', 'profileId', 'postId'],
                     include: [
                         {
                             model: Profile,
@@ -144,7 +144,39 @@ export const getPostByIdSvc = async (postId, profileId) => {
                             model: Repost,
                             as: 'reposts',
                             attributes: ['id', 'profileId'],
-                        }, {
+                        },
+                    ]
+                },
+                {
+                    model: Post,
+                    as: 'comments',
+                    attributes: ['id', 'content', 'createdAt', 'profileId', 'postId'],
+                    include: [
+                        {
+                            model: Profile,
+                            attributes: ['id', 'names', 'surnames', 'profilePic'],
+                            as: 'profile',
+                            include: {
+                                model: User,
+                                attributes: ['email']
+                            }
+                        },
+                        {
+                            model: Attachment,
+                            as: 'attachments',
+                            attributes: ['url', 'type']
+                        },
+                        {
+                            model: Like,
+                            as: 'likes',
+                            attributes: ['id', 'profileId'],
+                        },
+                        {
+                            model: Repost,
+                            as: 'reposts',
+                            attributes: ['id', 'profileId'],
+                        },
+                        {
                             model: Post,
                             as: 'comments',
                             include: [
@@ -173,21 +205,34 @@ export const getPostByIdSvc = async (postId, profileId) => {
                                     attributes: ['id', 'profileId'],
                                 }
                             ]
-
                         }
                     ]
                 },
+
             ]
-        })
+        });
+
         post.comments.map(post => {
             post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
             post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
-        })
+        });
         post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
         post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
-        console.log(post.profile)
-        return post
+
+        return post;
     } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error.message);
+    }
+};
+
+export const getAsweredPosts = async (postId) => {
+    try {
+        const posts = await Post.findByPk(postId, {
+            include: {
+
+            }
+        })
+    } catch (error) {
+
     }
 }

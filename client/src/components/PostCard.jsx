@@ -23,6 +23,7 @@ const PostCard = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [reposted, setReposted] = useState(false);
   const [showAnswerModal, setShowAnswerModal] = useState(false);
+
   const handleLike = async (event) => {
     event.stopPropagation();
     const { statusCode } = await like(post.id);
@@ -59,9 +60,11 @@ const PostCard = ({ post }) => {
   };
 
   useEffect(() => {
-    setLiked(post.liked);
-    setReposted(post.reposted);
-  }, []);
+    if (post) {
+      setLiked(post.liked);
+      setReposted(post.reposted);
+    }
+  }, [post]);
 
   const handleComment = async (event) => {
     event.preventDefault();
@@ -121,138 +124,143 @@ const PostCard = ({ post }) => {
   };
   return (
     <>
-      <article
-        onClick={() => {
-          navigate(`/post/${post.id}`);
-        }}
-        className={`d-flex flex-column w-75 border border-bottom-0  p-3 `}
-      >
-        <header className="position-relative">
-          <div className="avatar d-flex align-items-center">
-            <div>
-              <img
-                className="me-2 rounded-circle"
-                width={50}
-                height={50}
-                onMouseEnter={() => handleShowProfile(true, post.profile.id)}
-                onMouseLeave={() => handleShowProfile(false, post.profile.id)}
-                src={post.profile.profilePic}
-                alt={post.profile.names}
-              />
-            </div>
-            <div className={`d-flex flex-column w-100 `}>
-              <div className="w-100 d-flex justify-content-between">
-                <div className="d-flex flex-column">
-                  <span className="fw-bold fs-6">
-                    {post.profile.names} {post.profile.surnames}
-                  </span>
-                  {post.profile.title && (
-                    <span className={`text-muted ${styles.smallText}`}>
-                      {post.profile.title}
+      {" "}
+      {post && (
+        <article
+          onClick={() => {
+            navigate(`/post/${post.id}`);
+          }}
+          className={`d-flex flex-column w-75 border border-bottom-0  p-3 `}
+        >
+          <header className="position-relative">
+            <div className="avatar d-flex align-items-center">
+              <div>
+                <img
+                  className="me-2 rounded-circle"
+                  width={50}
+                  height={50}
+                  onMouseEnter={() => handleShowProfile(true, post.profile.id)}
+                  onMouseLeave={() => handleShowProfile(false, post.profile.id)}
+                  src={post.profile.profilePic}
+                  alt={post.profile.names}
+                />
+              </div>
+              <div className={`d-flex flex-column w-100 `}>
+                <div className="w-100 d-flex justify-content-between">
+                  <div className="d-flex flex-column">
+                    <span className="fw-bold fs-6">
+                      {post.profile.names} {post.profile.surnames}
                     </span>
-                  )}
-                </div>
+                    {post.profile.title && (
+                      <span className={`text-muted ${styles.smallText}`}>
+                        {post.profile.title}
+                      </span>
+                    )}
+                  </div>
 
-                <span className={`text-muted ${styles.smallText}`}>
-                  {getTime(post.createdAt)}
-                </span>
+                  <span className={`text-muted ${styles.smallText}`}>
+                    {getTime(post.createdAt)}
+                  </span>
+                </div>
               </div>
             </div>
+            {profile && (
+              <ProfileHover
+                profile={profile}
+                profileRef={profileRef}
+                handleMouseEnter={handleMouseEnter}
+                handleMouseLeave={handleMouseLeave}
+              />
+            )}
+          </header>
+          <div className="py-3">
+            <p>{post.content}</p>
+            {post.attatchment &&
+              (post.attatchment.type === "image" ? (
+                <img src={post.attatchment.url} alt={post.attatchment.alt} />
+              ) : (
+                <video src={post.attatchment.url} />
+              ))}
           </div>
-          {profile && (
-            <ProfileHover
-              profile={profile}
-              profileRef={profileRef}
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-            />
-          )}
-        </header>
-        <div className="py-3">
-          <p>{post.content}</p>
-          {post.attatchment &&
-            (post.attatchment.type === "image" ? (
-              <img src={post.attatchment.url} alt={post.attatchment.alt} />
-            ) : (
-              <video src={post.attatchment.url} />
-            ))}
-        </div>
-        <footer className="">
-          <div className="d-flex align-items-center">
-            <button
-              onClick={handleLike}
-              className="btn p-0 d-flex align-items-center "
-            >
-              <span
-                className={`material-symbols-outlined ${styles.actionButtons} ${
-                  liked ? `${styles.filledIcon} text-info` : ""
-                }`}
+          <footer className="">
+            <div className="d-flex align-items-center">
+              <button
+                onClick={handleLike}
+                className="btn p-0 d-flex align-items-center "
               >
-                thumb_up
+                <span
+                  className={`material-symbols-outlined ${
+                    styles.actionButtons
+                  } ${liked ? `${styles.filledIcon} text-info` : ""}`}
+                >
+                  thumb_up
+                </span>
+              </button>
+              <span
+                className={`${styles.numberContainer} ${styles.smallText} ms-1`}
+              >
+                {post.likes.length > 0 && <span>{post.likes.length}</span>}
               </span>
-            </button>
-            <span
-              className={`${styles.numberContainer} ${styles.smallText} ms-1`}
-            >
-              {post.likes.length > 0 && <span>{post.likes.length}</span>}
-            </span>
-          </div>
+            </div>
 
-          <div className="d-flex align-items-center">
-            <button
-              className="btn p-0 d-flex align-items-center"
-              onClick={handleRepost}
-            >
-              <span
-                className={`material-symbols-outlined ${styles.actionButtons} ${
-                  reposted ? "text-info" : ""
-                }`}
+            <div className="d-flex align-items-center">
+              <button
+                className="btn p-0 d-flex align-items-center"
+                onClick={handleRepost}
               >
-                repeat
-              </span>{" "}
-            </button>
-            <span
-              className={`${styles.numberContainer} ${styles.smallText} ms-1`}
-            >
-              {post.reposts.length > 0 && <span>{post.reposts.length}</span>}
-            </span>
-          </div>
-          <div className="d-flex align-items-center">
-            <button
-              className="btn p-0 d-flex align-items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowAnswerModal(true);
-              }}
-            >
+                <span
+                  className={`material-symbols-outlined ${
+                    styles.actionButtons
+                  } ${reposted ? "text-info" : ""}`}
+                >
+                  repeat
+                </span>{" "}
+              </button>
+              <span
+                className={`${styles.numberContainer} ${styles.smallText} ms-1`}
+              >
+                {post.reposts.length > 0 && <span>{post.reposts.length}</span>}
+              </span>
+            </div>
+            <div className="d-flex align-items-center">
+              <button
+                className="btn p-0 d-flex align-items-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowAnswerModal(true);
+                }}
+              >
+                <span
+                  className={`material-symbols-outlined ${styles.actionButtons}`}
+                >
+                  chat_bubble
+                </span>{" "}
+              </button>
+              <span
+                className={`${styles.numberContainer} ${styles.smallText}  ms-1`}
+              >
+                {post.comments.length > 0 && (
+                  <span>{post.comments.length}</span>
+                )}
+              </span>
+            </div>
+            <button className="btn p-0 d-flex align-items-center">
               <span
                 className={`material-symbols-outlined ${styles.actionButtons}`}
               >
-                chat_bubble
-              </span>{" "}
+                bookmark
+              </span>
             </button>
-            <span
-              className={`${styles.numberContainer} ${styles.smallText}  ms-1`}
-            >
-              {post.comments.length > 0 && <span>{post.comments.length}</span>}
-            </span>
-          </div>
-          <button className="btn p-0 d-flex align-items-center">
-            <span
-              className={`material-symbols-outlined ${styles.actionButtons}`}
-            >
-              bookmark
-            </span>
-          </button>
-          <button className="btn p-0 d-flex align-items-center ">
-            <span
-              className={`material-symbols-outlined ${styles.actionButtons}`}
-            >
-              share
-            </span>
-          </button>
-        </footer>
-      </article>
+            <button className="btn p-0 d-flex align-items-center ">
+              <span
+                className={`material-symbols-outlined ${styles.actionButtons}`}
+              >
+                share
+              </span>
+            </button>
+          </footer>
+        </article>
+      )}
       {showAnswerModal && (
         <Dialog
           open={Boolean(showAnswerModal)}
@@ -302,7 +310,8 @@ const PostCard = ({ post }) => {
                 </button>
               </div>
             </div>
-            <div className="d-flex pt-3">
+            <hr className="hr" />{" "}
+            <div className="d-flex ">
               {authState.user && authState.user.profilePic ? (
                 <img
                   src={authState.user.profilePic}

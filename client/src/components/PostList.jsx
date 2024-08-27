@@ -72,7 +72,10 @@ const PostList = () => {
 
           <div className=" w-100 d-flex justify-content-between  pt-2">
             <div>
-              <button className="btn d-flex align-items-center h-100 me-1">
+              <button
+                type="button"
+                className="btn d-flex align-items-center h-100 me-1"
+              >
                 <span className="material-symbols-outlined">attachment</span>
               </button>
             </div>
