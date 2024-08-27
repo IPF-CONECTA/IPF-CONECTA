@@ -10,6 +10,7 @@ export const CreateJobsForm = () => {
 
   const [companies, setCompanies] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const [modalities, setModalities] = useState([]);
   const [contractTypes, setContractTypes] = useState([]);
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ export const CreateJobsForm = () => {
     companyId: "",
     modalityId: "",
     contractTypeId: "",
-    skills: "",
+    skills: [],
   });
 
   useEffect(() => {
@@ -64,7 +65,11 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/find-skills")
+    axios.get("http://localhost:4000/find-skills", {
+        params: {
+          query: "",
+        },
+    })
       .then((response) => {
         setSkills(response.data);
       })
@@ -79,6 +84,28 @@ export const CreateJobsForm = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
+    }));
+  }
+
+  function handleSkillChange(e) {
+    const skillId = e.target.value;
+    const selectedSkill = skills.find(skill => skill.id === skillId);
+
+    if (selectedSkill && !selectedSkills.includes(selectedSkill)) {
+      setSelectedSkills([...selectedSkills, selectedSkill]);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        skills: [...prevFormData.skills, selectedSkill.id],
+      }));
+    }
+  }
+
+  function removeSkill(skillId) {
+    const updatedSkills = selectedSkills.filter(skill => skill.id !== skillId);
+    setSelectedSkills(updatedSkills);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      skills: updatedSkills.map(skill => skill.id),
     }));
   }
 
@@ -205,18 +232,31 @@ export const CreateJobsForm = () => {
           <div className="mb-3">
             <label className="form-label">Skills</label>
             <select
-              name="skills"
+              name="skill"
               className="form-select"
-              value={formData.skills}
-              onChange={handleInputChange}
+              onChange={handleSkillChange}
             >
-              <option value="">Selecciona la skill</option>
+              <option value="">Selecciona una skill</option>
               {skills.map((skill) => (
                 <option key={skill.id} value={skill.id}>
                   {skill.name}
                 </option>
               ))}
             </select>
+            <div className="mt-3">
+              {selectedSkills.map((skill) => (
+                <span key={skill.id} className="badge bg-primary me-2">
+                  {skill.name} 
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-light ms-2"
+                    onClick={() => removeSkill(skill.id)}
+                  >
+                    &times;
+                  </button>
+                </span>
+              ))}
+            </div>
           </div>
           <button type="submit" className="btn btn-primary w-100">Crear oferta</button>
         </form>
