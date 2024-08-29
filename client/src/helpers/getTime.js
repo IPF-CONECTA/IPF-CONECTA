@@ -7,15 +7,15 @@ moment.updateLocale('es', {
         past: '%s',
         s: 'unos segundos',
         m: 'un minuto',
-        mm: '%d m',
+        mm: '%dm',
         h: 'una hora',
-        hh: '%d h',
+        hh: '%dh',
         d: 'ayer',
-        dd: '%d d',
+        dd: '%dd',
         M: 'un mes',
-        MM: '%d m',
+        MM: '%dm',
         y: 'un año',
-        yy: '%d a'
+        yy: '%da'
     }
 });
 

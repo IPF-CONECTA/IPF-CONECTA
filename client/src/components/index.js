@@ -18,3 +18,4 @@ export * from "./RequestForm";
 export * from "./RequestList";
 export * from "./SelectCompany";
 export * from "./SupportForm";
+export * from './Profile'

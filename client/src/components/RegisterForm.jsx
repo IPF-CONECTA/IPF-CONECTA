@@ -84,8 +84,11 @@ export const RegisterForm = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:4000/auth/signup", { user });
-      localStorage.setItem("token", response.data.token);
+      const response = await axios.post("http://localhost:4000/auth/signup", {
+        user,
+      });
+      console.log(response);
+      authService.setToken(response.data.token);
       noti(response.data.message, "success");
       setStep(4);
     } catch (error) {
@@ -287,9 +290,5 @@ export const RegisterForm = () => {
     }
   };
 
-  return (
-    <div className={styles.registerContainer}>
-      {renderStep()}
-    </div>
-  );
+  return <div className={styles.registerContainer}>{renderStep()}</div>;
 };

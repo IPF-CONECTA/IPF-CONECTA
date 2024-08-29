@@ -48,7 +48,10 @@ export const SelectCompany = () => {
           },
         }
       );
-      noti("Solicitud enviada, espere a que un administrador apruebe la empresa.", "success");
+      noti(
+        "Solicitud enviada, espere a que un administrador apruebe la empresa.",
+        "success"
+      );
       //redireccionar al principio
       navigate("/");
     } catch (error) {
@@ -97,7 +100,6 @@ export const SelectCompany = () => {
                     value={company.id}
                     className="btn btn-outline-success"
                     onClick={() => {
-                      console.log(company.id);
                       handleChooseCompany(company.id), setStep(2);
                     }}
                   >

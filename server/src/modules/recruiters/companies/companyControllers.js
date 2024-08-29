@@ -5,6 +5,7 @@ import { User } from "../../users/userModel.js";
 import { findCompaniesSvc, getApprovedCompaniesSvc } from "./companyServices.js";
 import { getCompanyByIdSvc } from "../../administration/admin/companies/companyServices.js";
 import { validate as isValidUUID } from 'uuid';
+import { Profile } from "../../profile/profileModel.js";
 
 import { Company } from './companyModel.js';
 import { upload } from "../../../multerConfig.js";
@@ -33,23 +34,13 @@ export const getApprovedCompaniesCtrl = async (req, res) => {
 }
 export const associateNewCompanyCtrl = async (req, res) => {
     try {
-      const { name, description, cantEmployees, industryId, countryOriginId } = req.body;
-      const logoUrl = req.file ? `/uploads/${req.file.filename}` : null;
-  
-      // Crear la empresa con los datos proporcionados, incluyendo el logo
-      const newCompany = await Company.create({
-        name,
-        description,
-        cantEmployees,
-        industryId,
-        countryOriginId,
-        logoUrl, // Guardar la ruta del logo en la base de datos
-      });
-  
-      return res.status(201).json({
-        message: "Empresa creada exitosamente",
-        company: newCompany,
-      });
+        const {id} = req.user.profile
+        const { company, message } = req.body
+        const { names } = await Profile.findByPk(id, { attributes: ['names'] })
+        if (!names) throw new Error('Usuario no encontrado')
+        const association = await associateNewCompanySvc(message, id, company)
+        if (!association) throw new Error('Error al asociar la empresa')
+        res.status(201).json({ message: 'Empresa asociada correctamente' })
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Error al crear la empresa" });

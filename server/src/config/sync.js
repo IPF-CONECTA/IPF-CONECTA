@@ -38,7 +38,7 @@ import { Company } from "../modules/recruiters/companies/companyModel.js";
 import {
   ContractType,
   createContractTypes,
-} from "../modules/typeJobs/contractTypeModel.js";
+} from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { createRelations } from "./relations.js";
 import {
   Modality,
@@ -50,7 +50,7 @@ export const createTablesAndRelations = async () => {
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
-  // await Repost.sync({ force: true });
+  await Post.sync({ force: true });
 
   console.log("Tables created successfully");
 
@@ -69,6 +69,8 @@ export const createTablesAndRelations = async () => {
   // await createContractTypes()
   // await createCompanyIndustry();
   // await createModalities()
+
+
   console.log("Data created successfully");
   console.timeEnd("Db created in:");
 };

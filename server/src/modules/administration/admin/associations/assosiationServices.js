@@ -1,3 +1,4 @@
+import { Profile } from "../../../profile/profileModel.js";
 import { Association } from "../../../recruiters/associations/associationModel.js";
 import { Company } from "../../../recruiters/companies/companyModel.js";
 import { Country } from "../../../ubications/models/countryModel.js";
@@ -10,9 +11,13 @@ export const getAssociations = async (status) => {
       attributes: ["id", "status", "message"],
       include: [
         {
-          model: User,
-          as: "user",
-          attributes: ["id", "names", "surnames", "profilePic", "email"],
+          model: Profile,
+          as: "profile",
+          attributes: ["id", "names", "surnames", "profilePic"],
+          include: {
+            model: User,
+            attributes: ['email']
+          }
         },
         {
           model: Company,

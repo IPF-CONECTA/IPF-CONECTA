@@ -1,0 +1,31 @@
+.formInput {
+  text-align: start;
+  height: 100%;
+  min-height: 50px;
+  max-height: 100px;
+  border: none !important;
+}
+.formInput:focus {
+  outline: none;
+  text-align: start;
+  height: 100%;
+  min-height: 50px;
+  max-height: 100px;
+}
+
+.form {
+  border-radius: 0;
+  box-shadow: none;
+}
+.actionButtons:hover {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  color: #0dcaf0;
+}
+.numberContainer {
+  text-align: left;
+  width: 30px;
+}
+.smallText {
+  height: min-content;
+  font-size: 13px;
+}

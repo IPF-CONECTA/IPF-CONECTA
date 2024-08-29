@@ -1,7 +1,8 @@
 import { findSkillSvc } from "./skillsServices.js"
 
 export const findSkillsCtrl = async (req, res) => {
-    const { query } = req.query
+    let { query } = req.query
+    if (!query) query = ''
     try {
         const results = await findSkillSvc(query)
         if (results.length < 1) return res.status(404).json({ message: 'No se encontraron coincidencias' })

@@ -5,7 +5,8 @@ import {
 } from "./ubicationServices.js";
 
 export const findUbicationCtrl = async (req, res) => {
-  const { query } = req.params;
+  let { query } = req.query;
+  if (!query) query = ''
   try {
     const results = await findUbicationSvc(query);
     if (results.length < 1) throw new Error("No se encontraron coincidencias");
@@ -18,7 +19,6 @@ export const findUbicationCtrl = async (req, res) => {
 
 export const findCountryCtrl = async (req, res) => {
   const { country } = req.query;
-  console.log(country);
   try {
     const results = await findCountrySvc(country);
     if (results.length < 1) throw new Error("No se encontraron coincidencias");

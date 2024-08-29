@@ -1,10 +1,11 @@
+import { Profile } from "../profile/profileModel.js";
 import { User } from "../users/userModel.js";
 import { Follower } from "./followerModel.js";
 
 export const followOrUnfollowSvc = async (id, idToFollow) => {
     try {
-        const user = await User.findByPk(id);
-        const userToFollow = await User.findByPk(idToFollow);
+        const user = await Profile.findByPk(id);
+        const userToFollow = await Profile.findByPk(idToFollow);
         if (!user || !userToFollow) throw new Error("El usuario no existe");
         const isFollowing = await Follower.findOne({ where: { followerId: id, followingId: idToFollow } })
         if (!isFollowing) {

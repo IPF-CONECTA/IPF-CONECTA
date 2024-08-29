@@ -2,3 +2,10 @@
   position: fixed;
   left: 8%;
 }
+
+.homeNav .buttons .button :hover {
+  color: black;
+  span {
+    color: black;
+  }
+}

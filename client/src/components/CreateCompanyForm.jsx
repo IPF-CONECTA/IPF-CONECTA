@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "../styles/CompanyRegister.css";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +10,9 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [logo, setLogo] = useState(null); // Solo necesitamos el estado para el archivo
+  const [logo, setLogo] = useState(null)
   const [formData, setFormData] = useState({
+    message: "",
     name: "",
     description: "",
     industryId: "",
@@ -41,7 +41,7 @@ export const CreateCompanyForm = () => {
   }
 
   function handleImageChange(e) {
-    setLogo(e.target.files[0]); // Guardamos el archivo en el estado
+    setLogo(e.target.files[0])
   }
 
   function handleSubmit(e) {
@@ -88,38 +88,63 @@ export const CreateCompanyForm = () => {
   }
 
   return (
-    <form className="container" onSubmit={handleSubmit}>
-      <h1>Registro de Empresa</h1>
-      <input
-        type="text"
-        name="name"
-        placeholder="Nombre de la empresa"
-        value={formData.name}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="description"
-        placeholder="Descripción"
-        value={formData.description}
-        onChange={handleInputChange}
-        required
-      />
+    <form className="w-50 mx-auto" onSubmit={handleSubmit}>
+      <div className="text-center mb-4">
+        <h1>Registro de Empresa</h1>
+      </div>
 
-      <select
-        name="industryId"
-        value={formData.industryId}
-        onChange={handleInputChange}
-        required
-      >
-        <option value="">Seleccionar Industria</option>
-        {industries.map((industry) => (
-          <option key={industry.id} value={industry.id}>
-            {industry.name}
-          </option>
-        ))}
-      </select>
+      <div className="mb-3">
+        <input
+          type="text"
+          name="message"
+          className="form-control"
+          placeholder="Mensaje"
+          value={formData.message}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className="mb-3">
+        <input
+          type="text"
+          name="name"
+          className="form-control"
+          placeholder="Nombre de la empresa"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className="mb-3">
+        <input
+          type="text"
+          name="description"
+          className="form-control"
+          placeholder="Descripción"
+          value={formData.description}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className="w-50 mb-3">
+        <select
+          name="industryId"
+          className="form-select"
+          value={formData.industryId}
+          onChange={handleInputChange}
+          required
+        >
+          <option>Seleccionar Industria</option>
+          {industries.map((industry) => (
+            <option key={industry.id} value={industry.id}>
+              {industry.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <select
         name="countryOriginId"
@@ -143,13 +168,7 @@ export const CreateCompanyForm = () => {
         onChange={handleInputChange}
         required
       />
-
-      <input
-        type="file"
-        name="logoUrl"
-        onChange={handleImageChange}
-      />
-
+      <input type="file" value={formData.logoUrl} name="logoUrl" />
       <button type="submit">Enviar</button>
     </form>
   );
