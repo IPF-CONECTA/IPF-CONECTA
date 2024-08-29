@@ -1,14 +1,14 @@
-import { sendContactCompany } from "./mailServices/contactCompany.js";
 import jwt from "jsonwebtoken";
+import { validate as isValidUUID } from "uuid";
+
+import { Profile } from "../../profile/profileModel.js";
+import { sendContactCompany } from "./mailServices/contactCompany.js";
 import { associateNewCompanySvc } from "../associations/associationServices.js";
-import { User } from "../../users/userModel.js";
 import {
   findCompaniesSvc,
   getApprovedCompaniesSvc,
 } from "./companyServices.js";
 import { getCompanyByIdSvc } from "../../administration/admin/companies/companyServices.js";
-import { validate as isValidUUID } from "uuid";
-import { Profile } from "../../profile/profileModel.js";
 
 export const sendContactCompanyCtrl = async (req, res) => {
   const { from, name, subject, message } = req.body;
@@ -35,16 +35,16 @@ export const associateNewCompanyCtrl = async (req, res) => {
   try {
     const { id } = req.user.profile;
     const { company, message } = req.body;
+
     const { names } = await Profile.findByPk(id, { attributes: ["names"] });
     if (!names) throw new Error("Usuario no encontrado");
     const association = await associateNewCompanySvc(message, id, company);
     if (!association) throw new Error("Error al asociar la empresa");
-    res
-      .status(201)
-      .json({
-        message: "Empresa asociada correctamente",
-        associationId: association.id,
-      });
+
+    res.status(201).json({
+      message: "Empresa asociada correctamente",
+      id: association,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

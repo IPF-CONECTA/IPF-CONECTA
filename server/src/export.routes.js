@@ -14,21 +14,23 @@ import repostRoutes from "./modules/posts/reposts/repostRoutes.js";
 import likeRoutes from "./modules/posts/likes/likeRoutes.js";
 import contractTypeRoutes from "./modules/recruiters/job/contractTypes/contractTypesRoutes.js";
 import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoutes.js";
+import companyUbicationRoutes from "./modules/recruiters/companies/companyUbication/companyUbicationRoutes.js";
 export const routes = (app) => {
-    app.use(userRoutes);
-    app.use(authRoutes);
-    app.use(companyRoutes);
-    app.use(jobRoutes)
-    app.use(associationRoutes)
-    app.use('/admin', associationAdminRoutes)
-    app.use('/admin', companyAdminRoutes)
-    app.use(ubicationRoutes)
-    app.use(companyIndustriesRoutes)
-    app.use(skillsRoutes)
-    app.use('/feed', postRoutes)
-    app.use(followerRoutes)
-    app.use(repostRoutes)
-    app.use(likeRoutes)
-    app.use(contractTypeRoutes)
-    app.use(modalityRoutes)
-}
+  app.use(userRoutes);
+  app.use(authRoutes);
+  app.use(companyRoutes);
+  app.use(jobRoutes);
+  app.use(associationRoutes);
+  app.use("/admin", associationAdminRoutes);
+  app.use("/admin", companyAdminRoutes);
+  app.use(ubicationRoutes);
+  app.use(companyIndustriesRoutes);
+  app.use(skillsRoutes);
+  app.use("/feed", postRoutes);
+  app.use(followerRoutes);
+  app.use(repostRoutes);
+  app.use(likeRoutes);
+  app.use(contractTypeRoutes);
+  app.use(modalityRoutes);
+  app.use(companyUbicationRoutes);
+};

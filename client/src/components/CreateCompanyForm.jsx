@@ -10,7 +10,6 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
   const [companyId, setCompanyId] = useState(null);
   const [formData, setFormData] = useState({
     message: "",
@@ -66,13 +65,10 @@ export const CreateCompanyForm = () => {
         }
       )
       .then((response) => {
-        // setCompanyId(response.data.associationId);
-        console.log(response.data);
+        console.log(response);
         if (response.status === 201) {
           noti(response.data.message, "success");
-          navigate("/crear-sede", {
-            state: { companyId: response.data.associationId },
-          });
+          navigate(`/crear-sede/${response.data.id}`);
         }
       })
       .catch((error) => {

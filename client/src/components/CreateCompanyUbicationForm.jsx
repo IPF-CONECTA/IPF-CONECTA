@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useNoti } from "../hooks/useNoti";
 
 import axios from "axios";
+import { authService } from "../services/authService";
 
 export const CreateCompanyUbicationForm = () => {
-  const location = useLocation();
-  const { companyId } = location.state;
-  console.log(companyId);
+  const { companyId } = useParams();
+
+  const navigate = useNavigate();
+  const noti = useNoti();
 
   const [ubication, setUbication] = useState({
     countries: [],
@@ -16,6 +19,8 @@ export const CreateCompanyUbicationForm = () => {
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     axios.get("http://localhost:4000/find-all-countries").then((response) => {
@@ -51,18 +56,59 @@ export const CreateCompanyUbicationForm = () => {
 
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
+    setSelectedState("");
+    setSelectedCity("");
   };
 
   const handleStateChange = (event) => {
     setSelectedState(event.target.value);
+    setSelectedCity("");
   };
+
+  const handleCityChange = (event) => {
+    setSelectedCity(event.target.value);
+  };
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+  };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    axios
+      .post(
+        "http://localhost:4000/create-company-ubication",
+        {
+          companyId,
+          countryId: selectedCountry,
+          stateId: selectedState,
+          cityId: selectedCity,
+          address: address,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 201) {
+          noti(response.data.message, "success");
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating company ubication:", error);
+        noti("Error al crear la ubicación de la empresa.", "error");
+      });
+  }
 
   return (
     <>
-      <form className="w-50 mx-auto" onSubmit={() => {}}>
+      <form className="w-50 mx-auto" onSubmit={handleSubmit}>
         <span className="material-symbols-outlined d-flex ">apartment</span>
         <h2>
-          Perfecto! Has registrado una empresa al sistema!, pero ahora debes de
+          ¡Perfecto! Has registrado una empresa en el sistema, pero ahora debes
           registrar al menos una sede.
         </h2>
         <span className="material-symbols-outlined ">flag</span>
@@ -86,9 +132,8 @@ export const CreateCompanyUbicationForm = () => {
 
           {ubication.states.length > 0 ? (
             <>
-              <span class="material-symbols-outlined">location_city</span>
+              <span className="material-symbols-outlined">location_city</span>
               <label htmlFor="state">Estado</label>
-              <option value="">Seleccione un estado</option>
               <select
                 className="form-select"
                 id="state"
@@ -96,6 +141,7 @@ export const CreateCompanyUbicationForm = () => {
                 value={selectedState}
                 onChange={handleStateChange}
               >
+                <option value="">Seleccione un estado</option>
                 {ubication.states.map((state) => (
                   <option key={state.id} value={state.id}>
                     {state.name}
@@ -110,7 +156,13 @@ export const CreateCompanyUbicationForm = () => {
         <div className="col-md-6 mb-3">
           <label htmlFor="city">Ciudad</label>
           {ubication.cities.length > 0 ? (
-            <select className="form-select" id="city" required>
+            <select
+              className="form-select"
+              id="city"
+              required
+              value={selectedCity}
+              onChange={handleCityChange}
+            >
               <option value="">Seleccione una ciudad</option>
               {ubication.cities.map((city) => (
                 <option key={city.id} value={city.id}>
@@ -126,6 +178,9 @@ export const CreateCompanyUbicationForm = () => {
           type="text"
           title="Dirección"
           placeholder="Ingrese la dirección de la sede"
+          value={address}
+          onChange={handleAddressChange}
+          required
         />
         <button type="submit" className="btn btn-primary">
           Crear sede
