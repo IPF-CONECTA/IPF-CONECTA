@@ -20,7 +20,7 @@ const PostInfo = () => {
     };
     fetchPost();
     console.log(post);
-  }, []);
+  }, [postId]);
 
   return (
     <>
@@ -35,10 +35,11 @@ const PostInfo = () => {
             </span>
             <span className="fs-4 fw-semibold">Post</span>
           </div>
-          <PostCard post={post} />
+          <Post post={post} />
+
           <form
             action=""
-            className={`w-75 border border-top-0 d-flex align-items-end p-3 ${styles.form}`}
+            className={`w-75 border  d-flex align-items-end p-3 ${styles.form}`}
           >
             <textarea
               name=""

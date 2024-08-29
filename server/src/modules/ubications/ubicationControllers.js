@@ -5,7 +5,8 @@ import {
 } from "./ubicationServices.js";
 
 export const findUbicationCtrl = async (req, res) => {
-  const { query } = req.params;
+  let { query } = req.query;
+  if (!query) query = ''
   try {
     const results = await findUbicationSvc(query);
     if (results.length < 1) throw new Error("No se encontraron coincidencias");

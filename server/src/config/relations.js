@@ -89,6 +89,10 @@ export const createRelations = async () => {
             foreignKey: 'profileId',
             as: 'profile'
         });
+        Post.belongsTo(Post, {
+            as: 'parentPost',
+            foreignKey: 'postId'
+        })
         Post.hasMany(Repost, {
             foreignKey: 'postId',
             as: 'reposts'
@@ -120,6 +124,7 @@ export const createRelations = async () => {
             foreignKey: 'postId',
             as: 'comments'
         })
+
         Attachment.belongsTo(Post, {
             foreignKey: 'postId',
             as: 'post'
