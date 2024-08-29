@@ -1,13 +1,11 @@
-import { Login } from "../pages/Login";
-import { Nav } from "../pages/Nav";
-import { Footer } from "../pages/Footer";
+import { Nav, LoginForm, Footer } from "../components";
 
 export const LoginPage = () => {
-    return (
-        <>
-        <Nav />
-        <Login />
-        <Footer />
-        </>
-    );
-}
+  return (
+    <>
+      <Nav />
+      <LoginForm />
+      <Footer />
+    </>
+  );
+};

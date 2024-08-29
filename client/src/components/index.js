@@ -1,6 +1,6 @@
 export * from "./AdminPanel";
 export * from "./CreateCompanyForm";
-export * from "./CreateHeadqueartersForm";
+export * from "./CreateCompanyUbicationForm";
 export * from "./Footer";
 export * from "./Main";
 export * from "./JobCard";

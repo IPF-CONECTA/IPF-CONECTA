@@ -10,6 +10,7 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
   const [companyId, setCompanyId] = useState(null);
   const [formData, setFormData] = useState({
     message: "",
@@ -28,7 +29,7 @@ export const CreateCompanyForm = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/countries").then((response) => {
+    axios.get("http://localhost:4000/find-all-countries").then((response) => {
       setCountries(response.data);
     });
   }, []);
@@ -65,12 +66,10 @@ export const CreateCompanyForm = () => {
         }
       )
       .then((response) => {
-        setCompanyId(response.data.associationId);
+        // setCompanyId(response.data.associationId);
+        console.log(response.data);
         if (response.status === 201) {
           noti(response.data.message, "success");
-          //setTimeout(() => {
-          //   navigate("/crear-sede");
-          // }, 1500);
           navigate("/crear-sede", {
             state: { companyId: response.data.associationId },
           });

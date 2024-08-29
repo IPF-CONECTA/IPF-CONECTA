@@ -4,7 +4,7 @@ import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import {
   AdminPanelPage,
   CompanyConfirmedPage,
-  CreateHeadquartersPage,
+  CreateCompanyUbicationPage,
   FeedPage,
   HomePage,
   JobSearchPage,
@@ -46,7 +46,7 @@ export const Routers = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
-        <Route path="/crear-sede" element={<CreateHeadquartersPage />} />
+        <Route path="/crear-sede" element={<CreateCompanyUbicationPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/support" element={<SupportPage />} />
       </Routes>
