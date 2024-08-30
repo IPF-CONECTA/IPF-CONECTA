@@ -14,7 +14,7 @@
 }
 
 .noCaret::after {
-  display: none;
+  display: none !important;
 }
 
 .bookmark {

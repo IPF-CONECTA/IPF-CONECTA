@@ -39,6 +39,19 @@ export const getAccounts = async () => {
     }
 }
 
+export const getProfile = async (id) => {
+    try {
+        const res = await axios.get(`http://localhost:4000/get-user-profile/${id}`, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return { data: res.data, status: res.status }
+    } catch (error) {
+        return { status: error.status, error: error.message }
+    }
+}
+
 export const getProfileInfo = async (id) => {
     try {
         const res = await axios.get(`http://localhost:4000/get-user-info/${id}`,

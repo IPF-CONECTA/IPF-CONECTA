@@ -1,0 +1,11 @@
+.mainContainer {
+  width: 65%;
+}
+
+.asideContainer {
+  height: fit-content;
+  width: fit-content;
+  position: fixed;
+  top: 20%;
+  right: 0;
+}

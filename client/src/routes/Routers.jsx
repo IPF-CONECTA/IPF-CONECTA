@@ -33,11 +33,10 @@ export const Routers = () => {
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin" element={<AdminPanelPage />} />
           </Route>
-          <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/inicio" element={<FeedPage />} />
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
-
+        <Route path="/perfil/:profileId" element={<ProfilePage />} />
         <Route path="/panel" element={<PanelPage />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />

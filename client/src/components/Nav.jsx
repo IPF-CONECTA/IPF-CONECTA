@@ -59,7 +59,7 @@ export const Nav = () => {
                 <li>
                   <Link
                     className="dropdown-item w-100 d-flex p-0 justify-content-between"
-                    to={"#"}
+                    to={`/perfil/${authState.user.profile.id}`}
                   >
                     Mi perfil
                     <img
@@ -73,7 +73,7 @@ export const Nav = () => {
                 {authState.role == "admin" && (
                   <li>
                     <Link
-                      to={"#"}
+                      to={"/admin"}
                       className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
                     >
                       Panel
