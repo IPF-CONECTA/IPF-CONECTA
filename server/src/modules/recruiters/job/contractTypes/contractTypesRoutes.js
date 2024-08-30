@@ -4,6 +4,6 @@ import { getContractTypesCtrl } from "./contractTypesControllers.js";
 
 const contractTypeRoutes = Router()
 
-contractTypeRoutes.get('get-contract-types', isToken, getContractTypesCtrl)
+contractTypeRoutes.get('/get-contract-types', isToken, getContractTypesCtrl)
 
 export default contractTypeRoutes

@@ -14,3 +14,4 @@ export * from "./SelectCompanyPage";
 export * from "./PostPage";
 export * from "./ProfilePage";
 export * from "./SupportPage";
+export * from "./CreateJobsFormPage";

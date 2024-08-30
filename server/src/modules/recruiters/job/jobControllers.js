@@ -8,14 +8,11 @@ import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js";
 import jwt from "jsonwebtoken";
 
 export const createNewJobCtrl = async (req, res) => {
-  let token = req.headers.authorization;
-  token = token.split(' ')[1];
-  token = token.replace(/"/g, '');
-  const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+  const { id } = req.user.profile;
   const { jobOffer, skills } = req.body;
 
   try {
-    const newJob = await createNewJobSvc(jobOffer, userId);
+    const newJob = await createNewJobSvc(jobOffer, id);
     const jobId = newJob.id;
     for (let i = 0; i < skills.length; i++) {
       await addJobSkillSvc(jobId, skills[i]);
