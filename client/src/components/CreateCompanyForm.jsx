@@ -112,7 +112,6 @@ export const CreateCompanyForm = () => {
         />
       </div>
 
-<<<<<<< HEAD
       <div className="mb-3">
         <input
           type="text"
@@ -186,25 +185,6 @@ export const CreateCompanyForm = () => {
           Enviar
         </button>
       </div>
-=======
-      <input
-        type="number"
-        name="cantEmployees"
-        placeholder="Número de empleados"
-        value={formData.cantEmployees}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="message"
-        placeholder="Mensaje"
-        value={formData.message}
-        onChange={handleInputChange}
-        required/>
-      <input type="file" value={formData.logoUrl} name="logoUrl" />
-      <button type="submit">Enviar</button>
->>>>>>> 7de463a21a568f2d62c1aaabc98a27002afd954e
     </form>
   );
 };
