@@ -49,15 +49,17 @@ export const createUserController = async (req, res) => {
 }
 
 export const getRecomendedUsersController = async (req, res) => {
-    const { id } = req.user
+    const { id } = req.user.profile
     try {
-        const user = await getUserById(id)
-        const users = await getRecomendedUsersSvc(user.profile.id);
+        const users = await getRecomendedUsersSvc(id);
         if (users.length == 0) {
             return res.status(404).json({ message: 'No se encontraron usuarios' })
         }
         res.status(200).json(users);
     } catch (error) {
+        console.log('===========================================================================================')
+        console.log(error)
+        console.log('===========================================================================================')
         res.status(500).json({ message: error.message });
     }
 }

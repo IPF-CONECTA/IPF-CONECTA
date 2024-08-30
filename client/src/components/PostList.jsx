@@ -27,6 +27,8 @@ const PostList = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (content.length == 0 || content.length > 200) return;
+
     const status = await postSvc(content);
     if (status !== 201) {
       return noti("Hubo un error al publicar el post", "error");

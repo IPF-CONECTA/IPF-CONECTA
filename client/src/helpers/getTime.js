@@ -1,5 +1,7 @@
 import moment from 'moment';
 import 'moment/locale/es';
+import { DateTime, Settings } from "luxon";
+Settings.defaultLocale = 'es';
 
 moment.updateLocale('es', {
     relativeTime: {
@@ -21,4 +23,8 @@ moment.updateLocale('es', {
 
 export const getTime = (date) => {
     return moment(date).fromNow();
+}
+export const getDate = (dt) => {
+    let date = DateTime.fromISO(dt);
+    return date.toFormat('dd LLL yyyy, HH:mm')
 }

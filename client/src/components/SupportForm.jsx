@@ -53,9 +53,6 @@ export const SupportForm = () => {
           <h2 className="support-header">Soporte de Usuarios - IPF-Conecta</h2>
           <p>
             Si tienes algún problema o necesitas asistencia, por favor llena el
-            <span className="material-symbols-outlined">
-              arrow_forward
-            </span>{" "}
             formulario y nuestro equipo de soporte se pondrá en contacto contigo
             lo antes posible.
           </p>

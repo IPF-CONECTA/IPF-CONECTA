@@ -312,9 +312,9 @@ const PostCard = ({ post }) => {
             </div>
             <hr className="hr" />{" "}
             <div className="d-flex ">
-              {authState.user && authState.user.profilePic ? (
+              {authState.user && authState.user.profile.profilePic ? (
                 <img
-                  src={authState.user.profilePic}
+                  src={authState.user.profile.profilePic}
                   alt="your profile picture"
                   width={40}
                   height={40}

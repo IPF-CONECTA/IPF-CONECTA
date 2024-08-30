@@ -15,7 +15,7 @@ export const ProfileHover = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={profileInfoRef}
-      className={`position-absolute border rounded p-3 bg-white d-flex flex-column align-items-center m-3 ${styles.profileInfo}`}
+      className={`position-absolute border rounded p-2 bg-white d-flex flex-column align-items-center m-3 ${styles.profileInfo}`}
     >
       <div className="d-flex justify-content-between align-items-center w-100">
         <img
@@ -28,7 +28,7 @@ export const ProfileHover = ({
         <div className="d-flex flex-column w-50">
           {profileInfo.isFollowing === false ? (
             <button
-              className="btn btn-info text-light w-100 fw-bold"
+              className={`btn btn-info text-light p-0 py-1 ${styles.smallText} w-100 fw-bold`}
               onClick={() => {
                 handleFollowOrUnfollow(profileInfo.profile.id);
               }}
@@ -37,7 +37,7 @@ export const ProfileHover = ({
             </button>
           ) : (
             <button
-              className="btn btn-outline-info text-muted w-100 fw-bold"
+              className={`btn btn-outline-info text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
               onClick={() => {
                 handleFollowOrUnfollow(profileInfo.profile.id);
               }}
@@ -54,7 +54,9 @@ export const ProfileHover = ({
         {profileInfo.profile.title && (
           <span className="text-muted fs-6">{profileInfo.title}</span>
         )}
-        <span className="text-muted">{profileInfo.profile.user.email}</span>
+        <span className={`text-muted ${styles.smallText}`}>
+          {profileInfo.profile.user.email}
+        </span>
         <div className="d-flex">
           <div className="pe-3">
             <span className="fw-bold">{profileInfo.cantFollowers}</span>

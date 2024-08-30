@@ -41,12 +41,12 @@ export const Routers = () => {
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
-        <Route path="/support" element={<SupportPage />} />
+        <Route path="/contacto" element={<SupportPage />} />
       </Routes>
     </BrowserRouter>
   );

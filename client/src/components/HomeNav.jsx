@@ -17,12 +17,12 @@ const HomeNav = () => {
           <Link
             className={
               selectedPage === "inicio"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
             to="/inicio"
           >
-            <span className="material-symbols-outlined fs-1 pe-3">home</span>
+            <span className="material-symbols-outlined fs-2 pe-3">home</span>
             <span>Inicio</span>
           </Link>
         </div>
@@ -36,12 +36,12 @@ const HomeNav = () => {
             to="/perfil"
             className={
               selectedPage === "perfil"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">person</span>{" "}
-            <span className="fs-4 fw-bold">Perfil</span>
+            <span className="material-symbols-outlined fs-2 pe-3">person</span>{" "}
+            <span className="fs-5 fw-bold">Perfil</span>
           </Link>
         </div>
         <div
@@ -54,12 +54,12 @@ const HomeNav = () => {
             to="/comunidad"
             className={
               selectedPage === "comunidad"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">groups</span>{" "}
-            <span className="fs-4 fw-bold">Comunidad</span>
+            <span className="material-symbols-outlined fs-2 pe-3">groups</span>{" "}
+            <span className="fs-5 fw-bold">Comunidad</span>
           </Link>
         </div>
         <div
@@ -72,12 +72,12 @@ const HomeNav = () => {
             to="/buscar-empleo"
             className={
               selectedPage === "empleo"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">work</span>{" "}
-            <span className="fs-4 fw-bold">Empleos</span>
+            <span className="material-symbols-outlined fs-2 pe-3">work</span>{" "}
+            <span className="fs-5 fw-bold">Empleos</span>
           </Link>
         </div>
         <div
@@ -90,12 +90,12 @@ const HomeNav = () => {
             to="/mensajes"
             className={
               selectedPage === "mensajes"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">chat</span>{" "}
-            <span className="fs-4 fw-bold">Mensajes</span>
+            <span className="material-symbols-outlined fs-2 pe-3">chat</span>{" "}
+            <span className="fs-5 fw-bold">Mensajes</span>
           </Link>
         </div>
         <div
@@ -108,14 +108,14 @@ const HomeNav = () => {
             to="/soporte"
             className={
               selectedPage === "soporte"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">
+            <span className="material-symbols-outlined fs-2 pe-3">
               support_agent
             </span>{" "}
-            <span className="fs-4 fw-bold">Soporte</span>
+            <span className="fs-5 fw-bold">Soporte</span>
           </Link>
         </div>
         <div
@@ -127,14 +127,14 @@ const HomeNav = () => {
           <Link
             className={
               selectedPage === "ajustes"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">
+            <span className="material-symbols-outlined fs-2 pe-3">
               settings
             </span>{" "}
-            <span className="fs-4 fw-bold">Ajustes</span>
+            <span className="fs-5 fw-bold">Ajustes</span>
           </Link>
         </div>
         <div
@@ -147,14 +147,14 @@ const HomeNav = () => {
             to="/guardados"
             className={
               selectedPage === "guardados"
-                ? `fs-4 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-4 fw-bold text-muted text-decoration-none d-flex align-items-center`
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
             }
           >
-            <span className="material-symbols-outlined fs-1 pe-3">
+            <span className="material-symbols-outlined fs-2 pe-3">
               bookmark
             </span>{" "}
-            <span className="fs-4 fw-bold">Guardados</span>
+            <span className="fs-5 fw-bold">Guardados</span>
           </Link>
         </div>
         <div className={`${styles.button}`}>
@@ -162,7 +162,7 @@ const HomeNav = () => {
             className="text-muted text-decoration-none d-flex align-items-center"
             to={"/"}
           >
-            <span className="fs-1 pe-3">
+            <span className="fs-2 pe-3">
               <img
                 src="/iconoipf.png"
                 className="pe-3"
@@ -170,7 +170,7 @@ const HomeNav = () => {
                 height={50}
                 alt="IPFC logo"
               />
-              <span className="fs-4 fw-bold">Volver</span>
+              <span className="fs-5 fw-bold">Volver</span>
             </span>
           </Link>
         </div>

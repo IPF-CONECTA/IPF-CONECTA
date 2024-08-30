@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getProfileInfo, like, repostSvc } from "../services/feedServices";
 import styles from "../../public/css/postById.module.css";
-import { getTime } from "../helpers/getTime";
+import { getDate, getTime } from "../helpers/getTime";
 import { ProfileHover } from "./ProfileHover";
+import { Link } from "react-router-dom";
 
-const Post = ({ post }) => {
+const Post = ({ post, setWrite }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
@@ -122,10 +123,48 @@ const Post = ({ post }) => {
                         </span>
                       )}
                     </div>
-
-                    <span className={`text-muted ${styles.smallText}`}>
-                      {getTime(post.createdAt)}
-                    </span>
+                    <div className="nav-item dropdown">
+                      <Link
+                        className={`nav-link dropdown-toggle ${styles.noArrow}`}
+                        to="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <button className="btn p-0 me-1">
+                          <span className="material-symbols-outlined">
+                            more_vert
+                          </span>
+                        </button>
+                      </Link>
+                      <ul className="dropdown-menu dropdown-menu-end p-0 p-2">
+                        <li>
+                          <Link
+                            className="dropdown-item d-flex p-0 justify-content-between"
+                            to="#"
+                          >
+                            Reportar
+                            <span className="material-symbols-outlined text-danger fw-bold  ms-1">
+                              report
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <hr className="m-1" />
+                        </li>
+                        <li>
+                          <Link
+                            classNname="dropdown-item d-flex p-0 justify-content-between"
+                            to="#"
+                          >
+                            Bloquear a {post.profile.names}
+                            <span classNname="material-symbols-outlined text-danger fw-bold ms-1">
+                              block
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -146,6 +185,9 @@ const Post = ({ post }) => {
                 ) : (
                   <video src={post.attatchment.url} />
                 ))}
+              <span className={`text-muted ${styles.smallText}`}>
+                {getDate(post.createdAt)}
+              </span>
             </div>
             <footer className="">
               <div className="d-flex align-items-center">
@@ -193,7 +235,7 @@ const Post = ({ post }) => {
                 <button
                   className="btn p-0 d-flex align-items-center"
                   onClick={() => {
-                    setShowAnswerModal(true);
+                    setWrite(true);
                   }}
                 >
                   <span
