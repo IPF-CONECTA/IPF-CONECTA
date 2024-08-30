@@ -4,8 +4,6 @@ import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styles from "../../public/css/CreateJobsForm.module.css";
-import Select from "react-select";
-import styles from "../../public/css/CreateJobsForm.module.css";
 
 export const CreateJobsForm = () => {
   const navigate = useNavigate();
@@ -30,8 +28,6 @@ export const CreateJobsForm = () => {
   useEffect(() => {
     axios
       .get("http://localhost:4000/get-companies")
-    axios
-      .get("http://localhost:4000/get-companies")
       .then((response) => {
         setCompanies(response.data);
       })
@@ -41,8 +37,6 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/get-modalities", {
     axios
       .get("http://localhost:4000/get-modalities", {
         headers: {
@@ -59,8 +53,6 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/get-contract-types", {
     axios
       .get("http://localhost:4000/get-contract-types", {
         headers: {
@@ -84,12 +76,9 @@ export const CreateJobsForm = () => {
 
     axios
       .get("http://localhost:4000/find-skills", {
-    axios
-      .get("http://localhost:4000/find-skills", {
         params: {
           query: search,
         },
-      })
       })
       .then((response) => {
         setSkills(response.data);
@@ -116,7 +105,6 @@ export const CreateJobsForm = () => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       skills: selectedOptions.map((option) => option.value),
-      skills: selectedOptions.map((option) => option.value),
     }));
   }
 
@@ -128,8 +116,6 @@ export const CreateJobsForm = () => {
       return;
     }
 
-    axios
-      .post(
     axios
       .post(
         "http://localhost:4000/create-job",
@@ -184,18 +170,16 @@ export const CreateJobsForm = () => {
               onChange={handleInputChange}
             />
           </div>
-
-          <div>
-            <label className={styles.formLabel}>Link de aplicación</label>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Salario</label>
             <input
               type="text"
-              name="applicationLink"
+              name="salary"
               className={styles.formControl}
-              value={formData.applicationLink}
+              value={formData.salary}
               onChange={handleInputChange}
             />
           </div>
-
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Empresa</label>
             <select
