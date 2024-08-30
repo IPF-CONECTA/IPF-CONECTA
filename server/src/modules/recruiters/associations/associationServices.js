@@ -37,10 +37,10 @@ export const getApprovedAssociationsByUser = async (profileId) => {
         const associations = await Association.findAll({
             where: {
                 userId: profileId,
-                status: 'Aprobada'
             },
             include: [{
                 model: Company,
+                as: 'company',
                 include: [{
                     model: Country,
                 }, {

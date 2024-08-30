@@ -9,6 +9,7 @@ import { Role } from "../roles/roleModel.js";
 import { sequelize } from "../../config/db.js";
 import { Profile } from "../profile/profileModel.js";
 import { getUserById } from "../users/userServices.js";
+import { getApprovedAssociationsByUser } from "../recruiters/associations/associationServices.js";
 
 export const authSignUpSvc = async (user) => {
   const t = await sequelize.transaction();
@@ -80,7 +81,15 @@ export const authLogInSvc = async (user) => {
 
     const existingUser = await getUserById(isUser.id)
 
-    return { token, existingUser, isVerified }
+
+
+    const response = { token, existingUser, isVerified };
+
+    if (existingUser.role.name === 'recruiter') {
+      response.associations = await getApprovedAssociationsByUser(existingUser.profile.id);
+    }
+
+    return response;
 
   } catch (error) {
     console.log('error aca')
