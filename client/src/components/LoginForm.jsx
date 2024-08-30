@@ -24,9 +24,20 @@ export const LoginForm = () => {
   }, [authState.isLogged, navigate]);
 
   async function onSubmit(data) {
-    const role = await login(data);
-    if (role && role == "recruiter") {
-      navigate("/seleccionar-compañia");
+    const response = await login(data);
+    if (response && response.role == "recruiter") {
+      if (response.associations.length == 0) {
+        navigate("/registro-de-compañia");
+      } else {
+        const isApproved = response.associations.some(
+          (association) => association.status == "Aprobada"
+        );
+        if (isApproved) {
+          navigate("/inicio");
+        } else {
+          navigate("/reclutador-en-espera");
+        }
+      }
     }
   }
 

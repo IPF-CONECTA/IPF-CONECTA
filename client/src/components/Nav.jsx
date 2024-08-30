@@ -6,6 +6,7 @@ import { authContext } from "../context/auth/Context";
 import styles from "../../public/css/nav.module.css";
 export const Nav = () => {
   const { authState, logout } = useContext(authContext);
+  //console.log(authState);
   const navigate = useNavigate();
   const handleLogout = async () => {
     await logout();
@@ -54,6 +55,9 @@ export const Nav = () => {
                 <span className="material-symbols-outlined fs-2 fw-light text-muted">
                   account_circle
                 </span>
+                <p className="navbar-brand d-flex align-items-center">
+                  {authState.user.profile.names}, {authState.role.toUpperCase()}
+                </p>
               </Link>
               <ul className="dropdown-menu dropdown-menu-end p-0 p-2">
                 <li>
