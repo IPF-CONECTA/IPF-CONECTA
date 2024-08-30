@@ -47,7 +47,7 @@ export const Routers = () => {
         <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
         <Route
-          path="/crear-sede/:id"
+          path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />

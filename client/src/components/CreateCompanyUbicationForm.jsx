@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useNoti } from "../hooks/useNoti";
-
 import axios from "axios";
+
+import { useNoti } from "../hooks/useNoti";
 import { authService } from "../services/authService";
 
-export const CreateCompanyUbicationForm = () => {
-  const { companyId } = useParams();
-
+export const CreateCompanyUbicationForm = ({ companyId }) => {
   const navigate = useNavigate();
   const noti = useNoti();
 
@@ -80,11 +78,13 @@ export const CreateCompanyUbicationForm = () => {
       .post(
         "http://localhost:4000/create-company-ubication",
         {
-          companyId,
-          countryId: selectedCountry,
-          stateId: selectedState,
-          cityId: selectedCity,
-          address: address,
+          companyUbication: {
+            companyId: companyId,
+            countryId: selectedCountry,
+            stateId: selectedState,
+            cityId: selectedCity,
+            address: address,
+          },
         },
         {
           headers: {
