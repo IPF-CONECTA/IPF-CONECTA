@@ -61,7 +61,7 @@ export const Nav = () => {
                     className="dropdown-item w-100 d-flex p-0 justify-content-between"
                     to={"#"}
                   >
-                    Mi cuenta
+                    Mi perfil
                     <img
                       height={25}
                       width={25}

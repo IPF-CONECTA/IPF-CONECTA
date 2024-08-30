@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { createAssociation } from "./associationServices.js";
+import { createAssociation, getApprovedAssociationsByUser } from "./associationServices.js";
 
 export const associateCompanyCtrl = async (req, res) => {
   try {
@@ -18,3 +18,16 @@ export const associateCompanyCtrl = async (req, res) => {
     res.status(500).json();
   }
 };
+
+export const getApprovedAssociationsByUserCtrl = async (req, res) => {
+  const { id } = req.user.profile;
+  try {
+    const associations = await getApprovedAssociationsByUser(id)
+
+    if (associations.length == 0) return res.status(404).json()
+
+    res.status(200).json(associations)
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+}

@@ -24,7 +24,7 @@ import { WorkExperience } from "../modules/users/workExperiences/experiencesMode
 import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkillModel.js";
 import { Attachment } from "../modules/posts/postAttachment/attachmentModel.js";
 import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
-import { CompanyUbication } from "../modules/recruiters/companies/companyIndustry/companyUbications/companyUbication.model.js";
+import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { Profile } from "../modules/profile/profileModel.js";
 

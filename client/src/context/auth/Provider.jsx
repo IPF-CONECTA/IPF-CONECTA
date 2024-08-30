@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       },
     });
     noti(res.data.message, "success");
-    return res.data.response.role;
+    return res.data.response.existingUser.role.name;
   };
 
   const logout = () => {

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
-import Select from 'react-select';
-import styles from '../../public/css/CreateJobsForm.module.css';
+import Select from "react-select";
+import styles from "../../public/css/CreateJobsForm.module.css";
 
 export const CreateJobsForm = () => {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ export const CreateJobsForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    salary: "",
     companyId: "",
     modalityId: "",
     contractTypeId: "",
@@ -26,7 +25,8 @@ export const CreateJobsForm = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:4000/get-companies")
+    axios
+      .get("http://localhost:4000/get-companies")
       .then((response) => {
         setCompanies(response.data);
       })
@@ -37,7 +37,8 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/get-modalities", {
+    axios
+      .get("http://localhost:4000/get-modalities", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -52,7 +53,8 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/get-contract-types", {
+    axios
+      .get("http://localhost:4000/get-contract-types", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -72,11 +74,12 @@ export const CreateJobsForm = () => {
       return;
     }
 
-    axios.get("http://localhost:4000/find-skills", {
+    axios
+      .get("http://localhost:4000/find-skills", {
         params: {
           query: search,
         },
-    })
+      })
       .then((response) => {
         setSkills(response.data);
       })
@@ -102,7 +105,7 @@ export const CreateJobsForm = () => {
     setSelectedSkills(selectedOptions);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      skills: selectedOptions.map(option => option.value),
+      skills: selectedOptions.map((option) => option.value),
     }));
   }
 
@@ -114,7 +117,8 @@ export const CreateJobsForm = () => {
       return;
     }
 
-    axios.post(
+    axios
+      .post(
         "http://localhost:4000/create-job",
         {
           jobOffer: {
@@ -143,7 +147,7 @@ export const CreateJobsForm = () => {
       });
   }
 
-  const skillOptions = skills.map(skill => ({
+  const skillOptions = skills.map((skill) => ({
     value: skill.id,
     label: skill.name,
   }));
@@ -177,16 +181,7 @@ export const CreateJobsForm = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Salario</label>
-            <input
-              type="text"
-              name="salary"
-              className={styles.formControl}
-              value={formData.salary}
-              onChange={handleInputChange}
-            />
-          </div>
+
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Empresa</label>
             <select
@@ -242,13 +237,15 @@ export const CreateJobsForm = () => {
               options={skillOptions}
               value={selectedSkills}
               onChange={handleSkillChange}
-              placeholder="Busca y Selecciona tus habilidades"
+              placeholder="Busca y selecciona las habilidades necesarias"
               noOptionsMessage={() => "No hay habilidades disponibles"}
               onInputChange={handleSearchChange}
               filterOption={customFilter}
             />
           </div>
-          <button type="submit" className={styles.submitButton}>Crear oferta</button>
+          <button type="submit" className={styles.submitButton}>
+            Crear oferta
+          </button>
         </form>
       </div>
     </div>

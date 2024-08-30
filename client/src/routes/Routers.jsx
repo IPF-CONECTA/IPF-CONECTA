@@ -53,7 +53,7 @@ export const Routers = () => {
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
-        <Route path="/create-job" element={<CreateJobsFormPage />} />
+        <Route path="/nuevo-empleo" element={<CreateJobsFormPage />} />
       </Routes>
     </BrowserRouter>
   );
