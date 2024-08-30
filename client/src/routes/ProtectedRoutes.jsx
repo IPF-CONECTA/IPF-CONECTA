@@ -5,7 +5,7 @@ import { VALID_ROLES } from "../constants/roles";
 
 export const ProtectedRoutes = () => {
   const { authState } = useContext(authContext);
-  return authState.isLogged ? <Outlet /> : <Navigate to="/login" />;
+  return authState.isLogged ? <Outlet /> : <Navigate to="/iniciar-sesion" />;
 };
 
 export const AdminRoutes = () => {
@@ -13,6 +13,6 @@ export const AdminRoutes = () => {
   return authState.role === VALID_ROLES.admin ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/iniciar-sesion" />
   );
 };

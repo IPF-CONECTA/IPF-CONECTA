@@ -1,7 +1,7 @@
 .container {
   height: fit-content;
+  width: fit-content;
   position: fixed;
-  top: 10%;
-  right: 0;
-  margin-right: 20px;
+  top: 20%;
+  right: 5%;
 }

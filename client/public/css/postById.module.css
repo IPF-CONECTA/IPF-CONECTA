@@ -29,3 +29,6 @@
   height: min-content;
   font-size: 13px;
 }
+.noArrow::after {
+  display: none;
+}

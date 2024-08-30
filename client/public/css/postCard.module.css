@@ -19,7 +19,7 @@
   color: #0dcaf0;
 }
 .filledIcon {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
 .numberContainer {

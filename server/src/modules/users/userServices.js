@@ -6,6 +6,7 @@ import { Follower } from '../followers/followerModel.js';
 import { Op } from 'sequelize';
 import { Profile } from '../profile/profileModel.js';
 import { sequelize } from '../../config/db.js';
+import { Role } from '../roles/roleModel.js';
 
 export const getUsers = async () => {
     const users = await User.findAll()
@@ -13,48 +14,62 @@ export const getUsers = async () => {
 }
 
 export const getRecomendedUsersSvc = async (profileId) => {
-    const following = await Follower.findAll({
-        where: {
-            followerId: profileId
-        },
-        attributes: ['followingId']
-    })
-    const followedUserIds = following.map(follower => follower.followingId);
+    try {
 
-    const users = await User.findAll({
-        where: {
-            [Op.or]: [
-                { roleId: BASIC_ROLES.recruiter },
-                { roleId: BASIC_ROLES.student },
-            ],
-            id: {
-                [Op.ne]: profileId,
-            }
-        },
-        attributes: ['id'],
-        limit: 5,
-        include: {
-            model: Profile,
-            attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+        const following = await Follower.findAll({
             where: {
+                followerId: profileId
+            },
+            attributes: ['followingId']
+        })
+        const followedUserIds = following.map(follower => follower.followingId);
+
+        const users = await User.findAll({
+            where: {
+                [Op.or]: [
+                    { roleId: BASIC_ROLES.recruiter },
+                    { roleId: BASIC_ROLES.student },
+                ],
                 id: {
-                    [Op.notIn]: [...followedUserIds, profileId],
+                    [Op.ne]: profileId,
+                }
+            },
+            attributes: ['id', 'email'],
+            limit: 5,
+            include: {
+                model: Profile,
+                attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+                where: {
+                    id: {
+                        [Op.notIn]: [...followedUserIds, profileId],
+                    }
                 }
             }
-        }
-    });
+        });
 
-    return users;
+        return users;
+    } catch (error) {
+        throw error
+    }
 }
 
 export const getUserById = async (id) => {
-    const user = await User.findByPk(id, {
-        include: {
-            model: Profile,
-            attributes: ['id', 'names', 'surnames', 'profilePic', 'title']
-        }
-    })
-    return user
+    try {
+        const user = await User.findByPk(id, {
+            attributes: ['email'],
+            include: [{
+                model: Profile,
+                attributes: ['id', 'names', 'surnames', 'profilePic', 'title']
+            }, {
+                model: Role,
+                attributes: ['name']
+            }]
+        })
+        return user
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
 }
 
 export const getUserInfoSvc = async (id, followingId) => {

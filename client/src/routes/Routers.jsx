@@ -4,6 +4,7 @@ import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import {
   AdminPanelPage,
   CompanyConfirmedPage,
+  CreateCompanyUbicationPage,
   FeedPage,
   HomePage,
   JobSearchPage,
@@ -14,10 +15,10 @@ import {
   RegisterPage,
   CreateCompanyPage,
   SupportPage,
+  PostPage,
   ProfilePage,
-  CreateJobsFormPage
+  CreateJobsFormPage,
 } from "../pages";
-import { PostPage } from "../pages/PostPage";
 
 export const Routers = () => {
   return (
@@ -42,13 +43,17 @@ export const Routers = () => {
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
+        <Route
+          path="/crear-sede/:companyId"
+          element={<CreateCompanyUbicationPage />}
+        />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
-        <Route path="/support" element={<SupportPage />} />
-        <Route path="/create-job" element={<CreateJobsFormPage />} />
+        <Route path="/contacto" element={<SupportPage />} />
+        <Route path="/nuevo-empleo" element={<CreateJobsFormPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -17,12 +17,10 @@ const RecomendedAccounts = () => {
     fetchAccounts();
   }, []);
   return (
-    <aside
-      className={`w-25 border rounded py-5 ${styles.container} position-fixed`}
-    >
+    <aside className={` ${styles.container} position-fixed border rounded p-2`}>
       <div className=" d-flex flex-column">
         <header className="d-flex justify-content-center">
-          <span className="fs-3 fw-bold pb-2">Cuentas recomendadas</span>
+          <span className="fs-5 fw-semibold pb-2">Cuentas recomendadas</span>
         </header>
         <div className="d-flex flex-column align-items-center">
           {error.statusCode !== null ? (
