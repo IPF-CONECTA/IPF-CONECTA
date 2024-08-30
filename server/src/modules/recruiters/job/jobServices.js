@@ -21,7 +21,7 @@ export const createNewJobSvc = async (jobOffer, userId) => {
             modalityId: jobOffer.modalityId,
             description: jobOffer.description,
             contractTypeId: jobOffer.contractTypeId,
-            aplicationLink: jobOffer.aplicationLink,
+            applicationLink: jobOffer.applicationLink,
         }, { returning: true })
         if (!newJob) throw new Error('Hubo un error al publicar el trabajo')
         return newJob

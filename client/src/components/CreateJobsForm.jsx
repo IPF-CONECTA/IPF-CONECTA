@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
-import Select from 'react-select';
-import styles from '../../public/css/CreateJobsForm.module.css';
+import Select from "react-select";
+import styles from "../../public/css/CreateJobsForm.module.css";
 
 export const CreateJobsForm = () => {
   const navigate = useNavigate();
@@ -18,26 +18,27 @@ export const CreateJobsForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    salary: "",
     companyId: "",
     modalityId: "",
     contractTypeId: "",
     skills: [],
+    applicationLink: "",
   });
 
   useEffect(() => {
-    axios.get("http://localhost:4000/get-companies")
+    axios
+      .get("http://localhost:4000/get-companies")
       .then((response) => {
         setCompanies(response.data);
       })
       .catch((error) => {
         console.error("Error fetching companies:", error);
-        noti("Error fetching companies", "danger");
       });
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/get-modalities", {
+    axios
+      .get("http://localhost:4000/get-modalities", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -52,7 +53,8 @@ export const CreateJobsForm = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/get-contract-types", {
+    axios
+      .get("http://localhost:4000/get-contract-types", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -72,17 +74,17 @@ export const CreateJobsForm = () => {
       return;
     }
 
-    axios.get("http://localhost:4000/find-skills", {
+    axios
+      .get("http://localhost:4000/find-skills", {
         params: {
           query: search,
         },
-    })
+      })
       .then((response) => {
         setSkills(response.data);
       })
       .catch((error) => {
         console.error("Error fetching skills:", error);
-        noti("Error fetching skills", "danger");
       });
   }, [search]);
 
@@ -102,7 +104,7 @@ export const CreateJobsForm = () => {
     setSelectedSkills(selectedOptions);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      skills: selectedOptions.map(option => option.value),
+      skills: selectedOptions.map((option) => option.value),
     }));
   }
 
@@ -114,19 +116,10 @@ export const CreateJobsForm = () => {
       return;
     }
 
-    axios.post(
+    axios
+      .post(
         "http://localhost:4000/create-job",
-        {
-          jobOffer: {
-            title: formData.title,
-            description: formData.description,
-            salary: formData.salary,
-            companyId: formData.companyId,
-            modalityId: formData.modalityId,
-            contractTypeId: formData.contractTypeId,
-            skills: formData.skills,
-          },
-        },
+        { jobOffer: { ...formData }, skills: formData.skills },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -135,7 +128,7 @@ export const CreateJobsForm = () => {
       )
       .then(() => {
         noti("Job created successfully", "success");
-        navigate("/jobs");
+        navigate("/");
       })
       .catch((error) => {
         console.log("Error:", error.response.data);
@@ -143,7 +136,7 @@ export const CreateJobsForm = () => {
       });
   }
 
-  const skillOptions = skills.map(skill => ({
+  const skillOptions = skills.map((skill) => ({
     value: skill.id,
     label: skill.name,
   }));
@@ -177,16 +170,18 @@ export const CreateJobsForm = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Salario</label>
+
+          <div>
+            <label className={styles.formLabel}>Link de aplicación</label>
             <input
               type="text"
-              name="salary"
+              name="applicationLink"
               className={styles.formControl}
-              value={formData.salary}
+              value={formData.applicationLink}
               onChange={handleInputChange}
             />
           </div>
+
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Empresa</label>
             <select
@@ -248,7 +243,9 @@ export const CreateJobsForm = () => {
               filterOption={customFilter}
             />
           </div>
-          <button type="submit" className={styles.submitButton}>Crear oferta</button>
+          <button type="submit" className={styles.submitButton}>
+            Crear oferta
+          </button>
         </form>
       </div>
     </div>
