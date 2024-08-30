@@ -46,4 +46,3 @@ export const Company = sequelize.define('company', {
 }, {
     timestamps: true
 });
-

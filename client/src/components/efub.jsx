@@ -47,39 +47,40 @@ export const CreateCompanyForm = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("company[name]", formData.name);
-    formDataToSend.append("company[description]", formData.description);
-    formDataToSend.append("company[industryId]", formData.industryId);
-    formDataToSend.append("company[countryOriginId]", formData.countryOriginId);
-    formDataToSend.append("company[cantEmployees]", formData.cantEmployees);
-    formDataToSend.append("message", formData.message);
-    if (logo) {
-        formDataToSend.append("logoUrl", logo);
-    }
+    // Crear un objeto FormData
+    const data = new FormData();
+    data.append("message", formData.message);
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("industryId", formData.industryId);
+    data.append("countryOriginId", formData.countryOriginId);
+    data.append("cantEmployees", formData.cantEmployees);
+    data.append("logoUrl", logo); // Agrega el archivo del logo
 
-    axios.post(
-        "http://localhost:4000/create-company",
-        formDataToSend,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                authorization: `Bearer ${authService.getToken()}`
-            }
-        }
-    )
-    .then(response => {
+    axios
+      .post("http://localhost:4000/create-company", data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${authService.getToken()}`,
+        },
+      })
+      .then((response) => {
         if (response.status === 201) {
-            noti(response.data.message, "success");
-            setTimeout(() => {
-                navigate("/company-confirmed");
-            }, 1500);
+          noti(response.data.message, "success");
+          setTimeout(() => {
+            navigate("/company-confirmed");
+          }, 1500);
         }
-    })
-    .catch(error => {
-        console.error("Error creating company:", error.response.data);
-        noti(error.response.data.message || "Error al crear la empresa", "error");
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+        let errorMsg = error.response.data.message;
+        if (!errorMsg) {
+          errorMsg = error.response.data.errors[0].msg;
+        }
+        noti(errorMsg, "error");
+        console.error("Error creating company:", error);
+      });
   }
 
   return (

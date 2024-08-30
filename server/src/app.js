@@ -10,7 +10,7 @@ import { createTablesAndRelations } from "./config/sync.js";
 import router from "./modules/users/userRoutes.js";
 import { routes } from "./export.routes.js";
 
-
+import path from "path";
 
 app.use(cors());
 app.use(express.json());
@@ -21,8 +21,8 @@ app.use(
 );
 app.use(morgan("combined"));
 
-// Exponer la carpeta `uploads` de forma pública
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 
 

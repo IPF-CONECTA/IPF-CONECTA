@@ -6,9 +6,8 @@ import { findCompaniesSvc, getApprovedCompaniesSvc } from "./companyServices.js"
 import { getCompanyByIdSvc } from "../../administration/admin/companies/companyServices.js";
 import { validate as isValidUUID } from 'uuid';
 import { Profile } from "../../profile/profileModel.js";
-
-import { Company } from './companyModel.js';
-import { upload } from "../../../multerConfig.js";
+import upload from "../../../config/multerConfig.js";
+import { Company } from "./companyModel.js";
 export const sendContactCompanyCtrl = async (req, res) => {
     const { from, name, subject, message } = req.body;
     try {
@@ -18,8 +17,6 @@ export const sendContactCompanyCtrl = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
-
-
 
 export const getApprovedCompaniesCtrl = async (req, res) => {
     try {
@@ -32,22 +29,31 @@ export const getApprovedCompaniesCtrl = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+// companyControllers.js
+
 export const associateNewCompanyCtrl = async (req, res) => {
     try {
-        const {id} = req.user.profile
-        const { company, message } = req.body
-        const { names } = await Profile.findByPk(id, { attributes: ['names'] })
-        if (!names) throw new Error('Usuario no encontrado')
-        const association = await associateNewCompanySvc(message, id, company)
-        if (!association) throw new Error('Error al asociar la empresa')
-        res.status(201).json({ message: 'Empresa asociada correctamente' })
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Error al crear la empresa" });
-    }
-  };
-  
+        const { id } = req.user.profile;
+        const { company, message } = req.body;
+        const { names } = await Profile.findByPk(id, { attributes: ['names'] });
+        if (!names) throw new Error('Usuario no encontrado');
 
+        // Validar que todos los campos requeridos estén presentes
+        if (!company || !company.name || !company.industryId || !company.description || !company.cantEmployees || !company.countryOriginId) {
+            return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+
+        // Añadir el logoUrl al objeto company
+        const logoUrl = req.file ? req.file.filename : null;
+        const association = await associateNewCompanySvc(message, id, { ...company, logoUrl });
+        if (!association) throw new Error('Error al asociar la empresa');
+        res.status(201).json({ message: 'Empresa asociada correctamente' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+  
 export const findCompanyCtrl = async (req, res) => {
     let { company } = req.query
     if (!company) company = ''
