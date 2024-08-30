@@ -93,12 +93,13 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
         }
       )
       .then((response) => {
+        console.log(response.data.message);
         if (response.status === 201) {
           noti(response.data.message, "success");
         }
       })
       .catch((error) => {
-        console.error("Error creating company ubication:", error);
+        console.log(error);
         noti("Error al crear la ubicación de la empresa.", "error");
       });
   }

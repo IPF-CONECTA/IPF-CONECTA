@@ -7,8 +7,9 @@ export const createCtrl = async (req, res) => {
     if (!companyUbication)
       throw new Error("Ubicación de empresa no encontrada");
     const newCompanyUbication = await createSvc(companyUbication);
-    console.log(newCompanyUbication);
-    res.status(201).json(newCompanyUbication);
+    res
+      .status(201)
+      .json({ message: " Ubicación de empresa creada", newCompanyUbication });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
