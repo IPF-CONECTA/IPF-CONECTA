@@ -73,7 +73,7 @@ export const Nav = () => {
                 {authState.role == "admin" && (
                   <li>
                     <Link
-                      to={"#"}
+                      to={"/admin"}
                       className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
                     >
                       Panel

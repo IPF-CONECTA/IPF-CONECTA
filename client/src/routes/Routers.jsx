@@ -18,6 +18,7 @@ import {
   PostPage,
   ProfilePage,
   CreateJobsFormPage,
+  AdminDashboardPage,
 } from "../pages";
 
 export const Routers = () => {
@@ -39,6 +40,7 @@ export const Routers = () => {
         </Route>
 
         <Route path="/panel" element={<PanelPage />} />
+        <Route path="/dash" element={<AdminDashboardPage />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
