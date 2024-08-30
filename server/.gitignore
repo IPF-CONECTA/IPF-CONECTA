@@ -1,2 +1,8 @@
 .env
 node_modules
+
+uploads/**/*.png
+uploads/**/*.jpg
+uploads/**/*.jpeg
+uploads/**/*.gif
+uploads/**/*.svg

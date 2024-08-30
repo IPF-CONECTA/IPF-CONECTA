@@ -1,4 +1,3 @@
-// config/multerConfig.js
 import multer from 'multer';
 import path from 'path';
 
@@ -8,9 +7,13 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/'); // Carpeta donde se guardarán los archivos
   },
   filename: (req, file, cb) => {
-    // Nombre único para el archivo
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    // Obtener la fecha y hora actual
+    const datetime = new Date().toISOString().replace(/[-T:.Z]/g, '');
+
+    // Crear el nuevo nombre del archivo con fecha y nombre original
+    const newFileName = `${datetime}_${file.originalname}`;
+
+    cb(null, newFileName);
   },
 });
 

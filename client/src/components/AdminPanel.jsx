@@ -13,6 +13,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
+// URL base de tu servidor para imágenes
+const BASE_URL = 'http://localhost:4000/uploads/';
+
 export const AdminPanel = () => {
   const noti = useNoti();
   const [activeTab, setActiveTab] = useState("Aprobada");
@@ -24,7 +27,6 @@ export const AdminPanel = () => {
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const [justification, setJustification] = useState("");
-
   const [showFullDescription, setShowFullDescription] = useState(false);
 
   const getCompanies = async (currentPage) => {
@@ -34,16 +36,18 @@ export const AdminPanel = () => {
         `http://localhost:4000/admin/get-companies/${activeTab}?page=${currentPage}`,
         {
           headers: {
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${authService.getToken()}`,
           },
         }
       );
+
       setTotalPages(res.data.totalPages);
       if (res.data.companies.length === 0)
         noti("No se encontraron empresas", "info");
       setCompanies(res.status === 200 ? res.data.companies : []);
     } catch (error) {
-      if (error.res?.status === 404) {
+      if (error.response?.status === 404) {
         setCompanies([]);
         noti("No se encontraron empresas", "info");
       } else {
@@ -53,6 +57,7 @@ export const AdminPanel = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     getCompanies(currentPage);
   }, [activeTab, currentPage]);
@@ -89,6 +94,7 @@ export const AdminPanel = () => {
           },
         }
       );
+
       noti(`Empresa ${status.toLowerCase()} con éxito`, "success");
       setSelectedCompany(null);
       setCompanies((prevCompanies) =>
@@ -116,7 +122,6 @@ export const AdminPanel = () => {
     handleCloseModal();
   };
 
-  // Función para alternar mostrar/ocultar descripción completa
   const getShortDescription = (description) => {
     if (description.length <= 100) return description;
     return description.substring(0, 100) + "...";
@@ -147,6 +152,7 @@ export const AdminPanel = () => {
             ? "Empresas Pendientes de Aprobación"
             : "Empresas Rechazadas"}
         </h2>
+
         <div className={styles.CompanyList}>
           <div className={styles.Companies}>
             {companies.length === 0 ? (
@@ -169,7 +175,11 @@ export const AdminPanel = () => {
                     className={styles.Company}
                     onClick={() => handleCompanyClick(company)}
                   >
-                    <img src={company.logoUrl} alt={`${company.name} Logo`} />
+                    {/* Construye la URL completa para el logo */}
+                    <img
+                      src={`${BASE_URL}${company.logoUrl}`}
+                      alt={`Logo de ${company.name}`}
+                    />
                     <h3 style={{ whiteSpace: "pre-wrap" }}>
                       {displayName.length > 15
                         ? `${displayName.substring(0, 15)}...`
@@ -203,9 +213,10 @@ export const AdminPanel = () => {
             <div className={` d-flex flex-column`}>
               <div className={styles.CompanyDetails}>
                 <div className="d-flex flex-row justify-content-start">
+                  {/* Construye la URL completa para el logo */}
                   <img
-                    src={selectedCompany.logoUrl}
-                    alt={`${selectedCompany.name}`}
+                    src={`${BASE_URL}${selectedCompany.logoUrl}`}
+                    alt={`Logo de ${selectedCompany.name}`}
                     className={"m-0 me-3 rounded-pill"}
                     height={60}
                   />
@@ -272,16 +283,16 @@ export const AdminPanel = () => {
                 {/* <button
                   className="btn p-0"
                   onClick={() => alert(selectedCompany.associations[0].user.id)}
-                > */}
-                {/* <img
+                >
+                  <img
                     src={selectedCompany.associations[0].user.profilePic}
                     alt="Foto de perfil"
                     height={60}
                     width={60}
                     className="rounded-pill me-3"
-                  /> */}
-                {/* </button> */}
-                {/* <div>
+                  />
+                </button>
+                <div>
                   <strong className="fs-5 w-100">{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
                   <p className="w-50 text-muted">
                     {selectedCompany.associations[0].user.email}
@@ -290,7 +301,6 @@ export const AdminPanel = () => {
               </div>
             </div>
           </DialogContent>
-
           {activeTab === "Pendiente" && (
             <DialogActions>
               <Button color="secondary" onClick={handleOpenModal}>
