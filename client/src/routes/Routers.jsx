@@ -4,6 +4,7 @@ import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import {
   AdminPanelPage,
   CompanyConfirmedPage,
+  CreateCompanyUbicationPage,
   FeedPage,
   HomePage,
   JobSearchPage,
@@ -14,9 +15,9 @@ import {
   RegisterPage,
   CreateCompanyPage,
   SupportPage,
+  PostPage,
   ProfilePage,
 } from "../pages";
-import { PostPage } from "../pages/PostPage";
 
 export const Routers = () => {
   return (
@@ -45,6 +46,10 @@ export const Routers = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
+        <Route
+          path="/crear-sede/:companyId"
+          element={<CreateCompanyUbicationPage />}
+        />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
       </Routes>
