@@ -17,8 +17,7 @@ import {
   ProfilePage,
 } from "../pages";
 import { PostPage } from "../pages/PostPage";
-import CompanyGallery from "../../../server/src/config/prueba4";
-import PhotoGallery from "../../../server/src/config/prueba";
+
 
 export const Routers = () => {
   return (
@@ -39,9 +38,7 @@ export const Routers = () => {
         </Route>
 
         <Route path="/panel" element={<PanelPage />} />
-        {/* pruebas */}
-        <Route path="/display" element={<CompanyGallery/>} />
-        <Route path="/dis" element={<PhotoGallery/>} />
+
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
