@@ -176,10 +176,8 @@ export const AdminPanel = () => {
                     onClick={() => handleCompanyClick(company)}
                   >
                     {/* Construye la URL completa para el logo */}
-                    <img
-                      src={`${BASE_URL}${company.logoUrl}`}
-                      alt={`Logo de ${company.name}`}
-                    />
+                    <img src={`${BASE_URL}${company.logoUrl}`} crossOrigin="anonymous" alt={`Logo de ${company.name}`} />
+
                     <h3 style={{ whiteSpace: "pre-wrap" }}>
                       {displayName.length > 15
                         ? `${displayName.substring(0, 15)}...`
@@ -217,6 +215,7 @@ export const AdminPanel = () => {
                   <img
                     src={`${BASE_URL}${selectedCompany.logoUrl}`}
                     alt={`Logo de ${selectedCompany.name}`}
+                    crossOrigin="anonymous"
                     className={"m-0 me-3 rounded-pill"}
                     height={60}
                   />

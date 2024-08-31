@@ -20,8 +20,9 @@ app.use(
   })
 );
 app.use(morgan("combined"));
+//ruta para traer las imagenes
+app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 routes(app);
