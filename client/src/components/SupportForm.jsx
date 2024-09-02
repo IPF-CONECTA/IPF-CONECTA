@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 
-import "../../public/nav.css";
 import "../../public/support.css";
 
 export const SupportForm = () => {
@@ -48,19 +47,21 @@ export const SupportForm = () => {
 
   return (
     <>
-      <main className="d-flex align-items-center">
-        <div className="support-container">
-          <h2 className="support-header">Soporte de Usuarios - IPF-Conecta</h2>
-          <p>
-            Si tienes algún problema o necesitas asistencia, por favor llena el
-            formulario y nuestro equipo de soporte se pondrá en contacto contigo
-            lo antes posible.
-          </p>
-          {error && <p className="error-message">{error}</p>}
-          {successMessage && (
-            <p className="success-message">{successMessage}</p>
-          )}
-          <form onSubmit={handleSubmit}>
+      <main className="d-flex align-items-center mt-3 ">
+        <div className="support-container border">
+          <form onSubmit={handleSubmit} className="border-0 shadow-none p-0">
+            <h2 className="support-header">
+              Soporte de Usuarios - IPF-Conecta
+            </h2>
+            <p>
+              Si tienes algún problema o necesitas asistencia, por favor llena
+              el formulario y nuestro equipo de soporte se pondrá en contacto
+              contigo lo antes posible.
+            </p>
+            {error && <p className="error-message">{error}</p>}
+            {successMessage && (
+              <p className="success-message">{successMessage}</p>
+            )}
             <div className="form-group">
               <label htmlFor="name">Nombre</label>
               <input
@@ -84,7 +85,7 @@ export const SupportForm = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="issue">Descripción del problema</label>
+              <label htmlFor="issue">Mensaje</label>
               <textarea
                 id="issue"
                 name="issue"

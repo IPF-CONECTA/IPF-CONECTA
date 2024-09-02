@@ -8,7 +8,7 @@ export const Footer = () => {
     <footer
       className={`${styles.finPage} d-flex justify-content-between px-5 my-3`}
     >
-      <div className="d-flex ">
+      <div className="d-flex align-items-center">
         <Link to={"/"}>
           <img
             src={logoImage}
@@ -18,35 +18,26 @@ export const Footer = () => {
             height="40"
           />
         </Link>
-        <span className="text-align-center">IPF-CONECTA © 2024</span>
+        <span>IPF-CONECTA © 2024</span>
       </div>
-      <ul className="nav list-unstyled d-flex">
-        <li className="ms-3">
+      <ul className="nav list-unstyled d-flex ">
+        <li className="d-flex align-items-center">
           <Link to={"/"}>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: "black" }}
-            >
+            <span className="material-symbols-outlined text-info-emphasis">
               home
             </span>
           </Link>
         </li>
-        <li className="ms-3">
-          <Link to={"/comunidad"}>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: "black" }}
-            >
+        <li className="d-flex align-items-center">
+          <Link to={"/inicio"}>
+            <span className="material-symbols-outlined text-info-emphasis ms-3">
               group
             </span>
           </Link>
         </li>
-        <li className="ms-3">
-          <Link to={"/support"}>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: "black" }}
-            >
+        <li className="d-flex align-items-center">
+          <Link to={"/contacto"}>
+            <span className="material-symbols-outlined text-info-emphasis ms-3">
               info
             </span>
           </Link>

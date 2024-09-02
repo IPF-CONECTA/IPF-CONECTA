@@ -7,6 +7,8 @@ import { Op } from 'sequelize';
 import { Profile } from '../profile/profileModel.js';
 import { sequelize } from '../../config/db.js';
 import { Role } from '../roles/roleModel.js';
+import { Association } from '../recruiters/associations/associationModel.js';
+import { Company } from '../recruiters/companies/companyModel.js';
 
 export const getUsers = async () => {
     const users = await User.findAll()
@@ -69,6 +71,51 @@ export const getUserById = async (id) => {
     } catch (error) {
         console.log(error)
         throw error
+    }
+}
+
+export const getProfile = async (id, followingId) => {
+    try {
+        const { role } = await Profile.findOne({
+            where: {
+                id: followingId
+            }
+        })
+        if (role.name == 'recruiter') {
+            profile = await Profile.findByPk(followingId, {
+                attributes: ['id', 'profilePic', 'names', 'surnames', 'title', 'about'],
+                include: [{
+                    model: User,
+                    attributes: ['email']
+                }, {
+                    model: Role,
+                    attributes: ['name']
+                }, {
+                    model: Association,
+                    include: [{
+                        model: Company
+                    }]
+                }]
+            })
+        }
+        const following = await Follower.findOne({
+            where: {
+                followingId: profile.id,
+                followerId: id
+            }
+        })
+        const cantFollowers = await Follower.count({
+            where: {
+                followingId: profile.id
+            }
+        })
+        const cantFollowing = await Follower.count({
+            where: {
+                followerId: profile.id
+            }
+        })
+    } catch (error) {
+
     }
 }
 
