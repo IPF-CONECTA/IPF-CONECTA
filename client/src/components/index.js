@@ -11,7 +11,7 @@ export * from "./Layout";
 export * from "./LoginForm";
 export * from "./Main";
 export * from "./Nav";
-export * from "./PendingMessageRecruiter";
+export * from "./MessageRecruiter";
 export * from "./PostList";
 export * from "./RecomendedAccounts";
 export * from "./RegisterForm";

@@ -11,7 +11,7 @@ export * from "./LoginPage";
 export * from "./NotFoundPage";
 export * from "./PanelPage";
 export * from "./RegisterPage";
-export * from "./PendingMessageRecruiterPage";
+export * from "./MessageRecruiterPage";
 export * from "./SelectCompanyPage";
 export * from "./PostPage";
 export * from "./ProfilePage";

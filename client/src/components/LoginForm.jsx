@@ -40,11 +40,16 @@ export const LoginForm = () => {
             (association) => association.status == "Pendiente"
           );
           if (isPending) {
-            navigate("/reclutador-en-espera", {
-              state: { companyName: isPending.company.name },
+            navigate("/solicitud-del-reclutador", {
+              state: {
+                companyName: isPending.company.name,
+                status: "Pendiente",
+              },
             });
           } else {
-            navigate("/mensaje-rechazado");
+            navigate("/solicitud-del-reclutador", {
+              state: { status: "Rechazada" },
+            });
           }
         }
       }

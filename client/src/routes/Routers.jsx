@@ -16,7 +16,7 @@ import {
   CreateCompanyPage,
   SupportPage,
   PostPage,
-  PendingMessageRecruiterPage,
+  MessageRecruiterPage,
   ProfilePage,
   CreateJobsFormPage,
   WaitingAssociationsApprovalPage,
@@ -58,8 +58,8 @@ export const Routers = () => {
           element={<WaitingAssociationsApprovalPage />}
         />
         <Route
-          path="/reclutador-en-espera"
-          element={<PendingMessageRecruiterPage />}
+          path="/solicitud-del-reclutador"
+          element={<MessageRecruiterPage />}
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />

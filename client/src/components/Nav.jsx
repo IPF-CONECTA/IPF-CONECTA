@@ -55,9 +55,6 @@ export const Nav = () => {
                 <span className="material-symbols-outlined fs-2 fw-light text-muted">
                   account_circle
                 </span>
-                <p className="navbar-brand d-flex align-items-center">
-                  {authState.user.profile.names}, {authState.role.toUpperCase()}
-                </p>
               </Link>
               <ul className="dropdown-menu dropdown-menu-end p-0 p-2">
                 <li>
