@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { useNoti } from "../hooks/useNoti";
+import styles from "../../public/css/SelectCompany.module.css"; 
 
 export const SelectCompany = () => {
   const [companies, setCompanies] = useState([]);
@@ -33,6 +34,7 @@ export const SelectCompany = () => {
       setFilteredCompanies(filtered);
     }
   };
+
   const handleChooseCompany = (companyId) => {
     setCompany(companyId);
   };
@@ -63,14 +65,14 @@ export const SelectCompany = () => {
     switch (step) {
       case 1:
         return (
-          <div className="container btn-lg active mt-6 w-50">
+          <>
             <h1 className="text-center mb-4">
               Nos alegra que hayas confiado en nosotros
             </h1>
             <h2 className="text-center mb-4">
               Por favor, seleccione la empresa a la que pertenece:
             </h2>
-            <div className="conteiner row justify-content-center mb-3">
+            <div className="row justify-content-center mb-3">
               <div className="col-md-6">
                 <input
                   type="text"
@@ -80,100 +82,90 @@ export const SelectCompany = () => {
                 />
               </div>
             </div>
-            <ul className="list-group  align-item-center justify-content-center">
+            <ul className="list-group">
               {filteredCompanies.map((company) => (
                 <li
                   key={company.id}
-                  className="list-group-item container d-flex flex-column "
+                  className={`list-group-item ${styles.companyItem}`}
                 >
-                  <img
-                    src={company.logoUrl}
-                    alt={`${company.name} logo`}
-                    width="50"
-                    height="50"
-                    className="me-3"
-                  />
-                  {company.name}
-
-                  <button
-                    value={company.id}
-                    className="btn btn-outline-success"
-                    onClick={() => {
-                      handleChooseCompany(company.id), setStep(2);
-                    }}
-                  >
-                    Selecionar
-                  </button>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center">
+                      <img
+                        src={company.logoUrl}
+                        alt={`${company.name} logo`}
+                        width="50"
+                        height="50"
+                        className="me-3"
+                      />
+                      <span>{company.name}</span>
+                    </div>
+                    <button
+                      className="btn btn-outline-success"
+                      onClick={() => {
+                        handleChooseCompany(company.id);
+                        setStep(2);
+                      }}
+                    >
+                      Seleccionar
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
-            <div className="container mt-6 w-100">
-              <h2 className="text-center mb-4">
-                La empresa no está disponible? Solicita su creación para ser
+            <div className={`mt-4 text-center ${styles.requestCreation}`}>
+              <h2 className="mb-4">
+                ¿La empresa no está disponible? Solicita su creación para ser
                 evaluada.
               </h2>
-              <div className="text-center">
-                <button
-                  className="btn btn-outline-success "
-                  onClick={() => navigate("/registro-de-compañia")}
-                >
-                  Solicitar creación de empresa
-                </button>
-              </div>
-              <div></div>
+              <button
+                className="btn btn-outline-success"
+                onClick={() => navigate("/registro-de-compañia")}
+              >
+                Solicitar creación de empresa
+              </button>
             </div>
-            <button
-              className="btn btn-secondary"
-              type="button"
-              onClick={() => setStep(1)}
-            >
-              <span className="material-symbols-outlined">arrow_back</span>
-            </button>
-          </div>
+          </>
         );
       case 2:
         return (
-          <div className="conteiner mt-6 w-100">
+          <>
             <h1 className="text-center mb-4">
               Justifique su solicitud a la empresa
-              <div className="row justify-content-center mb-3">
-                <div className="col-md-6">
-                  <textarea
-                    className="form-control"
-                    placeholder="Justificación"
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                  <button
-                    className="btn btn-outline-success"
-                    onClick={() => {
-                      handleSendRequest(company, message);
-                    }}
-                  >
-                    Enviar
-                  </button>
-                </div>
+            </h1>
+            <div className="row justify-content-center mb-3">
+              <div className="col-md-6">
+                <textarea
+                  className="form-control mb-3"
+                  placeholder="Justificación"
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+                <button
+                  className={`btn btn-outline-success ${styles.fullWidthButton}`}
+                  onClick={() => {
+                    handleSendRequest(company);
+                  }}
+                >
+                  Enviar
+                </button>
               </div>
+            </div>
+            <div className="text-center">
               <button
-                className="btn btn-secondary"
+                className={`btn btn-secondary ${styles.backButton}`}
                 type="button"
                 onClick={() => setStep(1)}
               >
                 <span className="material-symbols-outlined">arrow_back</span>
               </button>
-              <button
-                className="btn btn-outline-success"
-                type="button"
-                onClick={() => setStep(3)}
-              >
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
-            </h1>
-          </div>
+            </div>
+          </>
         );
+      default:
+        return null;
     }
   };
 
-  return <div>{renderStep(1)}</div>;
+  return <main className={`container mt-4 ${styles.mainContent}`}>{renderStep()}</main>;
 };
 
 export default SelectCompany;
