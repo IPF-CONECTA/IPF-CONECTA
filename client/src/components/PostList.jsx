@@ -40,6 +40,7 @@ const PostList = () => {
         clearInterval(interval);
         setShowProgress(false);
         setContent("");
+        setFocused(false);
       } else {
         setProgress(i);
         i++;
@@ -49,11 +50,11 @@ const PostList = () => {
   return (
     <div className="w-50 overflow-y-auto d-flex flex-column align-items-center ">
       <div
-        className={`w-100 d-flex  align-items-center flex-column  py-3 ${styles.formContainer}`}
+        className={`w-100 d-flex  align-items-center flex-column  pt-2  ${styles.formContainer}`}
       >
         <form
           onSubmit={handleSubmit}
-          className={` h-100 w-75 d-flex flex-column align-items-end p-2 ${styles.postForm}`}
+          className={` h-100 w-75 d-flex flex-column align-items-end border border-bottom-0 p-2 ${styles.postForm}`}
           onFocus={() => {
             setFocused(true);
           }}
@@ -67,18 +68,39 @@ const PostList = () => {
               focused ? styles.formInputFocused : styles.formInput
             }`}
             placeholder="Que estas pensando..."
-            id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           ></textarea>
 
           <div className=" w-100 d-flex justify-content-between  pt-2">
-            <div>
+            <div className="d-flex">
               <button
                 type="button"
                 className="btn d-flex align-items-center h-100 me-1"
               >
-                <span className="material-symbols-outlined">attachment</span>
+                <span className="material-symbols-outlined fs-5">
+                  attachment
+                </span>
+              </button>
+              <button
+                type="button"
+                className="btn d-flex align-items-center h-100 me-1"
+              >
+                <span className="material-symbols-outlined fs-5">gif_box</span>
+              </button>
+              <button
+                type="button"
+                className="btn d-flex align-items-center h-100 me-1"
+              >
+                <span className="material-symbols-outlined fs-5">
+                  location_on
+                </span>
+              </button>
+              <button
+                type="button"
+                className="btn d-flex align-items-center h-100 me-1"
+              >
+                <span className="material-symbols-outlined fs-5">mood</span>
               </button>
             </div>
             <button
@@ -96,9 +118,13 @@ const PostList = () => {
         ) : null}
       </div>
       <div className="w-100 d-flex flex-column flex-grow-1 align-items-center">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+        {posts.length > 0 && (
+          <div className="w-75 border border-bottom-0 border-end-0 border-start-0">
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -178,7 +178,7 @@ const Post = ({ post, setWrite }) => {
               )}
             </header>
             <div className="py-3">
-              <p>{post.content}</p>
+              <p className="text-break">{post.content}</p>
               {post.attatchment &&
                 (post.attatchment.type === "image" ? (
                   <img src={post.attatchment.url} alt={post.attatchment.alt} />
@@ -189,7 +189,7 @@ const Post = ({ post, setWrite }) => {
                 {getDate(post.createdAt)}
               </span>
             </div>
-            <footer className="">
+            <footer className="d-flex  justify-content-between">
               <div className="d-flex align-items-center">
                 <button
                   onClick={handleLike}
@@ -209,7 +209,6 @@ const Post = ({ post, setWrite }) => {
                   {post.likes.length > 0 && <span>{post.likes.length}</span>}
                 </span>
               </div>
-
               <div className="d-flex align-items-center">
                 <button
                   className="btn p-0 d-flex align-items-center"

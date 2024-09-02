@@ -29,8 +29,8 @@ export const ProfileHover = ({
           {profileInfo.isFollowing === false ? (
             <button
               className={`btn btn-info text-light p-0 py-1 ${styles.smallText} w-100 fw-bold`}
-              onClick={() => {
-                handleFollowOrUnfollow(profileInfo.profile.id);
+              onClick={(event) => {
+                handleFollowOrUnfollow(event, profileInfo.profile.id);
               }}
             >
               Follow
@@ -38,8 +38,8 @@ export const ProfileHover = ({
           ) : (
             <button
               className={`btn btn-outline-info text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
-              onClick={() => {
-                handleFollowOrUnfollow(profileInfo.profile.id);
+              onClick={(event) => {
+                handleFollowOrUnfollow(event, profileInfo.profile.id);
               }}
             >
               Unfollow

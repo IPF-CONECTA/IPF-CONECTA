@@ -8,6 +8,7 @@ import { getAllLocations, getLocation, getLocationType } from "../../../helpers/
 import { ContractType } from "./contractTypes/contractTypeModel.js"
 import { Modality } from "./jobModalities/modalityModel.js"
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js"
+import { Profile } from "../../profile/profileModel.js"
 
 export const createNewJobSvc = async (jobOffer, userId) => {
     try {
@@ -69,7 +70,7 @@ export const getJobByIdSvc = async (id) => {
                     attributes: ['name']
                 }]
             }, {
-                model: User,
+                model: Profile,
                 attributes: ['id', 'profilePic', 'names', 'surnames'],
             },
             {
