@@ -53,9 +53,9 @@ export const Home = () => {
           >
             <div>
               <img
-                src="../../public/networking.png"
+                src="./img/network.jpg"
                 alt="Networking"
-                className={styles["service-image"]}
+                className={`pb-0 ${styles["service-image"]}`}
               />
               <div className="d-flex flex-column justify-content-between">
                 <h3>Networking</h3>
@@ -76,7 +76,7 @@ export const Home = () => {
             className={`d-flex flex-column justify-content-between align-items-center ${styles.service}`}
           >
             <img
-              src="../../public/jobs.png"
+              src="./img/job-offer.png"
               alt="Job Opportunities"
               className={styles["service-image"]}
             />
@@ -98,7 +98,7 @@ export const Home = () => {
             className={`d-flex flex-column justify-content-between align-items-center ${styles.service}`}
           >
             <img
-              src="../../public/tutores.png"
+              src="./img/tutores.png"
               alt="Expert Guidance"
               className={styles["service-image"]}
             />
@@ -120,7 +120,7 @@ export const Home = () => {
             className={`d-flex flex-column justify-content-between align-items-center ${styles.service}`}
           >
             <img
-              src="../../public/ideas.png"
+              src="./img/ideas.jpg"
               alt="Expert Guidance"
               className={styles["service-image"]}
             />
@@ -138,28 +138,6 @@ export const Home = () => {
               Más información
             </button>
           </div>
-          <div
-            className={`d-flex flex-column justify-content-between align-items-center ${styles.service}`}
-          >
-            <img
-              src="../../public/lineas.png"
-              alt="Expert Guidance"
-              className={styles["service-image"]}
-            />
-            <div className="d-flex flex-column">
-              <h3>Líneas de Investigación</h3>
-              <p>
-                Explora nuestras principales líneas de investigación y descubre
-                cómo puedes contribuir con tus ideas y proyectos.
-              </p>
-            </div>
-            <button
-              className={"btn border rounded text-info-emphasis fw-bold"}
-              onClick={() => scrollToSection("research-lines")}
-            >
-              Más información
-            </button>
-          </div>
         </div>
       </section>
 
@@ -172,17 +150,16 @@ export const Home = () => {
           <div className={`${styles.reviewCard} me-5 p-3 border rounded`}>
             <div className={`${styles.headerContent}`}>
               <div className={`${styles.imgArea}`}>
-                <img alt="customer1" src="./img/hombre2.jpg" />
+                <img alt="customer1" src="./img/lucas.jpg" />
               </div>
               <div className={`${styles.info}`}>
-                <h4>John Doe</h4>
-                <p>Maketing Manager</p>
+                <h4>Lucas B.</h4>
+                <p>UX/UI Designer</p>
               </div>
             </div>
             <div className={`${styles.singleReview}`}>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
-                dolor eveniet deleniti repellendus! Minima, dolorum.
+                La mejor herramienta para encontrar oportunidades laborales.
               </p>
             </div>
             <div className={`${styles.reviewFooter}`}>
@@ -193,24 +170,21 @@ export const Home = () => {
                 <span className={`${styles.active}`}>★</span>
                 <span className={`${styles.active}`}>★</span>
               </div>
-              <p>Reviewed on 01/01/2023</p>
+              <p className="mb-0">Reviewed on 01/01/2023</p>
             </div>
           </div>
           <div className={`${styles.reviewCard} me-5 p-3 border rounded`}>
             <div className={`${styles.headerContent}`}>
               <div className={`${styles.imgArea}`}>
-                <img alt="customer1" src="./img/hombre1.jpg" />
+                <img alt="customer1" src="./img/fabian.jpg" />
               </div>
               <div className={`${styles.info}`}>
-                <h4>John Doe</h4>
-                <p>Maketing Manager</p>
+                <h4>Fabián V.</h4>
+                <p>Full Stack Dev.</p>
               </div>
             </div>
             <div className={`${styles.singleReview}`}>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
-                dolor eveniet deleniti repellendus! Minima, dolorum.
-              </p>
+              <p>¡Me conecté con mi primer empleo gracias a IPF-Conecta!</p>
             </div>
             <div className={`${styles.reviewFooter}`}>
               <div className={`${styles.rating}`}>
@@ -220,24 +194,21 @@ export const Home = () => {
                 <span className={`${styles.active}`}>★</span>
                 <span className={`${styles.active}`}>★</span>
               </div>
-              <p>Reviewed on 01/01/2023</p>
+              <p className="mb-0">Reviewed on 01/01/2023</p>
             </div>
           </div>
           <div className={`${styles.reviewCard} border p-3 rounded`}>
             <div className={`${styles.headerContent}`}>
               <div className={`${styles.imgArea}`}>
-                <img alt="customer1" src="./img/mujer1.jpg" />
+                <img alt="customer1" src="./img/piazza.jpg" />
               </div>
               <div className={`${styles.info}`}>
-                <h4>John Doe</h4>
-                <p>Maketing Manager</p>
+                <h4>Carla Malena</h4>
+                <p>Frontend Dev.</p>
               </div>
             </div>
             <div className={`${styles.singleReview}`}>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
-                dolor eveniet deleniti repellendus! Minima, dolorum.
-              </p>
+              <p> Recomendado para todos los egresados que buscan crecer.</p>
             </div>
             <div className={`${styles.reviewFooter}`}>
               <div className={`${styles.rating}`}>
@@ -247,7 +218,7 @@ export const Home = () => {
                 <span className={`${styles.active}`}>★</span>
                 <span className={`${styles.active}`}>★</span>
               </div>
-              <p>Reviewed on 01/01/2023</p>
+              <p className="mb-0">Reviewed on 01/01/2023</p>
             </div>
           </div>
         </div>
