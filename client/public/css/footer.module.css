@@ -4,7 +4,9 @@
   margin: 0;
   padding: 0;
 }
-
+.finPage {
+  height: 5%;
+}
 .nav li {
   margin-left: 15px;
 }

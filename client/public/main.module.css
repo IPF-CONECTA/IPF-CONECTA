@@ -36,7 +36,7 @@
   background-color: #f5f5f5;
   border-radius: 10px;
   padding: 20px;
-  width: 300px;
+  width: 300px !important;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
 }
 .imgArea {

@@ -135,7 +135,7 @@ export const AdminPanel = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className={styles.AdminPanel}>
+    <div className={` ${styles.AdminPanel} h-100`}>
       <header className={`${styles.Header} pt-3`}>
         {["Aprobada", "Pendiente", "Rechazada"].map((tab) => (
           <button key={tab} onClick={() => handleTabClick(tab)}>
