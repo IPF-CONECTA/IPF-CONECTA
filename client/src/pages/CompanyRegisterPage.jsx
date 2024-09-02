@@ -4,7 +4,9 @@ export const CreateCompanyPage = () => {
   return (
     <>
       <Nav />
+      <br />
       <CreateCompanyForm />
+      <br />
       <Footer />
     </>
   );

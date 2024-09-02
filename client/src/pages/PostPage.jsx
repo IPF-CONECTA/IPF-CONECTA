@@ -1,9 +1,7 @@
 import React from "react";
 import RecomendedAccounts from "../components/RecomendedAccounts";
 import HomeNav from "../components/HomeNav";
-import PostCard from "../components/PostCard";
-import { useParams } from "react-router-dom";
-import Post from "../components/Post";
+import styles from "../../public/css/feed.module.css";
 import PostInfo from "../components/PostInfo";
 export const PostPage = () => {
   return (
@@ -11,7 +9,9 @@ export const PostPage = () => {
       <main className="d-flex justify-content-center w-100 ">
         <HomeNav />
         <PostInfo />
-        <RecomendedAccounts />
+        <div className={`${styles.asideContainer}`}>
+          <RecomendedAccounts />
+        </div>
       </main>
     </>
   );

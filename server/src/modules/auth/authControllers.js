@@ -35,7 +35,7 @@ export const authLogInCtrl = async (req, res) => {
         if (!response.token) {
             throw new Error('No se pudo iniciar sesion')
         }
-        res.status(200).json({ message: `Bienvenido/a ${response.userInfo.names}`, response })
+        res.status(200).json({ message: `¡Bienvenido/a, ${response.existingUser.profile.names}!`, response })
 
     } catch (error) {
         console.log(error.message)
@@ -117,8 +117,6 @@ export const recoverPasswordCtrl = async (req, res) => {
 
 export const verifyToken = async (req, res) => {
     const existingUser = req.user
-
     const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
-    const role = await getRoles(existingUser.roleId)
-    return res.status(200).json({ existingUser, token, role })
+    return res.status(200).json({ existingUser, token })
 }

@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import React, { useContext, useEffect } from "react";
 import styles from "../../public/css/login.module.css";
@@ -47,23 +46,36 @@ export const LoginForm = () => {
         <img src="/public/iniciar-sesion.png" alt="Login" />
       </div>
       <div className={styles["login-form"]}>
-          <h2 className={styles["title-h2"]}>Inicie Sesión</h2>
+        <h2 className={styles["title-h2"]}>Iniciar Sesión</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles["form-group"]}>
             <label htmlFor="email" className={styles.label}>
               Email
             </label>
             <input type="text" required {...register("email")} />
-            {errors.email && <span className={styles["error-message"]}>{errors.email.message}</span>}
+            {errors.email && (
+              <span className={styles["error-message"]}>
+                {errors.email.message}
+              </span>
+            )}
           </div>
           <div className={styles["form-group"]}>
             <label htmlFor="password" className={styles.label}>
               Contraseña
             </label>
+<<<<<<< HEAD
             <input type="password"  id="myInput" required  {...register("password")} />
             {errors.password && <span className={styles["error-message"]}>{errors.password.message}</span>}
             <input type="checkbox" onClick= {showPass}/>
 
+=======
+            <input type="password" required {...register("password")} />
+            {errors.password && (
+              <span className={styles["error-message"]}>
+                {errors.password.message}
+              </span>
+            )}
+>>>>>>> main
           </div>
           <div className={styles["form-group"]}>
             <button type="submit" className={styles.button}>

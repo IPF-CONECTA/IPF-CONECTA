@@ -61,20 +61,20 @@ export const JobSearch = () => {
     <main className="w-100 h-100 d-flex flex-column align-items-center">
       <nav className="w-100 d-flex flex-column justify-content-center align-items-center">
         <form className="d-flex flex-column w-100" onSubmit={handleSubmit}>
-          <div className="d-flex flex-row">
+          <div className="d-flex flex-row align-items-center mb-2">
             <input
               type="text"
               name="searchBar"
               id="SearchBar"
-              className="w-100 me-2"
+              className="w-100 m-0 me-2 p-2"
               placeholder="Busca un trabajo"
             />
-            <button type="submit" className="btn btn-success h-75">
+            <button type="submit" className="btn btn-success h-100 fw-semibold">
               Buscar
             </button>
           </div>
           <div className="filters">
-            <select name="postDate" id="postDate">
+            <select name="postDate" className="form-select" id="postDate">
               <option value="" defaultChecked>
                 Fecha de publicación
               </option>

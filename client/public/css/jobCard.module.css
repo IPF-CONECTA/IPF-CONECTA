@@ -25,7 +25,7 @@ p {
   margin-bottom: 5px;
   background-color: #f5f5f5;
   border: 1px solid #dbdbdb;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
   border-radius: 5px;
   transition: transform 0.3s ease-in-out;
   transform: scale(1.005);

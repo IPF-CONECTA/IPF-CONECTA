@@ -1,6 +1,9 @@
 .postForm {
   max-width: none;
   height: 50px;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
 }
 
 .formcontainer {
@@ -21,4 +24,12 @@
 
 .formInputFocused:focus {
   outline: none;
+}
+
+.asideContainer {
+  height: fit-content;
+  width: fit-content;
+  position: fixed;
+  top: 20%;
+  right: 5%;
 }

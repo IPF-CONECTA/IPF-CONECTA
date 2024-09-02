@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ProfileHover } from "./ProfileHover";
 import { getProfileInfo } from "../services/feedServices";
 import { useFollow } from "../hooks/useFollow";
-
+import styles from "../../public/css/accountCard.module.css";
 const AccountCard = ({ account }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -45,16 +45,20 @@ const AccountCard = ({ account }) => {
     setProfile(null);
   };
 
-  useEffect(() => {}, []);
+  const handleFollowClick = (event) => {
+    handleFollowOrUnfollow(event, account.profile.id);
+    setIsFollowing(!isFollowing);
+  };
+
   return (
     <div
-      className="avatar w-75 d-flex justify-content-between align-items-center p-2 mb-2 border rounded"
+      className="avatar w-100 d-flex justify-content-between align-items-center  mb-2"
       key={account.id}
     >
       <div className="d-flex position-relative">
         <img
-          width={50}
-          height={50}
+          width={35}
+          height={35}
           className="rounded-circle me-2"
           src={account.profile.profilePic}
           alt={account.profile.names}
@@ -69,39 +73,36 @@ const AccountCard = ({ account }) => {
             handleMouseLeave={handleMouseLeave}
           />
         )}
+
         <div className=" d-flex flex-column">
-          <span className="fs-5">
-            {account.profile.names + " " + account.profile.surnames}
+          <span className="fs-6">
+            {account.profile.names.length + account.profile.surnames.length > 18
+              ? account.profile.names.length > 12
+                ? account.profile.names +
+                  " " +
+                  account.profile.surnames.slice(0, 3) +
+                  "..."
+                : account.profile.names +
+                  " " +
+                  account.profile.surnames.slice(0, 8)
+              : account.profile.names + " " + account.profile.surnames}
           </span>
-          {account.profile.title ? (
-            <span className="text-muted">{account.profile.title}</span>
-          ) : (
-            <span className="text-muted">Sin titulo</span>
-          )}
+          <span className={`text-muted ${styles.smallText}`}>
+            {account.email}
+          </span>
         </div>
       </div>
       <div>
-        {isFollowing ? (
-          <button
-            className="btn btn-outline-info text-muted w-100 fw-bold"
-            onClick={() => {
-              setIsFollowing(false);
-              handleFollowOrUnfollow(profileInfo.profile.id);
-            }}
-          >
-            Unfollow
-          </button>
-        ) : (
-          <button
-            className="btn btn-info text-light w-100 fw-bold"
-            onClick={() => {
-              setIsFollowing(true);
-              handleFollowOrUnfollow(profileInfo.profile.id);
-            }}
-          >
-            Follow
-          </button>
-        )}{" "}
+        <button
+          className={`${styles.buttonFollow} ms-2 ${styles.smallText} ${
+            isFollowing
+              ? "btn btn-outline-info text-muted fw-bold p-1"
+              : "btn btn-info text-light fw-bold p-1"
+          }`}
+          onClick={handleFollowClick}
+        >
+          {isFollowing ? "Unfollow" : "Follow"}
+        </button>
       </div>
     </div>
   );

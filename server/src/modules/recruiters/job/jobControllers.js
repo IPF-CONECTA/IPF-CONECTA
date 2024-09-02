@@ -8,18 +8,23 @@ import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js";
 import jwt from "jsonwebtoken";
 
 export const createNewJobCtrl = async (req, res) => {
-  let token = req.headers.authorization;
-  token = token.split(' ')[1];
-  token = token.replace(/"/g, '');
-  const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+  const { id } = req.user.profile;
   const { jobOffer, skills } = req.body;
 
+  console.log(jobOffer);
+
   try {
-    const newJob = await createNewJobSvc(jobOffer, userId);
+    const newJob = await createNewJobSvc(jobOffer, id);
     const jobId = newJob.id;
-    for (let i = 0; i < skills.length; i++) {
-      await addJobSkillSvc(jobId, skills[i]);
+
+    if (Array.isArray(skills) && skills.length > 0) {
+      for (let i = 0; i < skills.length; i++) {
+        await addJobSkillSvc(jobId, skills[i]);
+      }
+    } else {
+      console.log("No skills provided or skills is not an array");
     }
+
     res.status(201).json(newJob);
   } catch (error) {
     res.status(500).json({ message: error.message });
