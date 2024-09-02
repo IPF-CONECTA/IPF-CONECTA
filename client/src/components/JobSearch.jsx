@@ -58,8 +58,8 @@ export const JobSearch = () => {
   };
 
   return (
-    <main className="w-100 h-100 d-flex flex-column align-items-center">
-      <nav className="w-100 d-flex flex-column justify-content-center align-items-center">
+    <main className="w-100 h-100 d-flex flex-column align-items-center mt-5">
+      <nav className="w-100 d-flex flex-column justify-content-center align-items-center mt-4">
         <form className="d-flex flex-column w-100" onSubmit={handleSubmit}>
           <div className="d-flex flex-row align-items-center mb-2">
             <input

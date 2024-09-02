@@ -13,7 +13,7 @@ export const Nav = () => {
   };
   return (
     <>
-      <div className="fixed-top bg-light">
+      <div className={`fixed-top bg-light`}>
         <nav className="d-flex justify-content-between p-2 px-3">
           <Link className="navbar-brand" to="/">
             <img
