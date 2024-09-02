@@ -1,48 +1,73 @@
 /* Contenedor de soporte */
 .support-container {
-  width: 600px;
-  margin: 10px auto;
-  padding: 20px;
-  height: fit-content;
+  width: 100%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 10px;
   border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Encabezado del soporte */
 .support-header {
   text-align: center;
-  margin-bottom: 1px;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
 }
 
+/* Grupo de formularios */
 .form-group {
-  margin-bottom: 1px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
+  color: #555;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 2px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  font-size: 1em;
+  color: #333;
+  background-color: #f9f9f9;
 }
 
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4cb853;
+  outline: none;
+  background-color: #fff;
+}
+
+/* Botón de formulario */
 .form-group button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 5px;
   background-color: #4cb853;
   color: #fff;
+  font-size: 1em;
+  font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .form-group button:hover {
   background-color: #388c3f;
+}
+
+/* Mejora de accesibilidad para botones */
+.form-group button:focus {
+  outline: 2px solid #4cb853;
+  outline-offset: 2px;
 }

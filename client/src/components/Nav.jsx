@@ -1,16 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoImage from "../../public/iconoipf.png";
 import "../../public/nav.css";
 import { authContext } from "../context/auth/Context";
 import styles from "../../public/css/nav.module.css";
+
 export const Nav = () => {
   const { authState, logout } = useContext(authContext);
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     await logout();
     navigate("/iniciar-sesion");
   };
+
   return (
     <>
       <div className={`fixed-top bg-light`}>
@@ -54,7 +57,6 @@ export const Nav = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {" "}
                   <span className="material-symbols-outlined fs-2 fw-light text-muted">
                     account_circle
                   </span>
@@ -74,18 +76,31 @@ export const Nav = () => {
                       />
                     </Link>
                   </li>
-                  {authState.role == "admin" && (
-                    <li>
-                      <Link
-                        to={"/admin"}
-                        className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
-                      >
-                        Panel
-                        <span className="material-symbols-outlined fw-light fs-3">
-                          shield_person
-                        </span>
-                      </Link>
-                    </li>
+                  {authState.role === "admin" && (
+                    <>
+                      <li>
+                        <Link
+                          to={"/dash"}
+                          className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
+                        >
+                          DashBoard
+                          <span className="material-symbols-outlined fw-light fs-3">
+                            dashboard
+                          </span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={"/admin"}
+                          className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
+                        >
+                          Panel
+                          <span className="material-symbols-outlined fw-light fs-3">
+                            shield_person
+                          </span>
+                        </Link>
+                      </li>
+                    </>
                   )}
                   <li>
                     <hr className="m-1" />
@@ -95,7 +110,7 @@ export const Nav = () => {
                       onClick={handleLogout}
                       className="dropdown-item d-flex p-0 justify-content-between"
                     >
-                      Cerrar sesion
+                      Cerrar sesión
                       <span className="material-symbols-outlined fw-light">
                         logout
                       </span>

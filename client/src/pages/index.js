@@ -15,3 +15,4 @@ export * from "./PostPage";
 export * from "./ProfilePage";
 export * from "./SupportPage";
 export * from "./CreateJobsFormPage";
+export * from "./AdminDashboardPage";

@@ -225,110 +225,107 @@ export const Home = () => {
       </section>
 
       <section
-        id="faq"
-        className="w-100 d-flex flex-column align-items-center mb-5"
-      >
-        <span className=" fs-3 pb-2 fw-bold text-info-emphasis">
-          Preguntas frecuentes
-        </span>
-        <div className="w-75 ">
-          <div className="accordion" id="accordionExample">
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
-                >
-                  Accordion Item #1
-                </button>
-              </h2>
-              <div
-                id="collapseOne"
-                className="accordion-collapse collapse show"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body">
-                  <strong>This is the first item's accordion body.</strong> It
-                  is shown by default, until the collapse plugin adds the
-                  appropriate classNamees that we use to style each element.
-                  These classNamees control the overall appearance, as well as
-                  the showing and hiding via CSS transitions. You can modify any
-                  of this with custom CSS or overriding our default variables.
-                  It's also worth noting that just about any HTML can go within
-                  the <code>.accordion-body</code>, though the transition does
-                  limit overflow.
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
-                >
-                  Accordion Item #2
-                </button>
-              </h2>
-              <div
-                id="collapseTwo"
-                className="accordion-collapse collapse"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body">
-                  <strong>This is the second item's accordion body.</strong> It
-                  is hidden by default, until the collapse plugin adds the
-                  appropriate classNamees that we use to style each element.
-                  These classNamees control the overall appearance, as well as
-                  the showing and hiding via CSS transitions. You can modify any
-                  of this with custom CSS or overriding our default variables.
-                  It's also worth noting that just about any HTML can go within
-                  the <code>.accordion-body</code>, though the transition does
-                  limit overflow.
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                >
-                  Accordion Item #3
-                </button>
-              </h2>
-              <div
-                id="collapseThree"
-                className="accordion-collapse collapse"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body">
-                  <strong>This is the third item's accordion body.</strong> It
-                  is hidden by default, until the collapse plugin adds the
-                  appropriate classes that we use to style each element. These
-                  classes control the overall appearance, as well as the showing
-                  and hiding via CSS transitions. You can modify any of this
-                  with custom CSS or overriding our default variables. It's also
-                  worth noting that just about any HTML can go within the{" "}
-                  <code>.accordion-body</code>, though the transition does limit
-                  overflow.
-                </div>
-              </div>
-            </div>
+  id="faq"
+  className="w-100 d-flex flex-column align-items-center mb-5"
+>
+  <span className="fs-3 pb-2 fw-bold text-info-emphasis">
+    Preguntas frecuentes
+  </span>
+  <div className="w-75">
+    <div className="accordion" id="accordionExample">
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            ¿Cómo puedo registrarme en la plataforma?
+          </button>
+        </h2>
+        <div
+          id="collapseOne"
+          className="accordion-collapse collapse show"
+          data-bs-parent="#accordionExample"
+        >
+          <div className="accordion-body">
+            Para registrarte en la plataforma, sigue estos pasos:
+            <ol>
+              <li>Haz clic en el botón "Iniciar Sesión" en la esquina superior derecha, luego presionar en "Registrate".</li>
+              <li>Completa el formulario de registro con tu información personal.</li>
+              <li>Verifica tu correo electrónico para activar tu cuenta.</li>
+            </ol>
+            Si tienes algún problema durante el proceso, no dudes en contactarnos a través de nuestro formulario de soporte.
           </div>
         </div>
-      </section>
+      </div>
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            ¿Cómo puedo recuperar mi contraseña?
+          </button>
+        </h2>
+        <div
+          id="collapseTwo"
+          className="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div className="accordion-body">
+            Si has olvidado tu contraseña, puedes recuperarla siguiendo estos pasos:
+            <ol>
+              <li>Haz clic en "¿Olvidaste tu contraseña?" en la página de inicio de sesión.</li>
+              <li>Introduce tu dirección de correo electrónico y haz clic en "Enviar".</li>
+              <li>Recibirás un enlace para restablecer tu contraseña en tu correo electrónico.</li>
+              <li>Haz clic en el enlace y sigue las instrucciones para crear una nueva contraseña.</li>
+            </ol>
+            Si no recibes el correo, revisa tu carpeta de spam o contacta con nuestro soporte.
+          </div>
+        </div>
+      </div>
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            ¿Dónde puedo actualizar mi perfil?
+          </button>
+        </h2>
+        <div
+          id="collapseThree"
+          className="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
+        >
+          <div className="accordion-body">
+            Para actualizar tu perfil:
+            <ol>
+              <li>Inicia sesión en tu cuenta.</li>
+              <li>Haz clic en tu nombre en la esquina superior derecha y selecciona "Mi Perfil".</li>
+              <li>En la página de perfil, haz clic en "Editar perfil".</li>
+              <li>Realiza los cambios necesarios y guarda la información.</li>
+            </ol>
+            Si encuentras algún problema con la actualización, por favor, contacta con nuestro equipo de soporte.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <section id="about-us" className={"mb-5"}>
         <div className="w-100 d-flex  justify-content-center">

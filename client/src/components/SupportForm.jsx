@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 
-import "../../public/nav.css";
 import "../../public/support.css";
 
 export const SupportForm = () => {
