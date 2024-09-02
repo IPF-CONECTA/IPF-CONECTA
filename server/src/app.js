@@ -9,7 +9,6 @@ const app = express();
 import { createTablesAndRelations } from "./config/sync.js";
 import router from "./modules/users/userRoutes.js";
 import { routes } from "./export.routes.js";
-
 import path from "path";
 
 app.use(cors());
@@ -20,10 +19,6 @@ app.use(
   })
 );
 app.use(morgan("combined"));
-//ruta para traer las imagenes
-app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
-
-
 
 routes(app);
 connectDB();

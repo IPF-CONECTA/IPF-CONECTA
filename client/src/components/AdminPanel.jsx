@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 // URL base de tu servidor para imágenes
-const BASE_URL = 'http://localhost:4000/uploads/';
+const BASE_URL = 'http://localhost:4000/logoUrl/';
 
 export const AdminPanel = () => {
   const noti = useNoti();

@@ -4,15 +4,17 @@ import path from 'path';
 // Configuración de almacenamiento
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Carpeta donde se guardarán los archivos
+    if (file.fieldname === 'logoUrl') {
+      cb(null, 'uploads/logoUrlS/'); // Carpeta para logos
+    } else if (file.fieldname === 'Profile') {
+      cb(null, 'uploads/profiles/'); // Carpeta para perfiles
+    } else {
+      cb(new Error('Campo de archivo no válido'), false);
+    }
   },
   filename: (req, file, cb) => {
-    // Obtener la fecha y hora actual
     const datetime = new Date().toISOString().replace(/[-T:.Z]/g, '');
-
-    // Crear el nuevo nombre del archivo con fecha y nombre original
     const newFileName = `${datetime}_${file.originalname}`;
-
     cb(null, newFileName);
   },
 });

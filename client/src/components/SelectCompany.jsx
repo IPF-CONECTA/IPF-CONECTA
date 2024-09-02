@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { authService } from "../services/authService";
 import { useNoti } from "../hooks/useNoti";
+const BASE_URL = 'http://localhost:4000/logoUrl/';
 
 export const SelectCompany = () => {
   const [companies, setCompanies] = useState([]);
@@ -86,13 +87,10 @@ export const SelectCompany = () => {
                   key={company.id}
                   className="list-group-item container d-flex flex-column "
                 >
-                  <img
-                    src={company.logoUrl}
-                    alt={`${company.name} logo`}
-                    width="50"
+                    <img src={`${BASE_URL}${company.logoUrl}`} crossOrigin="anonymous" alt={`Logo de ${company.name}`}       width="50"
                     height="50"
-                    className="me-3"
-                  />
+                    className="me-3"/>
+          
                   {company.name}
 
                   <button
