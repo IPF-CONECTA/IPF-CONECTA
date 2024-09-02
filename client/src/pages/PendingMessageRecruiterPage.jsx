@@ -4,7 +4,6 @@ import { Nav, PendingMessageRecruiter } from "../components";
 export const PendingMessageRecruiterPage = () => {
   return (
     <>
-      <Nav />
       <PendingMessageRecruiter />
     </>
   );

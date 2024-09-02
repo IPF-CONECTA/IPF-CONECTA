@@ -26,16 +26,26 @@ export const LoginForm = () => {
   async function onSubmit(data) {
     const response = await login(data);
     if (response && response.role == "recruiter") {
+      console.log(response.associations.name);
       if (response.associations.length == 0) {
         navigate("/registro-de-compañia");
       } else {
-        const isApproved = response.associations.some(
+        const isApproved = response.associations.find(
           (association) => association.status == "Aprobada"
         );
         if (isApproved) {
           navigate("/inicio");
         } else {
-          navigate("/reclutador-en-espera");
+          const isPending = response.associations.find(
+            (association) => association.status == "Pendiente"
+          );
+          if (isPending) {
+            navigate("/reclutador-en-espera", {
+              state: { companyName: isPending.company.name },
+            });
+          } else {
+            navigate("/mensaje-rechazado");
+          }
         }
       }
     }
