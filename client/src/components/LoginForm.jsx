@@ -63,19 +63,12 @@ export const LoginForm = () => {
             <label htmlFor="password" className={styles.label}>
               Contraseña
             </label>
-<<<<<<< HEAD
-            <input type="password"  id="myInput" required  {...register("password")} />
-            {errors.password && <span className={styles["error-message"]}>{errors.password.message}</span>}
-            <input type="checkbox" onClick= {showPass}/>
-
-=======
             <input type="password" required {...register("password")} />
             {errors.password && (
               <span className={styles["error-message"]}>
                 {errors.password.message}
               </span>
             )}
->>>>>>> main
           </div>
           <div className={styles["form-group"]}>
             <button type="submit" className={styles.button}>

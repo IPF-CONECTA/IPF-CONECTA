@@ -19,6 +19,7 @@ export const CreateCompanyForm = () => {
     countryOriginId: "",
     cantEmployees: "",
   });
+  const [logo, setLogo] = useState(null); // Estado para el archivo de logo
 
   useEffect(() => {
     axios.get("http://localhost:4000/industries").then((response) => {
@@ -33,11 +34,18 @@ export const CreateCompanyForm = () => {
   }, []);
 
   function handleInputChange(e) {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      // Si es un archivo, guarda el archivo en el estado de 'logo'
+      setLogo(files[0]);
+    } else {
+      // Para otros inputs, actualiza el formulario
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   }
 
   function handleSubmit(e) {
@@ -51,19 +59,16 @@ export const CreateCompanyForm = () => {
     formDataToSend.append("company[cantEmployees]", formData.cantEmployees);
     formDataToSend.append("message", formData.message);
     if (logo) {
-        formDataToSend.append("logoUrl", logo);
+      formDataToSend.append("logoUrl", logo); // Adjunta el archivo de logo
     }
 
-    axios.post(
-        "http://localhost:4000/create-company",
-        formDataToSend,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                authorization: `Bearer ${authService.getToken()}`
-            }
-        }
-      )
+    axios
+      .post("http://localhost:4000/create-company", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${authService.getToken()}`,
+        },
+      })
       .then((response) => {
         if (response.status === 201) {
           noti(response.data.message, "success");
@@ -71,11 +76,14 @@ export const CreateCompanyForm = () => {
             navigate("/company-confirmed");
           }, 1500);
         }
-    })
-    .catch(error => {
+      })
+      .catch((error) => {
         console.error("Error creating company:", error.response.data);
-        noti(error.response.data.message || "Error al crear la empresa", "error");
-    });
+        noti(
+          error.response.data.message || "Error al crear la empresa",
+          "error"
+        );
+      });
   }
 
   return (
@@ -171,14 +179,14 @@ export const CreateCompanyForm = () => {
           </div>
         </div>
 
-      <div className="mb-3">
-        <input
-          type="file"
-          name="logoUrl"
-          className="form-control"
-          onChange={handleInputChange}
-        />
-      </div>
+        <div className="mb-3">
+          <input
+            type="file"
+            name="logoUrl"
+            className="form-control"
+            onChange={handleInputChange}
+          />
+        </div>
 
         <div className="text-center">
           <button type="submit" className="btn btn-primary">

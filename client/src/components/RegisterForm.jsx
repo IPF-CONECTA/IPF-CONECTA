@@ -93,19 +93,11 @@ export const RegisterForm = () => {
       setStep(4);
     } catch (error) {
       console.error("Error durante el registro:", error);
-<<<<<<< HEAD
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        general: error.response?.data?.message || "Error en el registro",
-      }));
-      noti(errors.general, "error");
-=======
       setErrorMessage(error.response?.data?.message || "Error en el registro");
       noti(
         error.response?.data?.message || error.response.data.errors[0].msg,
         "error"
       );
->>>>>>> main
     }
   };
 
