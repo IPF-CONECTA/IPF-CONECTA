@@ -19,7 +19,8 @@ export const CreateCompanyForm = () => {
     countryOriginId: "",
     cantEmployees: "",
   });
-  const [logo, setLogo] = useState(null); // Estado para el archivo de logo
+  const [logo, setLogo] = useState(null); 
+  const [previewLogo, setPreviewLogo] = useState(null); 
 
   useEffect(() => {
     axios.get("http://localhost:4000/industries").then((response) => {
@@ -37,10 +38,10 @@ export const CreateCompanyForm = () => {
     const { name, value, type, files } = e.target;
 
     if (type === "file") {
-      // Si es un archivo, guarda el archivo en el estado de 'logo'
-      setLogo(files[0]);
+      const file = files[0];
+      setLogo(file);
+      setPreviewLogo(URL.createObjectURL(file)); // Crear una URL temporal para la previsualización
     } else {
-      // Para otros inputs, actualiza el formulario
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -59,7 +60,7 @@ export const CreateCompanyForm = () => {
     formDataToSend.append("company[cantEmployees]", formData.cantEmployees);
     formDataToSend.append("message", formData.message);
     if (logo) {
-      formDataToSend.append("logoUrl", logo); // Adjunta el archivo de logo
+      formDataToSend.append("logoUrl", logo); 
     }
 
     axios
@@ -93,6 +94,7 @@ export const CreateCompanyForm = () => {
           <h1>Registro de Empresa</h1>
         </div>
 
+        {/* Campo de entrada de texto para mensaje */}
         <div className="mb-3">
           <input
             type="text"
@@ -105,6 +107,7 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
+        {/* Campo de entrada de texto para nombre */}
         <div className="mb-3">
           <input
             type="text"
@@ -117,6 +120,7 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
+        {/* Campo de entrada de texto para descripción */}
         <div className="mb-3">
           <input
             type="text"
@@ -129,6 +133,7 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
+        {/* Selección de industria */}
         <div className="mb-3">
           <select
             name="industryId"
@@ -146,6 +151,7 @@ export const CreateCompanyForm = () => {
           </select>
         </div>
 
+        {/* Selección de país y cantidad de empleados */}
         <div className="mb-3">
           <div className="row">
             <div className="col-md-6 mb-3">
@@ -179,6 +185,7 @@ export const CreateCompanyForm = () => {
           </div>
         </div>
 
+        {/* Entrada de archivo para logo */}
         <div className="mb-3">
           <input
             type="file"
@@ -188,6 +195,19 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
+        {/* Previsualización de imagen del logo */}
+        {previewLogo && (
+          <div className="mb-3 text-center">
+            <img
+              src={previewLogo}
+              alt="Previsualización del Logo"
+              className="img-thumbnail"
+              style={{ maxHeight: "200px" }}
+            />
+          </div>
+        )}
+
+        {/* Botón de envío del formulario */}
         <div className="text-center">
           <button type="submit" className="btn btn-primary">
             Siguiente
