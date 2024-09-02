@@ -1,15 +1,3 @@
-.FinPag {
-  background-color: #b8dfff;
-  padding: 20px 0;
-}
-
-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .nav {
   list-style: none;
   display: flex;

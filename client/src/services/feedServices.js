@@ -153,7 +153,6 @@ export const getPost = async (postId) => {
                 authorization: `Bearer ${authService.getToken()}`
             }
         })
-        console.log(res)
         return res.data
     } catch (error) {
         console.log(error)

@@ -1,6 +1,9 @@
 .postForm {
   max-width: none;
   height: 50px;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
 }
 
 .formcontainer {

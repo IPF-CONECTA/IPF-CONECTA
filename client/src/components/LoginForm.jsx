@@ -36,7 +36,7 @@ export const LoginForm = () => {
         <img src="/public/iniciar-sesion.png" alt="Login" />
       </div>
       <div className={styles["login-form"]}>
-        <h2 className={styles["title-h2"]}>Inicie Sesión</h2>
+        <h2 className={styles["title-h2"]}>Iniciar Sesión</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles["form-group"]}>
             <label htmlFor="email" className={styles.label}>
