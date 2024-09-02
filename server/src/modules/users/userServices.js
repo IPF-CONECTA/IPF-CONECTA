@@ -9,6 +9,11 @@ import { sequelize } from '../../config/db.js';
 import { Role } from '../roles/roleModel.js';
 import { Association } from '../recruiters/associations/associationModel.js';
 import { Company } from '../recruiters/companies/companyModel.js';
+import { CompanyIndustry } from '../recruiters/companies/companyIndustry/companyIndustryModel.js';
+import { LangsUser } from './langs_user/langsUserModel.js';
+import { Lang } from '../langs/langModel.js';
+import { LangLevel } from '../langs/langLevelsModel.js';
+import { Post } from '../posts/postModel.js';
 
 export const getUsers = async () => {
     const users = await User.findAll()
@@ -55,9 +60,9 @@ export const getRecomendedUsersSvc = async (profileId) => {
     }
 }
 
-export const getUserById = async (id) => {
+export const getUserById = async (userId) => {
     try {
-        const user = await User.findByPk(id, {
+        const user = await User.findByPk(userId, {
             attributes: ['email'],
             include: [{
                 model: Profile,
@@ -67,6 +72,7 @@ export const getUserById = async (id) => {
                 attributes: ['name']
             }]
         })
+        console.log('user en servicio', user)
         return user
     } catch (error) {
         console.log(error)
@@ -74,50 +80,7 @@ export const getUserById = async (id) => {
     }
 }
 
-export const getProfile = async (id, followingId) => {
-    try {
-        const { role } = await Profile.findOne({
-            where: {
-                id: followingId
-            }
-        })
-        if (role.name == 'recruiter') {
-            profile = await Profile.findByPk(followingId, {
-                attributes: ['id', 'profilePic', 'names', 'surnames', 'title', 'about'],
-                include: [{
-                    model: User,
-                    attributes: ['email']
-                }, {
-                    model: Role,
-                    attributes: ['name']
-                }, {
-                    model: Association,
-                    include: [{
-                        model: Company
-                    }]
-                }]
-            })
-        }
-        const following = await Follower.findOne({
-            where: {
-                followingId: profile.id,
-                followerId: id
-            }
-        })
-        const cantFollowers = await Follower.count({
-            where: {
-                followingId: profile.id
-            }
-        })
-        const cantFollowing = await Follower.count({
-            where: {
-                followerId: profile.id
-            }
-        })
-    } catch (error) {
 
-    }
-}
 
 export const getUserInfoSvc = async (id, followingId) => {
     try {

@@ -1,5 +1,7 @@
 .mainContainer {
   width: 65%;
+  height: 95%;
+  padding-top: 60px;
 }
 
 .asideContainer {
@@ -8,4 +10,7 @@
   position: fixed;
   top: 20%;
   right: 0;
+}
+.header {
+  height: 125px;
 }

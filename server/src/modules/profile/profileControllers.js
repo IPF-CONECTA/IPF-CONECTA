@@ -1,9 +1,10 @@
-import { getProfileSvc } from "./profileServices.js"
+import { getProfileById } from "./profileServices.js"
 
-export const getProfile = async (req, res) => {
+export const getProfileByIdCtrl = async (req, res) => {
     const { id } = req.user.profile;
+    const { profileId } = req.params
     try {
-        const profile = await getProfileSvc(id)
+        const profile = await getProfileById(id, profileId)
 
         if (!profile) return res.status(404).json()
 
