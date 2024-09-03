@@ -16,9 +16,11 @@ import {
   CreateCompanyPage,
   SupportPage,
   PostPage,
+  MessageRecruiterPage,
   ProfilePage,
   CreateJobsFormPage,
   AdminDashboardPage,
+  WaitingAssociationsApprovalPage,
 } from "../pages";
 
 export const Routers = () => {
@@ -51,6 +53,14 @@ export const Routers = () => {
         <Route
           path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
+        />
+        <Route
+          path="/mis-compañias"
+          element={<WaitingAssociationsApprovalPage />}
+        />
+        <Route
+          path="/solicitud-del-reclutador"
+          element={<MessageRecruiterPage />}
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />

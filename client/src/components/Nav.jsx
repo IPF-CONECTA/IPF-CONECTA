@@ -7,6 +7,7 @@ import styles from "../../public/css/nav.module.css";
 
 export const Nav = () => {
   const { authState, logout } = useContext(authContext);
+  //console.log(authState);
   const navigate = useNavigate();
 
   const handleLogout = async () => {

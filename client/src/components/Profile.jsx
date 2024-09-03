@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { getProfile } from "../services/feedServices";
 import { useNoti } from "../hooks/useNoti";
 import styles from "../../public/css/profile.module.css";
+import RecomendedAccounts from "./RecomendedAccounts";
 export const Profile = () => {
   const noti = useNoti();
   const { profileId } = useParams();
@@ -25,9 +26,11 @@ export const Profile = () => {
     <>
       {profileData && (
         <div
-          className={`w-100 d-flex justify-content-center ${styles.mainContainer}`}
+          className={`w-100 d-flex justify-content-evenly px-5 ${styles.mainContainer}`}
         >
-          <div className={`profile w-75 d-flex flex-column align-items-center`}>
+          <div
+            className={`profile d-flex flex-column align-items-center ${styles.profileContainer}`}
+          >
             <header className={`w-100 ${styles.header}`}>
               <div className="bg-dark w-100 h-100 p-3 rounded d-flex">
                 <img
@@ -80,8 +83,19 @@ export const Profile = () => {
                 Idiomas
               </Link>
             </nav>
-            <main></main>
+            <main className="w-100">
+              <section className="w-100 bg-success rounded">
+                <h5 className="fw-bold">Acerca de mi</h5>
+                {profileData.profile.about !== null ? (
+                  <div>{profileData.profile.about}</div>
+                ) : (
+                  <span>Sin descripción</span>
+                )}
+              </section>
+              <section className="about bg-dark w-25 text-light"></section>
+            </main>
           </div>
+          <RecomendedAccounts />
         </div>
       )}
     </>

@@ -1,6 +1,7 @@
 export * from "./AdminPanel";
 export * from "./CreateCompanyForm";
 export * from "./CreateCompanyUbicationForm";
+export * from "./CreateJobsForm";
 export * from "./Footer";
 export * from "./Main";
 export * from "./JobCard";
@@ -10,6 +11,7 @@ export * from "./Layout";
 export * from "./LoginForm";
 export * from "./Main";
 export * from "./Nav";
+export * from "./MessageRecruiter";
 export * from "./PostList";
 export * from "./RecomendedAccounts";
 export * from "./RegisterForm";
@@ -18,4 +20,4 @@ export * from "./RequestList";
 export * from "./SelectCompany";
 export * from "./SupportForm";
 export * from "./Profile";
-export * from './CreateJobsForm'
+export * from "./WaitingAssociationsApproval";

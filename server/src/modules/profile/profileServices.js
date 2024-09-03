@@ -5,7 +5,7 @@ import { Profile } from "./profileModel.js"
 export const getProfileById = async (id, followingId) => {
     try {
         const profile = await Profile.findByPk(followingId, {
-            attributes: ['id', 'names', 'surnames', 'profilePic', 'title'],
+            attributes: ['id', 'names', 'surnames', 'profilePic', 'title', 'about'],
             include: {
                 model: User,
                 attributes: ['id'],
