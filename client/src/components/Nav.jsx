@@ -7,7 +7,6 @@ import styles from "../../public/css/nav.module.css";
 
 export const Nav = () => {
   const { authState, logout } = useContext(authContext);
-  //console.log(authState);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -70,8 +69,8 @@ export const Nav = () => {
                     >
                       Mi perfil
                       <img
-                        height={25}
-                        width={25}
+                        height={24}
+                        width={24}
                         src={authState.user.profile.profilePic}
                         alt="tu foto de perfil"
                       />
@@ -81,23 +80,12 @@ export const Nav = () => {
                     <>
                       <li>
                         <Link
-                          to={"/dash"}
+                          to={"/admin/dash"}
                           className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
                         >
                           DashBoard
-                          <span className="material-symbols-outlined fw-light fs-3">
-                            dashboard
-                          </span>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to={"/admin"}
-                          className="dropdown-item d-flex justify-content-between w-100 p-0 pt-2"
-                        >
-                          Panel
-                          <span className="material-symbols-outlined fw-light fs-3">
-                            shield_person
+                          <span className="material-symbols-outlined  fw-light">
+                            admin_panel_settings
                           </span>
                         </Link>
                       </li>

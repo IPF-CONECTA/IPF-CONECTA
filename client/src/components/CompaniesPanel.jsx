@@ -13,7 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-export const AdminPanel = () => {
+export const CompaniesPanel = () => {
   const noti = useNoti();
   const [activeTab, setActiveTab] = useState("Aprobada");
   const [selectedCompany, setSelectedCompany] = useState(null);

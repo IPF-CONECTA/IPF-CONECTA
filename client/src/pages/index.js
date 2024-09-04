@@ -1,4 +1,5 @@
-export * from "./AdminPanelPage";
+export * from "./AssociationsPanelPage";
+export * from "./CompaniesPanelPage";
 export * from "./CompanyConfirmedPage";
 export * from "./CompanyRegisterPage";
 export * from "./CreateCompanyUbicationPage";
@@ -9,7 +10,6 @@ export * from "./JobsDetailsPage";
 export * from "./JobSearchPage";
 export * from "./LoginPage";
 export * from "./NotFoundPage";
-export * from "./PanelPage";
 export * from "./RegisterPage";
 export * from "./MessageRecruiterPage";
 export * from "./SelectCompanyPage";

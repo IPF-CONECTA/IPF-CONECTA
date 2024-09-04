@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {Link} from 'react-router-dom'
-
+import { Link } from "react-router-dom";
 
 import "../styles/RecruiterPanel.css";
 
@@ -36,14 +35,14 @@ export function RecruiterPanel() {
 
   return (
     <div className="container">
-      <h1>Panel de reclu tador</h1>
+      <h1>Panel de reclutador</h1>
       <h2>Selecciona la empresa a la que perteneces.</h2>
       <input
         type="search"
         id="searchInput"
         value={searchTerm}
         onChange={handleSearchChange}
-        placeholder="Buscar compañía..."
+        placeholder="Buscar empresa..."
       />
       <h3>Empresas a la que quizas pertenezcas: </h3>
       <div id="searchResults">

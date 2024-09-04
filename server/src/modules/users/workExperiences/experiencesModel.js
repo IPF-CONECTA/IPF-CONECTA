@@ -19,7 +19,6 @@ export const WorkExperience = sequelize.define('workExperience', {
         type: DataTypes.UUID,
         allowNull: false
     },
-
     ubicationId: {
         type: DataTypes.INTEGER,
         allowNull: false

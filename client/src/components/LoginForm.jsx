@@ -28,7 +28,7 @@ export const LoginForm = () => {
     if (response && response.role == "recruiter") {
       console.log(response.associations.name);
       if (response.associations.length == 0) {
-        navigate("/registro-de-compañia");
+        navigate("/seleccionar-empresa");
       } else {
         const isApproved = response.associations.find(
           (association) => association.status == "Aprobada"

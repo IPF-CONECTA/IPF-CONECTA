@@ -1,6 +1,6 @@
 import axios from "axios";
 import { authService } from "./authService";
-export const getVerifications = async (status) => {
+export const getAssociationsSvc = async (status) => {
     try {
         const res = await axios.get(`http://localhost:4000/admin/get-associations/${status}`, {
             headers: {
