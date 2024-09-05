@@ -16,6 +16,23 @@ export const getUsersController = async (_req, res) => {
     }
 };
 
+export const getUserByIdCtrl = async (req, res) => {
+    try {
+        const { id } = req.user.profile;
+        const { profileId } = req.params;
+        console.log(id, profileId)
+        if (!id || !profileId) return res.status(400).json();
+
+        const profile = await getUserById(id, profileId);
+        if (!profile) return res.status(404).json();
+
+        res.status(200).json(profile)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
 export const getUserInfoCtrl = async (req, res) => {
     const { id } = req.user.profile
     const { followingId } = req.params

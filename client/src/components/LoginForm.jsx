@@ -33,9 +33,35 @@ export const LoginForm = () => {
   }, [authState.isLogged, navigate]);
 
   async function onSubmit(data) {
-    const role = await login(data);
-    if (role && role == "recruiter") {
-      navigate("/seleccionar-compañia");
+    const response = await login(data);
+    if (response && response.role == "recruiter") {
+      console.log(response.associations.name);
+      if (response.associations.length == 0) {
+        navigate("/seleccionar-empresa");
+      } else {
+        const isApproved = response.associations.find(
+          (association) => association.status == "Aprobada"
+        );
+        if (isApproved) {
+          navigate("/inicio");
+        } else {
+          const isPending = response.associations.find(
+            (association) => association.status == "Pendiente"
+          );
+          if (isPending) {
+            navigate("/solicitud-del-reclutador", {
+              state: {
+                companyName: isPending.company.name,
+                status: "Pendiente",
+              },
+            });
+          } else {
+            navigate("/solicitud-del-reclutador", {
+              state: { status: "Rechazada" },
+            });
+          }
+        }
+      }
     }
   }
 

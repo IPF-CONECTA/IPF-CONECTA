@@ -378,13 +378,6 @@ section {
   border-radius: 5px;
 }
 
-.Content {
-  display: flex;
-  width: 100%;
-  max-width: 1000px;
-  justify-content: space-between;
-}
-
 .CompanyList {
   display: flex;
   flex-direction: column;

@@ -26,19 +26,23 @@ export const isVerifiedAccount = async (req, res, next) => {
 export const isToken = async (req, res, next) => {
   try {
     let token = req.headers.authorization;
+    console.log(token)
     if (!token) {
       throw new Error("Inicie sesion para continuar");
     }
 
     token = token.split(" ")[1];
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
-    const isUser = await getUserById(userId);
-    if (!isUser) {
+    console.log(userId)
+    const user = await getUserById(userId);
+    if (!user) {
       throw new Error("Error al verificar el token, inicie sesion nuevamente");
     }
-    req.user = isUser;
+    console.log(user)
+    req.user = user;
     next();
   } catch (error) {
+    console.log(error)
     if (error.message === "jwt malformed") {
       return res.status(401).json({ message: "Inicie sesion para continuar" });
     }

@@ -10,7 +10,6 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [companyId, setCompanyId] = useState(null);
   const [formData, setFormData] = useState({
     message: "",
     name: "",
@@ -88,13 +87,13 @@ export const CreateCompanyForm = () => {
   }
 
   return (
-    <>
-      <form className="w-50 mx-auto" onSubmit={handleSubmit}>
-        <div className="text-center mb-4">
-          <h1>Registro de Empresa</h1>
-        </div>
+    <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      <div className="w-100" style={{ maxWidth: '600px' }}>
+        <form onSubmit={handleSubmit}>
+          <div className="text-center mb-4">
+            <h1>Registro de Empresa</h1>
+          </div>
 
-        {/* Campo de entrada de texto para mensaje */}
         <div className="mb-3">
           <input
             type="text"
@@ -107,7 +106,6 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
-        {/* Campo de entrada de texto para nombre */}
         <div className="mb-3">
           <input
             type="text"
@@ -120,7 +118,6 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
-        {/* Campo de entrada de texto para descripción */}
         <div className="mb-3">
           <input
             type="text"
@@ -133,7 +130,6 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
-        {/* Selección de industria */}
         <div className="mb-3">
           <select
             name="industryId"
@@ -151,7 +147,6 @@ export const CreateCompanyForm = () => {
           </select>
         </div>
 
-        {/* Selección de país y cantidad de empleados */}
         <div className="mb-3">
           <div className="row">
             <div className="col-md-6 mb-3">
@@ -171,21 +166,20 @@ export const CreateCompanyForm = () => {
               </select>
             </div>
 
-            <div className="col-md-6 mb-3">
-              <input
-                type="number"
-                name="cantEmployees"
-                className="form-control"
-                placeholder="Cantidad de empleados"
-                value={formData.cantEmployees}
-                onChange={handleInputChange}
-                required
-              />
+              <div className="col-md-6 mb-3">
+                <input
+                  type="number"
+                  name="cantEmployees"
+                  className="form-control"
+                  placeholder="Cantidad de empleados"
+                  value={formData.cantEmployees}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Entrada de archivo para logo */}
         <div className="mb-3">
           <input
             type="file"
@@ -195,19 +189,6 @@ export const CreateCompanyForm = () => {
           />
         </div>
 
-        {/* Previsualización de imagen del logo */}
-        {previewLogo && (
-          <div className="mb-3 text-center">
-            <img
-              src={previewLogo}
-              alt="Previsualización del Logo"
-              className="img-thumbnail"
-              style={{ maxHeight: "200px" }}
-            />
-          </div>
-        )}
-
-        {/* Botón de envío del formulario */}
         <div className="text-center">
           <button type="submit" className="btn btn-primary">
             Siguiente

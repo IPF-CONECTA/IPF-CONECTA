@@ -16,7 +16,7 @@ import TextField from "@mui/material/TextField";
 // URL base de tu servidor para imágenes
 const BASE_URL = 'http://localhost:4000/logoUrl/';
 
-export const AdminPanel = () => {
+export const CompaniesPanel = () => {
   const noti = useNoti();
   const [activeTab, setActiveTab] = useState("Aprobada");
   const [selectedCompany, setSelectedCompany] = useState(null);

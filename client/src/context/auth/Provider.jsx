@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
   const validateToken = async (token) => {
     if (token) {
       const { data, status } = await authService.verifyToken(token);
-      console.log(data);
       if (status != 200) {
         authService.removeToken();
         return noti("Inicie sesion nuevamente", "error");
@@ -47,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const res = await authService.login(credentials);
-    console.log(res);
+    console.log({ res });
     if (res.status != 200) {
       return noti(res.message || "error", "error");
     }
@@ -63,7 +62,13 @@ export const AuthProvider = ({ children }) => {
       },
     });
     noti(res.data.message, "success");
-    return res.data.response.existingUser.role.name;
+    const response = { role: res.data.response.existingUser.role.name };
+
+    if (res.data.response.existingUser.role.name === "recruiter") {
+      response.associations = res.data.response.associations;
+    }
+
+    return response;
   };
 
   const logout = () => {
