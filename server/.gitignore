@@ -6,3 +6,10 @@ uploads/**/*.jpg
 uploads/**/*.jpeg
 uploads/**/*.gif
 uploads/**/*.svg
+
+
+profilePics/**/*.png
+profilePics/**/*.jpg
+profilePics/**/*.jpeg
+profilePics/**/*.gif
+profilePics/**/*.svg

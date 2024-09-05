@@ -6,8 +6,8 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === 'logoUrl') {
       cb(null, 'uploads/logoUrlS/'); // Carpeta para logos
-    } else if (file.fieldname === 'Profile') {
-      cb(null, 'uploads/profiles/'); // Carpeta para perfiles
+    } else if (file.fieldname === 'ProfilePic') {
+      cb(null, 'uploads/profilePics/'); // Carpeta para perfiles
     } else {
       cb(new Error('Campo de archivo no válido'), false);
     }
