@@ -22,7 +22,6 @@ export const CreateCompanyForm = () => {
   const [previewLogo, setPreviewLogo] = useState(null);
 
   useEffect(() => {
-    // Fetch industries and countries data
     axios.get("http://localhost:4000/industries").then((response) => {
       setIndustries(response.data);
     });
@@ -38,7 +37,7 @@ export const CreateCompanyForm = () => {
     if (type === "file") {
       const file = files[0];
       setLogo(file);
-      setPreviewLogo(URL.createObjectURL(file)); // Create a temporary URL for preview
+      setPreviewLogo(URL.createObjectURL(file)); 
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -59,7 +58,7 @@ export const CreateCompanyForm = () => {
     formDataToSend.append("message", formData.message);
 
     if (logo) {
-      formDataToSend.append("logoUrl", logo); // Append the logo file to the FormData
+      formDataToSend.append("logoUrl", logo);
     }
 
     axios
@@ -70,7 +69,7 @@ export const CreateCompanyForm = () => {
       },
     })
     .then((response) => {
-      console.log(response); // Agrega un log para verificar la respuesta completa
+      console.log(response); 
       const companyId = response.data.id;
   
       if (response.status === 201 && companyId) {
