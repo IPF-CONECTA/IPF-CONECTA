@@ -51,7 +51,7 @@ export const CreateCompanyForm = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-
+  
     const formDataToSend = new FormData();
     formDataToSend.append("company[name]", formData.name);
     formDataToSend.append("company[description]", formData.description);
@@ -59,10 +59,11 @@ export const CreateCompanyForm = () => {
     formDataToSend.append("company[countryOriginId]", formData.countryOriginId);
     formDataToSend.append("company[cantEmployees]", formData.cantEmployees);
     formDataToSend.append("message", formData.message);
+  
     if (logo) {
       formDataToSend.append("logoUrl", logo); 
     }
-
+  
     axios
       .post("http://localhost:4000/create-company", formDataToSend, {
         headers: {
@@ -71,22 +72,22 @@ export const CreateCompanyForm = () => {
         },
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           noti(response.data.message, "success");
-          navigate(`/crear-sede/${response.data.id}`);
+          setTimeout(() => {
+            navigate(`/crear-sede/${response.data.id}`);
+          }, 1500);
         }
       })
       .catch((error) => {
-        console.log(error);
-        let errorMsg = error.response.data.message;
-        if (!errorMsg) {
-          errorMsg = error.response.data.errors[0].msg;
-        }
-        noti(errorMsg, "error");
-        console.error("Error creating company:", error);
+        console.error("Error creating company:", error.response.data);
+        noti(
+          error.response.data.message || "Error al crear la empresa",
+          "error"
+        );
       });
   }
+  
 
   return (
     <>

@@ -5,7 +5,7 @@ import path from 'path';
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === 'logoUrl') {
-      cb(null, 'uploads/logoUrlS/'); // Carpeta para logos
+      cb(null, 'uploads/logoUrls/'); // Carpeta para logos
     } else if (file.fieldname === 'ProfilePic') {
       cb(null, 'uploads/profilePics/'); // Carpeta para perfiles
     } else {
