@@ -137,8 +137,12 @@ const PostCard = ({ post }) => {
               <div>
                 <img
                   className="me-2 rounded-circle"
-                  width={50}
-                  height={50}
+                  width={35}
+                  height={35}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/perfil/${post.profile.id}`);
+                  }}
                   onMouseEnter={() => handleShowProfile(true, post.profile.id)}
                   onMouseLeave={() => handleShowProfile(false, post.profile.id)}
                   src={post.profile.profilePic}

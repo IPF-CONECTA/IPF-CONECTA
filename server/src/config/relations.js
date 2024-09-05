@@ -250,7 +250,7 @@ export const createRelations = async () => {
       foreignKey: 'skillId'
     });
     Profile.hasMany(WorkExperience, {
-      foreignKey: 'userId'
+      foreignKey: 'profileId'
     });
   } catch (error) {
     console.log(error)

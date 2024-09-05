@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../public/css/homeNav.module.css";
+import { authContext } from "../context/auth/Context";
 const HomeNav = () => {
   const [selectedPage, setSelectedPage] = useState("inicio");
+  const { authState } = useContext(authContext);
+
+  useEffect(() => {
+    console.log(authState);
+  }, [authState]);
   return (
     <aside className={`position-fixed top-0 h-100 ${styles.homeNav}`}>
       <div
@@ -33,7 +39,7 @@ const HomeNav = () => {
           }}
         >
           <Link
-            to="/perfil"
+            to={`/perfil/${authState.user.profile.id}`}
             className={
               selectedPage === "perfil"
                 ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`

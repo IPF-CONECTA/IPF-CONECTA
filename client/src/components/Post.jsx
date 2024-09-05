@@ -3,7 +3,7 @@ import { getProfileInfo, like, repostSvc } from "../services/feedServices";
 import styles from "../../public/css/postById.module.css";
 import { getDate, getTime } from "../helpers/getTime";
 import { ProfileHover } from "./ProfileHover";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Post = ({ post, setWrite }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -12,7 +12,7 @@ const Post = ({ post, setWrite }) => {
   const profileRef = useRef(null);
   const [liked, setLiked] = useState(false);
   const [reposted, setReposted] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (post) {
       setLiked(post.liked);
@@ -99,11 +99,15 @@ const Post = ({ post, setWrite }) => {
                 <div>
                   <img
                     className="me-2 rounded-circle"
-                    width={50}
-                    height={50}
+                    width={40}
+                    height={40}
                     onMouseEnter={() =>
                       handleShowProfile(true, post.profile.id)
                     }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/perfil/${post.profile.id}`);
+                    }}
                     onMouseLeave={() =>
                       handleShowProfile(false, post.profile.id)
                     }

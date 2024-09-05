@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getProfile } from "../services/feedServices";
+import { getExperiences, getProfile } from "../services/feedServices";
 import { useNoti } from "../hooks/useNoti";
 import styles from "../../public/css/profile.module.css";
 import RecomendedAccounts from "./RecomendedAccounts";
@@ -8,18 +8,28 @@ export const Profile = () => {
   const noti = useNoti();
   const { profileId } = useParams();
   const [profileData, setProfileData] = useState(null);
+  const [experiences, setExperiences] = useState([]);
 
   useEffect(() => {
-    const fetchProfileData = async () => {
+    const fetchProfile = async () => {
       const res = await getProfile(profileId);
       if (res.status !== 200) {
-        noti(res.message, "error");
+        return noti(res.message, "error");
       }
       setProfileData(res.data);
       console.log(res.data);
     };
-
-    fetchProfileData(profileId);
+    const fetchExperiences = async () => {
+      const res = await getExperiences(profileId);
+      if (res !== 200 && res !== 404) {
+        return noti("error", "error");
+      }
+      if (res.status === 200) {
+        setExperiences(res.data);
+      }
+    };
+    fetchExperiences(profileId);
+    fetchProfile(profileId);
   }, [profileId]);
 
   return (
@@ -39,15 +49,47 @@ export const Profile = () => {
                   alt="hola"
                   className="rounded-circle bg-light me-3"
                 />
-                <div className="h-100 d-flex flex-column justify-content-center">
-                  <span className="text-light fs-5 fw-bold">
-                    {profileData.profile.names +
-                      " " +
-                      profileData.profile.surnames}
-                  </span>
-                  <span className="text-light fst-italic">
-                    {profileData.profile.title}
-                  </span>
+                <div className="h-100 d-flex  justify-content-between w-100">
+                  <div className="d-flex flex-column justify-content-center">
+                    <span className="text-white fs-5 fw-bold pb-1">
+                      {profileData.profile.names +
+                        " " +
+                        profileData.profile.surnames}
+                    </span>
+                    <span className="text-light fst-italic">
+                      {profileData.profile.title}
+                    </span>
+                  </div>
+                  <div className="d-flex seguidores">
+                    <div className="d-flex flex-column align-items-center">
+                      <div className="d-flex mb-2">
+                        <div className="text-light d-flex flex-column me-3 align-items-center">
+                          Seguidores
+                          <span>{profileData.cantFollowers}</span>
+                        </div>
+                        <div className="d-flex flex-column align-items-center text-light ">
+                          Siguiendo
+                          <span>{profileData.cantFollowing}</span>
+                        </div>
+                      </div>
+
+                      {profileData.own ? (
+                        <button className="btn btn-secondary fw-semibold">
+                          Editar perfil
+                        </button>
+                      ) : (
+                        <button
+                          className={`btn ${
+                            profileData.following
+                              ? "btn-outline-info text-dark fw-bold"
+                              : "btn-info text-white fw-bold"
+                          }`}
+                        >
+                          {profileData.following ? "Siguiendo" : "Seguir"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </header>
@@ -84,7 +126,7 @@ export const Profile = () => {
               </Link>
             </nav>
             <main className="w-100">
-              <section className="w-100 bg-success rounded">
+              <section className="w-100 border">
                 <h5 className="fw-bold">Acerca de mi</h5>
                 {profileData.profile.about !== null ? (
                   <div>{profileData.profile.about}</div>
@@ -92,7 +134,9 @@ export const Profile = () => {
                   <span>Sin descripción</span>
                 )}
               </section>
-              <section className="about bg-dark w-25 text-light"></section>
+              <section className="about bg-dark w-100 text-light">
+                <h5 className="fw-bold">Experiencias</h5>
+              </section>
             </main>
           </div>
           <RecomendedAccounts />
