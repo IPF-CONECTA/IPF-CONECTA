@@ -5,10 +5,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
-import { updateAssociationStatus } from "../services/adminServices";
+import { updateAssociationStatus, getAssociationsSvc } from "../services/adminServices";
 import { useNavigate } from "react-router-dom";
-import { getAssociationsSvc } from "../services/adminServices";
 import { useNoti } from "../hooks/useNoti";
+
+const BASE_URL = "http://localhost:4000/logoUrl/";
 
 export const AssociationsPanel = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,6 +18,8 @@ export const AssociationsPanel = () => {
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [tab, setTab] = useState("Pendiente");
   const noti = useNoti();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false); // Estado para manejar el diálogo
 
   useEffect(() => {
     const getAssociations = async () => {
@@ -33,29 +36,17 @@ export const AssociationsPanel = () => {
     getAssociations();
   }, [tab]);
 
-  const handleTabClick = async (tab) => {
+  const handleTabClick = (tab) => {
     setTab(tab);
     setAssociations([]);
   };
 
-  const acceptRequest = (index) => {
-    setAlert({
-      show: true,
-      message: `Solicitud de ${associations[index].name} aceptada.`,
-      type: "success",
-    });
-    const newAssociations = associations.filter((_, i) => i !== index);
-    setAssociations(newAssociations);
-  };
-
-  const rejectRequest = (index, reason) => {
-    setAlert({
-      show: true,
-      message: `Solicitud de ${associations[index].name} rechazada. Razón: ${reason}`,
-      type: "danger",
-    });
-    const newAssociations = associations.filter((_, i) => i !== index);
-    setAssociations(newAssociations);
+  const handleAssociationStatus = async (id, status, message) => {
+    if (status === "rechazar" && !message) {
+      noti("Por favor, justifica el motivo del rechazo", "warning");
+      return;
+    }
+    await updateAssociationStatus(id, status, message);
   };
 
   useEffect(() => {
@@ -68,15 +59,24 @@ export const AssociationsPanel = () => {
     }
   }, [alert]);
 
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+  const acceptRequest = (index) => {
+    setAlert({
+      show: true,
+      message: `Solicitud de ${associations[index].company.name} aceptada.`,
+      type: "success",
+    });
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
+  };
 
-  const handleAssociationStatus = async (id, status, message) => {
-    if (status === "rechazar" && !message) {
-      noti("Por favor, justifica el motivo del rechazo", "warning");
-      return;
-    }
-    await updateAssociationStatus(id, status, message);
+  const rejectRequest = (index, reason) => {
+    setAlert({
+      show: true,
+      message: `Solicitud de ${associations[index].company.name} rechazada. Razón: ${reason}`,
+      type: "danger",
+    });
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
   };
 
   return (
@@ -108,9 +108,7 @@ export const AssociationsPanel = () => {
                 <li
                   key={index}
                   className="Company"
-                  onClick={() => {
-                    setSelectedAssociation(association);
-                  }}
+                  onClick={() => setSelectedAssociation(association)}
                 >
                   <div>
                     <img
@@ -119,6 +117,7 @@ export const AssociationsPanel = () => {
                         "https://via.placeholder.com/40"
                       }
                       alt="Usuario"
+                      crossOrigin="anonymous"
                     />
                     <div>
                       <strong>{association.profile.names}</strong>
@@ -128,10 +127,11 @@ export const AssociationsPanel = () => {
                   <p className="m-0">{association.company.name}</p>
                   <img
                     src={
-                      association.company.logoUrl ||
+                      `${BASE_URL}${association.company.logoUrl}` ||
                       "https://via.placeholder.com/40"
                     }
                     alt="Empresa"
+                    crossOrigin="anonymous"
                   />
                 </li>
               ))}
@@ -151,11 +151,12 @@ export const AssociationsPanel = () => {
                     <img
                       height={"100px"}
                       src={
-                        selectedAssociation.company.logoUrl ||
+                        `${BASE_URL}${selectedAssociation.company.logoUrl}` ||
                         "https://via.placeholder.com/100"
                       }
                       alt={`${selectedAssociation.company.name} Logo`}
                       className="CompanyLogo"
+                      crossOrigin="anonymous"
                     />
                     <p>
                       <strong>Nombre:</strong>{" "}
@@ -177,6 +178,7 @@ export const AssociationsPanel = () => {
                         }
                         alt="Foto de perfil"
                         className="ProfilePic"
+                        crossOrigin="anonymous"
                       />
                       <div className="d-flex flex-column">
                         <span className="fs-5">
@@ -194,9 +196,7 @@ export const AssociationsPanel = () => {
               <DialogActions>
                 <Button
                   color="secondary"
-                  onClick={() =>
-                    handleAssociationStatus(selectedAssociation.id)
-                  }
+                  onClick={() => handleAssociationStatus(selectedAssociation.id, "rechazada")}
                 >
                   Rechazar
                 </Button>

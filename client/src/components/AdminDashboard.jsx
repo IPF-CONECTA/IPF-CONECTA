@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate para manejar la redirección
+import { useNavigate } from "react-router-dom";
 import styles from "../../public/css/dashboard.module.css";
 import axios from "axios";
+
+// URL base de tu servidor para imágenes
+const BASE_URL = "http://localhost:4000/logoUrl/";
 
 export const AdminDashboard = () => {
   const [associations, setAssociations] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const navigate = useNavigate(); // Para redirigir
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchAssociations = async () => {
@@ -19,7 +22,6 @@ export const AdminDashboard = () => {
             },
           }
         );
-        console.log(response.data);
         setAssociations(response.data.associations || []);
       } catch (error) {
         console.error("Error fetching associations:", error);
@@ -36,7 +38,6 @@ export const AdminDashboard = () => {
             },
           }
         );
-        console.log(response.data);
         setCompanies(response.data.companies || []);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -46,11 +47,6 @@ export const AdminDashboard = () => {
     fetchAssociations();
     fetchCompanies();
   }, []);
-
-  const handleManageClick = (type) => {
-    // Redirigir a la página de administración según el tipo
-    navigate(`/${type}`);
-  };
 
   return (
     <div className={styles.dashboardContainer}>
@@ -72,7 +68,8 @@ export const AdminDashboard = () => {
                 Empresa: {assoc.company.name}
               </p>
               <img
-                src={assoc.company.logoUrl}
+                src={`${BASE_URL}${assoc.company.logoUrl}`}
+                crossOrigin="anonymous" 
                 alt="Company Logo"
                 className={styles.companyLogo}
               />
@@ -84,9 +81,7 @@ export const AdminDashboard = () => {
         </div>
         <button
           className={styles.manageButton}
-          onClick={() => {
-            navigate("/admin/asociaciones");
-          }}
+          onClick={() => navigate("/admin/asociaciones")}
         >
           Administrar Asociaciones
         </button>
@@ -99,8 +94,8 @@ export const AdminDashboard = () => {
             <div key={company.id} className={styles.card}>
               <h3 className={styles.cardTitle}>{company.name}</h3>
               <img
-                src={company.logoUrl}
-                alt="Company Logo"
+                src={`${BASE_URL}${company.logoUrl}`}
+                alt="Company Logo"crossOrigin="anonymous" 
                 className={styles.companyLogo}
               />
             </div>
@@ -111,9 +106,7 @@ export const AdminDashboard = () => {
         </div>
         <button
           className={styles.manageButton}
-          onClick={() => {
-            navigate(`/admin/empresas`);
-          }}
+          onClick={() => navigate("/admin/empresas")}
         >
           Administrar Empresas
         </button>
