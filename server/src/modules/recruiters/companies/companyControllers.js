@@ -22,7 +22,6 @@ export const sendContactCompanyCtrl = async (req, res) => {
   }
 };
 
-
 export const getApprovedCompaniesCtrl = async (req, res) => {
   try {
     const companies = await getApprovedCompaniesSvc();
@@ -35,13 +34,11 @@ export const getApprovedCompaniesCtrl = async (req, res) => {
   }
 };
 
-
 export const associateNewCompanyCtrl = async (req, res) => {
   try {
     const { id } = req.user.profile;
     const { company, message } = req.body;
     const profile = await Profile.findByPk(id, { attributes: ["names"] });
-
     if (!profile) throw new Error("Usuario no encontrado");
     if (
       !company ||
@@ -53,7 +50,6 @@ export const associateNewCompanyCtrl = async (req, res) => {
     ) {
       return res.status(400).json({ message: "Faltan datos requeridos" });
     }
-
     const logoUrl = req.file ? req.file.filename : null;
     const association = await associateNewCompanySvc(message, id, {
       ...company,
@@ -61,8 +57,7 @@ export const associateNewCompanyCtrl = async (req, res) => {
     });
 
     if (!association) throw new Error("Error al asociar la empresa");
-
-    res.status(201).json({ message: "Empresa asociada correctamente" });
+    res.status(201).json({ message: "Empresa asociada correctamente", id: association });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -84,7 +79,6 @@ export const findCompanyCtrl = async (req, res) => {
   }
 };
 
-
 export const getCompanyByIdCtrl = async (req, res) => {
   try {
     const { id } = req.params;
@@ -96,7 +90,6 @@ export const getCompanyByIdCtrl = async (req, res) => {
     }
     res.status(200).json(company);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error interno en el servidor" });
   }
 };
-``
