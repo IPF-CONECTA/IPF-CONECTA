@@ -30,7 +30,7 @@ export const getProfileById = async (id, profileId) => {
 
         if (id !== profileId) {
             res.own = false;
-            res.following = false;
+            res.isFollowing = false;
             const following = await Follower.findOne({
                 where: {
                     followingId: profile.id,
@@ -38,7 +38,7 @@ export const getProfileById = async (id, profileId) => {
                 }
             })
             if (following) {
-                res.following = true
+                res.isFollowing = true
             }
         }
         return res

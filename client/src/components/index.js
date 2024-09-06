@@ -19,5 +19,5 @@ export * from "./RequestForm";
 export * from "./AssociationsPanel";
 export * from "./SelectCompany";
 export * from "./SupportForm";
-export * from "./Profile";
+export * from "./profile/Profile";
 export * from "./WaitingAssociationsApproval";
