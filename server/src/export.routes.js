@@ -15,7 +15,8 @@ import likeRoutes from "./modules/posts/likes/likeRoutes.js";
 import contractTypeRoutes from "./modules/recruiters/job/contractTypes/contractTypesRoutes.js";
 import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoutes.js";
 import companyUbicationRoutes from "./modules/recruiters/companies/companyUbication/companyUbicationRoutes.js";
-import { profileRoutes } from "./modules/profile/profileRoutes.js";
+import profileRoutes from "./modules/profile/profileRoutes.js";
+import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -35,4 +36,5 @@ export const routes = (app) => {
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
   app.use(profileRoutes)
+  app.use(experienceRoutes)
 };

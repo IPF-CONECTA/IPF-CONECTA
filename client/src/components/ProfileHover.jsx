@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import styles from "../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
 import { useFollow } from "../hooks/useFollow";
+import { useNavigate } from "react-router-dom";
 
 export const ProfileHover = ({
   profile,
@@ -10,6 +11,8 @@ export const ProfileHover = ({
   profileInfoRef,
 }) => {
   const { profileInfo, handleFollowOrUnfollow } = useFollow(profile);
+  console.log(profile);
+  const navigate = useNavigate();
   return (
     <div
       onMouseEnter={handleMouseEnter}
@@ -24,25 +27,29 @@ export const ProfileHover = ({
           height={40}
           className="rounded-circle"
           alt="profile pic"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/perfil/${profileInfo.profile.id}`);
+          }}
         />
-        <div className="d-flex flex-column w-50">
+        <div className={`d-flex flex-column ${styles.followButton}`}>
           {profileInfo.isFollowing === false ? (
             <button
-              className={`btn btn-info text-light p-0 py-1 ${styles.smallText} w-100 fw-bold`}
+              className={`btn btn-info text-light w-100 p-0 py-1 ${styles.smallText} w-100 fw-bold`}
               onClick={(event) => {
                 handleFollowOrUnfollow(event, profileInfo.profile.id);
               }}
             >
-              Follow
+              Seguir
             </button>
           ) : (
             <button
-              className={`btn btn-outline-info text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
+              className={`btn btn-outline-info w-100 text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
               onClick={(event) => {
                 handleFollowOrUnfollow(event, profileInfo.profile.id);
               }}
             >
-              Unfollow
+              Siguiendo
             </button>
           )}
         </div>

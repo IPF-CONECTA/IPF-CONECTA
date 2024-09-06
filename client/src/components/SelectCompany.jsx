@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { useNoti } from "../hooks/useNoti";
-import styles from "../../public/css/SelectCompany.module.css"; 
+import styles from "../../public/css/SelectCompany.module.css";
 
 export const SelectCompany = () => {
   const [companies, setCompanies] = useState([]);
@@ -119,7 +119,7 @@ export const SelectCompany = () => {
               </h2>
               <button
                 className="btn btn-outline-success"
-                onClick={() => navigate("/registro-de-compañia")}
+                onClick={() => navigate("/registrar-empresa")}
               >
                 Solicitar creación de empresa
               </button>
@@ -165,7 +165,11 @@ export const SelectCompany = () => {
     }
   };
 
-  return <main className={`container mt-4 ${styles.mainContent}`}>{renderStep()}</main>;
+  return (
+    <main className={`container mt-4 ${styles.mainContent}`}>
+      {renderStep()}
+    </main>
+  );
 };
 
 export default SelectCompany;

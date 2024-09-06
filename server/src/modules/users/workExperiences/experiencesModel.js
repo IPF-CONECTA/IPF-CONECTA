@@ -19,7 +19,6 @@ export const WorkExperience = sequelize.define('workExperience', {
         type: DataTypes.UUID,
         allowNull: false
     },
-
     ubicationId: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -40,7 +39,7 @@ export const WorkExperience = sequelize.define('workExperience', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     },

@@ -3,6 +3,7 @@ import { ProfileHover } from "./ProfileHover";
 import { getProfileInfo } from "../services/feedServices";
 import { useFollow } from "../hooks/useFollow";
 import styles from "../../public/css/accountCard.module.css";
+import { useNavigate } from "react-router-dom";
 const AccountCard = ({ account }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -10,7 +11,7 @@ const AccountCard = ({ account }) => {
   const profileRef = useRef(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const { profileInfo, handleFollowOrUnfollow } = useFollow(account);
-
+  const navigate = useNavigate();
   const handleShowProfile = (boolean, id) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -62,6 +63,10 @@ const AccountCard = ({ account }) => {
           className="rounded-circle me-2"
           src={account.profile.profilePic}
           alt={account.profile.names}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/perfil/${account.profile.id}`);
+          }}
           onMouseEnter={() => handleShowProfile(true, account.profile.id)}
           onMouseLeave={() => handleShowProfile(false, account.profile.id)}
         />
@@ -101,7 +106,7 @@ const AccountCard = ({ account }) => {
           }`}
           onClick={handleFollowClick}
         >
-          {isFollowing ? "Unfollow" : "Follow"}
+          {isFollowing ? "Siguiendo" : "Seguir"}
         </button>
       </div>
     </div>

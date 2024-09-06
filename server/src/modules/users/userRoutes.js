@@ -12,6 +12,6 @@ userRoutes.post('/create-user', userSchema, validateSchema, createUserController
 
 userRoutes.get('/get-recomended-users', isToken, getRecomendedUsersController)
 
-userRoutes.get('/get-user-info/:followingId', isToken, getUserByIdCtrl)
+userRoutes.get('/get-user-info/:profileId', isToken, getUserInfoCtrl)
 
 export default userRoutes

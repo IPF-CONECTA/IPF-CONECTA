@@ -45,6 +45,7 @@ import {
   createModalities,
 } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
+import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();

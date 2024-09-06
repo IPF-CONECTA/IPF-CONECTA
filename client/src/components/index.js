@@ -1,4 +1,4 @@
-export * from "./AdminPanel";
+export * from "./CompaniesPanel";
 export * from "./CreateCompanyForm";
 export * from "./CreateCompanyUbicationForm";
 export * from "./CreateJobsForm";
@@ -16,7 +16,7 @@ export * from "./PostList";
 export * from "./RecomendedAccounts";
 export * from "./RegisterForm";
 export * from "./RequestForm";
-export * from "./RequestList";
+export * from "./AssociationsPanel";
 export * from "./SelectCompany";
 export * from "./SupportForm";
 export * from "./Profile";
