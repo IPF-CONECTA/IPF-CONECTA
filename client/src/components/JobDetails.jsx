@@ -1,9 +1,9 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 import styles from "../../public/css/jobDetails.module.css";
+
 export const JobDetails = ({ jobId }) => {
-  console.log(jobId);
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
     const getJobInfo = async () => {
@@ -16,9 +16,17 @@ export const JobDetails = ({ jobId }) => {
         }
       }
     };
-
     getJobInfo();
   }, [jobId]);
+
+  function create() {
+    axios
+      .post("http://localhost:4000/create-job-postulation")
+      .then((response) => {
+        console.log({ respuesta: response });
+      });
+  }
+
   return (
     <aside
       className={`${styles.asideJobDetails} d-flex flex-column align-items-center w-100`}
@@ -67,8 +75,8 @@ export const JobDetails = ({ jobId }) => {
                   bookmark
                 </span>{" "}
               </button>
-              <button className="btn btn-success">
-                <strong>Postularse</strong>
+              <button className="btn btn-success" onClick={create}>
+                Postularse
               </button>
             </div>
           </header>

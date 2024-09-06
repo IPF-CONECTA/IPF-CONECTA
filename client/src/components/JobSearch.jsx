@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { JobCard } from "./JobCard";
-import { getJobs } from "../services/jobServices";
-import { useNoti } from "../hooks/useNoti";
-import { JobDetailsPage } from "../pages/JobsDetailsPage";
-import styles from "../../public/css/jobSearch.module.css";
 import { JobDetails } from "./JobDetails";
 
+import { authContext } from "../context/auth/Context";
+import { useNoti } from "../hooks/useNoti";
+import { getJobs } from "../services/jobServices";
+
+import styles from "../../public/css/jobSearch.module.css";
+
 export const JobSearch = () => {
+  const { authState } = useContext(authContext);
+  const navigate = useNavigate();
+  const noti = useNoti();
+
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const noti = useNoti();
   const [selectedJob, setSelectedJob] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
   const [cantJobs, setCantJobs] = useState(0);
+
   useEffect(() => {
     async function fetchData() {
       const data = await getJobs();
@@ -43,6 +51,7 @@ export const JobSearch = () => {
       noti("No se encontraron trabajos con ese nombre", "info");
     }
   };
+
   const handleMoreJobsBtn = async (page) => {
     setCurrentPage(page);
     const data = await getJobs(query, page);
@@ -62,7 +71,7 @@ export const JobSearch = () => {
     <main className="w-100 h-100 d-flex flex-column align-items-center mt-5">
       <nav className="w-100 d-flex flex-column justify-content-center align-items-center mt-4">
         <form className="d-flex flex-column w-100" onSubmit={handleSubmit}>
-          <div className="d-flex flex-row align-items-center mb-2 justify-content-evenly">
+          <div className="d-flex flex-row align-items-center mb-2 justify-content-between">
             <input
               type="text"
               name="searchBar"
@@ -73,6 +82,17 @@ export const JobSearch = () => {
             <button type="submit" className="btn btn-success h-100 fw-semibold">
               Buscar
             </button>
+            {authState.role === "recruiter" && (
+              <button
+                className="btn btn-outline-success h-100 fw-semibold"
+                onClick={() => {
+                  navigate("/nuevo-empleo");
+                }}
+              >
+                {" "}
+                Crear{" "}
+              </button>
+            )}
           </div>
           <div className="filters">
             <select name="postDate" className="form-select" id="postDate">

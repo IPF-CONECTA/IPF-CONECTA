@@ -27,233 +27,243 @@ import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.
 import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { Profile } from "../modules/profile/profileModel.js";
-
+import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
 export const createRelations = async () => {
   try {
     User.hasOne(Profile, {
-      foreignKey: 'userId'
-    })
+      foreignKey: "userId",
+    });
     Profile.belongsTo(User, {
-      foreignKey: 'userId'
-    })
+      foreignKey: "userId",
+    });
     CompanyUbication.belongsTo(Company, {
-      foreignKey: 'companyId'
+      foreignKey: "companyId",
     });
     CompanyUbication.belongsTo(Country, {
-      foreignKey: 'countryId'
+      foreignKey: "countryId",
     });
     CompanyUbication.belongsTo(State, {
-      foreignKey: 'stateId'
+      foreignKey: "stateId",
     });
     CompanyUbication.belongsTo(City, {
-      foreignKey: 'cityId'
+      foreignKey: "cityId",
     });
     Company.hasMany(CompanyUbication, {
-      foreignKey: 'companyId'
+      foreignKey: "companyId",
     });
     Country.hasMany(CompanyUbication, {
-      foreignKey: 'countryId'
+      foreignKey: "countryId",
     });
     State.hasMany(CompanyUbication, {
-      foreignKey: 'stateId'
+      foreignKey: "stateId",
     });
     CompanyUbication.hasMany(Job, {
-      foreignKey: 'companyUbicationId'
+      foreignKey: "companyUbicationId",
     });
     Job.belongsTo(CompanyUbication, {
-      foreignKey: 'companyUbicationId'
+      foreignKey: "companyUbicationId",
     });
     Role.hasMany(User, {
-      foreignKey: 'roleId',
+      foreignKey: "roleId",
     });
     User.belongsTo(Role, {
-      foreignKey: 'roleId'
+      foreignKey: "roleId",
     });
     Profile.hasMany(Post, {
-      foreignKey: 'profileId',
-      as: 'posts'
+      foreignKey: "profileId",
+      as: "posts",
     });
     Profile.hasMany(LangsUser, {
-      foreignKey: 'userId',
+      foreignKey: "userId",
     });
     LangsUser.belongsTo(Lang, {
-      foreignKey: 'langId'
+      foreignKey: "langId",
     });
     LangLevel.hasOne(LangsUser, {
-      foreignKey: 'langLevelId'
+      foreignKey: "langLevelId",
     });
     LangsUser.belongsTo(Profile, {
-      foreignKey: 'userId'
+      foreignKey: "userId",
     });
     Post.belongsTo(Profile, {
-      foreignKey: 'profileId',
-      as: 'profile'
+      foreignKey: "profileId",
+      as: "profile",
     });
     Post.belongsTo(Post, {
-      as: 'parentPost',
-      foreignKey: 'postId'
-    })
+      as: "parentPost",
+      foreignKey: "postId",
+    });
     Post.hasMany(Repost, {
-      foreignKey: 'postId',
-      as: 'reposts'
-    })
+      foreignKey: "postId",
+      as: "reposts",
+    });
+
+    Job.hasMany(JobPostulation, {
+      foreignKey: "jobId",
+    });
+    Profile.hasMany(JobPostulation, {
+      foreignKey: "profileId",
+    });
+    JobPostulation.belongsTo(Job, {
+      foreignKey: "jobId",
+    });
+
     Profile.hasMany(Repost, {
-      foreignKey: 'userId'
-    })
+      foreignKey: "userId",
+    });
     Post.hasMany(Like, {
-      foreignKey: 'postId'
+      foreignKey: "postId",
     });
     Like.belongsTo(Post, {
-      foreignKey: 'postId'
+      foreignKey: "postId",
     });
     Profile.hasMany(Like, {
-      foreignKey: 'userId',
-      as: 'likes'
+      foreignKey: "userId",
+      as: "likes",
     });
     Like.belongsTo(Profile, {
-      foreignKey: 'userId'
+      foreignKey: "userId",
     });
     Post.hasMany(Report, {
-      foreignKey: 'postId'
+      foreignKey: "postId",
     });
     Post.hasMany(Attachment, {
-      foreignKey: 'postId',
-      as: 'attachments'
+      foreignKey: "postId",
+      as: "attachments",
     });
     Post.hasMany(Post, {
-      foreignKey: 'postId',
-      as: 'comments'
-    })
+      foreignKey: "postId",
+      as: "comments",
+    });
 
     Attachment.belongsTo(Post, {
-      foreignKey: 'postId',
-      as: 'post'
+      foreignKey: "postId",
+      as: "post",
     });
     Report.belongsTo(Post, {
-      foreignKey: 'postId'
+      foreignKey: "postId",
     });
     Profile.hasMany(Report, {
-      foreignKey: 'userId'
+      foreignKey: "userId",
     });
     Report.belongsTo(Profile, {
-      foreignKey: 'userId'
+      foreignKey: "userId",
     });
     ReportReason.hasMany(Report, {
-      foreignKey: 'reasonId'
+      foreignKey: "reasonId",
     });
     Report.belongsTo(ReportReason, {
-      foreignKey: 'reasonId'
+      foreignKey: "reasonId",
     });
     Profile.hasMany(Follower, {
-      foreignKey: 'followingId'
+      foreignKey: "followingId",
     });
     Profile.hasMany(Follower, {
-      foreignKey: 'followerId'
+      foreignKey: "followerId",
     });
     Company.belongsTo(Country, {
-      foreignKey: 'countryOriginId'
-    })
+      foreignKey: "countryOriginId",
+    });
     Country.hasMany(Company, {
-      foreignKey: 'countryOriginId'
+      foreignKey: "countryOriginId",
     });
     State.belongsTo(Country, {
-      foreignKey: 'countryId',
+      foreignKey: "countryId",
     });
     City.belongsTo(State, {
-      foreignKey: 'stateId',
+      foreignKey: "stateId",
     });
     State.hasMany(City, {
-      foreignKey: 'stateId',
+      foreignKey: "stateId",
     });
     Country.hasMany(State, {
-      foreignKey: 'countryId',
+      foreignKey: "countryId",
     });
     UserState.hasMany(Profile, {
-      foreignKey: 'userStateId',
+      foreignKey: "userStateId",
     });
     Profile.belongsTo(UserState, {
-      foreignKey: 'userStateId'
-    })
+      foreignKey: "userStateId",
+    });
     Profile.hasMany(SkillsUser, {
-      foreignKey: 'userId',
+      foreignKey: "userId",
     });
     SkillsUser.belongsTo(Skill, {
-      foreignKey: 'skillId'
+      foreignKey: "skillId",
     });
     Skill.hasMany(SkillsUser, {
-      foreignKey: 'skillId'
+      foreignKey: "skillId",
     });
     CompanyIndustry.hasMany(Company, {
-      foreignKey: 'industryId',
+      foreignKey: "industryId",
     });
     Company.belongsTo(CompanyIndustry, {
-      foreignKey: 'industryId'
+      foreignKey: "industryId",
     });
     Company.hasMany(Association, {
-      foreignKey: 'companyId',
+      foreignKey: "companyId",
     });
     Profile.hasMany(Association, {
-      foreignKey: 'userId',
-      as: 'profile'
+      foreignKey: "userId",
+      as: "profile",
     });
     Association.belongsTo(Profile, {
-      foreignKey: 'userId',
-      as: 'profile'
+      foreignKey: "userId",
+      as: "profile",
     });
     Association.belongsTo(Company, {
-      foreignKey: 'companyId',
-      as: 'company'
+      foreignKey: "companyId",
+      as: "company",
     });
     Modality.hasMany(Job, {
-      foreignKey: 'modalityId',
-      as: 'modality'
-    })
+      foreignKey: "modalityId",
+      as: "modality",
+    });
     Job.belongsTo(Modality, {
-      foreignKey: 'modalityId'
-    })
+      foreignKey: "modalityId",
+    });
     Profile.hasMany(Job, {
-      foreignKey: 'userId'
-    })
+      foreignKey: "userId",
+    });
     Job.belongsTo(Profile, {
-      foreignKey: 'userId'
-    })
+      foreignKey: "userId",
+    });
     ///////////
 
     Job.belongsTo(Company, {
-      foreignKey: 'companyId'
+      foreignKey: "companyId",
     });
     Company.hasMany(Job, {
-      foreignKey: 'companyId'
+      foreignKey: "companyId",
     });
     ContractType.hasMany(Job, {
-      foreignKey: 'contractTypeId'
+      foreignKey: "contractTypeId",
     });
     Job.belongsTo(ContractType, {
-      foreignKey: 'contractTypeId'
-    })
+      foreignKey: "contractTypeId",
+    });
     JobSkills.belongsTo(Job, {
-      foreignKey: 'jobId'
+      foreignKey: "jobId",
     });
     Job.hasMany(JobSkills, {
-      foreignKey: 'jobId'
+      foreignKey: "jobId",
     });
     Skill.hasMany(JobSkills, {
-      foreignKey: 'skillId'
+      foreignKey: "skillId",
     });
     JobSkills.belongsTo(Skill, {
-      foreignKey: 'skillId'
-    })
+      foreignKey: "skillId",
+    });
     WorkExperience.hasMany(ExperienceSkill, {
-      foreignKey: 'experienceId'
+      foreignKey: "experienceId",
     });
     Skill.hasMany(ExperienceSkill, {
-      foreignKey: 'skillId'
+      foreignKey: "skillId",
     });
     Profile.hasMany(WorkExperience, {
-      foreignKey: 'profileId'
+      foreignKey: "profileId",
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-
-}
+};
