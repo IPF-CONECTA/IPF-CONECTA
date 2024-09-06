@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { JobCard } from "./JobCard";
 import { getJobs } from "../services/jobServices";
 import { useNoti } from "../hooks/useNoti";
 import { JobDetailsPage } from "../pages/JobsDetailsPage";
 import styles from "../../public/css/jobSearch.module.css";
 import { JobDetails } from "./JobDetails";
+
 export const JobSearch = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,7 +62,7 @@ export const JobSearch = () => {
     <main className="w-100 h-100 d-flex flex-column align-items-center mt-5">
       <nav className="w-100 d-flex flex-column justify-content-center align-items-center mt-4">
         <form className="d-flex flex-column w-100" onSubmit={handleSubmit}>
-          <div className="d-flex flex-row align-items-center mb-2">
+          <div className="d-flex flex-row align-items-center mb-2 justify-content-evenly">
             <input
               type="text"
               name="searchBar"
