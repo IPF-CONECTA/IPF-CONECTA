@@ -40,12 +40,13 @@ export const getAssociationByIdCtrl = async (req, res) => {
 export const updateAssociationCtrl = async (req, res) => {
   try {
     let { id, status } = req.params;
+    let { justification } = req.body;
     if (!id || !status)
       throw new Error("Error en la solicitud, vuelva a intentarlo");
     const validStatus = ["Aprobada", "Rechazada"];
     if (!validStatus.includes(status))
       throw new Error("Error en la solicitud, intente de nuevo");
-    await updateAssociation(id, status);
+    await updateAssociation(id, status, justification);
     status = status.toLowerCase();
     res.status(201).json({ message: `Asociacion ${status} con exito` });
   } catch (error) {
