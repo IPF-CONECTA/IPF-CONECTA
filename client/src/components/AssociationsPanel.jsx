@@ -1,220 +1,180 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "../../public/css/associationPanel.module.css";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
-import { updateAssociationStatus } from "../services/adminServices";
+import { updateAssociationStatus, getAssociationsSvc } from "../services/adminServices";
 import { useNavigate } from "react-router-dom";
-import { getAssociationsSvc } from "../services/adminServices";
 import { useNoti } from "../hooks/useNoti";
 
 export const AssociationsPanel = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedAssociation, setSelectedAssociation] = useState(null);
   const [associations, setAssociations] = useState([]);
-  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [tab, setTab] = useState("Pendiente");
+  const [justification, setJustification] = useState("");
   const noti = useNoti();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAssociations = async () => {
       const { data, statusCode } = await getAssociationsSvc(tab);
       if (statusCode === 404) {
-        return noti("No se encontraron asociaciones", "warning");
+        noti("No se encontraron asociaciones", "warning");
+      } else if (statusCode !== 200) {
+        noti("Error al obtener las solicitudes", "error");
+      } else {
+        setAssociations(data);
       }
-      if (statusCode !== 200) {
-        return noti("Error al obtener las solicitudes", "error");
-      }
-      setAssociations(data);
     };
 
     getAssociations();
   }, [tab]);
 
-  const handleTabClick = async (tab) => {
+  const handleTabClick = (tab) => {
     setTab(tab);
     setAssociations([]);
   };
 
-  const acceptRequest = (index) => {
-    setAlert({
-      show: true,
-      message: `Solicitud de ${associations[index].name} aceptada.`,
-      type: "success",
-    });
-    const newAssociations = associations.filter((_, i) => i !== index);
-    setAssociations(newAssociations);
-  };
-
-  const rejectRequest = (index, reason) => {
-    setAlert({
-      show: true,
-      message: `Solicitud de ${associations[index].name} rechazada. Razón: ${reason}`,
-      type: "danger",
-    });
-    const newAssociations = associations.filter((_, i) => i !== index);
-    setAssociations(newAssociations);
-  };
-
-  useEffect(() => {
-    if (alert.show) {
-      const timer = setTimeout(
-        () => setAlert({ show: false, message: "", type: "" }),
-        3000
-      );
-      return () => clearTimeout(timer);
-    }
-  }, [alert]);
-
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const handleAssociationStatus = async (id, status, message) => {
-    if (status === "rechazar" && !message) {
+  const handleAssociationStatus = async (id, status) => {
+    if (status === "Rechazada" && !justification) {
       noti("Por favor, justifica el motivo del rechazo", "warning");
       return;
     }
-    await updateAssociationStatus(id, status, message);
+    await updateAssociationStatus(id, status, justification);
+    setJustification(""); 
+    noti(`Solicitud ${status.toLowerCase()} exitosamente`, "success");
+    
+    setAssociations(prevAssociations =>
+      prevAssociations.filter(association => association.id !== id)
+    );
+    
+    setSelectedAssociation(null);
+    navigate("/admin/asociaciones");
   };
 
   return (
-    <div>
-      <button
-        className="btn btn-success"
-        onClick={() => handleTabClick("Pendiente")}
-      >
-        Pendientes
-      </button>
-      <button
-        className="btn btn-success"
-        onClick={() => handleTabClick("Aprobada")}
-      >
-        Aprobadas
-      </button>
-      <button
-        className="btn btn-success"
-        onClick={() => handleTabClick("Rechazada")}
-      >
-        Rechazadas
-      </button>
-      <div className={`${styles.mainContainer} d-flex justify-content-center`}>
-        <div className="Content">
-          <div className="CompanyList">
-            <h2>Solicitudes Pendientes</h2>
-            <ul className="Companies">
-              {associations.map((association, index) => (
-                <li
-                  key={index}
-                  className="Company"
-                  onClick={() => {
-                    setSelectedAssociation(association);
-                  }}
-                >
-                  <div>
-                    <img
-                      src={
-                        association.profile.profilePic ||
-                        "https://via.placeholder.com/40"
-                      }
-                      alt="Usuario"
-                    />
-                    <div>
-                      <strong>{association.profile.names}</strong>
-                      <p className="m-0">{association.profile.user.email}</p>
-                    </div>
-                  </div>
-                  <p className="m-0">{association.company.name}</p>
+    <div className="container mt-4">
+      <div className="btn-group mb-3" role="group">
+        <button 
+          className={`btn btn-outline-success ${tab === "Pendiente" ? "active" : ""}`} 
+          onClick={() => handleTabClick("Pendiente")}
+        >
+          Pendientes
+        </button>
+        <button 
+          className={`btn btn-outline-success ${tab === "Aprobada" ? "active" : ""}`} 
+          onClick={() => handleTabClick("Aprobada")}
+        >
+          Aprobadas
+        </button>
+        <button 
+          className={`btn btn-outline-success ${tab === "Rechazada" ? "active" : ""}`} 
+          onClick={() => handleTabClick("Rechazada")}
+        >
+          Rechazadas
+        </button>
+      </div>
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Solicitudes {tab}</h5>
+          <ul className="list-group">
+            {associations.map((association) => (
+              <li
+                key={association.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+                onClick={() => setSelectedAssociation(association)}
+              >
+                <div className="d-flex align-items-center">
                   <img
-                    src={
-                      association.company.logoUrl ||
-                      "https://via.placeholder.com/40"
-                    }
-                    alt="Empresa"
+                    src={association.profile.profilePic || "https://via.placeholder.com/40"}
+                    alt="Usuario"
+                    className="rounded-circle me-2"
+                    style={{ width: '40px', height: '40px' }}
                   />
-                </li>
-              ))}
-            </ul>
-          </div>
-          {selectedAssociation && (
-            <Dialog
-              open={Boolean(selectedAssociation)}
-              onClose={() => setSelectedAssociation(null)}
-              fullWidth
-              maxWidth="md"
-            >
-              <DialogContent className="DetailsModal">
-                <div className="DetailSection d-flex">
-                  <div className="CompanyDetails">
-                    <h4>Datos de la Empresa:</h4>
-                    <img
-                      height={"100px"}
-                      src={
-                        selectedAssociation.company.logoUrl ||
-                        "https://via.placeholder.com/100"
-                      }
-                      alt={`${selectedAssociation.company.name} Logo`}
-                      className="CompanyLogo"
-                    />
-                    <p>
-                      <strong>Nombre:</strong>{" "}
-                      {selectedAssociation.company.name}
-                    </p>
-                    <p>
-                      <strong>Justificación:</strong>{" "}
-                      {selectedAssociation.message}
-                    </p>
-                  </div>
-                  <div className="UserDetails">
-                    <h4>Solicitante:</h4>
-                    <div className="d-flex">
-                      <img
-                        height={30}
-                        src={
-                          selectedAssociation.profile.profilePic ||
-                          "https://via.placeholder.com/100"
-                        }
-                        alt="Foto de perfil"
-                        className="ProfilePic"
-                      />
-                      <div className="d-flex flex-column">
-                        <span className="fs-5">
-                          {selectedAssociation.profile.names}{" "}
-                          {selectedAssociation.profile.surnames}
-                        </span>
-                        <span className={`text-muted ${styles.smallText}`}>
-                          {selectedAssociation.profile.user.email}
-                        </span>
-                      </div>
-                    </div>
+                  <div>
+                    <strong>{association.profile.names}</strong>
+                    <p className="mb-0 text-muted">{association.profile.user.email}</p>
                   </div>
                 </div>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  color="secondary"
-                  onClick={() =>
-                    handleAssociationStatus(selectedAssociation.id)
-                  }
-                >
-                  Rechazar
-                </Button>
-                <Button
-                  color="primary"
-                  onClick={() => {
-                    handleAssociationStatus(selectedAssociation.id, "Aprobada");
-                    noti("Solicitud aprobada", "success");
-                    navigate("/panel");
-                  }}
-                >
-                  Aprobar
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
+                <div className="d-flex align-items-center">
+                  <p className="mb-0">{association.company.name}</p>
+                  <img
+                    src={association.company.logoUrl || "https://via.placeholder.com/40"}
+                    alt="Empresa"
+                    className="ms-2"
+                    style={{ width: '40px', height: '40px' }}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
+      {selectedAssociation && (
+        <Dialog
+          open={Boolean(selectedAssociation)}
+          onClose={() => setSelectedAssociation(null)}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogContent>
+            <div className="d-flex">
+              <div className="me-3">
+                <img
+                  src={selectedAssociation.company.logoUrl || "https://via.placeholder.com/100"}
+                  alt={`${selectedAssociation.company.name} Logo`}
+                  className="img-fluid"
+                  style={{ maxHeight: '100px' }}
+                />
+                <h6 className="mt-2">Datos de la Empresa:</h6>
+                <p><strong>Nombre:</strong> {selectedAssociation.company.name}</p>
+                <p><strong>Justificación:</strong> {selectedAssociation.message}</p>
+              </div>
+              <div>
+                <h6>Solicitante:</h6>
+                <div className="d-flex align-items-center">
+                  <img
+                    src={selectedAssociation.profile.profilePic || "https://via.placeholder.com/100"}
+                    alt="Foto de perfil"
+                    className="rounded-circle me-2"
+                    style={{ width: '30px', height: '30px' }}
+                  />
+                  <div>
+                    <span className="fw-bold">
+                      {selectedAssociation.profile.names} {selectedAssociation.profile.surnames}
+                    </span>
+                    <br />
+                    <span className="text-muted">{selectedAssociation.profile.user.email}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <textarea
+              className="form-control"
+              rows={3}
+              placeholder="Justificación (solo para rechazar)"
+              value={justification}
+              onChange={(e) => setJustification(e.target.value)}
+              disabled={selectedAssociation.status === "Aprobada"}
+            />
+            <Button
+              color="secondary"
+              onClick={() => handleAssociationStatus(selectedAssociation.id, "Rechazada")}
+            >
+              Rechazar
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => handleAssociationStatus(selectedAssociation.id, "Aprobada")}
+            >
+              Aprobar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 };
