@@ -40,7 +40,7 @@ export const Job = sequelize.define('job', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    aplicationLink: {
+    applicationLink: {
         type: DataTypes.STRING,
         allowNull: true
     }

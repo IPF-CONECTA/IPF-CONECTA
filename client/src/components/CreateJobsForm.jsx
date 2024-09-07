@@ -22,6 +22,7 @@ export const CreateJobsForm = () => {
     modalityId: "",
     contractTypeId: "",
     skills: [],
+    applicationLink: "",
   });
 
   useEffect(() => {
@@ -32,7 +33,6 @@ export const CreateJobsForm = () => {
       })
       .catch((error) => {
         console.error("Error fetching companies:", error);
-        noti("Error fetching companies", "danger");
       });
   }, []);
 
@@ -85,7 +85,6 @@ export const CreateJobsForm = () => {
       })
       .catch((error) => {
         console.error("Error fetching skills:", error);
-        noti("Error fetching skills", "danger");
       });
   }, [search]);
 
@@ -120,17 +119,7 @@ export const CreateJobsForm = () => {
     axios
       .post(
         "http://localhost:4000/create-job",
-        {
-          jobOffer: {
-            title: formData.title,
-            description: formData.description,
-            salary: formData.salary,
-            companyId: formData.companyId,
-            modalityId: formData.modalityId,
-            contractTypeId: formData.contractTypeId,
-            skills: formData.skills,
-          },
-        },
+        { jobOffer: { ...formData }, skills: formData.skills },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -139,7 +128,7 @@ export const CreateJobsForm = () => {
       )
       .then(() => {
         noti("Job created successfully", "success");
-        navigate("/jobs");
+        navigate("/");
       })
       .catch((error) => {
         console.log("Error:", error.response.data);
@@ -181,7 +170,16 @@ export const CreateJobsForm = () => {
               onChange={handleInputChange}
             />
           </div>
-
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Salario</label>
+            <input
+              type="text"
+              name="salary"
+              className={styles.formControl}
+              value={formData.salary}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Empresa</label>
             <select

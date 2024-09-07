@@ -16,12 +16,29 @@ export const getUsersController = async (_req, res) => {
     }
 };
 
-export const getUserInfoCtrl = async (req, res) => {
-    const { id } = req.user.profile
-    const { followingId } = req.params
+export const getUserByIdCtrl = async (req, res) => {
     try {
-        if (id == followingId) return res.status(400).json()
-        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, followingId)
+        const { id } = req.user.profile;
+        const { profileId } = req.params;
+        if (!id || !profileId) return res.status(400).json();
+        if (id == profileId) return res.status(400)
+        const profile = await getUserInfoSvc(id, profileId);
+        if (!profile) return res.status(404).json();
+
+        res.status(200).json(profile)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+export const getUserInfoCtrl = async (req, res) => {
+    const { id } = req.user.profile;
+    const { profileId } = req.params;
+    console.log(profileId)
+    try {
+        if (id == profileId) return res.status(400).json()
+        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
         if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }
@@ -57,9 +74,7 @@ export const getRecomendedUsersController = async (req, res) => {
         }
         res.status(200).json(users);
     } catch (error) {
-        console.log('===========================================================================================')
         console.log(error)
-        console.log('===========================================================================================')
         res.status(500).json({ message: error.message });
     }
 }

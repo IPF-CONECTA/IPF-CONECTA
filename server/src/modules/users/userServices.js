@@ -7,6 +7,13 @@ import { Op } from 'sequelize';
 import { Profile } from '../profile/profileModel.js';
 import { sequelize } from '../../config/db.js';
 import { Role } from '../roles/roleModel.js';
+import { Association } from '../recruiters/associations/associationModel.js';
+import { Company } from '../recruiters/companies/companyModel.js';
+import { CompanyIndustry } from '../recruiters/companies/companyIndustry/companyIndustryModel.js';
+import { LangsUser } from './langs_user/langsUserModel.js';
+import { Lang } from '../langs/langModel.js';
+import { LangLevel } from '../langs/langLevelsModel.js';
+import { Post } from '../posts/postModel.js';
 
 export const getUsers = async () => {
     const users = await User.findAll()
@@ -53,9 +60,9 @@ export const getRecomendedUsersSvc = async (profileId) => {
     }
 }
 
-export const getUserById = async (id) => {
+export const getUserById = async (userId) => {
     try {
-        const user = await User.findByPk(id, {
+        const user = await User.findByPk(userId, {
             attributes: ['email'],
             include: [{
                 model: Profile,
@@ -71,6 +78,8 @@ export const getUserById = async (id) => {
         throw error
     }
 }
+
+
 
 export const getUserInfoSvc = async (id, followingId) => {
     try {

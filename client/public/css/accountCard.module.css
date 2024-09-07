@@ -1,4 +1,8 @@
 .smallText {
   height: min-content;
-  font-size: 13px;
+  font-size: 13px !important;
+}
+.buttonFollow {
+  width: 80px;
+  transition: background-color 0.3s, color 0.3s;
 }

@@ -11,12 +11,20 @@ export const createNewJobCtrl = async (req, res) => {
   const { id } = req.user.profile;
   const { jobOffer, skills } = req.body;
 
+  console.log(jobOffer);
+
   try {
     const newJob = await createNewJobSvc(jobOffer, id);
     const jobId = newJob.id;
-    for (let i = 0; i < skills.length; i++) {
-      await addJobSkillSvc(jobId, skills[i]);
+
+    if (Array.isArray(skills) && skills.length > 0) {
+      for (let i = 0; i < skills.length; i++) {
+        await addJobSkillSvc(jobId, skills[i]);
+      }
+    } else {
+      console.log("No skills provided or skills is not an array");
     }
+
     res.status(201).json(newJob);
   } catch (error) {
     res.status(500).json({ message: error.message });

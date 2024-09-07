@@ -1,0 +1,20 @@
+.mainContainer {
+  width: 65%;
+  height: 95%;
+  padding-top: 60px;
+}
+
+.asideContainer {
+  height: fit-content;
+  width: fit-content;
+  position: fixed;
+  top: 20%;
+  right: 0;
+}
+.header {
+  height: 125px;
+}
+
+.profileContainer {
+  width: 65%;
+}

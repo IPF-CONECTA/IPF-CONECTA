@@ -8,6 +8,7 @@ import { getAllLocations, getLocation, getLocationType } from "../../../helpers/
 import { ContractType } from "./contractTypes/contractTypeModel.js"
 import { Modality } from "./jobModalities/modalityModel.js"
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js"
+import { Profile } from "../../profile/profileModel.js"
 
 export const createNewJobSvc = async (jobOffer, userId) => {
     try {
@@ -21,7 +22,7 @@ export const createNewJobSvc = async (jobOffer, userId) => {
             modalityId: jobOffer.modalityId,
             description: jobOffer.description,
             contractTypeId: jobOffer.contractTypeId,
-            aplicationLink: jobOffer.aplicationLink,
+            applicationLink: jobOffer.applicationLink,
         }, { returning: true })
         if (!newJob) throw new Error('Hubo un error al publicar el trabajo')
         return newJob
@@ -69,7 +70,7 @@ export const getJobByIdSvc = async (id) => {
                     attributes: ['name']
                 }]
             }, {
-                model: User,
+                model: Profile,
                 attributes: ['id', 'profilePic', 'names', 'surnames'],
             },
             {

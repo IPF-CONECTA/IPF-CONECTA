@@ -2,24 +2,25 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import {
-  AdminPanelPage,
   CompanyConfirmedPage,
   CreateCompanyUbicationPage,
   FeedPage,
   HomePage,
   JobSearchPage,
   SelectCompanyPage,
-  PanelPage,
   NotFoundPage,
   LoginPage,
   RegisterPage,
   CreateCompanyPage,
   SupportPage,
   PostPage,
-  PendingMessageRecruiterPage,
+  MessageRecruiterPage,
   ProfilePage,
   CreateJobsFormPage,
   WaitingAssociationsApprovalPage,
+  AdminDashboardPage,
+  CompaniesPanelPage,
+  AssociationsPanelPage,
 } from "../pages";
 
 export const Routers = () => {
@@ -33,33 +34,36 @@ export const Routers = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<AdminRoutes />}>
-            <Route path="/admin" element={<AdminPanelPage />} />
+            <Route path="/admin/dash" element={<AdminDashboardPage />} />
+            <Route path="/admin/empresas" element={<CompaniesPanelPage />} />
+            <Route
+              path="/admin/asociaciones"
+              element={<AssociationsPanelPage />}
+            />
           </Route>
-          <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/inicio" element={<FeedPage />} />
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
-
-        <Route path="/panel" element={<PanelPage />} />
+        <Route path="/perfil/:profileId" element={<ProfilePage />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/registro-de-compañia" element={<CreateCompanyPage />} />
-        <Route path="/seleccionar-compañia" element={<SelectCompanyPage />} />
+        <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
+        <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
         <Route
           path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
         />
         <Route
-          path="/mis-compañias"
+          path="/mis-empresas"
           element={<WaitingAssociationsApprovalPage />}
         />
         <Route
-          path="/reclutador-en-espera"
-          element={<PendingMessageRecruiterPage />}
+          path="/solicitud-del-reclutador"
+          element={<MessageRecruiterPage />}
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />

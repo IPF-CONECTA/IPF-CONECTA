@@ -7,4 +7,5 @@ const associationRoutes = Router()
 
 associationRoutes.post('/associate-company', isToken, isRecruiter, associateCompanyCtrl)
 
+
 export default associationRoutes

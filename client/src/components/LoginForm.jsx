@@ -28,7 +28,7 @@ export const LoginForm = () => {
     if (response && response.role == "recruiter") {
       console.log(response.associations.name);
       if (response.associations.length == 0) {
-        navigate("/registro-de-compañia");
+        navigate("/seleccionar-empresa");
       } else {
         const isApproved = response.associations.find(
           (association) => association.status == "Aprobada"
@@ -40,11 +40,16 @@ export const LoginForm = () => {
             (association) => association.status == "Pendiente"
           );
           if (isPending) {
-            navigate("/reclutador-en-espera", {
-              state: { companyName: isPending.company.name },
+            navigate("/solicitud-del-reclutador", {
+              state: {
+                companyName: isPending.company.name,
+                status: "Pendiente",
+              },
             });
           } else {
-            navigate("/mensaje-rechazado");
+            navigate("/solicitud-del-reclutador", {
+              state: { status: "Rechazada" },
+            });
           }
         }
       }
@@ -57,7 +62,7 @@ export const LoginForm = () => {
         <img src="/public/iniciar-sesion.png" alt="Login" />
       </div>
       <div className={styles["login-form"]}>
-        <h2 className={styles["title-h2"]}>Inicie Sesión</h2>
+        <h2 className={styles["title-h2"]}>Iniciar Sesión</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles["form-group"]}>
             <label htmlFor="email" className={styles.label}>

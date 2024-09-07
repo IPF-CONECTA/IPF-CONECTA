@@ -35,7 +35,7 @@ export const authLogInCtrl = async (req, res) => {
         if (!response.token) {
             throw new Error('No se pudo iniciar sesion')
         }
-        res.status(200).json({ message: `Bienvenido/a ${response.existingUser.profile.names}`, response })
+        res.status(200).json({ message: `¡Bienvenido/a, ${response.existingUser.profile.names}!`, response })
 
     } catch (error) {
         console.log(error.message)

@@ -130,15 +130,19 @@ const PostCard = ({ post }) => {
           onClick={() => {
             navigate(`/post/${post.id}`);
           }}
-          className={`d-flex flex-column w-75 border border-bottom-0  p-3 `}
+          className={`d-flex flex-column w-100 border border-top-0  p-3 `}
         >
           <header className="position-relative">
             <div className="avatar d-flex align-items-center">
               <div>
                 <img
                   className="me-2 rounded-circle"
-                  width={50}
-                  height={50}
+                  width={35}
+                  height={35}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/perfil/${post.profile.id}`);
+                  }}
                   onMouseEnter={() => handleShowProfile(true, post.profile.id)}
                   onMouseLeave={() => handleShowProfile(false, post.profile.id)}
                   src={post.profile.profilePic}
@@ -174,7 +178,7 @@ const PostCard = ({ post }) => {
             )}
           </header>
           <div className="py-3">
-            <p>{post.content}</p>
+            <p className="text-break">{post.content}</p>
             {post.attatchment &&
               (post.attatchment.type === "image" ? (
                 <img src={post.attatchment.url} alt={post.attatchment.alt} />
@@ -182,7 +186,7 @@ const PostCard = ({ post }) => {
                 <video src={post.attatchment.url} />
               ))}
           </div>
-          <footer className="">
+          <footer className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
               <button
                 onClick={handleLike}

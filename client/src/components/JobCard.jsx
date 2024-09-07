@@ -1,11 +1,4 @@
-import React, { useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import { getTime } from "../helpers/getTime";
-import { useNoti } from "../hooks/useNoti";
-import axios from "axios";
 import styles from "../../public/css/jobCard.module.css";
 export const JobCard = ({ job, onClick, selectedJob }) => {
   return (
