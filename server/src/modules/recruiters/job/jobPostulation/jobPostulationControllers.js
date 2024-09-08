@@ -9,9 +9,7 @@ export const createJobPostulationCtrl = async (req, res) => {
     }
 
     const profileId = req.user.profile.id;
-
     const jobPostulation = await createJobPostulationSvc(profileId, jobId);
-    console.log({ jobId, profileId });
 
     res.status(201).json({ message: "Postulación enviada!", jobPostulation });
   } catch (error) {

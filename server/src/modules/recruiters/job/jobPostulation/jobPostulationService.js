@@ -6,6 +6,11 @@ export const createJobPostulationSvc = async (profId, jobId) => {
     const profile = await Profile.findByPk(profId);
     const profileId = profile.id;
 
+    const exists = await JobPostulation.findOne({
+      where: { profileId, jobId },
+    });
+    if (exists) throw new Error("Ya te has postulado para este trabajo");
+
     const jobPostulation = await JobPostulation.create({ profileId, jobId });
     return jobPostulation;
   } catch (error) {

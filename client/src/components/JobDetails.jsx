@@ -1,11 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+import { useNoti } from "../hooks/useNoti";
+import { authContext } from "../context/auth/Context";
+
+import { authService } from "../services/authService";
 import styles from "../../public/css/jobDetails.module.css";
-import { useLocation } from "react-router-dom";
 
 export const JobDetails = ({ jobId }) => {
+  const { authState } = useContext(authContext);
   const location = useLocation();
+  const noti = useNoti();
+  const profileId = location.state;
+
+  console.log(profileId);
 
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
@@ -22,13 +31,27 @@ export const JobDetails = ({ jobId }) => {
     getJobInfo();
   }, [jobId]);
 
-  function create() {
-    axios
-      .post("http://localhost:4000/create-job-postulation")
-      .then((response) => {
-        console.log(response);
-      });
-  }
+  const handleCreatePostulation = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/create-job-postulation",
+        {
+          profileId,
+          jobId,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      //console.log(response.data);
+      noti(response.data.message, "success");
+    } catch (error) {
+      noti(error.response.data.error, "error");
+      //console.error("Error creating postulation:", error);
+    }
+  };
 
   return (
     <aside
@@ -78,9 +101,15 @@ export const JobDetails = ({ jobId }) => {
                   bookmark
                 </span>{" "}
               </button>
-              <button className="btn btn-success" onClick={create}>
-                Postularse
-              </button>
+
+              {authState.role === "student" && (
+                <button
+                  className="btn btn-success"
+                  onClick={handleCreatePostulation}
+                >
+                  Postularse
+                </button>
+              )}
             </div>
           </header>
           <article>
