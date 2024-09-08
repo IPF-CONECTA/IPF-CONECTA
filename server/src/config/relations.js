@@ -101,11 +101,15 @@ export const createRelations = async () => {
     Job.hasMany(JobPostulation, {
       foreignKey: "jobId",
     });
+    JobPostulation.belongsTo(Job, {
+      foreignKey: "jobId",
+    });
+
     Profile.hasMany(JobPostulation, {
       foreignKey: "profileId",
     });
-    JobPostulation.belongsTo(Job, {
-      foreignKey: "jobId",
+    JobPostulation.belongsTo(Profile, {
+      foreignKey: "profileId",
     });
 
     Profile.hasMany(Repost, {
@@ -228,7 +232,6 @@ export const createRelations = async () => {
     Job.belongsTo(Profile, {
       foreignKey: "userId",
     });
-    ///////////
 
     Job.belongsTo(Company, {
       foreignKey: "companyId",

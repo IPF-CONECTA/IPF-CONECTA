@@ -17,7 +17,7 @@ export const getAssociationsSvc = async (status) => {
     }
 }
 
-export const updateAssociationStatus = async (id, status, justification = null) => {
+export const updateAssociationStatus = async (id, status, justification) => {
     try {
         const res = await axios.patch(
             `http://localhost:4000/admin/update-association-status/${id}/${status}`,

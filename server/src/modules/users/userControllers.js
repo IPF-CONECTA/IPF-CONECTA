@@ -35,7 +35,6 @@ export const getUserByIdCtrl = async (req, res) => {
 export const getUserInfoCtrl = async (req, res) => {
     const { id } = req.user.profile;
     const { profileId } = req.params;
-    console.log(profileId)
     try {
         if (id == profileId) return res.status(400).json()
         const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)

@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import styles from "../../public/css/jobDetails.module.css";
+import { useLocation } from "react-router-dom";
 
 export const JobDetails = ({ jobId }) => {
+  const location = useLocation();
+
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
     const getJobInfo = async () => {
@@ -23,7 +26,7 @@ export const JobDetails = ({ jobId }) => {
     axios
       .post("http://localhost:4000/create-job-postulation")
       .then((response) => {
-        console.log({ respuesta: response });
+        console.log(response);
       });
   }
 

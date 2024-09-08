@@ -32,7 +32,7 @@ export const Profile = sequelize.define('profile', {
         allowNull: false,
     },
     about: {
-        type: DataTypes.STRING(),
+        type: DataTypes.TEXT({ length: 2000 }),
         allowNull: true,
     },
     profilePic: {
