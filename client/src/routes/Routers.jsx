@@ -45,6 +45,7 @@ export const Routers = () => {
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
         <Route path="/perfil/:profileId" element={<ProfilePage />} />
+        <Route path="/guardados" element={<ProfilePage />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
