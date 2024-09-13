@@ -9,6 +9,11 @@
   width: 100%;
   box-sizing: border-box; 
 }
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
 
 .roleSelectionContainer {
   display: flex;

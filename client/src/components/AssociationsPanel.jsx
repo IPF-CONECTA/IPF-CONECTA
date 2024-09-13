@@ -8,6 +8,8 @@ import { updateAssociationStatus, getAssociationsSvc } from "../services/adminSe
 import { useNavigate } from "react-router-dom";
 import { useNoti } from "../hooks/useNoti";
 
+const BASE_URL = "http://localhost:4000/logoUrl/";
+
 export const AssociationsPanel = () => {
   const [selectedAssociation, setSelectedAssociation] = useState(null);
   const [associations, setAssociations] = useState([]);
@@ -32,10 +34,48 @@ export const AssociationsPanel = () => {
   }, [tab]);
 
   const handleTabClick = (tab) => {
+  const handleTabClick = (tab) => {
     setTab(tab);
     setAssociations([]);
   };
 
+  const handleAssociationStatus = async (id, status, message) => {
+    if (status === "rechazar" && !message) {
+      noti("Por favor, justifica el motivo del rechazo", "warning");
+      return;
+    }
+    await updateAssociationStatus(id, status, message);
+  };
+
+  useEffect(() => {
+    if (alert.show) {
+      const timer = setTimeout(
+        () => setAlert({ show: false, message: "", type: "" }),
+        3000
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  const acceptRequest = (index) => {
+    setAlert({
+      show: true,
+      message: `Solicitud de ${associations[index].company.name} aceptada.`,
+      type: "success",
+    });
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
+  };
+
+  const rejectRequest = (index, reason) => {
+    setAlert({
+      show: true,
+      message: `Solicitud de ${associations[index].company.name} rechazada. Razón: ${reason}`,
+      type: "danger",
+    });
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
+  };
   const handleAssociationStatus = async (id, status) => {
     if (status === "Rechazada" && !justification) {
       noti("Por favor, justifica el motivo del rechazo", "warning");
@@ -100,8 +140,13 @@ export const AssociationsPanel = () => {
                 <div className="d-flex align-items-center">
                   <p className="mb-0">{association.company.name}</p>
                   <img
+                    src={
+                      `${BASE_URL}${association.company.logoUrl}` ||
+                      "https://via.placeholder.com/40"
+                    }
                     src={association.company.logoUrl || "https://via.placeholder.com/40"}
                     alt="Empresa"
+                    crossOrigin="anonymous"
                     className="ms-2"
                     style={{ width: '40px', height: '40px' }}
                   />

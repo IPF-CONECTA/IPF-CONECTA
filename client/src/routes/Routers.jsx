@@ -23,6 +23,7 @@ import {
   AssociationsPanelPage,
 } from "../pages";
 
+
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -46,8 +47,8 @@ export const Routers = () => {
         </Route>
         <Route path="/perfil/:profileId" element={<ProfilePage />} />
 
-        <Route path="/buscar-empleo" element={<JobSearchPage />} />
 
+        <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

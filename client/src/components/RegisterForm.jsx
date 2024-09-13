@@ -18,7 +18,13 @@ export const RegisterForm = () => {
     cuil: "",
   });
   const [verificationCode, setVerificationCode] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    names: "",
+    surnames: "",
+    cuil: "",
+  });
 
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
@@ -31,11 +37,43 @@ export const RegisterForm = () => {
       ...prevFormData,
       [name]: value,
     }));
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case "email":
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: value.includes("@") ? "" : "El email debe contener '@'",
+        }));
+        break;
+      case "password":
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          password: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{6,}/.test(value)
+            ? ""
+            : "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y un símbolo",
+        }));
+        break;
+      case "cuil":
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          cuil: value.length === 11 ? "" : "El CUIL debe tener 11 dígitos",
+        }));
+        break;
+      default:
+        break;
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
+    if (Object.values(errors).some((error) => error)) {
+      noti("Por favor corrige los errores antes de enviar el formulario.", "error");
+      return;
+    }
+
     const user = {
       email: formData.email,
       password: formData.password,
@@ -81,9 +119,11 @@ export const RegisterForm = () => {
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       console.error("Error durante la verificación:", error);
-      const message =
-        error.response?.data?.message || "Error en la verificación";
-      setErrorMessage(message);
+      const message = error.response?.data?.message || "Error en la verificación";
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        general: message,
+      }));
       noti(message, "error");
     }
   };
@@ -133,6 +173,7 @@ export const RegisterForm = () => {
                 onChange={handleChange}
                 className={styles.input}
               />
+              {errors.email && <p className={styles.error}>{errors.email}</p>}
             </div>
             <div className={styles.formGroup}>
               <label>Contraseña</label>
@@ -144,6 +185,7 @@ export const RegisterForm = () => {
                 onChange={handleChange}
                 className={styles.input}
               />
+              {errors.password && <p className={styles.error}>{errors.password}</p>}
             </div>
             <div className={styles.navigationButtons}>
               <button
@@ -177,6 +219,7 @@ export const RegisterForm = () => {
                 onChange={handleChange}
                 className={styles.input}
               />
+              {errors.names && <p className={styles.error}>{errors.names}</p>}
             </div>
             <div className={styles.formGroup}>
               <label>Apellidos</label>
@@ -188,6 +231,7 @@ export const RegisterForm = () => {
                 onChange={handleChange}
                 className={styles.input}
               />
+              {errors.surnames && <p className={styles.error}>{errors.surnames}</p>}
             </div>
             {role === "student" && (
               <div className={styles.formGroup}>
@@ -200,6 +244,7 @@ export const RegisterForm = () => {
                   onChange={handleChange}
                   className={styles.input}
                 />
+                {errors.cuil && <p className={styles.error}>{errors.cuil}</p>}
               </div>
             )}
             <div className={styles.navigationButtons}>
@@ -231,7 +276,7 @@ export const RegisterForm = () => {
                 className={styles.input}
               />
             </div>
-            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+            {errors.general && <p className={styles.error}>{errors.general}</p>}
             <div className={styles.navigationButtonsVerify}>
               <button className={styles.primaryButton} type="submit">
                 Verificar

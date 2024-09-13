@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { useNoti } from "../hooks/useNoti";
+const BASE_URL = 'http://localhost:4000/logoUrl/';
 import styles from "../../public/css/SelectCompany.module.css";
 
 export const SelectCompany = () => {
@@ -88,27 +89,21 @@ export const SelectCompany = () => {
                   key={company.id}
                   className={`list-group-item ${styles.companyItem}`}
                 >
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center">
-                      <img
-                        src={company.logoUrl}
-                        alt={`${company.name} logo`}
-                        width="50"
-                        height="50"
-                        className="me-3"
-                      />
-                      <span>{company.name}</span>
-                    </div>
-                    <button
-                      className="btn btn-outline-success"
-                      onClick={() => {
-                        handleChooseCompany(company.id);
-                        setStep(2);
-                      }}
-                    >
-                      Seleccionar
-                    </button>
-                  </div>
+                    <img src={`${BASE_URL}${company.logoUrl}`} crossOrigin="anonymous" alt={`Logo de ${company.name}`}       width="50"
+                    height="50"
+                    className="me-3"/>
+          
+                  {company.name}
+
+                  <button
+                    value={company.id}
+                    className="btn btn-outline-success"
+                    onClick={() => {
+                      handleChooseCompany(company.id), setStep(2);
+                    }}
+                  >
+                    Selecionar
+                  </button>
                 </li>
               ))}
             </ul>

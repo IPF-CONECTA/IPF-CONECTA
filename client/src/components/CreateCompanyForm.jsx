@@ -17,16 +17,15 @@ export const CreateCompanyForm = () => {
     industryId: "",
     countryOriginId: "",
     cantEmployees: "",
-    logoUrl: "",
   });
+  const [logo, setLogo] = useState(null);
+  const [previewLogo, setPreviewLogo] = useState(null);
 
   useEffect(() => {
     axios.get("http://localhost:4000/industries").then((response) => {
       setIndustries(response.data);
     });
-  }, []);
 
-  useEffect(() => {
     axios.get("http://localhost:4000/find-all-countries").then((response) => {
       setCountries(response.data);
     });
@@ -40,8 +39,20 @@ export const CreateCompanyForm = () => {
     }));
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("company[name]", formData.name);
+    formDataToSend.append("company[description]", formData.description);
+    formDataToSend.append("company[industryId]", formData.industryId);
+    formDataToSend.append("company[countryOriginId]", formData.countryOriginId);
+    formDataToSend.append("company[cantEmployees]", formData.cantEmployees);
+    formDataToSend.append("message", formData.message);
+
+    if (logo) {
+      formDataToSend.append("logoUrl", logo);
+    }
 
     axios
       .post(
@@ -79,7 +90,7 @@ export const CreateCompanyForm = () => {
         noti(errorMsg, "error");
         console.error("Error creating company:", error);
       });
-  }
+  };
 
   return (
     <div className="d-flex justify-content-evenly align-items-center min-vh-100">
