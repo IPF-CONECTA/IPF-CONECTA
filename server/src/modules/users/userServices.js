@@ -72,7 +72,6 @@ export const getUserById = async (userId) => {
                 attributes: ['name']
             }]
         })
-        console.log('user en servicio', user)
         return user
     } catch (error) {
         console.log(error)

@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav, AssociationsPanel } from "../components";
+import { Nav, AssociationsPanel, Footer } from "../components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../public/panel.css";
 
@@ -10,6 +10,7 @@ export const AssociationsPanelPage = () => {
       <div className="mt-5">
         <AssociationsPanel />
       </div>
+      <Footer />
     </>
   );
 };

@@ -159,3 +159,19 @@ export const getPost = async (postId) => {
         return error.status, error.message
     }
 }
+
+
+export const getExperiences = async (profileId) => {
+    try {
+        const res = await axios.get(`http://localhost:4000//experiences/${profileId}`,
+            {
+                headers: {
+                    authorization: `Bearer ${authService.getToken()}`
+                }
+            }
+        )
+        return res.data, res.status
+    } catch (error) {
+        return error.status
+    }
+}

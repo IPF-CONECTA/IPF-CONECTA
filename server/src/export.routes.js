@@ -17,6 +17,8 @@ import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoute
 import companyUbicationRoutes from "./modules/recruiters/companies/companyUbication/companyUbicationRoutes.js";
 import { profileRoutes } from "./modules/profile/profileRoutes.js";
 import uploadRoutes from "./upload.routes.js";
+import profileRoutes from "./modules/profile/profileRoutes.js";
+import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -36,5 +38,9 @@ export const routes = (app) => {
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
   app.use(profileRoutes)
+<<<<<<< HEAD
   app.use(uploadRoutes);
+=======
+  app.use(experienceRoutes)
+>>>>>>> main
 };

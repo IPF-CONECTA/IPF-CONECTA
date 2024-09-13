@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
+import styles from "../../public/css/createCompany.module.css";
 
 export const CreateCompanyForm = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export const CreateCompanyForm = () => {
     if (type === "file") {
       const file = files[0];
       setLogo(file);
-      setPreviewLogo(URL.createObjectURL(file)); 
+      setPreviewLogo(URL.createObjectURL(file));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -62,50 +63,59 @@ export const CreateCompanyForm = () => {
     }
 
     axios
-    .post("http://localhost:4000/create-company", formDataToSend, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        authorization: `Bearer ${authService.getToken()}`,
-      },
-    })
-    .then((response) => {
-      console.log(response); 
-      const companyId = response.data.id;
-  
-      if (response.status === 201 && companyId) {
-        noti(response.data.message, "success");
-        navigate(`/crear-sede/${companyId}`);
-      } else {
-        noti("No se pudo obtener el ID de la empresa", "error");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      let errorMsg = error.response?.data?.message || "Error inesperado.";
-      if (!errorMsg && error.response?.data?.errors) {
-        errorMsg = error.response.data.errors[0].msg;
-      }
-      noti(errorMsg, "error");
-      console.error("Error creating company:", error);
-    });
-  
+      .post("http://localhost:4000/create-company", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${authService.getToken()}`,
+        },
+      })
+      .then((response) => {
+        const companyId = response.data.id;
+
+        if (response.status === 201 && companyId) {
+          noti(response.data.message, "success");
+          navigate(`/crear-sede/${companyId}`);
+        } else {
+          noti("No se pudo obtener el ID de la empresa", "error");
+        }
+      })
+      .catch((error) => {
+        let errorMsg = error.response?.data?.message || "Error inesperado.";
+        if (!errorMsg && error.response?.data?.errors) {
+          errorMsg = error.response.data.errors[0].msg;
+        }
+        noti(errorMsg, "error");
+        console.error("Error creating company:", error);
+      });
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="w-100" style={{ maxWidth: '600px' }}>
-        <form onSubmit={handleSubmit}>
-          <div className="text-center mb-4">
-            <h1>Registro de Empresa</h1>
+    <div className="d-flex justify-content-evenly align-items-center min-vh-100">
+      <div className="company-form shadow-sm">
+        <form onSubmit={handleSubmit} className="p-3">
+          <div className="d-flex justify-content-between mb-2">
+            <button 
+              type="button" 
+              className="btn btn-secondary fw-bold"
+              onClick={() => navigate(-1)} // Vuelve a la página anterior
+            >
+              Volver
+            </button>
+            <span
+              className={`fs-4 fw-semibold d-flex justify-content-center ${styles.registerText}`}
+            >
+              Registra tu empresa
+            </span>
           </div>
 
           {/* Message input */}
           <div className="mb-3">
+            <label htmlFor="message">Mensaje</label>
             <input
               type="text"
               name="message"
-              className="form-control"
-              placeholder="Mensaje"
+              className="form-control w-100 mb-3"
+              placeholder="Cuentanos tu rol en la empresa, que funciones cumples, etc."
               value={formData.message}
               onChange={handleInputChange}
               required
@@ -114,11 +124,12 @@ export const CreateCompanyForm = () => {
 
           {/* Name input */}
           <div className="mb-3">
+            <label htmlFor="name">Nombre de la empresa</label>
             <input
               type="text"
               name="name"
-              className="form-control"
-              placeholder="Nombre de la empresa"
+              className="form-control w-100 mb-3"
+              placeholder="The Coca-Cola Company"
               value={formData.name}
               onChange={handleInputChange}
               required
@@ -127,11 +138,12 @@ export const CreateCompanyForm = () => {
 
           {/* Description input */}
           <div className="mb-3">
+            <label htmlFor="description">Descripción de la empresa</label>
             <input
               type="text"
               name="description"
-              className="form-control"
-              placeholder="Descripción"
+              className="form-control w-100 mb-3"
+              placeholder="Descripción de la empresa"
               value={formData.description}
               onChange={handleInputChange}
               required
@@ -140,14 +152,17 @@ export const CreateCompanyForm = () => {
 
           {/* Industry selection */}
           <div className="mb-3">
+            <label htmlFor="industryId">Industria</label>
             <select
               name="industryId"
-              className="form-select"
+              className="form-select mb-3"
               value={formData.industryId}
               onChange={handleInputChange}
               required
             >
-              <option value="">Seleccionar Industria</option>
+              <option value="" disabled>
+                Seleccionar Industria
+              </option>
               {industries.map((industry) => (
                 <option key={industry.id} value={industry.id}>
                   {industry.name}
@@ -156,46 +171,49 @@ export const CreateCompanyForm = () => {
             </select>
           </div>
 
-          {/* Country selection and number of employees */}
-          <div className="mb-3">
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <select
-                  name="countryOriginId"
-                  className="form-select"
-                  value={formData.countryOriginId}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Seleccionar País</option>
-                  {countries.map((country) => (
-                    <option key={country.id} value={country.id}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          {/* Country and employee count */}
+          <div className="row">
+            <div className="col-md-6">
+              <label htmlFor="countryOriginId">País de origen</label>
+              <select
+                name="countryOriginId"
+                className="form-select"
+                value={formData.countryOriginId}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="" disabled>
+                  Seleccionar País
+                </option>
+                {countries.map((country) => (
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <div className="col-md-6 mb-3">
-                <input
-                  type="number"
-                  name="cantEmployees"
-                  className="form-control"
-                  placeholder="Cantidad de empleados"
-                  value={formData.cantEmployees}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
+            <div className="col-md-6">
+              <label htmlFor="cantEmployees">Cantidad de empleados aprox</label>
+              <input
+                type="number"
+                name="cantEmployees"
+                className="form-control w-100 mb-3"
+                placeholder="500"
+                value={formData.cantEmployees}
+                onChange={handleInputChange}
+                required
+              />
             </div>
           </div>
 
-          {/* File input for logo */}
+          {/* Logo input */}
           <div className="mb-3">
+            <label htmlFor="logoUrl">Logo de la empresa</label>
             <input
               type="file"
               name="logoUrl"
-              className="form-control"
+              className="form-control w-100 mb-3"
               onChange={handleInputChange}
             />
           </div>
@@ -219,6 +237,25 @@ export const CreateCompanyForm = () => {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Side description */}
+      <div className="descripcion border shadow rounded p-4 d-flex flex-column w-25">
+        <img
+          src="./img/registro-empresa.png"
+          className="mb-3"
+          alt="imagen-registro"
+        />
+        <span className="mb-1">
+          Una vez registres la empresa a la que perteneces,{" "}
+          <span className="fw-semibold">se pondrá en revisión</span> hasta que
+          un administrador la apruebe.
+        </span>
+        <span className="mb-1">
+          Este proceso puede tardar{" "}
+          <span className="fw-semibold"> hasta 24 horas</span> :)
+        </span>
+        <span>Mientra tanto podrás completar los datos de tu perfil.</span>
       </div>
     </div>
   );

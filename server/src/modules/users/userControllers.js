@@ -20,10 +20,9 @@ export const getUserByIdCtrl = async (req, res) => {
     try {
         const { id } = req.user.profile;
         const { profileId } = req.params;
-        console.log(id, profileId)
         if (!id || !profileId) return res.status(400).json();
-
-        const profile = await getUserById(id, profileId);
+        if (id == profileId) return res.status(400)
+        const profile = await getUserInfoSvc(id, profileId);
         if (!profile) return res.status(404).json();
 
         res.status(200).json(profile)
@@ -34,11 +33,11 @@ export const getUserByIdCtrl = async (req, res) => {
 }
 
 export const getUserInfoCtrl = async (req, res) => {
-    const { id } = req.user.profile
-    const { followingId } = req.params
+    const { id } = req.user.profile;
+    const { profileId } = req.params;
     try {
-        if (id == followingId) return res.status(400).json()
-        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, followingId)
+        if (id == profileId) return res.status(400).json()
+        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
         if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }
@@ -74,9 +73,7 @@ export const getRecomendedUsersController = async (req, res) => {
         }
         res.status(200).json(users);
     } catch (error) {
-        console.log('===========================================================================================')
         console.log(error)
-        console.log('===========================================================================================')
         res.status(500).json({ message: error.message });
     }
 }

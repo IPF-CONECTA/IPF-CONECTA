@@ -45,19 +45,20 @@ import {
   createModalities,
 } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
+import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
-  // await Post.sync({ force: true });
+  // await WorkExperience.sync({ force: true });
 
   console.log("Tables created successfully");
 
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // ===================================================================================
-  //await createRoles();
+  // await createRoles();
   // await createUserStates();
   // await createLangLevels();
   // await createSkills();
@@ -65,7 +66,7 @@ export const createTablesAndRelations = async () => {
   // await createLangs();
   // await createCountries();
   // await createStates();
-  //await createCities();
+  // await createCities();
   // await createContractTypes();
   // await createCompanyIndustry();
   // await createModalities();
