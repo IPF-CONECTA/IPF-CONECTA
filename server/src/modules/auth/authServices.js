@@ -61,6 +61,14 @@ export const authSignUpSvc = async (user) => {
     throw new Error(error.message);
   }
 };
+
+export const authIsEmailAvailableSvc = async (email) => {
+  try {
+    return User.findOne({ where: { email } })
+  } catch (error) {
+    throw error
+  }
+}
 // Si el usuario que se loguea tiene el campo verified == false, se le envia el correo de confirmacion
 // La funcion retorna isVerified, en el cliente se debe verificar si es true o false para mostrar la pagina correspondiente
 export const authLogInSvc = async (user) => {
@@ -121,26 +129,33 @@ export const sendConfirmAccountSvc = async (userId) => {
   }
 };
 
-export const confirmAccountSvc = async (userId, receivedCode) => {
+export const confirmAccountSvc = async (id, receivedCode) => {
   try {
-    const { verified, verifyCode } = await User.findByPk(userId);
-
-    if (verified == true) {
+    const user = await User.findByPk(id);
+    if (user.verified == true) {
       throw new Error("Correo ya verificado");
-    } else if (verifyCode != receivedCode) {
+    } else if (user.verifyCode != receivedCode) {
       throw new Error("Codigo incorrecto");
     }
 
     const [rowUpdated] = await User.update(
       { verified: true, verifyCode: null },
-      { where: { id: userId } }
+      { where: { id: id } }
     );
 
     if (rowUpdated < 1)
       throw new Error(
         "Hubo un error al confirmar la cuenta, intentelo de nuevo"
       );
+
+    return {
+      token: jwt.sign(
+        { userId: user.id },
+        process.env.TOKEN_SECRET_KEY
+      ), existingUser: await getUserById(id)
+    }
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 };

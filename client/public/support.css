@@ -1,12 +1,4 @@
 /* Contenedor de soporte */
-.support-container {
-  width: 100%;
-  max-width: 600px;
-  padding: 10px;
-  margin-top: 70px;
-  border-radius: 8px;
-  background-color: #fff;
-}
 
 /* Encabezado del soporte */
 .support-header {
@@ -43,31 +35,8 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #4cb853;
   outline: none;
   background-color: #fff;
 }
 
 /* Botón de formulario */
-.form-group button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4cb853;
-  color: #fff;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.form-group button:hover {
-  background-color: #388c3f;
-}
-
-/* Mejora de accesibilidad para botones */
-.form-group button:focus {
-  outline: 2px solid #4cb853;
-  outline-offset: 2px;
-}

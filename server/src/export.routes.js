@@ -18,7 +18,6 @@ import companyUbicationRoutes from "./modules/recruiters/companies/companyUbicat
 import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
 import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
-import uploadRoutes from "./upload.routes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);

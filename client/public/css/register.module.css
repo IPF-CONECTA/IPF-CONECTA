@@ -3,24 +3,24 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px;
   background-color: #f9f9f9;
-  height: 90vh;
   width: 100%;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+}
+.infoCuilHidden {
+  display: none !important;
+  position: absolute;
+  right: 17%;
+  z-index: 1000;
+  width: 250px;
+}
+.infoButton:hover + .infoCuilHidden {
+  display: flex !important;
 }
 .error {
   color: red;
   font-size: 0.875rem;
   margin-top: 0.25rem;
-}
-
-.roleSelectionContainer {
-  display: flex;
-  justify-content: center;
-  gap: 200px;
-  flex-wrap: wrap;
-  padding: 20px;
 }
 
 .roleCard {
@@ -29,6 +29,8 @@
   border-radius: 12px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 500px;
+  height: 510px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -60,7 +62,7 @@ button {
 }
 
 .roleImage {
-  width: 200px;
+  width: 300px;
   margin-bottom: 10px;
 }
 
@@ -75,14 +77,12 @@ button {
 
 .formStep {
   background-color: #fff;
-  padding: 40px;
   border-radius: 12px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 .formGroup {

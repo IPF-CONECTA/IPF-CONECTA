@@ -35,7 +35,7 @@ export function RecruiterPanel() {
 
   return (
     <div className="container">
-      <h1>Panel de reclutador</h1>
+      <h1>Panel de mentores</h1>
       <h2>Selecciona la empresa a la que perteneces.</h2>
       <input
         type="search"

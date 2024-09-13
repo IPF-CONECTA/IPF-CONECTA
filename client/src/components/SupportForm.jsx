@@ -47,8 +47,8 @@ export const SupportForm = () => {
 
   return (
     <>
-      <main className="d-flex align-items-center justify-content-center">
-        <div className="support-container border d-flex align-items-center">
+      <main className="d-flex align-items-center justify-content-center gap-3">
+        <div className=" border d-flex align-items-center p-3 rounded shadow">
           <form onSubmit={handleSubmit} className="border-0 shadow-none p-0">
             <h2 className="support-header">
               Soporte de Usuarios - IPF-Conecta
@@ -96,12 +96,16 @@ export const SupportForm = () => {
               ></textarea>
             </div>
             <div className="form-group mb-0 ">
-              <button type="submit" className="m-0">
+              <button
+                type="submit"
+                className="m-0 btn btn-primary fw-bold fs-5 w-100"
+              >
                 Enviar
               </button>
             </div>
           </form>
         </div>
+        <img height={450} src="./img/contact.jpg" alt="contact" />
       </main>
     </>
   );

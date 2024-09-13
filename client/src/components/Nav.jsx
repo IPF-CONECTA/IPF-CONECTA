@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoImage from "../../public/iconoipf.png";
-import "../../public/nav.css";
+// import "../../public/nav.css";
 import { authContext } from "../context/auth/Context";
 import styles from "../../public/css/nav.module.css";
 
@@ -16,7 +16,7 @@ export const Nav = () => {
 
   return (
     <>
-      <div className={`fixed-top bg-light`}>
+      <div className={` bg-light`}>
         <nav className="d-flex justify-content-between p-2 px-3">
           <Link className="navbar-brand" to="/">
             <img

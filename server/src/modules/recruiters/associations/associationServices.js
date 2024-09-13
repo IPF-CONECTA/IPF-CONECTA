@@ -14,6 +14,7 @@ export const createAssociation = async (userId, companyId, message) => {
         });
         return association;
     } catch (error) {
+
         throw new Error(error.message);
     }
 };

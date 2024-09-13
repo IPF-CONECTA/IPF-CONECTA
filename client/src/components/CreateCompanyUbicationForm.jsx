@@ -89,7 +89,7 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
         },
         {
           headers: {
-            authorization: `Bearer ${authService.getToken()}`,
+            Authorization: `Bearer ${authService.getToken()}`,
           },
         }
       )

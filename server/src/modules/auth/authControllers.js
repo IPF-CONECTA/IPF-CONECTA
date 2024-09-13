@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { authLogInSvc, authSignUpSvc, confirmAccountSvc, getRoles, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
+import { authIsEmailAvailableSvc, authLogInSvc, authSignUpSvc, confirmAccountSvc, getRoles, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
 import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 
@@ -25,7 +25,18 @@ export const authSignUpCtrl = async (req, res) => {
     }
 };
 
-
+export const authIsEmailAvailableCtrl = async (req, res) => {
+    const { email } = req.body;
+    try {
+        if (!email) return res.status(400).json({ message: "Proporcione un email" });
+        const isEmail = await authIsEmailAvailableSvc(email);
+        if (!isEmail) return res.status(200).json();
+        res.status(400).json({ message: "Email ya registrado" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json()
+    }
+}
 export const authLogInCtrl = async (req, res) => {
     const { user } = req.body;
 
@@ -45,18 +56,14 @@ export const authLogInCtrl = async (req, res) => {
 
 export const confirmAccountCtrl = async (req, res) => {
     const { receivedCode } = req.body;
-    let token = req.headers.authorization
-    token = token.split(' ')[1]
+    const { id } = req.user;
     try {
         if (!receivedCode) {
             throw new Error('Ingrese el codigo de verificacion')
         }
-        if (!token) {
-            throw new Error('Inicie sesion para confirmar el correo')
-        }
-        const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
-        await confirmAccountSvc(userId, receivedCode)
-        res.status(200).json({ message: 'Cuenta confirmada exitosamente' })
+
+        const data = await confirmAccountSvc(id, receivedCode)
+        res.status(201).json({ message: 'Cuenta confirmada exitosamente', data })
 
     } catch (error) {
         res.status(500).json({ message: error.message })

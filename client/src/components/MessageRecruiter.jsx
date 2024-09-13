@@ -5,10 +5,9 @@ export const MessageRecruiter = () => {
 
   const companyName = location.state.companyName;
   const recruiterStatus = location.state.status;
-  console.log(companyName, recruiterStatus);
 
   return (
-    <div className="w-50 mx-auto p-4 border rounded shadow-sm bg-light mt-5 mb-5 d-block">
+    <div className="w-50 mx-auto p-3 border rounded shadow-sm bg-light  d-block">
       {recruiterStatus === "Pendiente" ? (
         <>
           <h3 className=" text-center">Ten paciencia!</h3>

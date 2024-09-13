@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "../../public/css/register.module.css";
@@ -8,8 +8,11 @@ import { authService } from "../services/authService";
 export const RegisterForm = () => {
   const noti = useNoti();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(Array(6).fill(""));
   const [step, setStep] = useState(1);
   const [role, setRole] = useState("");
+  const inputRefs = useRef([]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,14 +20,23 @@ export const RegisterForm = () => {
     surnames: "",
     cuil: "",
   });
-  const [verificationCode, setVerificationCode] = useState("");
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-    names: "",
-    surnames: "",
-    cuil: "",
-  });
+
+  const handleVerificationCodeChange = (e, index) => {
+    const { value } = e.target;
+    if (/^[0-9]?$/.test(value)) {
+      const newCode = [...verificationCode];
+      newCode[index] = value;
+      setVerificationCode(newCode);
+
+      if (value && index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
+
+      if (newCode.every((digit) => digit !== "")) {
+        handleSubmitCode(newCode.join(""));
+      }
+    }
+  };
 
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
@@ -37,43 +49,10 @@ export const RegisterForm = () => {
       ...prevFormData,
       [name]: value,
     }));
-    validateField(name, value);
-  };
-
-  const validateField = (name, value) => {
-    switch (name) {
-      case "email":
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          email: value.includes("@") ? "" : "El email debe contener '@'",
-        }));
-        break;
-      case "password":
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          password: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{6,}/.test(value)
-            ? ""
-            : "La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y un símbolo",
-        }));
-        break;
-      case "cuil":
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          cuil: value.length === 11 ? "" : "El CUIL debe tener 11 dígitos",
-        }));
-        break;
-      default:
-        break;
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(errors).some((error) => error)) {
-      noti("Por favor corrige los errores antes de enviar el formulario.", "error");
-      return;
-    }
-
     const user = {
       email: formData.email,
       password: formData.password,
@@ -82,80 +61,97 @@ export const RegisterForm = () => {
       names: formData.names,
       surnames: formData.surnames,
     };
+    setIsSubmitting(true);
 
     try {
       const response = await axios.post("http://localhost:4000/auth/signup", {
         user,
       });
-      console.log(response);
       authService.setToken(response.data.token);
       noti(response.data.message, "success");
       setStep(4);
     } catch (error) {
       console.error("Error durante el registro:", error);
-      setErrorMessage(error.response?.data?.message || "Error en el registro");
       noti(
         error.response?.data?.message || error.response.data.errors[0].msg,
         "error"
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleVerificationSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/auth/confirm-account",
-        { receivedCode: verificationCode },
-        {
-          headers: {
-            authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
+  const handleSubmitCode = async (code) => {
+    const response = await authService.submitVerificationCode(code);
+    if (response.status !== 201) {
+      noti(
+        response.response?.data?.message || "Error en la verificación",
+        "error"
       );
-
-      noti(response.data.message, "success");
-      console.log("Usuario verificado:", response.data);
-      setTimeout(() => navigate("/"), 2000);
-    } catch (error) {
-      console.error("Error durante la verificación:", error);
-      const message = error.response?.data?.message || "Error en la verificación";
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        general: message,
-      }));
-      noti(message, "error");
     }
+    noti("¡Cuenta confirmada exitosamente!", "success");
+    setTimeout(() => {
+      authService.removeToken();
+      authService.setToken(response.data.data.token);
+      if (response.data.data.existingUser.role.name == "recruiter") {
+        return navigate("/seleccionar-empresa");
+      }
+      navigate("/");
+      window.location.reload();
+    }, 1000);
   };
 
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
-          <div className={styles.roleSelectionContainer}>
+          <div
+            className={"d-flex justify-content-evenly align-items-center w-100"}
+          >
             <div
               className={`${styles.roleCard} ${styles.student}`}
               onClick={() => handleRoleSelection("student")}
             >
               <img
-                src="../../public/egresado.png"
+                src="./img/student-role.jpg"
                 alt="Egresado"
+                height={300}
                 className={styles.roleImage}
               />
-              <h3>Egresado</h3>
-              <p>Regístrate como estudiante egresado.</p>
+              <h3 className="fw-bold text-primary-emphasis">Egresado</h3>
+              <span>
+                Como egresado, tendrás acceso a diversas{" "}
+                <span className="fw-semibold">ofertas laborales</span>
+                alineadas con tu perfil profesional, facilitando tu{" "}
+                <span className="fw-semibold">
+                  {" "}
+                  inserción en el mercado laboral
+                </span>{" "}
+                y acompañándote en el desarrollo de una carrera exitosa.
+              </span>
             </div>
             <div
               className={`${styles.roleCard} ${styles.recruiter}`}
               onClick={() => handleRoleSelection("recruiter")}
             >
               <img
-                src="../../public/recruiter.png"
+                src="./img/mentor-role.jpg"
                 alt="Reclutador"
                 className={styles.roleImage}
               />
-              <h3>Reclutador</h3>
-              <p>Regístrate como reclutador de empresas.</p>
+              <h3 className="fw-bold text-primary-emphasis">Mentor</h3>
+              <span>
+                Como{" "}
+                <span className="fw-semibold">representante de tu empresa</span>
+                , tendrás la oportunidad de{" "}
+                <span className="fw-semibold">conectar con egresados</span>{" "}
+                interesados en las oportunidades laborales que ofreces.{" "}
+                <span className="fw-semibold">
+                  Guiarás a los candidatos en su camino profesional
+                </span>
+                , ayudándolos a integrarse en el mundo laboral y crecer dentro
+                de la empresa.
+              </span>
             </div>
           </div>
         );
@@ -163,44 +159,64 @@ export const RegisterForm = () => {
         return (
           <form className={styles.formStep}>
             <h2>Información de la Cuenta</h2>
-            <div className={styles.formGroup}>
-              <label>Email</label>
+            <div className="form-floating mb-3">
               <input
                 type="email"
                 name="email"
-                placeholder="Email"
-                value={formData.email}
                 onChange={handleChange}
-                className={styles.input}
+                value={formData.email}
+                className="form-control w-100"
+                autoComplete="false"
+                id="floatingInput"
+                placeholder="name@example.com"
               />
-              {errors.email && <p className={styles.error}>{errors.email}</p>}
+              <label htmlFor="floatingInput">Email</label>
             </div>
-            <div className={styles.formGroup}>
-              <label>Contraseña</label>
+            <div className="form-floating">
               <input
                 type="password"
                 name="password"
-                placeholder="Contraseña"
                 value={formData.password}
+                autoComplete="false"
                 onChange={handleChange}
-                className={styles.input}
+                className="form-control w-100 mb-3"
+                id="floatingPassword"
+                placeholder="Contraseña"
               />
-              {errors.password && <p className={styles.error}>{errors.password}</p>}
+              <label htmlFor="floatingPassword">Contraseña</label>
             </div>
             <div className={styles.navigationButtons}>
               <button
-                className={styles.secondaryButton}
+                className={"btn d-flex align-items-center"}
                 type="button"
                 onClick={() => setStep(1)}
               >
-                <span className="material-symbols-outlined">arrow_back</span>
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                <span className="fw-semibold me-1">Volver</span>
               </button>
               <button
-                className={styles.primaryButton}
+                className={"btn btn-primary d-flex align-items-center pe-1"}
                 type="button"
-                onClick={() => setStep(3)}
+                onClick={async () => {
+                  if (!formData.email) {
+                    return noti(
+                      "Por favor, ingrese un correo electrónico",
+                      "error"
+                    );
+                  }
+                  const response = await authService.isEmail(formData.email);
+                  if (response.status !== 200) {
+                    return noti("Email ya registrado", "error");
+                  }
+                  setStep(3);
+                }}
               >
-                <span className="material-symbols-outlined">arrow_forward</span>
+                <span className="fw-semibold me-1">Siguiente</span>
+                <span className="material-symbols-outlined">
+                  arrow_forward_ios
+                </span>
               </button>
             </div>
           </form>
@@ -209,78 +225,140 @@ export const RegisterForm = () => {
         return (
           <form className={styles.formStep} onSubmit={handleSubmit}>
             <h2>Datos Personales</h2>
-            <div className={styles.formGroup}>
-              <label>Nombres</label>
+            <div className="form-floating mb-2">
               <input
                 type="text"
                 name="names"
-                placeholder="Nombres"
+                className="form-control w-100"
+                autoComplete="false"
                 value={formData.names}
                 onChange={handleChange}
-                className={styles.input}
               />
-              {errors.names && <p className={styles.error}>{errors.names}</p>}
+              <label htmlFor="floatingInput">Nombres</label>
             </div>
-            <div className={styles.formGroup}>
-              <label>Apellidos</label>
+            <div className="form-floating mb-2">
               <input
                 type="text"
                 name="surnames"
-                placeholder="Apellidos"
+                className="form-control w-100"
+                autoComplete="false"
                 value={formData.surnames}
                 onChange={handleChange}
-                className={styles.input}
               />
-              {errors.surnames && <p className={styles.error}>{errors.surnames}</p>}
+              <label htmlFor="floatingInput">Apellidos</label>
             </div>
             {role === "student" && (
-              <div className={styles.formGroup}>
-                <label>CUIL</label>
-                <input
-                  type="text"
-                  name="cuil"
-                  placeholder="CUIL"
-                  value={formData.cuil}
-                  onChange={handleChange}
-                  className={styles.input}
-                />
-                {errors.cuil && <p className={styles.error}>{errors.cuil}</p>}
+              <div className="border rounded mb-3 d-flex">
+                <div className="form-floating w-100">
+                  <input
+                    type="number"
+                    className="form-control border-0 m-0 w-100"
+                    id="floatingInput"
+                    name="cuil"
+                    autoComplete="false"
+                    value={formData.cuil}
+                    placeholder="cuil"
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="floatingInput">Cuil</label>
+                </div>
+                <div className="d-flex btn p-0 me-1 align-items-center justify-content-end">
+                  <span
+                    className={`${styles.infoButton} border px-2 rounded-circle bg-info`}
+                  >
+                    <div className="fw-bold text-white">?</div>
+                  </span>
+                  <div
+                    className={`${styles.infoCuilHidden} d-none border shadow p-2 rounded bg-white d-flex flex-column`}
+                  >
+                    <span className="fw-semibold">
+                      ¿Para qué pedimos el cuil?
+                    </span>
+                    <span>
+                      Solicitamos tu CUIL para garantizar que la plataforma esté
+                      reservada exclusivamente para estudiantes y egresados del
+                      IPF, asegurando la autenticidad de los usuarios
+                      registrados.
+                    </span>
+                    <span className="fw-semibold text-primary">
+                      Sólo números, sin espacios ni puntos.
+                    </span>
+                  </div>
+                </div>
               </div>
             )}
             <div className={styles.navigationButtons}>
               <button
-                className={styles.secondaryButton}
+                className={"btn d-flex align-items-center"}
                 type="button"
                 onClick={() => setStep(2)}
               >
-                <span className="material-symbols-outlined">arrow_back</span>
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                <span className="fw-semibold me-1">Volver</span>
               </button>
-              <button className={styles.primaryButton} type="submit">
-                Registrarse
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="sr-only">Cargando...</span>
+                  </>
+                ) : (
+                  "Registrar"
+                )}
               </button>
             </div>
           </form>
         );
       case 4:
         return (
-          <form className={styles.formStep} onSubmit={handleVerificationSubmit}>
-            <h2>Verificación de Cuenta</h2>
-            <div className={styles.formGroup}>
-              <label>Ingrese el Código de Verificación</label>
-              <input
-                type="text"
-                name="verificationCode"
-                placeholder="Código de Verificación"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                className={styles.input}
-              />
-            </div>
-            {errors.general && <p className={styles.error}>{errors.general}</p>}
-            <div className={styles.navigationButtonsVerify}>
-              <button className={styles.primaryButton} type="submit">
-                Verificar
-              </button>
+          <form
+            className="border-0 shadow-none"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <div className="d-flex align-items-center justify-content-center">
+              <div className="space-y-4">
+                <div className="text-center">
+                  <h2 className="h2 font-weight-bold">
+                    Confirmación de correo electrónico
+                  </h2>
+                  <span className="text-muted d-flex flex-column mb-2">
+                    Ingresa el codigo de confirmación de 6 dígitos que se envió
+                    a tu correo
+                    <span className="fw-semibold">{formData.email}</span>
+                  </span>
+                </div>
+                <div className="d-flex align-items-center justify-content-center gap-3">
+                  <div
+                    className="d-grid gap-3"
+                    style={{ gridTemplateColumns: "repeat(6, 1fr)" }}
+                  >
+                    {Array.from({ length: 6 }).map((_, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        maxLength={1}
+                        className="form-control w-75 text-center fs-4 fw-bold bg-light rounded"
+                        value={verificationCode[index]}
+                        onChange={(e) => handleVerificationCodeChange(e, index)}
+                        ref={(el) => (inputRefs.current[index] = el)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
         );

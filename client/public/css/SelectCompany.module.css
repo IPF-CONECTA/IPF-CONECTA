@@ -1,24 +1,29 @@
-.mainContent {
-    padding: 9rem;
-  }
-  
-  .companyItem {
-    transition: background-color 0.3s ease;
-  }
-  
-  .companyItem:hover {
-    background-color: #d7ebff;
-  }
-  
-  .requestCreation {
-    margin-top: 2rem;
-  }
-  
-  .backButton {
-    margin-right: 0.5rem;
-  }
-  
-  .fullWidthButton {
-    width: 100%;
-  }
-  
+.companyItem {
+  transition: background-color 0.3s ease;
+}
+
+.companyItem:hover {
+  background-color: #d7ebff;
+}
+
+.requestCreation {
+  margin-top: 2rem;
+}
+
+.backButton {
+  margin-right: 0.5rem;
+}
+
+.fullWidthButton {
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+}
+.textArea {
+  height: 80%;
+}
+.welcoming {
+  width: 40%;
+}

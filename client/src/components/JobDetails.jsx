@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../../public/css/jobDetails.module.css";
+import { BASE_URL } from "../constants/BASE_URL";
 export const JobDetails = ({ jobId }) => {
   console.log(jobId);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -10,6 +11,7 @@ export const JobDetails = ({ jobId }) => {
       if (jobId != null) {
         try {
           const res = await axios.get(`http://localhost:4000/get-job/${jobId}`);
+          console.log(res.data);
           setSelectedJob(res.data);
         } catch (error) {
           console.error("Error fetching job data:", error);
@@ -26,14 +28,17 @@ export const JobDetails = ({ jobId }) => {
       {selectedJob && (
         <div className={`${styles.jobDetails} w-100`}>
           <header className="mb-3 d-flex flex-row align-items-center w-100 justify-content-between">
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
               <img
-                src={selectedJob.company.logoUrl}
+                src={`${BASE_URL}/logoUrl/${selectedJob.company.logoUrl}`}
                 className="me-3 rounded-pill"
+                crossOrigin="anonymous"
                 height={"35px"}
                 alt="logo"
               />
-              <h3 className="m-0">{selectedJob.company.name}</h3>
+              <span className="fs-5 text-secondary fw-semibold">
+                {selectedJob.company.name}
+              </span>
             </div>
             <div className="d-flex flex-row justify-content-between align-items-center">
               <div className="dropdown me-2">
@@ -73,20 +78,28 @@ export const JobDetails = ({ jobId }) => {
             </div>
           </header>
           <article>
-            <h2>{selectedJob.title}</h2>
-            <p>{selectedJob.description}</p>
-            <p>
-              <strong>Modalidad: </strong>
-              {selectedJob.modality.name}
-            </p>
-
-            <p>
+            <div className="d-flex justify-content-between align-items-center">
+              <span className="fs-3 fw-semibold text-light-emphasis">
+                {selectedJob.title}
+              </span>
+              <span className="text-secondary">
+                {selectedJob.modality.name}
+              </span>
+            </div>
+            <p className="mb-1">
               <strong>Tipo de contrato: </strong>
               {selectedJob.contractType.name}
             </p>
+            <div>
+              <span className="fw-bold">Descripción</span>
+              <div
+                className="mt-1 p-2"
+                dangerouslySetInnerHTML={{ __html: selectedJob.description }}
+              />
+            </div>
           </article>
           <footer className="d-flex flex-column align-items-start">
-            <h4>Habilidades necesarias:</h4>
+            <span className="fs-5 fw-semibold">Habilidades necesarias:</span>
             <ul>
               {selectedJob.jobSkills.map((jobSkill) => (
                 <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>

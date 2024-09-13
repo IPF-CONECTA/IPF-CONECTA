@@ -14,7 +14,7 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  
+
   function showPass() {
     var x = document.getElementById("myInput");
     if (x.type === "password") {
@@ -49,14 +49,14 @@ export const LoginForm = () => {
             (association) => association.status == "Pendiente"
           );
           if (isPending) {
-            navigate("/solicitud-del-reclutador", {
+            navigate("/solicitud-del-mentor", {
               state: {
                 companyName: isPending.company.name,
                 status: "Pendiente",
               },
             });
           } else {
-            navigate("/solicitud-del-reclutador", {
+            navigate("/solicitud-del-mentor", {
               state: { status: "Rechazada" },
             });
           }
@@ -65,40 +65,46 @@ export const LoginForm = () => {
     }
   }
 
-
   return (
-    <div className={styles["login-container"]}>
-      <div className={styles["login-image"]}>
-        <img src="/public/iniciar-sesion.png" alt="Login" />
+    <div className="d-flex w-100 justify-content-between align-items-center">
+      <div className="w-50 d-flex justify-content-center">
+        <img src="./img/login.jpg" height={600} alt="Login" />
       </div>
-      <div className={styles["login-form"]}>
-        <h2 className={styles["title-h2"]}>Iniciar Sesión</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles["form-group"]}>
-            <label htmlFor="email" className={styles.label}>
+      <div className={"w-50"}>
+        <form onSubmit={handleSubmit(onSubmit)} className="shadow">
+          <span className={`fs-3 fw-semibold ${styles["title-h2"]}`}>
+            Iniciar Sesión
+          </span>
+          <div className="form-floating mb-3 mt-2">
+            <input
+              {...register("email")}
+              type="email"
+              className="form-control w-100"
+              id="floatingInput"
+              placeholder="name@example.com"
+            />
+            <label htmlFor="floatingInput" className="bg-transparent">
               Email
             </label>
-            <input type="text" required {...register("email")} />
-            {errors.email && (
-              <span className={styles["error-message"]}>
-                {errors.email.message}
-              </span>
-            )}
           </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="password" className={styles.label}>
+          <div className="form-floating mb-3">
+            <input
+              {...register("password")}
+              type="password"
+              className="form-control w-100"
+              id="floatingPassword"
+              placeholder="Password"
+            />
+            <label htmlFor="floatingPassword" className="bg-transparent">
               Contraseña
             </label>
-            <input type="password" required {...register("password")} />
-            {errors.password && (
-              <span className={styles["error-message"]}>
-                {errors.password.message}
-              </span>
-            )}
           </div>
           <div className={styles["form-group"]}>
-            <button type="submit" className={styles.button}>
-              Login
+            <button
+              type="submit"
+              className={`fw-bold fs-5 p-2 ${styles.button}`}
+            >
+              Ingresar
             </button>
           </div>
           <div className={styles["register-link"]}>

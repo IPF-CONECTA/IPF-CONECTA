@@ -54,7 +54,9 @@ const PostList = () => {
       >
         <form
           onSubmit={handleSubmit}
-          className={` h-100 w-75 d-flex flex-column align-items-end border border-bottom-0 p-2 ${styles.postForm}`}
+          className={` h-100 w-75 d-flex flex-column align-items-end border ${
+            posts.length > 0 ? "border-bottom-0" : ""
+          } p-2 ${styles.postForm}`}
           onFocus={() => {
             setFocused(true);
           }}
