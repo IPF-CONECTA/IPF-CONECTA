@@ -24,3 +24,7 @@
 .bookmark:hover {
   color: #a1a1a1;
 }
+
+.roundedImage {
+  object-fit: cover;
+}

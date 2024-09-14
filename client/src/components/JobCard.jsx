@@ -18,8 +18,9 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
             <img
               src={`${BASE_URL}/logoUrl/${job.company.logoUrl}`}
               crossOrigin="anonymous"
-              className="pe-2"
-              height={"20px"}
+              className={`me-2 rounded-circle ${styles.roundedImage}`}
+              height={25}
+              width={25}
               alt=""
             />
             <span className={`${styles.smallText}`}>{job.company.name}</span>

@@ -1,10 +1,22 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+
+import { useNoti } from "../hooks/useNoti";
+import { authContext } from "../context/auth/Context";
+
+import { authService } from "../services/authService";
 import styles from "../../public/css/jobDetails.module.css";
 import { BASE_URL } from "../constants/BASE_URL";
+
 export const JobDetails = ({ jobId }) => {
-  console.log(jobId);
+  const { authState } = useContext(authContext);
+  const location = useLocation();
+  const noti = useNoti();
+  const profileId = location.state;
+
+  console.log(profileId);
+
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
     const getJobInfo = async () => {
@@ -18,9 +30,31 @@ export const JobDetails = ({ jobId }) => {
         }
       }
     };
-
     getJobInfo();
   }, [jobId]);
+
+  const handleCreatePostulation = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/create-job-postulation",
+        {
+          profileId,
+          jobId,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      //console.log(response.data);
+      noti(response.data.message, "success");
+    } catch (error) {
+      noti(error.response.data.error, "error");
+      //console.error("Error creating postulation:", error);
+    }
+  };
+
   return (
     <aside
       className={`${styles.asideJobDetails} d-flex flex-column align-items-center w-100`}
@@ -31,9 +65,10 @@ export const JobDetails = ({ jobId }) => {
             <div className="d-flex align-items-center">
               <img
                 src={`${BASE_URL}/logoUrl/${selectedJob.company.logoUrl}`}
-                className="me-3 rounded-pill"
+                className={`me-2 rounded-circle ${styles.roundedImage}`}
                 crossOrigin="anonymous"
-                height={"35px"}
+                height={40}
+                width={40}
                 alt="logo"
               />
               <span className="fs-5 text-secondary fw-semibold">
@@ -72,9 +107,15 @@ export const JobDetails = ({ jobId }) => {
                   bookmark
                 </span>{" "}
               </button>
-              <button className="btn btn-success">
-                <strong>Postularse</strong>
-              </button>
+
+              {authState.role === "student" && (
+                <button
+                  className="btn btn-success"
+                  onClick={handleCreatePostulation}
+                >
+                  Postularse
+                </button>
+              )}
             </div>
           </header>
           <article>

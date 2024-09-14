@@ -30,3 +30,6 @@ p {
 .smallText {
   font-size: 13px;
 }
+.roundedImage {
+  object-fit: cover;
+}

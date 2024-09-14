@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { JobCard } from "./JobCard";
-import { getJobs } from "../services/jobServices";
-import { useNoti } from "../hooks/useNoti";
-import { JobDetailsPage } from "../pages/JobsDetailsPage";
-import styles from "../../public/css/jobSearch.module.css";
 import { JobDetails } from "./JobDetails";
+
+import { authContext } from "../context/auth/Context";
+import { useNoti } from "../hooks/useNoti";
+import { getJobs } from "../services/jobServices";
+
+import styles from "../../public/css/jobSearch.module.css";
+
 export const JobSearch = () => {
+  const noti = useNoti();
+
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const noti = useNoti();
   const [selectedJob, setSelectedJob] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
   const [cantJobs, setCantJobs] = useState(0);
+
   useEffect(() => {
     async function fetchData() {
       const res = await getJobs();
@@ -42,6 +49,7 @@ export const JobSearch = () => {
     setCurrentPage(1);
     setTotalPages(res.data.totalPages);
   };
+
   const handleMoreJobsBtn = async (page) => {
     setCurrentPage(page);
     const data = await getJobs(query, page);

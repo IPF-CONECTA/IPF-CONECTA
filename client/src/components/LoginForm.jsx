@@ -42,6 +42,10 @@ export const LoginForm = () => {
         const isApproved = response.associations.find(
           (association) => association.status == "Aprobada"
         );
+        const isRefused = response.associations.find(
+          (association) => association.status == "Rechazada"
+        );
+
         if (isApproved) {
           navigate("/inicio");
         } else {
@@ -55,9 +59,14 @@ export const LoginForm = () => {
                 status: "Pendiente",
               },
             });
-          } else {
-            navigate("/solicitud-del-mentor", {
-              state: { status: "Rechazada" },
+          }
+
+          if (isRefused) {
+            navigate("/solicitud-del-reclutador", {
+              state: {
+                companyName: isRefused.company.name,
+                status: "Rechazada",
+              },
             });
           }
         }

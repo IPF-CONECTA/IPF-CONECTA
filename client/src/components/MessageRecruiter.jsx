@@ -42,9 +42,10 @@ export const MessageRecruiter = () => {
           <h3 className="text-center">¡Lo sentimos mucho!</h3>
           <p className="text-center">Tu solicitud ha sido rechazada</p>
           <p className="text-justify">
-            Los administradores han evaluado tu perfil asociado a la empresa
-            {" " + companyName} y lamentablemente no cumple con los requisitos
-            necesarios. Si tienes alguna duda, por favor contáctanos.
+            Los administradores han evaluado tu perfil asociado a la empresa{" "}
+            {companyName}, la cual has solicitado. y lamentablemente no cumple
+            con los requisitos necesarios. Si tienes alguna duda, por favor
+            contáctanos.
           </p>
           <img
             src="../public/recruiter3.png"

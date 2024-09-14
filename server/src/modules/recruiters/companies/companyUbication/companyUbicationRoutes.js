@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { createCtrl } from "./companyUbicationControllers.js";
+import { createCompamyUbicationCtrl } from "./companyUbicationControllers.js";
 
 const companyUbicationRoutes = Router();
 
-companyUbicationRoutes.post("/create-company-ubication", createCtrl);
+companyUbicationRoutes.post(
+  "/create-company-ubication",
+  createCompamyUbicationCtrl
+);
 
 export default companyUbicationRoutes;
