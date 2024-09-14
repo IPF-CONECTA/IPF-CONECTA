@@ -25,18 +25,33 @@ export const CreateCompanyForm = () => {
     axios.get("http://localhost:4000/industries").then((response) => {
       setIndustries(response.data);
     });
+  }, []);
 
+  useEffect(() => {
     axios.get("http://localhost:4000/find-all-countries").then((response) => {
       setCountries(response.data);
     });
   }, []);
 
-  function handleInputChange(e) {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  const handleInputChange = (e) => {
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      const file = files[0];
+      setLogo(file);
+      setPreviewLogo(URL.createObjectURL(file));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
+  };
+
+  function handleLogoChange(e) {
+    const file = e.target.files[0];
+    setLogo(file);
+    setPreviewLogo(URL.createObjectURL(file));
   }
 
   const handleSubmit = (e) => {
@@ -55,36 +70,27 @@ export const CreateCompanyForm = () => {
     }
 
     axios
-      .post(
-        "http://localhost:4000/create-company",
-        {
-          company: {
-            name: formData.name,
-            description: formData.description,
-            cantEmployees: formData.cantEmployees,
-            industryId: formData.industryId,
-            countryOriginId: formData.countryOriginId,
-            logoUrl: formData.logoUrl,
-          },
-          message: formData.message,
+      .post("http://localhost:4000/create-company", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${authService.getToken()}`,
         },
-        {
-          headers: {
-            authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      )
+      })
       .then((response) => {
         console.log(response);
-        if (response.status === 201) {
+        const companyId = response.data.id;
+
+        if (response.status === 201 && companyId) {
           noti(response.data.message, "success");
-          navigate(`/crear-sede/${response.data.id}`);
+          navigate(`/crear-sede/${companyId}`);
+        } else {
+          noti("No se pudo obtener el ID de la empresa", "error");
         }
       })
       .catch((error) => {
         console.log(error);
-        let errorMsg = error.response.data.message;
-        if (!errorMsg) {
+        let errorMsg = error.response?.data?.message || "Error inesperado.";
+        if (!errorMsg && error.response?.data?.errors) {
           errorMsg = error.response.data.errors[0].msg;
         }
         noti(errorMsg, "error");
@@ -97,11 +103,8 @@ export const CreateCompanyForm = () => {
       <div className="company-form shadow-sm">
         <form onSubmit={handleSubmit} className="p-3">
           <div className="d-flex justify-content-start mb-2">
-            <div>
-              <button className="btn btn-secondary fw-bold">Volver</button>
-            </div>
             <span
-              className={`fs-4 fw-semibold d-flex justify-content-center ${styles.registerText}`}
+              className={`fs-4 w-100 fw-semibold d-flex justify-content-center ${styles.registerText}`}
             >
               Registra tu empresa
             </span>
@@ -152,9 +155,7 @@ export const CreateCompanyForm = () => {
               onChange={handleInputChange}
               required
             >
-              <option selected label>
-                Seleccionar Industria
-              </option>
+              <option defaultValue={"Seleccionar industria"} label />
               {industries.map((industry) => (
                 <option key={industry.id} value={industry.id}>
                   {industry.name}
@@ -173,9 +174,7 @@ export const CreateCompanyForm = () => {
                   onChange={handleInputChange}
                   required
                 >
-                  <option selected label>
-                    Seleccionar País
-                  </option>
+                  <option defaultValue={"Seleccionar País"} label />
                   {countries.map((country) => (
                     <option key={country.id} value={country.id}>
                       {country.name}
@@ -207,10 +206,23 @@ export const CreateCompanyForm = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="d-flex justify-content-end">
-            <button type="submit" className="btn btn-primary">
-              Siguiente
-            </button>
+
+          <div className="d-flex flex-column ">
+            {previewLogo && <img src={previewLogo} className="mb-2" />}
+            <div className="w-100 d-flex justify-content-between">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => navigate(-1)}
+                  className="btn btn-secondary fw-bold"
+                >
+                  Volver
+                </button>
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Siguiente
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -229,7 +241,13 @@ export const CreateCompanyForm = () => {
           Este proceso puede tardar{" "}
           <span className="fw-semibold"> hasta 24 horas</span> :)
         </span>
-        <span>Mientra tanto podrás completar los datos de tu perfil.</span>
+        <span>
+          Mientra tanto,{" "}
+          <span className="fw-semibold">
+            podrás completar los datos de tu perfil
+          </span>
+          .
+        </span>
       </div>
     </div>
   );
