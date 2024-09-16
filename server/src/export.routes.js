@@ -38,9 +38,5 @@ export const routes = (app) => {
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
   app.use(profileRoutes)
-<<<<<<< HEAD
-  app.use(uploadRoutes);
-=======
   app.use(experienceRoutes)
->>>>>>> main
 };
