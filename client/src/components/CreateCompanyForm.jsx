@@ -255,7 +255,11 @@ export const CreateCompanyForm = () => {
           Este proceso puede tardar{" "}
           <span className="fw-semibold"> hasta 24 horas</span> :)
         </span>
-        <span>Mientra tanto podrás completar los datos de tu perfil.</span>
+        <span>
+          Mientras tanto,{" "}
+          <span className="fw-semibold">podrás completar los datos de tu perfil</span>
+          .
+        </span>
       </div>
     </div>
   );

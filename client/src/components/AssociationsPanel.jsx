@@ -4,7 +4,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
-import { updateAssociationStatus, getAssociationsSvc } from "../services/adminServices";
+import {
+  updateAssociationStatus,
+  getAssociationsSvc,
+} from "../services/adminServices";
 import { useNavigate } from "react-router-dom";
 import { useNoti } from "../hooks/useNoti";
 
@@ -39,19 +42,48 @@ export const AssociationsPanel = () => {
     setAssociations([]);
   };
 
+  useEffect(() => {
+    if (alert.show) {
+      const timer = setTimeout(
+        () => setAlert({ show: false, message: "", type: "" }),
+        3000
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  const acceptRequest = (index) => {
+    setAlert({
+      show: true,
+      message: `Solicitud de ${associations[index].company.name} aceptada.`,
+      type: "success",
+    });
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
+  };
+
+  const rejectRequest = (index, reason) => {
+    setAlert({
+      show: true,
+      message: `Solicitud de ${associations[index].company.name} rechazada. Razón: ${reason}`,
+      type: "danger",
+    });
+    const newAssociations = associations.filter((_, i) => i !== index);
+    setAssociations(newAssociations);
+  };
   const handleAssociationStatus = async (id, status) => {
     if (status === "Rechazada" && !justification) {
       noti("Por favor, justifica el motivo del rechazo", "warning");
       return;
     }
     await updateAssociationStatus(id, status, justification);
-    setJustification(""); 
+    setJustification("");
     noti(`Solicitud ${status.toLowerCase()} exitosamente`, "success");
-    
-    setAssociations(prevAssociations =>
-      prevAssociations.filter(association => association.id !== id)
+
+    setAssociations((prevAssociations) =>
+      prevAssociations.filter((association) => association.id !== id)
     );
-    
+
     setSelectedAssociation(null);
     navigate("/admin/asociaciones");
   };
@@ -59,20 +91,26 @@ export const AssociationsPanel = () => {
   return (
     <div className="container mt-4">
       <div className="btn-group mb-3" role="group">
-        <button 
-          className={`btn btn-outline-success ${tab === "Pendiente" ? "active" : ""}`} 
+        <button
+          className={`btn btn-outline-success ${
+            tab === "Pendiente" ? "active" : ""
+          }`}
           onClick={() => handleTabClick("Pendiente")}
         >
           Pendientes
         </button>
-        <button 
-          className={`btn btn-outline-success ${tab === "Aprobada" ? "active" : ""}`} 
+        <button
+          className={`btn btn-outline-success ${
+            tab === "Aprobada" ? "active" : ""
+          }`}
           onClick={() => handleTabClick("Aprobada")}
         >
           Aprobadas
         </button>
-        <button 
-          className={`btn btn-outline-success ${tab === "Rechazada" ? "active" : ""}`} 
+        <button
+          className={`btn btn-outline-success ${
+            tab === "Rechazada" ? "active" : ""
+          }`}
           onClick={() => handleTabClick("Rechazada")}
         >
           Rechazadas
@@ -90,23 +128,32 @@ export const AssociationsPanel = () => {
               >
                 <div className="d-flex align-items-center">
                   <img
-                    src={association.profile.profilePic || "https://via.placeholder.com/40"}
+                    src={
+                      association.profile.profilePic ||
+                      "https://via.placeholder.com/40"
+                    }
                     alt="Usuario"
                     className="rounded-circle me-2"
-                    style={{ width: '40px', height: '40px' }}
+                    style={{ width: "40px", height: "40px" }}
                   />
                   <div>
                     <strong>{association.profile.names}</strong>
-                    <p className="mb-0 text-muted">{association.profile.user.email}</p>
+                    <p className="mb-0 text-muted">
+                      {association.profile.user.email}
+                    </p>
                   </div>
                 </div>
                 <div className="d-flex align-items-center">
                   <p className="mb-0">{association.company.name}</p>
                   <img
-                    src={association.company.logoUrl || "https://via.placeholder.com/40"}
+                    src={
+                      `${BASE_URL}${association.company.logoUrl}` ||
+                      "https://via.placeholder.com/40"
+                    }
                     alt="Empresa"
+                    crossOrigin="anonymous"
                     className="ms-2"
-                    style={{ width: '40px', height: '40px' }}
+                    style={{ width: "40px", height: "40px" }}
                   />
                 </div>
               </li>
@@ -125,30 +172,43 @@ export const AssociationsPanel = () => {
             <div className="d-flex">
               <div className="me-3">
                 <img
-                  src={selectedAssociation.company.logoUrl || "https://via.placeholder.com/100"}
+                  src={
+                    selectedAssociation.company.logoUrl ||
+                    "https://via.placeholder.com/100"
+                  }
                   alt={`${selectedAssociation.company.name} Logo`}
                   className="img-fluid"
-                  style={{ maxHeight: '100px' }}
+                  style={{ maxHeight: "100px" }}
                 />
                 <h6 className="mt-2">Datos de la Empresa:</h6>
-                <p><strong>Nombre:</strong> {selectedAssociation.company.name}</p>
-                <p><strong>Justificación:</strong> {selectedAssociation.message}</p>
+                <p>
+                  <strong>Nombre:</strong> {selectedAssociation.company.name}
+                </p>
+                <p>
+                  <strong>Justificación:</strong> {selectedAssociation.message}
+                </p>
               </div>
               <div>
                 <h6>Solicitante:</h6>
                 <div className="d-flex align-items-center">
                   <img
-                    src={selectedAssociation.profile.profilePic || "https://via.placeholder.com/100"}
+                    src={
+                      selectedAssociation.profile.profilePic ||
+                      "https://via.placeholder.com/100"
+                    }
                     alt="Foto de perfil"
                     className="rounded-circle me-2"
-                    style={{ width: '30px', height: '30px' }}
+                    style={{ width: "30px", height: "30px" }}
                   />
                   <div>
                     <span className="fw-bold">
-                      {selectedAssociation.profile.names} {selectedAssociation.profile.surnames}
+                      {selectedAssociation.profile.names}{" "}
+                      {selectedAssociation.profile.surnames}
                     </span>
                     <br />
-                    <span className="text-muted">{selectedAssociation.profile.user.email}</span>
+                    <span className="text-muted">
+                      {selectedAssociation.profile.user.email}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -165,13 +225,17 @@ export const AssociationsPanel = () => {
             />
             <Button
               color="secondary"
-              onClick={() => handleAssociationStatus(selectedAssociation.id, "Rechazada")}
+              onClick={() =>
+                handleAssociationStatus(selectedAssociation.id, "Rechazada")
+              }
             >
               Rechazar
             </Button>
             <Button
               color="primary"
-              onClick={() => handleAssociationStatus(selectedAssociation.id, "Aprobada")}
+              onClick={() =>
+                handleAssociationStatus(selectedAssociation.id, "Aprobada")
+              }
             >
               Aprobar
             </Button>

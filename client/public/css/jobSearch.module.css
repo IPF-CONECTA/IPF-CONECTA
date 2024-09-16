@@ -3,3 +3,25 @@
   grid-template-columns: 1fr 2fr;
   gap: 30px;
 }
+.form {
+  max-width: none;
+  border: none;
+  box-shadow: none;
+}
+.formInput {
+  border: none !important;
+  background-color: #f4f4f4;
+  font-size: 14px;
+}
+.inputStyle:focus-within {
+  outline: 4px solid rgba(70, 147, 255, 0.255) !important;
+}
+.inputStyle {
+  padding: 10px;
+  background-color: #f4f4f4;
+}
+
+.searchButton:focus {
+  border: none !important;
+  outline: none !important;
+}

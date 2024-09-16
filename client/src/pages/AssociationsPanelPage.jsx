@@ -7,9 +7,7 @@ export const AssociationsPanelPage = () => {
   return (
     <>
       <Nav />
-      <div className="mt-5">
-        <AssociationsPanel />
-      </div>
+      <AssociationsPanel />
       <Footer />
     </>
   );

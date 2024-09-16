@@ -14,9 +14,9 @@ import upload from "../../../config/multerConfig.js";
 const companyRoutes = Router();
 
 companyRoutes.get('/get-companies', getApprovedCompaniesCtrl)
-companyRoutes.get('/find-companies', findCompanyCtrl)
+companyRoutes.get('/find-companies', isToken, findCompanyCtrl)
 companyRoutes.get('/get-company/:id', getCompanyByIdCtrl)
-companyRoutes.post('/create-company', isToken, isRecruiter,upload.single("logoUrl"), companySchema, validateSchema, associateNewCompanyCtrl)
+companyRoutes.post('/create-company', isToken, isRecruiter, upload.single("logoUrl"), companySchema, validateSchema, associateNewCompanyCtrl)
 companyRoutes.post("/contact", sendContactCompanyCtrl);
 
 export default companyRoutes;

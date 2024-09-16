@@ -63,7 +63,7 @@ export const getRecomendedUsersSvc = async (profileId) => {
 export const getUserById = async (userId) => {
     try {
         const user = await User.findByPk(userId, {
-            attributes: ['email'],
+            attributes: ['id', 'email'],
             include: [{
                 model: Profile,
                 attributes: ['id', 'names', 'surnames', 'profilePic', 'title']

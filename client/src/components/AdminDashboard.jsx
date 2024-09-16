@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../public/css/dashboard.module.css";
 import axios from "axios";
-
+import { BASE_URL } from "../constants/BASE_URL";
 // URL base de tu servidor para imágenes
-const BASE_URL = "http://localhost:4000/logoUrl/";
 
 export const AdminDashboard = () => {
   const [associations, setAssociations] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAssociations = async () => {
@@ -68,8 +67,8 @@ export const AdminDashboard = () => {
                 Empresa: {assoc.company.name}
               </p>
               <img
-                src={`${BASE_URL}${assoc.company.logoUrl}`}
-                crossOrigin="anonymous" 
+                src={`${BASE_URL}/logoUrl/${assoc.company.logoUrl}`}
+                crossOrigin="anonymous"
                 alt="Company Logo"
                 className={styles.companyLogo}
               />
@@ -94,8 +93,9 @@ export const AdminDashboard = () => {
             <div key={company.id} className={styles.card}>
               <h3 className={styles.cardTitle}>{company.name}</h3>
               <img
-                src={`${BASE_URL}${company.logoUrl}`}
-                alt="Company Logo"crossOrigin="anonymous" 
+                src={`${BASE_URL}/logoUrl/${company.logoUrl}`}
+                alt="Company Logo"
+                crossOrigin="anonymous"
                 className={styles.companyLogo}
               />
             </div>

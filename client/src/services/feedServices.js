@@ -6,7 +6,7 @@ export const getPosts = async () => {
         const res = await axios.get("http://localhost:4000/feed/posts",
             {
                 headers: {
-                    authorization: `Bearer ${authService.getToken()}`,
+                    Authorization: `Bearer ${authService.getToken()}`,
                 },
             }
         );
@@ -24,7 +24,7 @@ export const getAccounts = async () => {
         const res = await axios.get("http://localhost:4000/get-recomended-users",
             {
                 headers: {
-                    authorization: `Bearer ${authService.getToken()}`,
+                    Authorization: `Bearer ${authService.getToken()}`,
                 },
             }
         );
@@ -43,7 +43,7 @@ export const getProfile = async (id) => {
     try {
         const res = await axios.get(`http://localhost:4000/get-user-profile/${id}`, {
             headers: {
-                authorization: `Bearer ${authService.getToken()}`
+                Authorization: `Bearer ${authService.getToken()}`
             }
         })
         return { data: res.data, status: res.status }
@@ -57,7 +57,7 @@ export const getProfileInfo = async (id) => {
         const res = await axios.get(`http://localhost:4000/get-user-info/${id}`,
             {
                 headers: {
-                    authorization: `Bearer ${authService.getToken()}`,
+                    Authorization: `Bearer ${authService.getToken()}`,
                 },
             }
         );
@@ -77,7 +77,7 @@ export const followOrUnfollow = async (idToFollow) => {
             {},
             {
                 headers: {
-                    authorization: `Bearer ${authService.getToken()}`,
+                    Authorization: `Bearer ${authService.getToken()}`,
                 },
             }
         );
@@ -98,7 +98,7 @@ export const like = async (id) => {
             {},
             {
                 headers: {
-                    authorization: `Bearer ${authService.getToken()}`,
+                    Authorization: `Bearer ${authService.getToken()}`,
                 },
             }
         );
@@ -120,7 +120,7 @@ export const postSvc = async (post, postId = null) => {
             }
         }, {
             headers: {
-                authorization: `Bearer ${authService.getToken()}`
+                Authorization: `Bearer ${authService.getToken()}`
             }
         })
         return res.status
@@ -136,7 +136,7 @@ export const repostSvc = async (postId) => {
             postId
         }, {
             headers: {
-                authorization: `Bearer ${authService.getToken()}`
+                Authorization: `Bearer ${authService.getToken()}`
             }
         })
         return res.status
@@ -150,7 +150,7 @@ export const getPost = async (postId) => {
     try {
         const res = await axios.get(`http://localhost:4000/feed/post/${postId}`, {
             headers: {
-                authorization: `Bearer ${authService.getToken()}`
+                Authorization: `Bearer ${authService.getToken()}`
             }
         })
         return res.data
@@ -166,7 +166,7 @@ export const getExperiences = async (profileId) => {
         const res = await axios.get(`http://localhost:4000//experiences/${profileId}`,
             {
                 headers: {
-                    authorization: `Bearer ${authService.getToken()}`
+                    Authorization: `Bearer ${authService.getToken()}`
                 }
             }
         )

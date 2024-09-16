@@ -5,10 +5,9 @@ export const MessageRecruiter = () => {
 
   const companyName = location.state.companyName;
   const recruiterStatus = location.state.status;
-  console.log(companyName, recruiterStatus);
 
   return (
-    <div className="w-50 mx-auto p-4 border rounded shadow-sm bg-light mt-5 mb-5 d-block">
+    <div className="w-50 mx-auto p-3 border rounded shadow-sm bg-light  d-block">
       {recruiterStatus === "Pendiente" ? (
         <>
           <h3 className=" text-center">Ten paciencia!</h3>
@@ -43,9 +42,10 @@ export const MessageRecruiter = () => {
           <h3 className="text-center">¡Lo sentimos mucho!</h3>
           <p className="text-center">Tu solicitud ha sido rechazada</p>
           <p className="text-justify">
-            Los administradores han evaluado tu perfil asociado a la empresa
-            {" " + companyName} y lamentablemente no cumple con los requisitos
-            necesarios. Si tienes alguna duda, por favor contáctanos.
+            Los administradores han evaluado tu perfil asociado a la empresa{" "}
+            {companyName}, la cual has solicitado. y lamentablemente no cumple
+            con los requisitos necesarios. Si tienes alguna duda, por favor
+            contáctanos.
           </p>
           <img
             src="../public/recruiter3.png"

@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+import React from "react";
 import { getTime } from "../helpers/getTime";
-import { useNoti } from "../hooks/useNoti";
-import axios from "axios";
+import { BASE_URL } from "../constants/BASE_URL";
 import styles from "../../public/css/jobCard.module.css";
 export const JobCard = ({ job, onClick, selectedJob }) => {
   return (
@@ -13,20 +8,22 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
       <article
         className={
           selectedJob === job.id
-            ? `${styles.selectedCard} p-3 w-100`
-            : `${styles.jobCard} p-3 w-100`
+            ? `${styles.selectedCard} p-3 w-100 shadow-sm border rounded`
+            : `${styles.jobCard} p-3 w-100 shadow-sm border rounded`
         }
         onClick={onClick}
       >
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <img
-              src={job.company.logoUrl}
-              className="pe-2"
-              height={"20px"}
+              src={`${BASE_URL}/logoUrl/${job.company.logoUrl}`}
+              crossOrigin="anonymous"
+              className={`me-2 rounded-circle ${styles.roundedImage}`}
+              height={25}
+              width={25}
               alt=""
             />
-            <p>{job.company.name}</p>
+            <span className={`${styles.smallText}`}>{job.company.name}</span>
           </div>
           <button className={`${styles.bookmark} btn p-0`}>
             <span className={`material-symbols-outlined ${styles.icon}`}>
@@ -34,10 +31,14 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
             </span>{" "}
           </button>
         </div>
-        <p>{job.title}</p>
-        <div className="d-flex justify-content-between">
-          <p className="grey">{job.modality.name}</p>
-          <p className="pe-1">{getTime(job.createdAt)}</p>
+        <span className="">{job.title}</span>
+        <div className="d-flex justify-content-between mt-2">
+          <span className={`text-secondary ${styles.smallText}`}>
+            {job.modality.name}
+          </span>
+          <span className={`me-1 text-secondary ${styles.smallText}`}>
+            {getTime(job.createdAt)}
+          </span>
         </div>
       </article>
     </>

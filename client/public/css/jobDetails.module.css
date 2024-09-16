@@ -3,10 +3,10 @@
   top: auto; /* Removido */
   right: auto; /* Removido */
   width: 100%; /* Ajusta el ancho según sea necesario */
-  height: 100vh; /* Cambiado de 100vh a auto */
+  height: 95vh;
   overflow-y: auto;
   background-color: #fff;
-  z-index: 1000;
+  z-index: 999;
   padding: 30px;
   border: 1px solid #e0e0e0;
   border-radius: 15px;
@@ -23,4 +23,8 @@
 }
 .bookmark:hover {
   color: #a1a1a1;
+}
+
+.roundedImage {
+  object-fit: cover;
 }

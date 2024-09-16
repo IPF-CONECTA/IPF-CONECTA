@@ -89,7 +89,7 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
         },
         {
           headers: {
-            authorization: `Bearer ${authService.getToken()}`,
+            Authorization: `Bearer ${authService.getToken()}`,
           },
         }
       )
@@ -213,7 +213,7 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
             <input
               type="text"
               id="address"
-              className="form-control"
+              className="form-control w-100"
               title="Dirección"
               placeholder="Ingrese la dirección de la sede"
               value={address}

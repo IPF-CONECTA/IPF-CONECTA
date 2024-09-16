@@ -15,10 +15,11 @@ import likeRoutes from "./modules/posts/likes/likeRoutes.js";
 import contractTypeRoutes from "./modules/recruiters/job/contractTypes/contractTypesRoutes.js";
 import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoutes.js";
 import companyUbicationRoutes from "./modules/recruiters/companies/companyUbication/companyUbicationRoutes.js";
-import { profileRoutes } from "./modules/profile/profileRoutes.js";
 import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
 import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
+import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
+
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -39,4 +40,6 @@ export const routes = (app) => {
   app.use(companyUbicationRoutes);
   app.use(profileRoutes)
   app.use(experienceRoutes)
+  app.use(uploadRoutes);
+  app.use(jobPostulationRoutes);
 };

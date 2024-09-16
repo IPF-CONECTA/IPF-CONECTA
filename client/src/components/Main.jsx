@@ -7,7 +7,7 @@ export const Home = () => {
   };
 
   return (
-    <main className={`${styles.Menu} mt-5`}>
+    <main>
       <div className={`pe-3 ${styles.headerSection}`}>
         <div className={`mx-5 ${styles.textAndButton}`}>
           <center>
@@ -18,8 +18,8 @@ export const Home = () => {
           <div className={"bg-info-subtle p-2 rounded mb-2 text-center"}>
             <h3>
               La plataforma donde egresados del IPF, empleadores,
-              inversionistas, reclutadores y tutores se encuentran para conectar
-              y descubrir nuevas oportunidades. <br /> ¡Tu próxima gran
+              inversionistas, mentores y tutores se encuentran para conectar y
+              descubrir nuevas oportunidades. <br /> ¡Tu próxima gran
               oportunidad comienza aquí!
             </h3>
           </div>
@@ -225,107 +225,137 @@ export const Home = () => {
       </section>
 
       <section
-  id="faq"
-  className="w-100 d-flex flex-column align-items-center mb-5"
->
-  <span className="fs-3 pb-2 fw-bold text-info-emphasis">
-    Preguntas frecuentes
-  </span>
-  <div className="w-75">
-    <div className="accordion" id="accordionExample">
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseOne"
-            aria-expanded="true"
-            aria-controls="collapseOne"
-          >
-            ¿Cómo puedo registrarme en la plataforma?
-          </button>
-        </h2>
-        <div
-          id="collapseOne"
-          className="accordion-collapse collapse show"
-          data-bs-parent="#accordionExample"
-        >
-          <div className="accordion-body">
-            Para registrarte en la plataforma, sigue estos pasos:
-            <ol>
-              <li>Haz clic en el botón "Iniciar Sesión" en la esquina superior derecha, luego presionar en "Registrate".</li>
-              <li>Completa el formulario de registro con tu información personal.</li>
-              <li>Verifica tu correo electrónico para activar tu cuenta.</li>
-            </ol>
-            Si tienes algún problema durante el proceso, no dudes en contactarnos a través de nuestro formulario de soporte.
+        id="faq"
+        className="w-100 d-flex flex-column align-items-center mb-5"
+      >
+        <span className="fs-3 pb-2 fw-bold text-info-emphasis">
+          Preguntas frecuentes
+        </span>
+        <div className="w-75">
+          <div className="accordion" id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button
+                  className="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
+                  ¿Cómo puedo registrarme en la plataforma?
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                className="accordion-collapse collapse show"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  Para registrarte en la plataforma, sigue estos pasos:
+                  <ol>
+                    <li>
+                      Haz clic en el botón "Iniciar Sesión" en la esquina
+                      superior derecha, luego presionar en "Registrate".
+                    </li>
+                    <li>
+                      Completa el formulario de registro con tu información
+                      personal.
+                    </li>
+                    <li>
+                      Verifica tu correo electrónico para activar tu cuenta.
+                    </li>
+                  </ol>
+                  Si tienes algún problema durante el proceso, no dudes en
+                  contactarnos a través de nuestro formulario de soporte.
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  ¿Cómo puedo recuperar mi contraseña?
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                className="accordion-collapse collapse"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  Si has olvidado tu contraseña, puedes recuperarla siguiendo
+                  estos pasos:
+                  <ol>
+                    <li>
+                      Haz clic en "¿Olvidaste tu contraseña?" en la página de
+                      inicio de sesión.
+                    </li>
+                    <li>
+                      Introduce tu dirección de correo electrónico y haz clic en
+                      "Enviar".
+                    </li>
+                    <li>
+                      Recibirás un enlace para restablecer tu contraseña en tu
+                      correo electrónico.
+                    </li>
+                    <li>
+                      Haz clic en el enlace y sigue las instrucciones para crear
+                      una nueva contraseña.
+                    </li>
+                  </ol>
+                  Si no recibes el correo, revisa tu carpeta de spam o contacta
+                  con nuestro soporte.
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  ¿Dónde puedo actualizar mi perfil?
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
+                className="accordion-collapse collapse"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  Para actualizar tu perfil:
+                  <ol>
+                    <li>Inicia sesión en tu cuenta.</li>
+                    <li>
+                      Haz clic en tu nombre en la esquina superior derecha y
+                      selecciona "Mi Perfil".
+                    </li>
+                    <li>
+                      En la página de perfil, haz clic en "Editar perfil".
+                    </li>
+                    <li>
+                      Realiza los cambios necesarios y guarda la información.
+                    </li>
+                  </ol>
+                  Si encuentras algún problema con la actualización, por favor,
+                  contacta con nuestro equipo de soporte.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseTwo"
-            aria-expanded="false"
-            aria-controls="collapseTwo"
-          >
-            ¿Cómo puedo recuperar mi contraseña?
-          </button>
-        </h2>
-        <div
-          id="collapseTwo"
-          className="accordion-collapse collapse"
-          data-bs-parent="#accordionExample"
-        >
-          <div className="accordion-body">
-            Si has olvidado tu contraseña, puedes recuperarla siguiendo estos pasos:
-            <ol>
-              <li>Haz clic en "¿Olvidaste tu contraseña?" en la página de inicio de sesión.</li>
-              <li>Introduce tu dirección de correo electrónico y haz clic en "Enviar".</li>
-              <li>Recibirás un enlace para restablecer tu contraseña en tu correo electrónico.</li>
-              <li>Haz clic en el enlace y sigue las instrucciones para crear una nueva contraseña.</li>
-            </ol>
-            Si no recibes el correo, revisa tu carpeta de spam o contacta con nuestro soporte.
-          </div>
-        </div>
-      </div>
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseThree"
-            aria-expanded="false"
-            aria-controls="collapseThree"
-          >
-            ¿Dónde puedo actualizar mi perfil?
-          </button>
-        </h2>
-        <div
-          id="collapseThree"
-          className="accordion-collapse collapse"
-          data-bs-parent="#accordionExample"
-        >
-          <div className="accordion-body">
-            Para actualizar tu perfil:
-            <ol>
-              <li>Inicia sesión en tu cuenta.</li>
-              <li>Haz clic en tu nombre en la esquina superior derecha y selecciona "Mi Perfil".</li>
-              <li>En la página de perfil, haz clic en "Editar perfil".</li>
-              <li>Realiza los cambios necesarios y guarda la información.</li>
-            </ol>
-            Si encuentras algún problema con la actualización, por favor, contacta con nuestro equipo de soporte.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+      </section>
 
       <section id="about-us" className={"mb-5"}>
         <div className="w-100 d-flex  justify-content-center">
