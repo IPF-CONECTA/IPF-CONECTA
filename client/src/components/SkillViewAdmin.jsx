@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
-import styles from "../../public/css/skillView.module.css";
+import styles from "../../public/css/skillViewAdmin.module.css";
 
 // Función para obtener habilidades con búsqueda y paginación
 const fetchSkills = async (searchQuery = '', page = 1, limit = 8) => {
@@ -30,7 +30,7 @@ const deleteSkillFromBackend = async (id) => {
   return await response.json();
 };
 
-export default function SkillsView() {
+export default function SkillViewAdmin() {
   const [skills, setSkills] = useState([]);
   const [isAddingSkill, setIsAddingSkill] = useState(false); // Controla el modal de agregar habilidades
   const [newSkillName, setNewSkillName] = useState('');      // Almacena la nueva habilidad
