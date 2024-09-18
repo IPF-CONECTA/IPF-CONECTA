@@ -53,3 +53,38 @@
 ## Descripción
 
 **IPFC** ([Instituto Politecnico Formosa Conecta](https://www.ipf.edu.ar/)), o simplemente llamado _IPF Conecta_, es una plataforma online orientada a la busqueda de trabajo y potenciar las oportunidades laborales de los estudiantes egresados del IPF.
+
+## Iniciar Aplicación
+
+1. Instalar dependencias.
+
+```
+npm install
+```
+
+2. Definir las variables de entorno.
+
+Cree una archivo .env en el directorio raiz con las siguientes variables:
+
+```
+PORT=
+DB_USER=
+DB_PASS=
+DB_NAME=
+TOKEN_SECRET_KEY=
+
+NODEMAILER_SERVICE=
+NODEMAILER_USER=
+NODEMAILER_PASS=
+```
+
+#### NOTA: Crear una base de datos en Postgres que se llame "IPFC_DB"
+
+## Iniciar la aplicación
+
+```bash
+npm run start
+
+# En modo de desarrollo.
+npm run dev
+```
