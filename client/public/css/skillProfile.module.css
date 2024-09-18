@@ -1,5 +1,24 @@
-/* skillProfile.module.css */
-.modal {
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .addButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .addButton:hover {
+    background-color: #45a049;
+  }
+  
+  .modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -14,56 +33,53 @@
   .modalContent {
     background-color: white;
     padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
   }
   
-  .searchInput {
+  .newSkillInput {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    margin: 10px 0;
+    box-sizing: border-box;
   }
   
-  .searchResults {
-    list-style-type: none;
-    padding: 0;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  .searchResults li {
-    padding: 10px;
+  .addButton, .cancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    margin: 5px;
   }
   
-  .searchResults li:hover {
-    background-color: #f0f0f0;
+  .addButton {
+    background-color: #4CAF50;
+    color: white;
   }
   
   .cancelButton {
-    background-color: #f0f0f0;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    background-color: #f44336;
+    color: white;
+  }
+  .skill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
   }
   
   .deleteButton {
     background-color: #f44336;
     color: white;
-    padding: 10px 15px;
+    padding: 5px 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
   }
   
-  .modalActions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+  .deleteButton:hover {
+    background-color: #e53935;
   }
   

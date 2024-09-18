@@ -4,39 +4,63 @@ import React, { useState, useEffect } from 'react';
 import styles from "../../public/css/skillProfile.module.css";
 
 // Función para obtener habilidades con búsqueda y paginación
-const fetchSkills = async (searchQuery, page = 1, limit = 10) => {
+const fetchSkills = async (searchQuery = '', page = 1, limit = 10) => {
   const response = await fetch(`http://localhost:4000/find-skills?query=${searchQuery}&page=${page}&limit=${limit}`);
   if (!response.ok) throw new Error('Error al obtener habilidades');
   return await response.json();
 };
 
+// Función para agregar una nueva habilidad al backend
+const addSkillToBackend = async (name) => {
+  const response = await fetch('http://localhost:4000/create-skill', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+  if (!response.ok) throw new Error('Error al agregar habilidad');
+  return await response.json();
+};
+
+// Función para eliminar una habilidad del backend
+const deleteSkillFromBackend = async (id) => {
+  const response = await fetch(`http://localhost:4000/delete-skill/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error('Error al eliminar habilidad');
+  return await response.json();
+};
+
 export default function SkillsProfile() {
   const [skills, setSkills] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isAddingSkill, setIsAddingSkill] = useState(false);
-  const [skillToDelete, setSkillToDelete] = useState(null);
+  const [isAddingSkill, setIsAddingSkill] = useState(false); // Controla el modal de agregar habilidades
+  const [newSkillName, setNewSkillName] = useState('');      // Almacena la nueva habilidad
+  const [skillToDelete, setSkillToDelete] = useState(null);  // Habilidad a eliminar
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  // Cargar habilidades al montar o cuando cambie la búsqueda o la página
   useEffect(() => {
-    // Cargar habilidades al montar el componente o cuando cambie la búsqueda o página
     fetchSkills(searchQuery, page).then(data => {
       setSkills(data.skills);
       setTotalPages(data.totalPages);
     }).catch(console.error);
   }, [searchQuery, page]);
 
-  const addSkill = async (skill) => {
+  // Función para agregar una nueva habilidad
+  const addSkill = async () => {
+    if (!newSkillName) return;
     try {
-      const newSkill = await addSkillToBackend(skill);
+      const newSkill = await addSkillToBackend(newSkillName);
       setSkills([...skills, newSkill]);
+      setIsAddingSkill(false);  // Cerrar el modal
+      setNewSkillName('');       // Limpiar el campo de entrada
     } catch (error) {
       console.error(error.message);
     }
-    setIsAddingSkill(false);
   };
 
+  // Función para eliminar una habilidad
   const removeSkill = async (id) => {
     try {
       await deleteSkillFromBackend(id);
@@ -62,7 +86,12 @@ export default function SkillsProfile() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Habilidades</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Habilidades</h2>
+        <button onClick={() => setIsAddingSkill(true)} className={styles.addButton}>
+          Agregar Habilidad
+        </button>
+      </div>
       
       <div className={styles.searchContainer}>
         <input
@@ -79,6 +108,11 @@ export default function SkillsProfile() {
           {skills.map(skill => (
             <li key={skill.id} className={styles.skill}>
               {skill.name}
+              <button 
+                onClick={() => setSkillToDelete(skill)} 
+                className={styles.deleteButton}>
+                Eliminar
+              </button>
             </li>
           ))}
         </ul>
@@ -96,28 +130,6 @@ export default function SkillsProfile() {
         </button>
       </div>
 
-      {isEditing && (
-        <div>
-          <button onClick={() => setIsAddingSkill(true)} className={styles.addButton}>
-            Agregar Habilidad
-          </button>
-          {skills.length > 0 ? (
-            <ul className={styles.editSkillList}>
-              {skills.map(skill => (
-                <li key={skill.id} className={styles.editSkill}>
-                  {skill.name}
-                  <button onClick={() => setSkillToDelete(skill)} className={styles.deleteButton}>
-                    Eliminar
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className={styles.emptyMessage}>No tienes habilidades agregadas</p>
-          )}
-        </div>
-      )}
-
       {isAddingSkill && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -125,11 +137,11 @@ export default function SkillsProfile() {
             <input
               type="text"
               placeholder="Nombre de la habilidad..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
+              value={newSkillName}
+              onChange={(e) => setNewSkillName(e.target.value)}
+              className={styles.newSkillInput}
             />
-            <button onClick={() => addSkill(searchQuery)} className={styles.addButton}>
+            <button onClick={addSkill} className={styles.addButton}>
               Agregar
             </button>
             <button onClick={() => setIsAddingSkill(false)} className={styles.cancelButton}>
