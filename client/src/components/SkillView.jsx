@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
-import styles from "../../public/css/skillProfile.module.css";
+import styles from "../../public/css/skillView.module.css";
 
 // Función para obtener habilidades con búsqueda y paginación
-const fetchSkills = async (searchQuery = '', page = 1, limit = 10) => {
+const fetchSkills = async (searchQuery = '', page = 1, limit = 8) => {
   const response = await fetch(`http://localhost:4000/find-skills?query=${searchQuery}&page=${page}&limit=${limit}`);
   if (!response.ok) throw new Error('Error al obtener habilidades');
   return await response.json();
@@ -30,7 +30,7 @@ const deleteSkillFromBackend = async (id) => {
   return await response.json();
 };
 
-export default function SkillsProfile() {
+export default function SkillsView() {
   const [skills, setSkills] = useState([]);
   const [isAddingSkill, setIsAddingSkill] = useState(false); // Controla el modal de agregar habilidades
   const [newSkillName, setNewSkillName] = useState('');      // Almacena la nueva habilidad
@@ -121,11 +121,11 @@ export default function SkillsProfile() {
       )}
 
       <div className={styles.pagination}>
-        <button onClick={prevPage} disabled={page === 1}>
+        <button className={styles.pageButton} onClick={prevPage} disabled={page === 1}>
           Anterior
-        </button>
+        </button  >
         <span>Página {page} de {totalPages}</span>
-        <button onClick={nextPage} disabled={page === totalPages}>
+        <button className={styles.pageButton}  onClick={nextPage} disabled={page === totalPages}>
           Siguiente
         </button>
       </div>

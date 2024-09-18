@@ -22,7 +22,7 @@ import {
   CompaniesPanelPage,
   AssociationsPanelPage,
 } from "../pages";
-import SkillsProfile from "../components/skillProfile.jsx";
+import SkillsView from "../components/SkillView.jsx";
 
 export const Routers = () => {
   return (
@@ -47,7 +47,7 @@ export const Routers = () => {
         </Route>
         <Route path="/perfil/:profileId" element={<ProfilePage />} />
         <Route path="/guardados" element={<ProfilePage />} />
-        <Route path="/skills" element={<SkillsProfile/>} />
+        <Route path="/skills" element={<SkillsView/>} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
