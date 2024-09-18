@@ -100,6 +100,7 @@ export const createRelations = async () => {
 
     Job.hasMany(JobPostulation, {
       foreignKey: "jobId",
+      as: "postulate",
     });
     JobPostulation.belongsTo(Job, {
       foreignKey: "jobId",

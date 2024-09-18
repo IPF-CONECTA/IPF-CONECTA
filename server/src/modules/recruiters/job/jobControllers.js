@@ -46,10 +46,13 @@ export const getJobsCtrl = async (req, res) => {
 
 export const getJobByIdCtrl = async (req, res) => {
   const { id } = req.params;
+  const { id: profileId } = req.user.profile;
   try {
     if (!id) throw new Error("No se selecciono ninguna oferta");
 
-    const job = await getJobByIdSvc(id);
+    const job = await getJobByIdSvc(id, profileId);
+    console.log(job.Company);
+
     if (!job)
       return res
         .status(404)
@@ -57,6 +60,7 @@ export const getJobByIdCtrl = async (req, res) => {
 
     res.status(200).json(job);
   } catch (error) {
+    console.log({ errorputo: error });
     res.status(400).json(error.message);
   }
 };
