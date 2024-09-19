@@ -1,4 +1,4 @@
-import { Project } from "./projectModel";
+import { Project } from "./projectModel.js";
 
 export const createProjectSvc = async (projectData, profileId) => {
   try {

@@ -5,7 +5,7 @@ import {
   getProjectsByProfileIdSvc,
   updateProjectSvc,
   deleteProjectSvc,
-} from "./projectService";
+} from "./projectService.js";
 
 export const createProjectCtrl = async (req, res) => {
   try {
@@ -64,7 +64,7 @@ export const updateProjectCtrl = async (req, res) => {
 export const deleteProjectCtrl = async (req, res) => {
   try {
     const { id } = req.params;
-    const project = await deleteProjectCtrl(id);
+    const project = await deleteProjectSvc(id);
 
     if (!project) return res.status(404).json({ message: "Project not found" });
     res.status(200).json(project);
