@@ -25,6 +25,13 @@ export const createProjectSchema = [
     .withMessage("Ingrese el link del proyecto")
     .isURL()
     .withMessage("Ingrese un link valido."),
+  body("project.privacity")
+    .notEmpty()
+    .withMessage("Ingrese la privacidad del proyecto")
+    .isIn(["publico", "privado"])
+    .withMessage(
+      "Privacidad del proyecto no valida, las opciones son: public, private"
+    ),
 ];
 
 export const updateProjectSchema = [
@@ -48,4 +55,10 @@ export const updateProjectSchema = [
     .optional()
     .isURL()
     .withMessage("Ingrese un link valido."),
+
+  body("project.privacity")
+    .isIn(["publico", "privado"])
+    .withMessage(
+      "Privacidad del proyecto no valida, las opciones son: publico, y privado"
+    ),
 ];

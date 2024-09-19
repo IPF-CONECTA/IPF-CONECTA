@@ -13,6 +13,7 @@ export * from "./Main";
 export * from "./Nav";
 export * from "./MessageRecruiter";
 export * from "./PostList";
+export * from "./profile/ProfileProjects";
 export * from "./RecomendedAccounts";
 export * from "./RegisterForm";
 export * from "./RequestForm";

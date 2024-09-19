@@ -36,4 +36,9 @@ export const Project = sequelize.define("projects", {
     allowNull: true,
     defaultValue: "https://cdn-icons-png.flaticon.com/512/1540/1540251.png",
   },
+  privacity: {
+    type: DataTypes.ENUM("public", "private"),
+    allowNull: true,
+    defaultValue: "public",
+  },
 });

@@ -8,6 +8,7 @@ import AboutCard from "./AboutCard";
 import ExperienceContainer from "./ExperienceContainer";
 import Header from "./Header";
 import Nav from "./Nav";
+import { ProfileProjects } from "./ProfileProjects";
 
 export const Profile = () => {
   const noti = useNoti();
@@ -55,6 +56,7 @@ export const Profile = () => {
                 experiences={experiences}
               />
             </main>
+            <ProfileProjects />
           </div>
           <RecomendedAccounts />
         </div>
