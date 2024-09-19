@@ -19,6 +19,7 @@ import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
 import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
+import SkillUserRouter from "./modules/users/skills_user/skillUserRoutes.js";
 
 export const routes = (app) => {
   app.use(userRoutes);
@@ -42,4 +43,5 @@ export const routes = (app) => {
   app.use(experienceRoutes)
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
+  app.use(SkillUserRouter)
 };

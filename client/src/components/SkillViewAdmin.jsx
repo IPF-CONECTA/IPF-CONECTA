@@ -124,7 +124,7 @@ export default function SkillViewAdmin() {
         <button className={styles.pageButton} onClick={prevPage} disabled={page === 1}>
           Anterior
         </button  >
-        <span>Página {page} de {totalPages}</span>
+        <span className="mt-3">Página {page} de {totalPages}</span>
         <button className={styles.pageButton}  onClick={nextPage} disabled={page === totalPages}>
           Siguiente
         </button>

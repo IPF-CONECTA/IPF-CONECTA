@@ -23,7 +23,7 @@ import {
   AssociationsPanelPage,
 } from "../pages";
 import SkillViewAdmin from "../components/SkillViewAdmin";
-
+import SkillViewUser from "../components/SkillViewUser";
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -48,6 +48,7 @@ export const Routers = () => {
         <Route path="/perfil/:profileId" element={<ProfilePage />} />
         <Route path="/guardados" element={<ProfilePage />} />
         <Route path="/skills" element={< SkillViewAdmin />} />
+        <Route path="/skill" element={< SkillViewUser />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
