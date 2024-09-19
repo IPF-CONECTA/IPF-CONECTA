@@ -10,8 +10,8 @@ import {
 export const createProjectCtrl = async (req, res) => {
   try {
     const { id } = req.user.profile;
-
-    const newProject = await createProjectSvc(req.body, id);
+    const { project } = req.body;
+    const newProject = await createProjectSvc(project, id);
     res.status(201).json(newProject);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -51,10 +51,14 @@ export const getProfileProjectsCtrl = async (req, res) => {
 
 export const updateProjectCtrl = async (req, res) => {
   try {
+    const { id: profileId } = req.user.profile;
     const { id } = req.params;
-    const project = await updateProjectSvc(id, req.body);
+    const { project } = req.body;
 
-    if (!project) return res.status(404).json({ message: "Project not found" });
+    console.log({ project, profileId, id });
+    const updatedProject = await updateProjectSvc(id, project, profileId);
+    if (!updatedProject)
+      return res.status(404).json({ message: "Project not found" });
     res.status(200).json(project);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -10,12 +10,21 @@ export const Project = sequelize.define("projects", {
     type: DataTypes.UUID,
     allowNull: false,
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   description: {
     type: DataTypes.STRING,
     allowNull: true,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM(
+      "Comenzando",
+      "Pendiente",
+      "En progreso",
+      "Finalizado"
+    ),
     allowNull: true,
   },
   projectLink: {
@@ -25,5 +34,6 @@ export const Project = sequelize.define("projects", {
   projectLogo: {
     type: DataTypes.STRING,
     allowNull: true,
+    defaultValue: "https://cdn-icons-png.flaticon.com/512/1540/1540251.png",
   },
 });

@@ -43,13 +43,16 @@ export const getProjectsByProfileIdSvc = async (profileId) => {
   }
 };
 
-export const updateProjectSvc = async (projectId, projectData) => {
+export const updateProjectSvc = async (projectId, projectData, profileId) => {
   try {
     const project = await Project.findByPk(projectId);
     if (!project) throw new Error("Project not found");
 
+    if (project.profileId !== profileId) {
+      throw new Error("Unauthorized: You can only edit your own projects");
+    }
+
     await project.update(projectData);
-    //await project.save();
 
     return project;
   } catch (error) {
