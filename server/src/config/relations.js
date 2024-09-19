@@ -28,7 +28,7 @@ import { CompanyUbication } from "../modules/recruiters/companies/companyUbicati
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { Profile } from "../modules/profile/profileModel.js";
 import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
-import { Project } from "../modules/users/projects/projectModel.js";
+import { Project } from "../modules/users/project/projectModel.js";
 
 export const createRelations = async () => {
   try {
