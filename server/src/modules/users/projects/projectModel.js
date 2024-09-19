@@ -1,6 +1,6 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
 
-export const ProjectUser = sequelize.define("projectsUser", {
+export const Project = sequelize.define("projects", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
