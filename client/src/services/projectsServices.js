@@ -12,7 +12,6 @@ export const projectsService = {
           },
         }
       );
-      console.log(response);
       return response;
     } catch (error) {
       return error;
@@ -25,7 +24,7 @@ export const projectsService = {
           Authorization: `Bearer ${authService.getToken()}`,
         },
       });
-      console.log(response);
+      return response;
     } catch (error) {
       return error;
     }

@@ -56,6 +56,7 @@ export const Profile = () => {
                 experiences={experiences}
               />
             </main>
+            <h1>Proyectos de {profileData.profile.names}</h1>
             <ProfileProjects />
           </div>
           <RecomendedAccounts />

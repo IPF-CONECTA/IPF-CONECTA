@@ -30,7 +30,7 @@ export const createProjectSchema = [
     .withMessage("Ingrese la privacidad del proyecto")
     .isIn(["publico", "privado"])
     .withMessage(
-      "Privacidad del proyecto no valida, las opciones son: public, private"
+      "Privacidad del proyecto no valida, las opciones son: publico, privado"
     ),
 ];
 
