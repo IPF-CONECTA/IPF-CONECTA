@@ -21,6 +21,9 @@ import {
   AdminDashboardPage,
   CompaniesPanelPage,
   AssociationsPanelPage,
+  IdeaProjectsPage,
+  IdeaDetailsPage,
+  PanelVotePage
 } from "../pages";
 
 export const Routers = () => {
@@ -53,6 +56,7 @@ export const Routers = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
+        <Route path="/idea/:ideaId" element={<IdeaDetailsPage />} />
         <Route
           path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
@@ -68,6 +72,8 @@ export const Routers = () => {
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
         <Route path="/nuevo-empleo" element={<CreateJobsFormPage />} />
+        <Route path="/proyectos-ideas" element={<IdeaProjectsPage />} />
+        <Route path="/panel-votacion" element={<PanelVotePage />} />
       </Routes>
     </BrowserRouter>
   );

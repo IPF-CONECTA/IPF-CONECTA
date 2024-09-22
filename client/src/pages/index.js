@@ -19,3 +19,6 @@ export * from "./SupportPage";
 export * from "./CreateJobsFormPage";
 export * from "./AdminDashboardPage";
 export * from "./WaitingAssociationsApprovedPage";
+export * from "./IdeaProjectsPage";
+export * from "./IdeaDetailsPage";
+export * from "./PanelVotePage";
