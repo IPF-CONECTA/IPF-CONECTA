@@ -1,11 +1,16 @@
-import { Router } from "express"
-import { findAllCountriesCtrl, findCountryCtrl, findUbicationCtrl } from "./ubicationControllers.js"
+import { Router } from "express";
+import {
+  findUbicationCtrl,
+  findStatesByCountryIdCtrl,
+  findCitiesByStateIdCtrl,
+  findAllCountriesCtrl,
+} from "./ubicationControllers.js";
 
+export const ubicationRoutes = Router();
 
-export const ubicationRoutes = Router()
+ubicationRoutes.get("/find-ubication/:query", findUbicationCtrl);
+ubicationRoutes.get("/find-all-countries", findAllCountriesCtrl);
+ubicationRoutes.get("/states-by-country/:id", findStatesByCountryIdCtrl);
+ubicationRoutes.get("/cities-by-state/:id", findCitiesByStateIdCtrl);
 
-ubicationRoutes.get('/find-ubication/:query', findUbicationCtrl)
-ubicationRoutes.get('/find-country', findCountryCtrl)
-ubicationRoutes.get('/countries', findAllCountriesCtrl)
-
-export default ubicationRoutes
+export default ubicationRoutes;

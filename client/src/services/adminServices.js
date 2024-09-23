@@ -1,6 +1,6 @@
 import axios from "axios";
 import { authService } from "./authService";
-export const getVerifications = async (status) => {
+export const getAssociationsSvc = async (status) => {
     try {
         const res = await axios.get(`http://localhost:4000/admin/get-associations/${status}`, {
             headers: {
@@ -17,7 +17,7 @@ export const getVerifications = async (status) => {
     }
 }
 
-export const updateAssociationStatus = async (id, status, justification = null) => {
+export const updateAssociationStatus = async (id, status, justification) => {
     try {
         const res = await axios.patch(
             `http://localhost:4000/admin/update-association-status/${id}/${status}`,

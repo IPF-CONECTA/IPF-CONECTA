@@ -3,7 +3,7 @@ import { authService } from "./authService";
 
 export const getPosts = async () => {
     try {
-        const res = await axios.get("http://localhost:4000/feed/post",
+        const res = await axios.get("http://localhost:4000/feed/posts",
             {
                 headers: {
                     authorization: `Bearer ${authService.getToken()}`,
@@ -11,12 +11,10 @@ export const getPosts = async () => {
             }
         );
         const data = res.data.rows;
-        console.log('POSTS: ==============')
-        console.log(data)
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
-        console.error("Error al obtener los posts:", error);
+        // console.error("Error al obtener los posts:", error);
         return { data: [], statusCode: error.response?.status, message: error.response?.data?.message };
     }
 }
@@ -31,15 +29,26 @@ export const getAccounts = async () => {
             }
         );
         const data = res.data;
-        console.log('ACCOUNTS: ==============')
-        console.log(data)
         const statusCode = res.status;
         return { data, statusCode };
     } catch (error) {
         console.error("Error al obtener los posts:", error);
         return {
-            data: [], statusCode: error.response?.status
+            data: [], statusCode: error.response?.status, message: error.response?.data?.message
         };
+    }
+}
+
+export const getProfile = async (id) => {
+    try {
+        const res = await axios.get(`http://localhost:4000/get-user-profile/${id}`, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return { data: res.data, status: res.status }
+    } catch (error) {
+        return { status: error.status, error: error.message }
     }
 }
 
@@ -64,7 +73,6 @@ export const getProfileInfo = async (id) => {
 
 export const followOrUnfollow = async (idToFollow) => {
     try {
-        console.log(authService.getToken())
         const res = await axios.post(`http://localhost:4000/follow/${idToFollow}`,
             {},
             {
@@ -100,5 +108,70 @@ export const like = async (id) => {
         return {
             data: error.data.message, statusCode: error.response?.status
         };
+    }
+}
+
+export const postSvc = async (post, postId = null) => {
+    try {
+        const res = await axios.post(`http://localhost:4000/feed/post`, {
+            post: {
+                content: post,
+                postId: postId,
+            }
+        }, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return res.status
+    } catch (error) {
+        console.log(error)
+        return error.status
+    }
+}
+
+export const repostSvc = async (postId) => {
+    try {
+        const res = await axios.post('http://localhost:4000/repost', {
+            postId
+        }, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return res.status
+    } catch (error) {
+        console.log(error)
+        return error.status
+    }
+}
+
+export const getPost = async (postId) => {
+    try {
+        const res = await axios.get(`http://localhost:4000/feed/post/${postId}`, {
+            headers: {
+                authorization: `Bearer ${authService.getToken()}`
+            }
+        })
+        return res.data
+    } catch (error) {
+        console.log(error)
+        return error.status, error.message
+    }
+}
+
+
+export const getExperiences = async (profileId) => {
+    try {
+        const res = await axios.get(`http://localhost:4000//experiences/${profileId}`,
+            {
+                headers: {
+                    authorization: `Bearer ${authService.getToken()}`
+                }
+            }
+        )
+        return res.data, res.status
+    } catch (error) {
+        return error.status
     }
 }

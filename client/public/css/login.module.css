@@ -4,10 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: 90vh;
   background-color: #f0f2f5;
 }
-
 
 .login-image {
   flex: 1;
@@ -16,11 +15,11 @@
   align-items: center;
 }
 
-
 .login-image img {
-  max-width: 900px;
+  max-width: 100%;
   height: auto;
   border-radius: 10px;
+  animation: slideIn 0.5s ease-out;
 }
 
 @keyframes slideIn {
@@ -36,8 +35,11 @@
 
 .login-form {
   flex: 1;
+  padding: 2rem;
   border-radius: 10px;
+  animation: slideIn 0.5s ease-out;
 }
+
 .login-form h2 {
   margin-bottom: 1.5rem;
   color: #333;
@@ -46,7 +48,6 @@
 .form-group {
   margin-bottom: 1rem;
 }
-
 
 .label {
   display: block;
@@ -61,6 +62,13 @@ input[type="password"] {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .button {
@@ -71,6 +79,7 @@ input[type="password"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .button:hover {

@@ -1,0 +1,85 @@
+/* vote.css */
+.project-list {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .project-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
+  .project-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .project-description {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+  
+  .voting-ranking-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .votes-section {
+    flex: 1;
+  }
+  
+  .ranking-section {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .project-votes {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .voting-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .star {
+    cursor: pointer;
+    font-size: 24px;
+    color: #ffcc00;
+  }
+  
+  .star.voted {
+    color: #ffcc00;
+  }
+  
+  .vote-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .vote-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.2em;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+  }
+  

@@ -191,3 +191,7 @@ form .ApproveButton {
 form .ApproveButton:hover {
   background-color: #3b9f3b;
 }
+
+.smallText {
+  font-size: 8px;
+}

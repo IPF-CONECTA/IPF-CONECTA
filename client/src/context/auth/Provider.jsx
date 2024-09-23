@@ -6,26 +6,29 @@ import { authService } from "../../services/authService.js";
 
 export const AuthProvider = ({ children }) => {
   const token = authService.getToken();
+  const noti = useNoti();
   const validateToken = async (token) => {
     if (token) {
       const { data, status } = await authService.verifyToken(token);
       if (status != 200) {
         authService.removeToken();
-        return toast("Inicie sesion nuevamente", "error");
+        return noti("Inicie sesion nuevamente", "error");
       }
-      return dispatch({
+      dispatch({
         type: "LOGIN",
         payload: {
-          user: data.userInfo,
+          user: data.existingUser,
           isVerified: data.isVerified,
           token: data.token,
           isLogged: true,
-          role: data.role,
+          role: data.existingUser.role.name,
         },
       });
     }
   };
-  const toast = useNoti();
+  useEffect(() => {
+    validateToken(token);
+  }, [token]);
 
   const initialState = {
     user: {},
@@ -43,23 +46,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const res = await authService.login(credentials);
+    console.log({ res });
     if (res.status != 200) {
-
-      return toast("error", "error");
+      return noti(res.message || "error", "error");
     }
     authService.setToken(res.data.response.token);
     dispatch({
       type: "LOGIN",
       payload: {
-        user: res.data.response.userInfo,
-        isVerified: res.data.response.isVerified,
-        token: res.data.response.token,
+        user: res.data.response.existingUser,
+        isVerified: res.data.isVerified,
+        token: res.data.token,
         isLogged: true,
-        role: res.data.response.role,
+        role: res.data.response.existingUser.role.name,
       },
     });
-    toast(res.data.message, "success");
-    return res.data.response.role;
+    noti(res.data.message, "success");
+    const response = { role: res.data.response.existingUser.role.name };
+
+    if (res.data.response.existingUser.role.name === "recruiter") {
+      response.associations = res.data.response.associations;
+    }
+
+    return response;
   };
 
   const logout = () => {
@@ -67,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       type: "LOGOUT",
     });
     authService.logout();
-    toast("Sesión cerrada", "success");
+    noti("Sesión cerrada", "success");
   };
 
   return (

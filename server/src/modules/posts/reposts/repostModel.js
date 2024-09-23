@@ -10,7 +10,7 @@ export const Repost = sequelize.define("repost", {
         type: DataTypes.UUID,
         allowNull: false
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     }

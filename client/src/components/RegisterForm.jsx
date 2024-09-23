@@ -49,21 +49,23 @@ export const RegisterForm = () => {
       const response = await axios.post("http://localhost:4000/auth/signup", {
         user,
       });
-
-      localStorage.setItem("token", response.data.token);
+      console.log(response);
+      authService.setToken(response.data.token);
       noti(response.data.message, "success");
       setStep(4);
     } catch (error) {
       console.error("Error durante el registro:", error);
       setErrorMessage(error.response?.data?.message || "Error en el registro");
-      noti(errorMessage, "error");
+      noti(
+        error.response?.data?.message || error.response.data.errors[0].msg,
+        "error"
+      );
     }
   };
 
   const handleVerificationSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:4000/auth/confirm-account",
         { receivedCode: verificationCode },
@@ -242,9 +244,5 @@ export const RegisterForm = () => {
     }
   };
 
-  return (
-    <div className={styles.registerContainer}>
-      {renderStep()}
-    </div>
-  );
+  return <div className={styles.registerContainer}>{renderStep()}</div>;
 };

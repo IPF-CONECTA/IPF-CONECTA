@@ -2,3 +2,11 @@
   position: fixed;
   left: 8%;
 }
+
+.homeNav .buttons .button :hover {
+  color: black;
+  span {
+    color: black;
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+}

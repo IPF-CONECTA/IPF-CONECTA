@@ -6,8 +6,13 @@ import { sendRecoverPasswordEmail } from "./mailServices/recoverPassMail.js";
 import { generateVerificationCode } from "../../helpers/generateCode.js";
 import { sendConfirmAccount } from "./mailServices/confirmAccount.js";
 import { Role } from "../roles/roleModel.js";
+import { sequelize } from "../../config/db.js";
+import { Profile } from "../profile/profileModel.js";
+import { getUserById } from "../users/userServices.js";
+import { getApprovedAssociationsByUser } from "../recruiters/associations/associationServices.js";
 
 export const authSignUpSvc = async (user) => {
+  const t = await sequelize.transaction();
   try {
     const existingUser = await User.findOne({ where: { email: user.email } });
 
@@ -21,60 +26,73 @@ export const authSignUpSvc = async (user) => {
     }
 
     const createdUser = await User.create({
-      names: user.names,
-      surnames: user.surnames,
       email: user.email,
       roleId: roleId,
       password: user.password,
+    }, { transaction: t });
+
+    const profile = await Profile.create({
+      userId: createdUser.id,
+      names: user.names,
+      surnames: user.surnames,
       cuil: user.cuil,
       userStateId: 1,
       state: 1,
-    });
+    }, { transaction: t });
+
+    const role = await getRoles(createdUser.roleId)
+
+    const userInfo = {
+      id: createdUser.id,
+      names: createdUser.names,
+      email: createdUser.email,
+      profilePic: profile.profilePic,
+      role: role
+    }
     const token = jwt.sign(
       { userId: createdUser.id },
       process.env.TOKEN_SECRET_KEY
     );
+    await t.commit();
     await sendConfirmAccountSvc(createdUser.id);
     return token;
   } catch (error) {
+    await t.rollback();
     throw new Error(error.message);
   }
 };
-
 // Si el usuario que se loguea tiene el campo verified == false, se le envia el correo de confirmacion
 // La funcion retorna isVerified, en el cliente se debe verificar si es true o false para mostrar la pagina correspondiente
 export const authLogInSvc = async (user) => {
   try {
-    const existingUser = await User.findOne({ where: { email: user.email } })
-    if (!existingUser) {
+    const isUser = await User.findOne({ where: { email: user.email } })
+    if (!isUser) {
       throw new Error('No se encontro una cuenta con ese email')
     }
-    const validPassword = await bcrypt.compare(user.password, existingUser.password);
+    const validPassword = await bcrypt.compare(user.password, isUser.password);
     if (!validPassword) throw new Error("Contraseña incorrecta");
 
-    const isVerified = existingUser.verified
+    const isVerified = isUser.verified
     // if (!isVerified) { COMENTADO EN DESARROLLO
-    //     sendConfirmAccount(existingUser.email, existingUser.verifyCode, existingUser.names)
+    //     sendConfirmAccount(isUser.email, isUser.verifyCode, isUser.names)
     // }
 
-    const token = jwt.sign({ userId: existingUser.id }, process.env.TOKEN_SECRET_KEY);
-    const role = await getRoles(existingUser.roleId)
+    const token = jwt.sign({ userId: isUser.id }, process.env.TOKEN_SECRET_KEY);
 
-    const userInfo = {
-      id: existingUser.id,
-      names: existingUser.names,
-      surnames: existingUser.surnames,
-      email: existingUser.email,
-      cuil: existingUser.cuil,
-      title: existingUser.title,
-      userStateId: existingUser.userStateId,
-      about: existingUser.about,
-      profilePic: existingUser.profilePic,
-      state: existingUser.state,
+    const existingUser = await getUserById(isUser.id)
+
+
+
+    const response = { token, existingUser, isVerified };
+
+    if (existingUser.role.name === 'recruiter') {
+      response.associations = await getApprovedAssociationsByUser(existingUser.profile.id);
     }
-    return { token, userInfo, isVerified, role }
+
+    return response;
 
   } catch (error) {
+    console.log('error aca')
     console.log(error)
     throw new Error(error.message)
   }
@@ -83,16 +101,22 @@ export const authLogInSvc = async (user) => {
 export const sendConfirmAccountSvc = async (userId) => {
   try {
     const newVerifyCode = generateVerificationCode();
-    await User.update({ verifyCode: newVerifyCode }, { where: { id: userId } });
-    const { verifyCode, email, names, verified } = await User.findByPk(userId);
-    if (verified == true) {
-      throw new Error("Correo ya verificado");
-    }
-    if (!verifyCode || !email || !names) {
+    await User.update({ verifyCode: newVerifyCode }, { where: { id: userId }, attributes: ['verifyCode', 'email'] });
+    const user = await User.findByPk(userId, {
+      include: [{
+        model: Profile,
+        attributes: ['names']
+      }]
+    });
+    if (!user.verifyCode || !user.email || !user.profile.names) {
       throw new Error("Error interno en el servidor, inicie sesion nuevamente");
     }
-    await sendConfirmAccount(email, verifyCode, names);
+    if (user.verified == true) {
+      throw new Error("Correo ya verificado");
+    }
+    await sendConfirmAccount(user.email, user.verifyCode, user.profile.names);
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 };
@@ -170,7 +194,7 @@ export const validateToken = () => {
 
 export const getRoles = async (id) => {
   try {
-    const role = await Role.findByPk(id,)
+    const role = await Role.findByPk(id)
     if (!role) {
       throw new Error('No se encontro el rol')
     }

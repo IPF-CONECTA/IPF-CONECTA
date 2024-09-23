@@ -1,15 +1,15 @@
-import { createPostSvc, getPostsSvc } from "./postServices.js";
+import { createPostSvc, getPostByIdSvc, getPostsSvc } from "./postServices.js";
 
 export const getPostsCtrl = async (req, res) => {
-    console.log("SE EJECUTO EL CONTROLADOR")
+    const { id } = req.user.profile;
     try {
         const pageAsNumber = Number.parseInt(req.query.page)
         let page = 1
         if (!Number.isNaN(pageAsNumber) && pageAsNumber > 1) {
             page = pageAsNumber;
         }
-        const posts = await getPostsSvc(page - 1);
-        console.log(posts)
+        const posts = await getPostsSvc(page - 1, id);
+
         if (posts.count === 0) return res.status(404).json({ message: "No hay publicaciones" });
 
         res.status(200).json(posts);
@@ -18,14 +18,29 @@ export const getPostsCtrl = async (req, res) => {
     }
 }
 
-export const createPostCtrl = async (req, res) => {
-    const { id } = req.user;
+export const getPostByIdCtrl = async (req, res) => {
+    const { id } = req.user.profile;
+    const { postId } = req.params;
+
     try {
-        const { body } = req;
-        const post = await createPostSvc(body, id);
-        if (!post) return res.status(400).json({ message: "Hubo un error al postear" });
-        res.status(201).json(post);
+        const post = await getPostByIdSvc(postId, id)
+        if (!post) return res.status(404).json()
+        res.status(200).json(post)
     } catch (error) {
+        console.log(error)
+        res.status(500).json()
+    }
+}
+
+export const createPostCtrl = async (req, res) => {
+    const { id } = req.user.profile;
+    try {
+        const { post } = req.body;
+        const result = await createPostSvc(post, id);
+        if (!result) return res.status(400).json({ message: "Hubo un error al postear" });
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error)
         res.status(500).json(error.message);
     }
 }

@@ -1,50 +1,43 @@
 import React from "react";
-import "../../public/footer.css";
+import styles from "../../public/css/footer.module.css";
 import logoImage from "../../public/iconoipf.png";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <footer className="FinPag">
+    <footer
+      className={`${styles.finPage} d-flex justify-content-between px-5 my-3`}
+    >
       <div className="d-flex align-items-center">
         <Link to={"/"}>
           <img
             src={logoImage}
             alt="Logo"
-            className="d-inline-block align-text-top me-3 ms-3"
+            className="d-inline-block  me-3 ms-3"
             width="35"
             height="40"
           />
         </Link>
-        <span className="mb-3 mb-md-0">IPF-CONECTA © 2024</span>
+        <span>IPF-CONECTA © 2024</span>
       </div>
-      <ul className="nav list-unstyled d-flex pe-3">
-        <li className="ms-3">
+      <ul className="nav list-unstyled d-flex ">
+        <li className="d-flex align-items-center">
           <Link to={"/"}>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: "black" }}
-            >
+            <span className="material-symbols-outlined text-info-emphasis">
               home
             </span>
           </Link>
         </li>
-        <li className="ms-3">
-          <Link to={"/comunidad"}>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: "black" }}
-            >
+        <li className="d-flex align-items-center">
+          <Link to={"/inicio"}>
+            <span className="material-symbols-outlined text-info-emphasis ms-3">
               group
             </span>
           </Link>
         </li>
-        <li className="ms-3">
-          <Link to={"/support"}>
-            <span
-              className="material-symbols-outlined"
-              style={{ color: "black" }}
-            >
+        <li className="d-flex align-items-center">
+          <Link to={"/contacto"}>
+            <span className="material-symbols-outlined text-info-emphasis ms-3">
               info
             </span>
           </Link>

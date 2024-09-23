@@ -4,6 +4,7 @@ import { getJobs } from "../services/jobServices";
 import { useNoti } from "../hooks/useNoti";
 import { JobDetailsPage } from "../pages/JobsDetailsPage";
 import styles from "../../public/css/jobSearch.module.css";
+import { JobDetails } from "./JobDetails";
 export const JobSearch = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,8 +25,8 @@ export const JobSearch = () => {
     if (jobs.length > 0) {
       setSelectedJob(jobs[0].id);
     }
-    console.log(jobs);
   }, [jobs]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setQuery(e.target.searchBar.value);
@@ -57,23 +58,23 @@ export const JobSearch = () => {
   };
 
   return (
-    <main className="w-100 h-100 d-flex flex-column align-items-center">
-      <nav className="w-100 d-flex flex-column justify-content-center align-items-center">
+    <main className="w-100 h-100 d-flex flex-column align-items-center mt-5">
+      <nav className="w-100 d-flex flex-column justify-content-center align-items-center mt-4">
         <form className="d-flex flex-column w-100" onSubmit={handleSubmit}>
-          <div className="d-flex flex-row">
+          <div className="d-flex flex-row align-items-center mb-2">
             <input
               type="text"
               name="searchBar"
               id="SearchBar"
-              className="w-100 me-2"
+              className="w-100 m-0 me-2 p-2"
               placeholder="Busca un trabajo"
             />
-            <button type="submit" className="btn btn-success h-75">
+            <button type="submit" className="btn btn-success h-100 fw-semibold">
               Buscar
             </button>
           </div>
           <div className="filters">
-            <select name="postDate" id="postDate">
+            <select name="postDate" className="form-select" id="postDate">
               <option value="" defaultChecked>
                 Fecha de publicación
               </option>
@@ -134,7 +135,7 @@ export const JobSearch = () => {
             )}
           </div>
         </aside>
-        {selectedJob && <JobDetailsPage jobId={selectedJob} />}
+        {selectedJob && <JobDetails jobId={selectedJob} />}
       </section>
     </main>
   );

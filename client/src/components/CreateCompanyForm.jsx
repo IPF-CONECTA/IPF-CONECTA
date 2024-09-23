@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "../styles/CompanyRegister.css";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +10,8 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [logo, setLogo] = useState(null)
   const [formData, setFormData] = useState({
+    message: "",
     name: "",
     description: "",
     industryId: "",
@@ -28,7 +27,7 @@ export const CreateCompanyForm = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/countries").then((response) => {
+    axios.get("http://localhost:4000/find-all-countries").then((response) => {
       setCountries(response.data);
     });
   }, []);
@@ -39,10 +38,6 @@ export const CreateCompanyForm = () => {
       ...prevFormData,
       [name]: value,
     }));
-  }
-
-  function handleImageChange(e) {
-    setLogo(e.target.files[0])
   }
 
   function handleSubmit(e) {
@@ -69,11 +64,10 @@ export const CreateCompanyForm = () => {
         }
       )
       .then((response) => {
+        console.log(response);
         if (response.status === 201) {
           noti(response.data.message, "success");
-          setTimeout(() => {
-            navigate("/company-confirmed");
-          }, 1500);
+          navigate(`/crear-sede/${response.data.id}`);
         }
       })
       .catch((error) => {
@@ -88,63 +82,115 @@ export const CreateCompanyForm = () => {
   }
 
   return (
-    <form className="container" onSubmit={handleSubmit}>
-      <h1>Registro de Empresa</h1>
-      <input
-        type="text"
-        name="name"
-        placeholder="Nombre de la empresa"
-        value={formData.name}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="description"
-        placeholder="Descripción"
-        value={formData.description}
-        onChange={handleInputChange}
-        required
-      />
+    <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      <div className="w-100" style={{ maxWidth: '600px' }}>
+        <form onSubmit={handleSubmit}>
+          <div className="text-center mb-4">
+            <h1>Registro de Empresa</h1>
+          </div>
 
-      <select
-        name="industryId"
-        value={formData.industryId}
-        onChange={handleInputChange}
-        required
-      >
-        <option value="">Seleccionar Industria</option>
-        {industries.map((industry) => (
-          <option key={industry.id} value={industry.id}>
-            {industry.name}
-          </option>
-        ))}
-      </select>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="message"
+              className="form-control"
+              placeholder="Mensaje"
+              value={formData.message}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
 
-      <select
-        name="countryOriginId"
-        value={formData.countryOriginId}
-        onChange={handleInputChange}
-        required
-      >
-        <option value="">Seleccionar País</option>
-        {countries.map((country) => (
-          <option key={country.id} value={country.id}>
-            {country.name}
-          </option>
-        ))}
-      </select>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="name"
+              className="form-control"
+              placeholder="Nombre de la empresa"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
 
-      <input
-        type="number"
-        name="cantEmployees"
-        placeholder="Número de empleados"
-        value={formData.cantEmployees}
-        onChange={handleInputChange}
-        required
-      />
-      <input type="file" value={formData.logoUrl} name="logoUrl" />
-      <button type="submit">Enviar</button>
-    </form>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="description"
+              className="form-control"
+              placeholder="Descripción"
+              value={formData.description}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <select
+              name="industryId"
+              className="form-select"
+              value={formData.industryId}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Seleccionar Industria</option>
+              {industries.map((industry) => (
+                <option key={industry.id} value={industry.id}>
+                  {industry.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <select
+                  name="countryOriginId"
+                  className="form-select"
+                  value={formData.countryOriginId}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccionar País</option>
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-md-6 mb-3">
+                <input
+                  type="number"
+                  name="cantEmployees"
+                  className="form-control"
+                  placeholder="Cantidad de empleados"
+                  value={formData.cantEmployees}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <input
+              type="file"
+              name="logoUrl"
+              className="form-control"
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="text-center">
+            <button type="submit" className="btn btn-primary">
+              Siguiente
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };

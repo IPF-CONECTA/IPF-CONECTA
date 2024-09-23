@@ -6,7 +6,7 @@ export const Post = sequelize.define('post', {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
     },
-    userId: {
+    profileId: {
         allowNull: false,
         type: DataTypes.UUID
     },

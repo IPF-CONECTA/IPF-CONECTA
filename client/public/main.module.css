@@ -1,3 +1,16 @@
+@font-face {
+  font-family: "Simplified Arabic";
+  src: url("../fonts/simplified-arabic-2.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Simplified Arabic";
+  src: url("../fonts/simplified-arabic-4.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
 /* Animaciones */
 @keyframes bounce {
   0%,
@@ -19,6 +32,76 @@
   }
 }
 
+.reviewcard {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px !important;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+.imgArea {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 25px;
+}
+.imgArea img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.headerContent {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.info h4 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+.info p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+}
+.singleReview p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #333;
+}
+.reviewFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+.rating {
+  display: flex;
+}
+.rating span {
+  color: #000;
+  font-size: 18px;
+}
+.rating span.active {
+  color: #fbc02d;
+}
+@media screen and (max-width: 767px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .reviewCard {
+    width: 85%;
+  }
+}
+
 /* Estilos del carousel */
 .header-carousel {
   width: 40%;
@@ -31,12 +114,12 @@
 }
 
 /* Sección de la cabecera */
-.header-section {
+.headerSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  height: 90vh;
   box-sizing: border-box;
   flex-wrap: wrap;
 }
@@ -47,13 +130,17 @@
   animation: bounce 2s infinite;
 }
 
-.text-and-button {
+.textAndButton {
   flex: 1;
   padding-left: 20px;
 }
 
 .text-and-button h1 {
   margin: 0;
+  font-family: "Simplified Arabic", sans-serif !important;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* Bienvenida */
@@ -124,6 +211,7 @@ section {
   width: 150px;
   height: 150px;
   margin-bottom: 10px;
+  object-fit: cover;
 }
 
 .service h3 {
@@ -288,13 +376,6 @@ section {
   cursor: pointer;
   font-size: 16px;
   border-radius: 5px;
-}
-
-.Content {
-  display: flex;
-  width: 100%;
-  max-width: 1000px;
-  justify-content: space-between;
 }
 
 .CompanyList {

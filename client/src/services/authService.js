@@ -10,9 +10,8 @@ export const authService = {
       });
       return { data: res.data, status: res.status };
     } catch (error) {
-      const errorMsg = error.response.data.message;
-      const errorStatus = error.response.status || error.code;
-
+      const errorMsg = error?.response?.data?.message || error?.response?.data?.errors?.[0]?.msg || "Unknown error";
+      const errorStatus = error?.response?.status || error?.code || "Unknown status";
       return { message: errorMsg, status: errorStatus };
     }
   },

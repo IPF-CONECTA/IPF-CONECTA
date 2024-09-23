@@ -1,7 +1,8 @@
 // src/components/ProfileHover.jsx
 import React, { useState } from "react";
 import styles from "../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
-import { followOrUnfollow } from "../services/feedServices";
+import { useFollow } from "../hooks/useFollow";
+import { useNavigate } from "react-router-dom";
 
 export const ProfileHover = ({
   profile,
@@ -9,66 +10,60 @@ export const ProfileHover = ({
   handleMouseLeave,
   profileInfoRef,
 }) => {
-  const [profileInfo, setProfile] = useState(profile);
-
-  const handleFollowOrUnfollow = async (id) => {
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      isFollowing: !prevProfile.isFollowing,
-    }));
-    const { data, statusCode } = await followOrUnfollow(profile.user.id);
-    if (statusCode !== 201) {
-      noti(data, "error");
-    }
-  };
-
+  const { profileInfo, handleFollowOrUnfollow } = useFollow(profile);
+  console.log(profile);
+  const navigate = useNavigate();
   return (
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={profileInfoRef}
-      className={`position-absolute border rounded p-3 bg-white d-flex flex-column align-items-center m-3 ${styles.profileInfo}`}
+      className={`position-absolute border rounded p-2 bg-white d-flex flex-column align-items-center m-3 ${styles.profileInfo}`}
     >
       <div className="d-flex justify-content-between align-items-center w-100">
         <img
-          src={`${profileInfo.user.profilePic}`}
-          width={70}
-          height={70}
+          src={`${profileInfo.profile.profilePic}`}
+          width={40}
+          height={40}
           className="rounded-circle"
           alt="profile pic"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/perfil/${profileInfo.profile.id}`);
+          }}
         />
-        <div className="d-flex flex-column w-50">
+        <div className={`d-flex flex-column ${styles.followButton}`}>
           {profileInfo.isFollowing === false ? (
             <button
-              className="btn btn-info text-light w-100 fw-bold"
-              onClick={() => {
-                handleFollowOrUnfollow(profileInfo.user.id);
+              className={`btn btn-info text-light w-100 p-0 py-1 ${styles.smallText} w-100 fw-bold`}
+              onClick={(event) => {
+                handleFollowOrUnfollow(event, profileInfo.profile.id);
               }}
             >
-              Follow
+              Seguir
             </button>
           ) : (
             <button
-              className="btn btn-outline-info text-muted w-100 fw-bold"
-              onClick={() => {
-                handleFollowOrUnfollow(profileInfo.user.id);
+              className={`btn btn-outline-info w-100 text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
+              onClick={(event) => {
+                handleFollowOrUnfollow(event, profileInfo.profile.id);
               }}
             >
-              Unfollow
+              Siguiendo
             </button>
           )}
         </div>
       </div>
       <div className={`d-flex flex-column ${styles.username}`}>
-        <span className="fs-4">
-          {profileInfo.user.names} {profileInfo.user.surnames}
+        <span className="fs-6 fw-semibold">
+          {profileInfo.profile.names} {profileInfo.profile.surnames}
         </span>
-        {profileInfo.user.title ? (
-          <span className="text-muted">{profileInfo.user.title}</span>
-        ) : (
-          <span className="text-muted fs-5">Sin titulo</span>
+        {profileInfo.profile.title && (
+          <span className="text-muted fs-6">{profileInfo.title}</span>
         )}
-        <span className="text-muted">{profileInfo.user.email}</span>
+        <span className={`text-muted ${styles.smallText}`}>
+          {profileInfo.profile.user.email}
+        </span>
         <div className="d-flex">
           <div className="pe-3">
             <span className="fw-bold">{profileInfo.cantFollowers}</span>

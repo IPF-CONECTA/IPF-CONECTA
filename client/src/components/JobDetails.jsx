@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../../public/css/jobDetails.module.css";
 export const JobDetails = ({ jobId }) => {
+  console.log(jobId);
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
     const getJobInfo = async () => {
@@ -34,17 +35,17 @@ export const JobDetails = ({ jobId }) => {
               />
               <h3 className="m-0">{selectedJob.company.name}</h3>
             </div>
-            <div className="d-flex flex-row w-25 justify-content-between align-items-center">
-              <div className="dropdown">
+            <div className="d-flex flex-row justify-content-between align-items-center">
+              <div className="dropdown me-2">
                 <button
                   className={`btn dropdown-toggle ${styles.noCaret} p-0 d-flex `}
                   type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <span class="material-symbols-outlined">more_horiz</span>
+                  <span className="material-symbols-outlined">more_horiz</span>
                 </button>
-                <ul className={`dropdown-menu `}>
+                <ul className={`dropdown-menu dropdown-menu-end`}>
                   <li className="d-flex flex-column">
                     <a
                       className="dropdown-item text-danger h-100 d-flex  fw-bold"
@@ -58,12 +59,15 @@ export const JobDetails = ({ jobId }) => {
                   </li>
                 </ul>
               </div>
-              <button type="submit" className={`${styles.bookmark} btn p-0 `}>
+              <button
+                type="submit"
+                className={`${styles.bookmark} btn p-0 me-2`}
+              >
                 <span className={`material-symbols-outlined ${styles.icon}`}>
                   bookmark
                 </span>{" "}
               </button>
-              <button className="btn ps-2 btn-success">
+              <button className="btn btn-success">
                 <strong>Postularse</strong>
               </button>
             </div>
@@ -94,4 +98,4 @@ export const JobDetails = ({ jobId }) => {
     </aside>
   );
 };
-0
+0;
