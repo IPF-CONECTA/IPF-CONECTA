@@ -37,6 +37,10 @@ export const AssociationsPanel = () => {
     getAssociations();
   }, [tab]);
 
+  useEffect(() => {
+    console.log(selectedAssociation);
+  }, [selectedAssociation]);
+
   const handleTabClick = (tab) => {
     setTab(tab);
     setAssociations([]);
@@ -141,6 +145,9 @@ export const AssociationsPanel = () => {
                     <p className="mb-0 text-muted">
                       {association.profile.user.email}
                     </p>
+                    <p className="mb-0 text-muted">
+                      {association.profile.user.username}
+                    </p>
                   </div>
                 </div>
                 <div className="d-flex align-items-center">
@@ -170,15 +177,16 @@ export const AssociationsPanel = () => {
         >
           <DialogContent>
             <div className="d-flex">
-              <div className="me-3">
+              <div className="me-3 w-75">
                 <img
+                  crossOrigin="anonymous"
                   src={
-                    selectedAssociation.company.logoUrl ||
+                    `${BASE_URL}${selectedAssociation.company.logoUrl}` ||
                     "https://via.placeholder.com/100"
                   }
                   alt={`${selectedAssociation.company.name} Logo`}
                   className="img-fluid"
-                  style={{ maxHeight: "100px" }}
+                  style={{ maxHeight: "40px" }}
                 />
                 <h6 className="mt-2">Datos de la Empresa:</h6>
                 <p>
@@ -205,6 +213,7 @@ export const AssociationsPanel = () => {
                       {selectedAssociation.profile.names}{" "}
                       {selectedAssociation.profile.surnames}
                     </span>
+                    <p>{selectedAssociation.profile.user.username}</p>
                     <br />
                     <span className="text-muted">
                       {selectedAssociation.profile.user.email}
@@ -214,32 +223,34 @@ export const AssociationsPanel = () => {
               </div>
             </div>
           </DialogContent>
-          <DialogActions>
-            <textarea
-              className="form-control"
-              rows={3}
-              placeholder="Justificación (solo para rechazar)"
-              value={justification}
-              onChange={(e) => setJustification(e.target.value)}
-              disabled={selectedAssociation.status === "Aprobada"}
-            />
-            <Button
-              color="secondary"
-              onClick={() =>
-                handleAssociationStatus(selectedAssociation.id, "Rechazada")
-              }
-            >
-              Rechazar
-            </Button>
-            <Button
-              color="primary"
-              onClick={() =>
-                handleAssociationStatus(selectedAssociation.id, "Aprobada")
-              }
-            >
-              Aprobar
-            </Button>
-          </DialogActions>
+          {selectedAssociation.status == "Pendiente" && (
+            <DialogActions>
+              <textarea
+                className="form-control"
+                rows={3}
+                placeholder="Justificación (solo para rechazar)"
+                value={justification}
+                onChange={(e) => setJustification(e.target.value)}
+                disabled={selectedAssociation.status === "Aprobada"}
+              />
+              <Button
+                color="secondary"
+                onClick={() =>
+                  handleAssociationStatus(selectedAssociation.id, "Rechazada")
+                }
+              >
+                Rechazar
+              </Button>
+              <Button
+                color="primary"
+                onClick={() =>
+                  handleAssociationStatus(selectedAssociation.id, "Aprobada")
+                }
+              >
+                Aprobar
+              </Button>
+            </DialogActions>
+          )}
         </Dialog>
       )}
     </div>

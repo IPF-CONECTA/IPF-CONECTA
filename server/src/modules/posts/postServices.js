@@ -22,7 +22,7 @@ export const getPostsSvc = async (page, id) => {
                     as: 'profile',
                     include: {
                         model: User,
-                        attributes: ['email']
+                        attributes: ['email', 'username']
                     }
                 },
                 {
@@ -98,7 +98,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
                     as: 'profile',
                     include: {
                         model: User,
-                        attributes: ['email']
+                        attributes: ['email', 'username']
                     }
                 },
                 {
@@ -127,7 +127,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
                             as: 'profile',
                             include: {
                                 model: User,
-                                attributes: ['email']
+                                attributes: ['email', 'username']
                             }
                         },
                         {
@@ -158,7 +158,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
                             as: 'profile',
                             include: {
                                 model: User,
-                                attributes: ['email']
+                                attributes: ['email', 'username']
                             }
                         },
                         {
@@ -186,7 +186,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
                                     as: 'profile',
                                     include: {
                                         model: User,
-                                        attributes: ['email']
+                                        attributes: ['email', 'username']
                                     }
                                 },
                                 {

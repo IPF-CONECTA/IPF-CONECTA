@@ -155,11 +155,9 @@ const PostCard = ({ post }) => {
                     <span className="fw-bold fs-6">
                       {post.profile.names} {post.profile.surnames}
                     </span>
-                    {post.profile.title && (
-                      <span className={`text-muted ${styles.smallText}`}>
-                        {post.profile.title}
-                      </span>
-                    )}
+                    <span className={`text-muted ${styles.smallText}`}>
+                      @{post.profile.user.username}
+                    </span>
                   </div>
 
                   <span className={`text-muted ${styles.smallText}`}>
@@ -295,7 +293,7 @@ const PostCard = ({ post }) => {
                         {post.profile.names} {post.profile.surnames}
                       </div>
                       <span className={`${styles.email} text-muted`}>
-                        {post.profile.user.email}
+                        {post.profile.user.username}
                       </span>
                     </div>
                     <span className={`h-100 `}>{getTime(post.createdAt)}</span>

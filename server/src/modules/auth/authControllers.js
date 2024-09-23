@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { authIsEmailAvailableSvc, authLogInSvc, authSignUpSvc, confirmAccountSvc, getRoles, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
+import { authIsEmailAvailableSvc, authIsUsernameAvailableSvc, authLogInSvc, authSignUpSvc, confirmAccountSvc, getRoles, recoverPasswordSvc, sendConfirmAccountSvc, sendRecoverPasswordSvc } from './authServices.js'
 import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 
@@ -7,6 +7,7 @@ import { BASIC_ROLES } from "../../constant/roles.js";
 
 export const authSignUpCtrl = async (req, res) => {
     const { user } = req.body;
+    console.log(user)
     try {
         if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
@@ -28,10 +29,22 @@ export const authSignUpCtrl = async (req, res) => {
 export const authIsEmailAvailableCtrl = async (req, res) => {
     const { email } = req.body;
     try {
-        if (!email) return res.status(400).json({ message: "Proporcione un email" });
+        if (!email) return res.status(400).json();
         const isEmail = await authIsEmailAvailableSvc(email);
         if (!isEmail) return res.status(200).json();
-        res.status(400).json({ message: "Email ya registrado" })
+        res.status(409).json()
+    } catch (error) {
+        console.log(error)
+        res.status(500).json()
+    }
+}
+export const authIsUsernameAvailableCtrl = async (req, res) => {
+    const { username } = req.body;
+    try {
+        if (!username) return res.status(400).json();
+        const isUsername = await authIsUsernameAvailableSvc(username);
+        if (!isUsername) return res.status(200).json();
+        res.status(409).json()
     } catch (error) {
         console.log(error)
         res.status(500).json()

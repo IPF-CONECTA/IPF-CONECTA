@@ -7,14 +7,14 @@
   width: 100%;
   box-sizing: border-box;
 }
-.infoCuilHidden {
+.infoHidden {
   display: none !important;
   position: absolute;
   right: 17%;
   z-index: 1000;
   width: 250px;
 }
-.infoButton:hover + .infoCuilHidden {
+.infoButton:hover + .infoHidden {
   display: flex !important;
 }
 .error {

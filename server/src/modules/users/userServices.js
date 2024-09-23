@@ -41,7 +41,7 @@ export const getRecomendedUsersSvc = async (profileId) => {
                     [Op.ne]: profileId,
                 }
             },
-            attributes: ['id', 'email'],
+            attributes: ['id', 'email', 'username'],
             limit: 5,
             include: {
                 model: Profile,
@@ -63,7 +63,7 @@ export const getRecomendedUsersSvc = async (profileId) => {
 export const getUserById = async (userId) => {
     try {
         const user = await User.findByPk(userId, {
-            attributes: ['id', 'email'],
+            attributes: ['id', 'email', 'username'],
             include: [{
                 model: Profile,
                 attributes: ['id', 'names', 'surnames', 'profilePic', 'title']
@@ -87,7 +87,7 @@ export const getUserInfoSvc = async (id, followingId) => {
             attributes: ['id', 'profilePic', 'names', 'surnames', 'title'],
             include: {
                 model: User,
-                attributes: ['email']
+                attributes: ['email', 'username']
             }
         })
 
@@ -123,13 +123,21 @@ export const createUser = async (user) => {
         user = {
             names: user.names,
             surnames: user.surnames,
+            username: user.username,
             roleId: roleId,
             password: hashpass,
             email: user.email,
             userStateId: 1
         }
 
-        const existingUser = await User.findOne({ where: { email: user.email } });
+        const existingUser = await User.findOne({
+            where: {
+                [Op.or]: [
+                    { username: user.username },
+                    { email: user.email }
+                ]
+            }
+        });
 
         if (existingUser) { throw new Error('El usuario ya existe en nuestro sistema.'); }
         const createdUser = await User.create({

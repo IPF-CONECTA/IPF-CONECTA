@@ -1,13 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 import styles from "../../public/css/createCompany.module.css";
 
 export const CreateCompanyForm = () => {
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ header: [1, 2, 3, false] }],
+      [{ align: [] }],
+    ],
+  };
+  const quillRef = useRef(null);
+
   const navigate = useNavigate();
   const noti = useNoti();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -32,11 +52,17 @@ export const CreateCompanyForm = () => {
     });
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
-
-    if (type === "file") {
-      const file = files[0];
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (
+        file.type !== "image/jpeg" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/png"
+      ) {
+        noti("Formato de logo no aceptado", "warning");
+        return;
+      }
       setLogo(file);
       setPreviewLogo(URL.createObjectURL(file));
     } else {
@@ -47,18 +73,25 @@ export const CreateCompanyForm = () => {
     }
   };
 
+  function handleLogoChange(e) {
+    const file = e.target.files[0];
+    setLogo(file);
+    setPreviewLogo(URL.createObjectURL(file));
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
-    formDataToSend.append("company[name]", formData.name);
-    formDataToSend.append("company[description]", formData.description);
-    formDataToSend.append("company[industryId]", formData.industryId);
-    formDataToSend.append("company[countryOriginId]", formData.countryOriginId);
-    formDataToSend.append("company[cantEmployees]", formData.cantEmployees);
-    formDataToSend.append("message", formData.message);
+    formDataToSend.append("company[name]", data.name);
+    formDataToSend.append("company[description]", data.description);
+    formDataToSend.append("company[industryId]", data.industryId);
+    formDataToSend.append("company[countryOriginId]", data.countryOriginId);
+    formDataToSend.append("company[cantEmployees]", data.cantEmployees);
+    formDataToSend.append("message", data.message);
 
     if (logo) {
+      console.log(logo);
       formDataToSend.append("logoUrl", logo);
     }
 
@@ -70,6 +103,7 @@ export const CreateCompanyForm = () => {
         },
       })
       .then((response) => {
+        console.log(response);
         const companyId = response.data.id;
 
         if (response.status === 201 && companyId) {
@@ -80,6 +114,7 @@ export const CreateCompanyForm = () => {
         }
       })
       .catch((error) => {
+        console.log(error);
         let errorMsg = error.response?.data?.message || "Error inesperado.";
         if (!errorMsg && error.response?.data?.errors) {
           errorMsg = error.response.data.errors[0].msg;
@@ -93,23 +128,14 @@ export const CreateCompanyForm = () => {
     <div className="d-flex justify-content-evenly align-items-center min-vh-100">
       <div className="company-form shadow-sm">
         <form onSubmit={handleSubmit} className="p-3">
-          <div className="d-flex justify-content-between mb-2">
-            <button 
-              type="button" 
-              className="btn btn-secondary fw-bold"
-              onClick={() => navigate(-1)} // Vuelve a la página anterior
-            >
-              Volver
-            </button>
+          <div className="d-flex justify-content-start mb-2">
             <span
               className={`fs-4 fw-semibold d-flex justify-content-center ${styles.registerText}`}
             >
               Registra tu empresa
             </span>
           </div>
-
-          {/* Message input */}
-          <div className="mb-3">
+          <div>
             <label htmlFor="message">Mensaje</label>
             <input
               type="text"
@@ -121,29 +147,27 @@ export const CreateCompanyForm = () => {
               required
             />
           </div>
-
-          {/* Name input */}
-          <div className="mb-3">
+          <div>
             <label htmlFor="name">Nombre de la empresa</label>
             <input
               type="text"
               name="name"
               className="form-control w-100 mb-3"
               placeholder="The Coca-Cola Company"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
+              {...register("name", { required: "El nombre es obligatorio" })}
             />
+            {errors.name && (
+              <p className="text-danger">{errors.name.message}</p>
+            )}
           </div>
-
-          {/* Description input */}
-          <div className="mb-3">
+          <div>
             <label htmlFor="description">Descripción de la empresa</label>
             <input
               type="text"
               name="description"
               className="form-control w-100 mb-3"
-              placeholder="Descripción de la empresa"
+              placeholder="The Coca‑Cola Company is a total beverage company with products sold in more than 200 countries and territories. Our company’s purpose is to refresh the world and make a difference. We sell multiple billion-dollar brands across several beverage categories worldwide.
+"
               value={formData.description}
               onChange={handleInputChange}
               required
@@ -156,41 +180,43 @@ export const CreateCompanyForm = () => {
             <select
               name="industryId"
               className="form-select mb-3"
-              value={formData.industryId}
-              onChange={handleInputChange}
-              required
+              {...register("industryId", {
+                required: "La industria es obligatoria",
+              })}
+              defaultValue={"default"}
             >
-              <option value="" disabled>
-                Seleccionar Industria
-              </option>
+              <option defaultValue={"Seleccionar industria"} label />
               {industries.map((industry) => (
                 <option key={industry.id} value={industry.id}>
                   {industry.name}
                 </option>
               ))}
             </select>
+            {errors.industryId && (
+              <p className="text-danger">{errors.industryId.message}</p>
+            )}
           </div>
 
           {/* Country and employee count */}
           <div className="row">
             <div className="col-md-6">
-              <label htmlFor="countryOriginId">País de origen</label>
-              <select
-                name="countryOriginId"
-                className="form-select"
-                value={formData.countryOriginId}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="" disabled>
-                  Seleccionar País
-                </option>
-                {countries.map((country) => (
-                  <option key={country.id} value={country.id}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
+              <div>
+                <label htmlFor="countryOriginId">País de origen</label>
+                <select
+                  name="countryOriginId"
+                  className="form-select"
+                  value={formData.countryOriginId}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option defaultValue={"Seleccionar País"} label />
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="col-md-6">
@@ -200,41 +226,60 @@ export const CreateCompanyForm = () => {
                 name="cantEmployees"
                 className="form-control w-100 mb-3"
                 placeholder="500"
-                value={formData.cantEmployees}
-                onChange={handleInputChange}
-                required
+                {...register("cantEmployees", {
+                  required: "La cantidad de empleados es obligatoria",
+                })}
               />
+              {errors.cantEmployees && (
+                <p className="text-danger">{errors.cantEmployees.message}</p>
+              )}
             </div>
           </div>
-
-          {/* Logo input */}
-          <div className="mb-3">
+          <div>
             <label htmlFor="logoUrl">Logo de la empresa</label>
             <input
               type="file"
               name="logoUrl"
+              accept="image/png, image/jpeg, image/jpg"
               className="form-control w-100 mb-3"
-              onChange={handleInputChange}
+              onChange={handleLogoChange}
+            />
+          </div>
+          {previewLogo && (
+            <img
+              src={previewLogo}
+              className={`${styles.roundedImage} mb-2 me-0`}
+            />
+          )}
+          <div>
+            <label htmlFor="message">Mensaje</label>
+            <input
+              type="text"
+              name="message"
+              className="form-control w-100 mb-3"
+              placeholder="Cuentanos tu rol en la empresa, que funciones cumples, etc."
+              {...register("message", {
+                required: "El mensaje es obligatorio",
+              })}
             />
           </div>
 
-          {/* Logo preview */}
-          {previewLogo && (
-            <div className="mb-3 text-center">
-              <img
-                src={previewLogo}
-                alt="Previsualización del Logo"
-                className="img-thumbnail"
-                style={{ maxHeight: "200px" }}
-              />
+          <div className="d-flex flex-column ">
+            {previewLogo && <img src={previewLogo} className="mb-2" />}
+            <div className="w-100 d-flex justify-content-between">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => navigate(-1)}
+                  className="btn btn-secondary fw-bold"
+                >
+                  Volver
+                </button>
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Siguiente
+              </button>
             </div>
-          )}
-
-          {/* Submit button */}
-          <div className="text-center">
-            <button type="submit" className="btn btn-primary">
-              Siguiente
-            </button>
           </div>
         </form>
       </div>

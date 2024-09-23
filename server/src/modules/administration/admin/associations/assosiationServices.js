@@ -16,7 +16,7 @@ export const getAssociations = async (status) => {
           attributes: ["id", "names", "surnames", "profilePic"],
           include: {
             model: User,
-            attributes: ['email']
+            attributes: ['email', 'username']
           }
         },
         {

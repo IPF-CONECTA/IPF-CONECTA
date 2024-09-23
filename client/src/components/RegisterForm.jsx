@@ -13,7 +13,9 @@ export const RegisterForm = () => {
   const [step, setStep] = useState(1);
   const [role, setRole] = useState("");
   const inputRefs = useRef([]);
+  const [isCodeLocked, setIsCodeLocked] = useState(false);
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
     names: "",
@@ -53,7 +55,9 @@ export const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const user = {
+      username: formData.username,
       email: formData.email,
       password: formData.password,
       role: role,
@@ -84,12 +88,13 @@ export const RegisterForm = () => {
   const handleSubmitCode = async (code) => {
     const response = await authService.submitVerificationCode(code);
     if (response.status !== 201) {
-      noti(
+      return noti(
         response.response?.data?.message || "Error en la verificación",
         "error"
       );
     }
     noti("¡Cuenta confirmada exitosamente!", "success");
+    setIsCodeLocked(true);
     setTimeout(() => {
       authService.removeToken();
       authService.setToken(response.data.data.token);
@@ -158,7 +163,7 @@ export const RegisterForm = () => {
       case 2:
         return (
           <form className={styles.formStep}>
-            <h2>Información de la Cuenta</h2>
+            <h2 className="mb-3">Crea tu cuenta</h2>
             <div className="form-floating mb-3">
               <input
                 type="email"
@@ -167,10 +172,37 @@ export const RegisterForm = () => {
                 value={formData.email}
                 className="form-control w-100"
                 autoComplete="false"
-                id="floatingInput"
                 placeholder="name@example.com"
               />
               <label htmlFor="floatingInput">Email</label>
+            </div>
+            <div className="border rounded mb-3 d-flex">
+              <div className="form-floating w-100">
+                <input
+                  type="text"
+                  className="form-control border-0 m-0 w-100"
+                  name="username"
+                  autoComplete="false"
+                  value={formData.username}
+                  placeholder="username"
+                  onChange={handleChange}
+                />
+                <label htmlFor="floatingInput">nombre_de_usuario</label>
+              </div>
+              <div className="d-flex btn p-0 me-1 align-items-center justify-content-end">
+                <span
+                  className={`${styles.infoButton} border px-2 rounded-circle bg-info-subtle`}
+                >
+                  <div className="fw-semibold text-primary-emphasis">?</div>
+                </span>
+                <div
+                  className={`${styles.infoHidden} d-none border shadow p-2 rounded bg-white d-flex flex-column`}
+                >
+                  <span>
+                    Sólo minusculas y números, separado por barra baja " _ "
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="form-floating">
               <input
@@ -203,12 +235,28 @@ export const RegisterForm = () => {
                   if (!formData.email) {
                     return noti(
                       "Por favor, ingrese un correo electrónico",
-                      "error"
+                      "warning"
                     );
                   }
                   const response = await authService.isEmail(formData.email);
-                  if (response.status !== 200) {
+                  if (response !== 200) {
                     return noti("Email ya registrado", "error");
+                  }
+                  if (!formData.username) {
+                    return noti(
+                      "Por favor, ingrese un nombre de usuario",
+                      "warning"
+                    );
+                  }
+                  if (/\s/.test(formData.username)) {
+                    return noti(
+                      "El nombre de usuario no debe contener espacios",
+                      "error"
+                    );
+                  }
+                  const res = await authService.isUsername(formData.username);
+                  if (res !== 200) {
+                    return noti("Nombre de usuario ya registrado", "error");
                   }
                   setStep(3);
                 }}
@@ -253,7 +301,6 @@ export const RegisterForm = () => {
                   <input
                     type="number"
                     className="form-control border-0 m-0 w-100"
-                    id="floatingInput"
                     name="cuil"
                     autoComplete="false"
                     value={formData.cuil}
@@ -269,7 +316,7 @@ export const RegisterForm = () => {
                     <div className="fw-bold text-white">?</div>
                   </span>
                   <div
-                    className={`${styles.infoCuilHidden} d-none border shadow p-2 rounded bg-white d-flex flex-column`}
+                    className={`${styles.infoHidden} d-none border shadow p-2 rounded bg-white d-flex flex-column`}
                   >
                     <span className="fw-semibold">
                       ¿Para qué pedimos el cuil?
@@ -349,6 +396,7 @@ export const RegisterForm = () => {
                       <input
                         key={index}
                         type="text"
+                        disabled={isCodeLocked ? true : false}
                         maxLength={1}
                         className="form-control w-75 text-center fs-4 fw-bold bg-light rounded"
                         value={verificationCode[index]}
