@@ -4,10 +4,10 @@ import { getExperiences, getProfile } from "../../services/feedServices";
 import { useNoti } from "../../hooks/useNoti";
 import styles from "../../../public/css/profile.module.css";
 import RecomendedAccounts from "../RecomendedAccounts";
-import AboutCard from "./AboutCard";
-import ExperienceContainer from "./ExperienceContainer";
-import Header from "./Header";
-import Nav from "./Nav";
+import AboutCard from "./components/AboutCard";
+import ExperienceContainer from "./components/ExperienceContainer";
+import Header from "./components/Header";
+import Nav from "./components/Nav";
 
 export const Profile = () => {
   const noti = useNoti();
@@ -51,7 +51,8 @@ export const Profile = () => {
             <main className="w-100">
               <AboutCard
                 own={profileData.own}
-                about={profileData.profile.about}
+                aboutData={profileData.profile.about}
+                profileId={profileId}
               />
               <ExperienceContainer
                 own={profileData.own}

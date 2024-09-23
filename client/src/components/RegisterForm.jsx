@@ -187,7 +187,7 @@ export const RegisterForm = () => {
                   placeholder="username"
                   onChange={handleChange}
                 />
-                <label htmlFor="floatingInput">nombre_de_usuario</label>
+                <label htmlFor="floatingInput">Nombre de usuario</label>
               </div>
               <div className="d-flex btn p-0 me-1 align-items-center justify-content-end">
                 <span
