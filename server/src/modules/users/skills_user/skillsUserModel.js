@@ -1,5 +1,5 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
-import { User } from "../userModel.js";
+
 export const SkillsUser = sequelize.define('skillsUser', {
     id: {
         type: DataTypes.UUID,
@@ -15,5 +15,3 @@ export const SkillsUser = sequelize.define('skillsUser', {
         allowNull: false
     },
 })
-SkillsUser.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(SkillsUser, { foreignKey: 'userId' });

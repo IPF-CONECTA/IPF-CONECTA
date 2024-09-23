@@ -1,18 +1,22 @@
-
-import { createUser, getUserInfoSvc, getRecomendedUsersSvc, getUsers, getUserById } from './userServices.js';
+import {
+    createUser,
+    getUserInfoSvc,
+    getRecomendedUsersSvc,
+    getUsers,
+    getUserById
+} from './userServices.js';
 
 export const getUsersController = async (_req, res) => {
     try {
         const users = await getUsers();
 
-        if (users.length == 0) {
-            return res.status(400).json({ message: 'No se encontraron usuarios' })
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron usuarios' });
         }
         res.status(200).json(users);
     } catch (error) {
-
-        res.status(500).json({ message: error.message });
-
+        console.error(error);
+        res.status(500).json({ message: 'Error interno en el servidor' });
     }
 };
 
@@ -20,60 +24,79 @@ export const getUserByIdCtrl = async (req, res) => {
     try {
         const { id } = req.user.profile;
         const { profileId } = req.params;
-        if (!id || !profileId) return res.status(400).json();
-        if (id == profileId) return res.status(400)
-        const profile = await getUserInfoSvc(id, profileId);
-        if (!profile) return res.status(404).json();
 
-        res.status(200).json(profile)
+        if (!id || !profileId) return res.status(400).json({ message: 'ID de usuario no válido' });
+        if (id === profileId) return res.status(400).json({ message: 'No se puede obtener información del propio usuario' });
+
+        const profile = await getUserInfoSvc(id, profileId);
+        if (!profile) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+        res.status(200).json(profile);
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+        console.error(error);
+        res.status(500).json({ message: 'Error interno en el servidor' });
     }
-}
+};
 
 export const getUserInfoCtrl = async (req, res) => {
     const { id } = req.user.profile;
     const { profileId } = req.params;
+
     try {
-        if (id == profileId) return res.status(400).json()
-        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
+        if (id === profileId) return res.status(400).json({ message: 'No se puede obtener información del propio usuario' });
+
+        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId);
         if (!profile) {
-            return res.status(404).json({ message: 'Usuario no encontrado' })
+            return res.status(404).json({ message: 'Usuario no encontrado' });
         }
-        if (!following) {
-            return res.status(200).json({ profile, isFollowing: false, cantFollowers, cantFollowing })
-        }
-        res.status(200).json({ profile, isFollowing: true, cantFollowers, cantFollowing })
+
+        res.status(200).json({ profile, isFollowing: following, cantFollowers, cantFollowing });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: error.message })
+        console.error(error);
+        res.status(500).json({ message: 'Error interno en el servidor' });
     }
-}
+};
+
+export const getUserInfoCtrl1 = async (req, res) => {
+    const userId = req.user.id; 
+
+    try {
+        const user = await getUserById(userId);
+        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error interno en el servidor:", error);
+        res.status(500).json({ message: "Error interno en el servidor" });
+    }
+};
 
 export const createUserController = async (req, res) => {
-    const { user } = req.body
+    const { user } = req.body;
+
     try {
-        await createUser(user)
-        res.status(201).json({ message: 'Usuario generado con exito' })
+        await createUser(user);
+        res.status(201).json({ message: 'Usuario generado con éxito' });
     } catch (error) {
-        if (error.message == 'Rol no valido') {
-            res.status(400).json({ message: error.message })
+        if (error.message === 'Rol no válido') {
+            return res.status(400).json({ message: error.message });
         }
-        res.status(500).json({ message: error.message })
+        console.error(error);
+        res.status(500).json({ message: 'Error interno en el servidor' });
     }
-}
+};
 
 export const getRecomendedUsersController = async (req, res) => {
-    const { id } = req.user.profile
+    const { id } = req.user.profile;
+
     try {
         const users = await getRecomendedUsersSvc(id);
-        if (users.length == 0) {
-            return res.status(404).json({ message: 'No se encontraron usuarios' })
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron usuarios recomendados' });
         }
         res.status(200).json(users);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ message: 'Error interno en el servidor' });
     }
-}
+};

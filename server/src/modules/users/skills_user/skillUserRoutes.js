@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUserSkills, linkSkillToProfile } from './skillUserController.js';
+import { getUserSkills, linkSkillToUser } from './skillUserController.js';  // Corrección aquí: no duplicar imports
 import { isToken } from '../../../middlewares/jwt/isVerifiedAccount.js';
 
 const SkillUserRouter = Router();
@@ -8,7 +8,7 @@ const SkillUserRouter = Router();
 SkillUserRouter.use(isToken);
 
 // Rutas
-SkillUserRouter.post('/link-skill', linkSkillToProfile); // Vincular una habilidad
-SkillUserRouter.get('/user-skills', getUserSkills);      // Obtener habilidades del usuario
+SkillUserRouter.post('/add-skill', linkSkillToUser);  // Vincular una habilidad
+SkillUserRouter.get('/user-skills', getUserSkills);   // Obtener habilidades del usuario
 
 export default SkillUserRouter;
