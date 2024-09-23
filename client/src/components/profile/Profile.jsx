@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getExperiences, getProfile } from "../../services/feedServices";
 import { useNoti } from "../../hooks/useNoti";
 import styles from "../../../public/css/profile.module.css";
@@ -8,13 +8,15 @@ import AboutCard from "./AboutCard";
 import ExperienceContainer from "./ExperienceContainer";
 import Header from "./Header";
 import Nav from "./Nav";
-import { ProfileProjects } from "./ProfileProjects";
+import { projectsService } from "../../services/projectsServices";
 
 export const Profile = () => {
   const noti = useNoti();
   const { profileId } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [showAll, setShowAll] = useState();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -38,6 +40,14 @@ export const Profile = () => {
     fetchProfile(profileId);
   }, [profileId]);
 
+  useEffect(() => {
+    projectsService.getAllProjects().then((response) => {
+      setProjects(response.data);
+    });
+  }, []);
+
+  const displayedProjects = showAll ? projects : projects.slice(0, 3);
+
   return (
     <>
       {profileData && (
@@ -57,7 +67,46 @@ export const Profile = () => {
               />
             </main>
             <h1>Proyectos de {profileData.profile.names}</h1>
-            <ProfileProjects />
+            <div className="container">
+              <div className="row">
+                {displayedProjects.map((project) => {
+                  return (
+                    <div className="col-md-4 mb-4" key={project.id}>
+                      <div className="card">
+                        <div className="card-header">
+                          <h5 className="card-title">{project.name}</h5>
+                        </div>
+                        <img
+                          src={project.projectLogo}
+                          className="card-img-top"
+                          alt={project.name}
+                        />
+                        <div className="card-body">
+                          <p className="card-text">{project.description}</p>
+                        </div>
+                        <div className="card-footer">
+                          <p>
+                            Estado: <strong>{project.status}</strong>
+                          </p>
+                          <a href={project.projectLink} target="_blank">
+                            <button className="btn btn-outline-success">
+                              Ver proyecto
+                            </button>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {projects.length > 3 && !showAll && (
+                <Link to={`${profileData.profile.user.username}/proyectos`}>
+                  <button className="btn btn-outline-dark mt-5 mb-2">
+                    Ver todos los proyectos
+                  </button>
+                </Link>
+              )}
+            </div>
           </div>
           <RecomendedAccounts />
         </div>

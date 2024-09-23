@@ -15,6 +15,7 @@ export * from "./MessageRecruiterPage";
 export * from "./SelectCompanyPage";
 export * from "./PostPage";
 export * from "./ProfilePage";
+export * from "./ProfileProjectsPage";
 export * from "./SupportPage";
 export * from "./CreateJobsFormPage";
 export * from "./AdminDashboardPage";

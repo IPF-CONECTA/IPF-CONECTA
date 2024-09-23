@@ -21,4 +21,5 @@ export * from "./AssociationsPanel";
 export * from "./SelectCompany";
 export * from "./SupportForm";
 export * from "./profile/Profile";
+export * from "./profile/ProfileProjects";
 export * from "./WaitingAssociationsApproval";
