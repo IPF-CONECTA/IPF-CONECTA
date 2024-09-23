@@ -2,6 +2,7 @@ export * from "./CompaniesPanel";
 export * from "./CreateCompanyForm";
 export * from "./CreateCompanyUbicationForm";
 export * from "./CreateJobsForm";
+export * from "./CreateProjectForm";
 export * from "./Footer";
 export * from "./Main";
 export * from "./JobCard";

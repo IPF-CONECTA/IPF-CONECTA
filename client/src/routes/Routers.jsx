@@ -22,6 +22,7 @@ import {
   CompaniesPanelPage,
   AssociationsPanelPage,
   ProfileProjectsPage,
+  CreateProjectPage,
 } from "../pages";
 
 export const Routers = () => {
@@ -46,10 +47,7 @@ export const Routers = () => {
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
         <Route path="/perfil/:profileId" element={<ProfilePage />} />
-        <Route
-          path="perfil/:usuario/proyectos"
-          element={<ProfileProjectsPage />}
-        />
+        <Route path="/:usuario/proyectos" element={<ProfileProjectsPage />} />
         <Route path="/guardados" element={<ProfilePage />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
@@ -62,6 +60,7 @@ export const Routers = () => {
           path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
         />
+        <Route path="/nuevo-proyecto" element={<CreateProjectPage />} />
         <Route
           path="/mis-empresas"
           element={<WaitingAssociationsApprovalPage />}

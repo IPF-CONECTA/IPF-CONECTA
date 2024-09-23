@@ -29,4 +29,20 @@ export const projectsService = {
       return error;
     }
   },
+  createProject: async (project) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/projects/create",
+        { project },
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

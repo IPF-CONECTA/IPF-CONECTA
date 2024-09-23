@@ -69,6 +69,11 @@ export const Profile = () => {
                 experiences={experiences}
               />
             </main>
+            <Link to="/nuevo-proyecto">
+              <button className="btn btn-outline-dark">
+                Agregar nuevo proyecto
+              </button>
+            </Link>
             <h1>Proyectos de {profileData.profile.names}</h1>
             <div className="container">
               <div className="row">
@@ -103,7 +108,7 @@ export const Profile = () => {
                 })}
               </div>
               {projects.length > 3 && !showAll && (
-                <a href={`${profileData.profile.user.username}/proyectos`}>
+                <a href={`/${profileData.profile.user.username}/proyectos`}>
                   <button className="btn btn-outline-dark mt-5 mb-2">
                     Ver todos los proyectos
                   </button>
