@@ -1,7 +1,7 @@
-import { Follower } from "../followers/followerModel.js";
-import { Role } from "../roles/roleModel.js";
-import { User } from "../users/userModel.js";
-import { Profile } from "./profileModel.js";
+import { Follower } from "../followers/followerModel.js"
+import { Role } from "../roles/roleModel.js"
+import { User } from "../users/userModel.js"
+import { Profile } from "./profileModel.js"
 
 export const getProfileById = async (id, profileId) => {
     try {
@@ -15,37 +15,34 @@ export const getProfileById = async (id, profileId) => {
                     attributes: ['name']
                 }
             }
-        });
-
-        if (!profile) {
-            throw new Error("Perfil no encontrado");
-        }
-
+        })
         const cantFollowers = await Follower.count({
-            where: { followingId: profile.id }
-        });
-
+            where: {
+                followingId: profile.id
+            }
+        })
         const cantFollowing = await Follower.count({
-            where: { followerId: profile.id }
-        });
+            where: {
+                followerId: profile.id
+            }
+        })
+        const res = { profile, cantFollowers, cantFollowing, own: true }
 
-        const response = { profile, cantFollowers, cantFollowing, own: true };
-
-        // Verificar si el perfil no es propio
         if (id !== profileId) {
-            response.own = false;
+            res.own = false;
+            res.isFollowing = false;
             const following = await Follower.findOne({
                 where: {
                     followingId: profile.id,
                     followerId: id
                 }
-            });
-            response.isFollowing = Boolean(following); // true o false
+            })
+            if (following) {
+                res.isFollowing = true
+            }
         }
-
-        return response;
+        return res
     } catch (error) {
-        console.error("Error al obtener el perfil:", error);
-        throw error; // Lanza el error para manejarlo en el controlador
+        throw error
     }
-};
+}

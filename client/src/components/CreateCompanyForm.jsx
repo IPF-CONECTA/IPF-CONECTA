@@ -7,7 +7,6 @@ import { authService } from "../services/authService";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import styles from "../../public/css/createCompany.module.css";
-
 export const CreateCompanyForm = () => {
   const modules = {
     toolbar: [
@@ -65,23 +64,14 @@ export const CreateCompanyForm = () => {
       }
       setLogo(file);
       setPreviewLogo(URL.createObjectURL(file));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
+      setValue("logoUrl", file); // Set the file in the form state
     }
   };
-
-  function handleLogoChange(e) {
-    const file = e.target.files[0];
-    setLogo(file);
-    setPreviewLogo(URL.createObjectURL(file));
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  // Registrar el campo description manualmente
+  useEffect(() => {
+    register("description", { required: "La descripción es obligatoria" });
+  }, [register]);
+  const onSubmit = async (data) => {
     const formDataToSend = new FormData();
     formDataToSend.append("company[name]", data.name);
     formDataToSend.append("company[description]", data.description);
@@ -95,58 +85,40 @@ export const CreateCompanyForm = () => {
       formDataToSend.append("logoUrl", logo);
     }
 
-    axios
-      .post("http://localhost:4000/create-company", formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${authService.getToken()}`,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        const companyId = response.data.id;
-
-        if (response.status === 201 && companyId) {
-          noti(response.data.message, "success");
-          navigate(`/crear-sede/${companyId}`);
-        } else {
-          noti("No se pudo obtener el ID de la empresa", "error");
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/create-company",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: `Bearer ${authService.getToken()}`,
+          },
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        let errorMsg = error.response?.data?.message || "Error inesperado.";
-        if (!errorMsg && error.response?.data?.errors) {
-          errorMsg = error.response.data.errors[0].msg;
-        }
-        noti(errorMsg, "error");
-        console.error("Error creating company:", error);
-      });
+      );
+      noti("Empresa creada exitosamente!", "success");
+      navigate(`/company/${response.data.id}`);
+    } catch (error) {
+      console.log(error);
+      noti(
+        error.response?.data?.message || "Error al crear la empresa",
+        "error"
+      );
+    }
   };
 
   return (
     <div className="d-flex justify-content-evenly align-items-center min-vh-100">
-      <div className="company-form shadow-sm">
-        <form onSubmit={handleSubmit} className="p-3">
+      <div className="company-form shadow-sm my-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-3">
           <div className="d-flex justify-content-start mb-2">
             <span
-              className={`fs-4 fw-semibold d-flex justify-content-center ${styles.registerText}`}
+              className={`fs-4 w-100 fw-semibold d-flex justify-content-center ${styles.registerText}`}
             >
               Registra tu empresa
             </span>
           </div>
-          <div>
-            <label htmlFor="message">Mensaje</label>
-            <input
-              type="text"
-              name="message"
-              className="form-control w-100 mb-3"
-              placeholder="Cuentanos tu rol en la empresa, que funciones cumples, etc."
-              value={formData.message}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+
           <div>
             <label htmlFor="name">Nombre de la empresa</label>
             <input
@@ -160,22 +132,17 @@ export const CreateCompanyForm = () => {
               <p className="text-danger">{errors.name.message}</p>
             )}
           </div>
-          <div>
-            <label htmlFor="description">Descripción de la empresa</label>
-            <input
-              type="text"
-              name="description"
-              className="form-control w-100 mb-3"
-              placeholder="The Coca‑Cola Company is a total beverage company with products sold in more than 200 countries and territories. Our company’s purpose is to refresh the world and make a difference. We sell multiple billion-dollar brands across several beverage categories worldwide.
-"
-              value={formData.description}
-              onChange={handleInputChange}
-              required
+          <div className="mb-2">
+            <label htmlFor="description">Descripción</label>
+            <ReactQuill
+              ref={quillRef}
+              value={watch("description") || ""}
+              onChange={(value) => setValue("description", value)}
+              modules={modules}
+              theme="snow"
             />
           </div>
-
-          {/* Industry selection */}
-          <div className="mb-3">
+          <div>
             <label htmlFor="industryId">Industria</label>
             <select
               name="industryId"
@@ -185,7 +152,9 @@ export const CreateCompanyForm = () => {
               })}
               defaultValue={"default"}
             >
-              <option defaultValue={"Seleccionar industria"} label />
+              <option value={"default"} disabled>
+                Seleccione una industria
+              </option>
               {industries.map((industry) => (
                 <option key={industry.id} value={industry.id}>
                   {industry.name}
@@ -196,20 +165,21 @@ export const CreateCompanyForm = () => {
               <p className="text-danger">{errors.industryId.message}</p>
             )}
           </div>
-
-          {/* Country and employee count */}
           <div className="row">
             <div className="col-md-6">
               <div>
                 <label htmlFor="countryOriginId">País de origen</label>
                 <select
+                  {...register("countryOriginId", {
+                    required: "El país de origen es obligatorio",
+                  })}
                   name="countryOriginId"
                   className="form-select"
-                  value={formData.countryOriginId}
-                  onChange={handleInputChange}
-                  required
+                  defaultValue={"default"}
                 >
-                  <option defaultValue={"Seleccionar País"} label />
+                  <option value={"default"} disabled>
+                    Seleccionar país
+                  </option>
                   {countries.map((country) => (
                     <option key={country.id} value={country.id}>
                       {country.name}
@@ -236,7 +206,10 @@ export const CreateCompanyForm = () => {
             </div>
           </div>
           <div>
-            <label htmlFor="logoUrl">Logo de la empresa</label>
+            <label htmlFor="logoUrl">
+              Logo de la empresa{" "}
+              <span className="text-success">(Solo formatos JPG y PNG)</span>
+            </label>
             <input
               type="file"
               name="logoUrl"
@@ -263,9 +236,7 @@ export const CreateCompanyForm = () => {
               })}
             />
           </div>
-
           <div className="d-flex flex-column ">
-            {previewLogo && <img src={previewLogo} className="mb-2" />}
             <div className="w-100 d-flex justify-content-between">
               <div>
                 <button
@@ -283,8 +254,6 @@ export const CreateCompanyForm = () => {
           </div>
         </form>
       </div>
-
-      {/* Side description */}
       <div className="descripcion border shadow rounded p-4 d-flex flex-column w-25">
         <img
           src="./img/registro-empresa.png"
@@ -301,8 +270,10 @@ export const CreateCompanyForm = () => {
           <span className="fw-semibold"> hasta 24 horas</span> :)
         </span>
         <span>
-          Mientras tanto,{" "}
-          <span className="fw-semibold">podrás completar los datos de tu perfil</span>
+          Mientra tanto,{" "}
+          <span className="fw-semibold">
+            podrás completar los datos de tu perfil
+          </span>
           .
         </span>
       </div>
