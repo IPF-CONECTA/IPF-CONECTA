@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 // URL base de tu servidor para imágenes
-const BASE_URL = 'http://localhost:4000/logoUrl/';
+const BASE_URL = "http://localhost:4000/logoUrl/";
 
 export const CompaniesPanel = () => {
   const noti = useNoti();
@@ -36,7 +36,7 @@ export const CompaniesPanel = () => {
         `http://localhost:4000/admin/get-companies/${activeTab}?page=${currentPage}`,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${authService.getToken()}`,
           },
         }
@@ -176,7 +176,14 @@ export const CompaniesPanel = () => {
                     onClick={() => handleCompanyClick(company)}
                   >
                     {/* Construye la URL completa para el logo */}
-                    <img src={`${BASE_URL}${company.logoUrl}`} crossOrigin="anonymous" alt={`Logo de ${company.name}`} />
+                    <img
+                      src={`${BASE_URL}${company.logoUrl}`}
+                      height={40}
+                      width={40}
+                      className="rounded-circle m-0"
+                      crossOrigin="anonymous"
+                      alt={`Logo de ${company.name}`}
+                    />
 
                     <h3 style={{ whiteSpace: "pre-wrap" }}>
                       {displayName.length > 15

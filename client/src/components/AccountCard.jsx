@@ -93,7 +93,7 @@ const AccountCard = ({ account }) => {
               : account.profile.names + " " + account.profile.surnames}
           </span>
           <span className={`text-muted ${styles.smallText}`}>
-            {account.email}
+            @{account.username}
           </span>
         </div>
       </div>

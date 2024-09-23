@@ -113,28 +113,10 @@ export const getJobByIdSvc = async (id, profileId) => {
           model: Modality,
           attributes: ["name"],
         },
-        // {
-        //   model: JobPostulation,
-        //   where: {
-        //     profileId,
-        //   },
-        //   as: "postulate",
-        // },
       ],
     });
 
-    const postulate = await JobPostulation.findOne({
-      where: {
-        profileId,
-        jobId: id,
-      },
-    });
-
-    return {
-      job,
-      postulated: postulate ? true : false,
-      //   postulated: job.postulate.length > 0 ? true : false || null,
-    };
+    return job;
   } catch (error) {
     throw new Error(error.message);
   }

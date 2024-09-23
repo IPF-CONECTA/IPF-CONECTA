@@ -49,7 +49,7 @@ export const getCompanyByIdSvc = async (id) => {
                     attributes: ['id', 'profilePic', 'names', 'surnames'],
                     include: [{
                         model: User,
-                        attributes: ['email']
+                        attributes: ['email', 'username']
                     }]
                 },
 

@@ -55,14 +55,17 @@ export const Profile = () => {
           className={`w-100 d-flex justify-content-evenly px-5 ${styles.mainContainer}`}
         >
           <div
-            className={`profile d-flex flex-column align-items-center ${styles.profileContainer}`}
+            className={`profile d-flex flex-column align-items-center border rounded-top ${styles.profileContainer}`}
           >
             <Header profileData={profileData} setProfileData={setProfileData} />
             <Nav />
             <main className="w-100">
-              <AboutCard profileData={profileData} />
+              <AboutCard
+                own={profileData.own}
+                about={profileData.profile.about}
+              />
               <ExperienceContainer
-                profileData={profileData}
+                own={profileData.own}
                 experiences={experiences}
               />
             </main>

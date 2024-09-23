@@ -1,1 +1,3 @@
-
+.roundedImage {
+  object-fit: cover;
+}

@@ -36,6 +36,10 @@ export const AssociationsPanel = () => {
     getAssociations();
   }, [tab]);
 
+  useEffect(() => {
+    console.log(selectedAssociation);
+  }, [selectedAssociation]);
+
   const handleTabClick = (tab) => {
     const handleTabClick = (tab) => {
       setTab(tab);
@@ -80,89 +84,117 @@ export const AssociationsPanel = () => {
       setAssociations(newAssociations);
     };
 
-    return (
-      <div className="container mt-4">
-        <div className="btn-group mb-3" role="group">
-          <button
-            className={`btn btn-outline-success ${
-              tab === "Pendiente" ? "active" : ""
-            }`}
-            onClick={() => handleTabClick("Pendiente")}
-          >
-            Pendientes
-          </button>
-          <button
-            className={`btn btn-outline-success ${
-              tab === "Aprobada" ? "active" : ""
-            }`}
-            onClick={() => handleTabClick("Aprobada")}
-          >
-            Aprobadas
-          </button>
-          <button
-            className={`btn btn-outline-success ${
-              tab === "Rechazada" ? "active" : ""
-            }`}
-            onClick={() => handleTabClick("Rechazada")}
-          >
-            Rechazadas
-          </button>
-        </div>
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">Solicitudes {tab}</h5>
-            <ul className="list-group">
-              {associations.map((association) => (
-                <li
-                  key={association.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                  onClick={() => setSelectedAssociation(association)}
-                >
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={
-                        association.profile.profilePic ||
-                        "https://via.placeholder.com/40"
-                      }
-                      alt="Usuario"
-                      className="rounded-circle me-2"
-                      style={{ width: "40px", height: "40px" }}
-                    />
-                    <div>
-                      <strong>{association.profile.names}</strong>
-                      <p className="mb-0 text-muted">
-                        {association.profile.user.email}
-                      </p>
-                    </div>
+    setSelectedAssociation(null);
+    navigate("/admin/asociaciones");
+  };
+
+  return (
+    <div className="container mt-4">
+      <div className="btn-group mb-3" role="group">
+        <button
+          className={`btn btn-outline-success ${
+            tab === "Pendiente" ? "active" : ""
+          }`}
+          onClick={() => handleTabClick("Pendiente")}
+        >
+          Pendientes
+        </button>
+        <button
+          className={`btn btn-outline-success ${
+            tab === "Aprobada" ? "active" : ""
+          }`}
+          onClick={() => handleTabClick("Aprobada")}
+        >
+          Aprobadas
+        </button>
+        <button
+          className={`btn btn-outline-success ${
+            tab === "Rechazada" ? "active" : ""
+          }`}
+          onClick={() => handleTabClick("Rechazada")}
+        >
+          Rechazadas
+        </button>
+      </div>
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Solicitudes {tab}</h5>
+          <ul className="list-group">
+            {associations.map((association) => (
+              <li
+                key={association.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+                onClick={() => setSelectedAssociation(association)}
+              >
+                <div className="d-flex align-items-center">
+                  <img
+                    src={
+                      association.profile.profilePic ||
+                      "https://via.placeholder.com/40"
+                    }
+                    alt="Usuario"
+                    className="rounded-circle me-2"
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                  <div>
+                    <strong>{association.profile.names}</strong>
+                    <p className="mb-0 text-muted">
+                      {association.profile.user.email}
+                    </p>
+                    <p className="mb-0 text-muted">
+                      {association.profile.user.username}
+                    </p>
                   </div>
-                  <div className="d-flex align-items-center">
-                    <p className="mb-0">{association.company.name}</p>
-                    <img
-                      src={
-                        `${BASE_URL}${association.company.logoUrl}` ||
-                        "https://via.placeholder.com/40"
-                      }
-                      alt="Empresa"
-                      crossOrigin="anonymous"
-                      className="ms-2"
-                      style={{ width: "40px", height: "40px" }}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                </div>
+                <div className="d-flex align-items-center">
+                  <p className="mb-0">{association.company.name}</p>
+                  <img
+                    src={
+                      `${BASE_URL}${association.company.logoUrl}` ||
+                      "https://via.placeholder.com/40"
+                    }
+                    alt="Empresa"
+                    crossOrigin="anonymous"
+                    className="ms-2"
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-        {selectedAssociation && (
-          <Dialog
-            open={Boolean(selectedAssociation)}
-            onClose={() => setSelectedAssociation(null)}
-            fullWidth
-            maxWidth="md"
-          >
-            <DialogContent>
-              <div className="d-flex">
-                <div className="me-3">
+      </div>
+      {selectedAssociation && (
+        <Dialog
+          open={Boolean(selectedAssociation)}
+          onClose={() => setSelectedAssociation(null)}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogContent>
+            <div className="d-flex">
+              <div className="me-3 w-75">
+                <img
+                  crossOrigin="anonymous"
+                  src={
+                    `${BASE_URL}${selectedAssociation.company.logoUrl}` ||
+                    "https://via.placeholder.com/100"
+                  }
+                  alt={`${selectedAssociation.company.name} Logo`}
+                  className="img-fluid"
+                  style={{ maxHeight: "40px" }}
+                />
+                <h6 className="mt-2">Datos de la Empresa:</h6>
+                <p>
+                  <strong>Nombre:</strong> {selectedAssociation.company.name}
+                </p>
+                <p>
+                  <strong>Justificación:</strong> {selectedAssociation.message}
+                </p>
+              </div>
+              <div>
+                <h6>Solicitante:</h6>
+                <div className="d-flex align-items-center">
                   <img
                     src={
                       selectedAssociation.company.logoUrl ||
@@ -172,41 +204,22 @@ export const AssociationsPanel = () => {
                     className="img-fluid"
                     style={{ maxHeight: "100px" }}
                   />
-                  <h6 className="mt-2">Datos de la Empresa:</h6>
-                  <p>
-                    <strong>Nombre:</strong> {selectedAssociation.company.name}
-                  </p>
-                  <p>
-                    <strong>Justificación:</strong>{" "}
-                    {selectedAssociation.message}
-                  </p>
-                </div>
-                <div>
-                  <h6>Solicitante:</h6>
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={
-                        selectedAssociation.profile.profilePic ||
-                        "https://via.placeholder.com/100"
-                      }
-                      alt="Foto de perfil"
-                      className="rounded-circle me-2"
-                      style={{ width: "30px", height: "30px" }}
-                    />
-                    <div>
-                      <span className="fw-bold">
-                        {selectedAssociation.profile.names}{" "}
-                        {selectedAssociation.profile.surnames}
-                      </span>
-                      <br />
-                      <span className="text-muted">
-                        {selectedAssociation.profile.user.email}
-                      </span>
-                    </div>
+                  <div>
+                    <span className="fw-bold">
+                      {selectedAssociation.profile.names}{" "}
+                      {selectedAssociation.profile.surnames}
+                    </span>
+                    <p>{selectedAssociation.profile.user.username}</p>
+                    <br />
+                    <span className="text-muted">
+                      {selectedAssociation.profile.user.email}
+                    </span>
                   </div>
                 </div>
               </div>
-            </DialogContent>
+            </div>
+          </DialogContent>
+          {selectedAssociation.status == "Pendiente" && (
             <DialogActions>
               <textarea
                 className="form-control"
@@ -233,9 +246,9 @@ export const AssociationsPanel = () => {
                 Aprobar
               </Button>
             </DialogActions>
-          </Dialog>
-        )}
-      </div>
-    );
-  };
+          )}
+        </Dialog>
+      )}
+    </div>
+  );
 };
