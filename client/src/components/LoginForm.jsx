@@ -118,7 +118,7 @@ export const LoginForm = () => {
           </div>
           <div className={styles["register-link"]}>
             <span>¿No tienes cuenta? </span>
-            <Link to="/register" className={styles["register-link-text"]}>
+            <Link to="/registrate" className={styles["register-link-text"]}>
               Regístrate
             </Link>
           </div>

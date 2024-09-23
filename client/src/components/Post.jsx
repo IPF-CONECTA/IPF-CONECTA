@@ -121,11 +121,9 @@ const Post = ({ post, setWrite }) => {
                       <span className="fw-bold fs-6">
                         {post.profile.names} {post.profile.surnames}
                       </span>
-                      {post.profile.title && (
-                        <span className={`text-muted ${styles.smallText}`}>
-                          {post.profile.title}
-                        </span>
-                      )}
+                      <span className={`text-muted ${styles.smallText}`}>
+                        @{post.profile.user.username}
+                      </span>
                     </div>
                     <div className="nav-item dropdown">
                       <Link

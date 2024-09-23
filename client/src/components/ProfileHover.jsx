@@ -62,7 +62,7 @@ export const ProfileHover = ({
           <span className="text-muted fs-6">{profileInfo.title}</span>
         )}
         <span className={`text-muted ${styles.smallText}`}>
-          {profileInfo.profile.user.email}
+          @{profileInfo.profile.user.username}
         </span>
         <div className="d-flex">
           <div className="pe-3">

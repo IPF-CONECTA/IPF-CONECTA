@@ -58,7 +58,7 @@ export const getJobsSvc = async () => {
     }
 }
 
-export const getJobByIdSvc = async (id) => {
+export const getJobByIdSvc = async (id, profileId) => {
     try {
         const job = await Job.findByPk(id, {
             attributes: { exclude: ['active', 'companyId', 'userId', 'updatedAt'] },
@@ -86,11 +86,12 @@ export const getJobByIdSvc = async (id) => {
             }, {
                 model: Modality,
                 attributes: ['name']
-            }
+            },
+
             ]
         })
-        const jobWithUbication = await getLocation(job)
-        return jobWithUbication
+
+        return job
     } catch (error) {
         throw new Error(error.message)
     }

@@ -50,7 +50,7 @@ export const Routers = () => {
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/registrate" element={<RegisterPage />} />
         <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
         <Route

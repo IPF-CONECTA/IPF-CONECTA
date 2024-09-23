@@ -18,17 +18,28 @@ export const authService = {
       return error
     }
   },
+  isUsername: async (username) => {
+    try {
+      const res = await axios.post('http://localhost:4000/auth/is-username-available',
+        {
+          username
+        }
+      )
+      return res.status
+    } catch (error) {
+      return error.status
+    }
+  },
   isEmail: async (email) => {
-    console.log(email)
     try {
       const res = await axios.post('http://localhost:4000/auth/is-email-available',
         {
           email
         }
       )
-      return res
+      return res.status
     } catch (error) {
-      return error
+      return error.status
     }
   },
   login: async ({ email, password }) => {

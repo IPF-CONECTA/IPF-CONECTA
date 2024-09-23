@@ -38,6 +38,21 @@ export const companySchema = [
         .exists()
         .notEmpty()
         .withMessage('Seleccione el pais de origen de la empresa'),
+
+    // body("company.logoUrl")
+    //     .custom((value, { req }) => {
+    //         console.log(req.body.company)
+    //         if (!req.files || !req.files.filename) {
+    //             throw new Error('El logo de la empresa es obligatorio');
+    //         }
+    //         const file = req.files.company.logo;
+    //         const allowedExtensions = ['jpg', 'jpeg', 'png'];
+    //         const fileExtension = file.name.split('.').pop().toLowerCase();
+    //         if (!allowedExtensions.includes(fileExtension)) {
+    //             throw new Error('El logo de la empresa debe ser un archivo jpg, jpeg o png');
+    //         }
+    //         return true;
+    //     })
     // body('message')
     //     .exists()
     //     .notEmpty()

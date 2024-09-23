@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Nav = () => {
   return (
-    <nav className="w-100 d-flex justify-content-evenly border">
+    <nav className="w-100 d-flex justify-content-evenly border py-2">
       <Link to={"#"} className="btn fw-semibold text-decoration-none text-dark">
         Resumen
       </Link>

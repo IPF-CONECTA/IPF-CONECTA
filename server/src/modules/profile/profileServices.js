@@ -9,7 +9,7 @@ export const getProfileById = async (id, profileId) => {
             attributes: ['id', 'names', 'surnames', 'profilePic', 'title', 'about'],
             include: {
                 model: User,
-                attributes: ['id'],
+                attributes: ['id', 'username'],
                 include: {
                     model: Role,
                     attributes: ['name']

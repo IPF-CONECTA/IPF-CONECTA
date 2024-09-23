@@ -8,6 +8,14 @@ export const authLoginSchema = [
 ]
 
 export const authRegisterSchema = [
+    body('user.username')
+        .notEmpty()
+        .withMessage('El nombre de usuario es requerido')
+        .isString()
+        .withMessage('El nombre de usuario debe ser una cadena de texto')
+        .custom(value => !/\s/.test(value))
+        .withMessage('El nombre de usuario no debe tener espacios')
+    ,
     body('user.email')
         .isEmail()
         .withMessage('El email es requerido'),
@@ -37,4 +45,14 @@ export const authRegisterSchema = [
         .notEmpty()
         .isIn(['student', 'recruiter'])
         .withMessage('El rol es incorrecto')
+]
+
+export const authUsernameSchema = [
+    body('username')
+        .notEmpty()
+        .withMessage('El nombre de usuario es requerido')
+        .isString()
+        .withMessage('El nombre de usuario debe ser una cadena de texto')
+        .custom(value => !/\s/.test(value))
+        .withMessage('El nombre de usuario no debe tener espacios')
 ]
