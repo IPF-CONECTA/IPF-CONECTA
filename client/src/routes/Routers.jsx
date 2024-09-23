@@ -46,7 +46,10 @@ export const Routers = () => {
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
         <Route path="/perfil/:profileId" element={<ProfilePage />} />
-        <Route path="/:usuario/proyectos" element={<ProfileProjectsPage />} />
+        <Route
+          path="perfil/:usuario/proyectos"
+          element={<ProfileProjectsPage />}
+        />
         <Route path="/guardados" element={<ProfilePage />} />
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />

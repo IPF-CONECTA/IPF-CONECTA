@@ -103,11 +103,11 @@ export const Profile = () => {
                 })}
               </div>
               {projects.length > 3 && !showAll && (
-                <Link to={`${profileData.profile.user.username}/proyectos`}>
+                <a href={`${profileData.profile.user.username}/proyectos`}>
                   <button className="btn btn-outline-dark mt-5 mb-2">
                     Ver todos los proyectos
                   </button>
-                </Link>
+                </a>
               )}
             </div>
           </div>

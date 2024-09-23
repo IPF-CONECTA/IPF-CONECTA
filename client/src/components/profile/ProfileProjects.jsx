@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { projectsService } from "../../services/projectsServices";
+
 import { useParams } from "react-router-dom";
 
 export const ProfileProjects = () => {
   const [projects, setProjects] = useState([]);
-  const { id } = useParams();
-  console.log(id);
+  const { usuario } = useParams();
+  console.log(usuario);
 
   useEffect(() => {
     projectsService.getAllProjects().then((response) => {
@@ -16,10 +17,11 @@ export const ProfileProjects = () => {
   return (
     <>
       <div className="container">
+        <h1 className="text-center mt-2 mb-2">Proyectos de: {usuario}</h1>
         <div className="row">
           {projects.map((project) => {
             return (
-              <div className="col-md-4 mb-4" key={project.id}>
+              <div className="col-md-3 mb-4" key={project.id}>
                 <div className="card">
                   <div className="card-header">
                     <h5 className="card-title">{project.name}</h5>
