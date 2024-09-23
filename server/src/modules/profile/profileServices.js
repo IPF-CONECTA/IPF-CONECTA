@@ -1,7 +1,7 @@
-import { Follower } from "../followers/followerModel.js"
-import { Role } from "../roles/roleModel.js"
-import { User } from "../users/userModel.js"
-import { Profile } from "./profileModel.js"
+import { Follower } from "../followers/followerModel.js";
+import { Role } from "../roles/roleModel.js";
+import { User } from "../users/userModel.js";
+import { Profile } from "./profileModel.js";
 
 export const getProfileById = async (id, profileId) => {
     try {
@@ -9,40 +9,43 @@ export const getProfileById = async (id, profileId) => {
             attributes: ['id', 'names', 'surnames', 'profilePic', 'title', 'about'],
             include: {
                 model: User,
-                attributes: ['id'],
+                attributes: ['id', 'username'],
                 include: {
                     model: Role,
                     attributes: ['name']
                 }
             }
-        })
-        const cantFollowers = await Follower.count({
-            where: {
-                followingId: profile.id
-            }
-        })
-        const cantFollowing = await Follower.count({
-            where: {
-                followerId: profile.id
-            }
-        })
-        const res = { profile, cantFollowers, cantFollowing, own: true }
+        });
 
+        if (!profile) {
+            throw new Error("Perfil no encontrado");
+        }
+
+        const cantFollowers = await Follower.count({
+            where: { followingId: profile.id }
+        });
+
+        const cantFollowing = await Follower.count({
+            where: { followerId: profile.id }
+        });
+
+        const response = { profile, cantFollowers, cantFollowing, own: true };
+
+        // Verificar si el perfil no es propio
         if (id !== profileId) {
-            res.own = false;
-            res.isFollowing = false;
+            response.own = false;
             const following = await Follower.findOne({
                 where: {
                     followingId: profile.id,
                     followerId: id
                 }
-            })
-            if (following) {
-                res.isFollowing = true
-            }
+            });
+            response.isFollowing = Boolean(following); // true o false
         }
-        return res
+
+        return response;
     } catch (error) {
-        throw error
+        console.error("Error al obtener el perfil:", error);
+        throw error; // Lanza el error para manejarlo en el controlador
     }
-}
+};

@@ -1,34 +1,36 @@
-// controllers/skillUserController.js
 import { SkillsUser } from './skillsUserModel.js';
 import { Skill } from '../../skills/skillsModel.js';
 
 // Controlador para vincular una habilidad a un usuario
-export const linkSkillToUser = async (req, res) => {
-  const { skillId } = req.body;
-  const userId = req.user.id; // Esto ya estará disponible gracias al middleware
+export const linkSkillToProfile = async (req, res) => {
+  const { skillId } = req.body; // Asegúrate de que estás obteniendo el skillId del cuerpo de la solicitud
+  const userId = req.user.id; // Obtener userId del token
 
   try {
-    const skill = await Skill.findByPk(skillId);
-    if (!skill) {
-      return res.status(404).json({ message: 'Habilidad no encontrada' });
-    }
-
-    // Crear la relación en la tabla SkillsUser
-    await SkillsUser.create({ skillId, userId });
-    res.json({ message: 'Habilidad vinculada con éxito' });
+      const newSkillUser = await SkillsUser.create({
+          skillId,
+          userId
+      });
+      res.status(201).json(newSkillUser);
   } catch (error) {
-    res.status(500).json({ message: 'Error al vincular habilidad' });
+      console.error('Error al vincular habilidad:', error);
+      res.status(500).json({ message: 'Error al vincular habilidad' });
   }
 };
 
 // Controlador para obtener las habilidades del usuario autenticado
 export const getUserSkills = async (req, res) => {
-  const userId = req.user.id;
+    const userId = req.user.id;
 
-  try {
-    const linkedSkills = await SkillsUser.findAll({ where: { userId } });
-    res.json({ linkedSkills: linkedSkills.map(s => s.skillId) });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener habilidades vinculadas' });
-  }
+    try {
+        const linkedSkills = await SkillsUser.findAll({ where: { userId } });
+        const skillIds = linkedSkills.map(s => s.skillId);
+
+        // Obtener detalles de habilidades
+        const skills = await Skill.findAll({ where: { id: skillIds } });
+        res.json({ skills });
+    } catch (error) {
+        console.error("Error al obtener habilidades vinculadas:", error);
+        res.status(500).json({ message: 'Error al obtener habilidades vinculadas' });
+    }
 };
