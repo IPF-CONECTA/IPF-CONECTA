@@ -41,7 +41,7 @@ export const Profile = () => {
     <>
       {profileData && (
         <div
-          className={`w-100 d-flex justify-content-evenly px-5 ${styles.mainContainer}`}
+          className={`w-100 d-flex justify-content-evenly px-5 pt-4 ${styles.mainContainer}`}
         >
           <div
             className={`profile d-flex flex-column align-items-center border rounded-top ${styles.profileContainer}`}
@@ -56,7 +56,7 @@ export const Profile = () => {
               />
               <ExperienceContainer
                 own={profileData.own}
-                experiences={experiences}
+                experiencesData={experiences}
               />
             </main>
           </div>

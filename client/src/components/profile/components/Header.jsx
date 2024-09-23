@@ -23,8 +23,8 @@ const Header = ({ profileData, setProfileData }) => {
           </span>
           <img
             src={profileData.profile.profilePic}
-            height={68}
-            alt="hola"
+            height={75}
+            alt="profile pic"
             className="rounded-circle bg-light mb-1"
           />
         </div>
