@@ -1,4 +1,3 @@
-
 import { Idea } from '../ideaProject/ideaModel.js';
 import { Vote } from './voteModel.js';
 
@@ -35,3 +34,23 @@ export const getVoteById = async (id) => {
   }
 };
 
+export const deleteVote = async (vote) => {
+  try {
+    const deletedCount = await Vote.destroy({ where: vote });
+
+    if (deletedCount === 0) {
+      throw new Error("No se encontró ningún voto para eliminar.");
+    }
+
+    const idea = await Idea.findByPk(vote.ideaId);
+    if (idea) {
+      const votesCount = await Vote.count({ where: { ideaId: vote.ideaId } });
+      idea.totalVotes = votesCount;
+      await idea.save();
+    }
+
+    return { deletedCount, totalVotes: idea ? idea.totalVotes : 0 };
+  } catch (error) {
+    throw error;
+  }
+};

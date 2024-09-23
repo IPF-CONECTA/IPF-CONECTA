@@ -15,94 +15,108 @@ const ProjectList = () => {
     const fetchIdeas = async () => {
       try {
         const response = await axios.get('http://localhost:4000/idea');
-        setIdeas(response.data);
+        setIdeas(response.data.map(idea => ({
+          ...idea,
+          totalVotes: idea.totalVotes || 0, 
+          userVote: idea.userVote || 0,
+        })));
       } catch (error) {
-        console.error('Error fetching ideas:', error);
-        enqueueSnackbar('Error fetching ideas', { variant: 'error' });
+        enqueueSnackbar('Error al obtener ideas', { variant: 'error' });
       }
     };
 
     fetchIdeas();
   }, []);
 
-  const handleVote = async (ideaId, voteValue) => {
+  const handleVote = async (ideaId) => {
     try {
       const userId = authState?.user?.profile?.id;
-      if (!userId) {
-        throw new Error("User ID no encontrado");
+      if (!userId) throw new Error("User ID no encontrado");
+
+      // Verifica si el usuario ya votó
+      const idea = ideas.find(idea => idea.id === ideaId);
+      if (idea.userVote > 0) {
+        enqueueSnackbar('Ya has votado por esta idea. Retira tu voto si deseas volver a votar.', { variant: 'warning' });
+        return;
       }
-  
+
       const response = await axios.post('http://localhost:4000/vote', {
         userId: userId,
         ideaId: ideaId,
-        vote: voteValue,
+        vote: 1, 
       });
-  
-      console.log('Response from server:', response.data);
-  
+
       const updatedIdea = response.data;
-      setIdeas((prevIdeas) =>
-        prevIdeas.map((idea) =>
+      setIdeas(prevIdeas =>
+        prevIdeas.map(idea =>
           idea.id === ideaId
-            ? { ...idea, totalVotes: updatedIdea.totalVotes, userVote: updatedIdea.vote }
+            ? { ...idea, totalVotes: updatedIdea.totalVotes, userVote: 1 }
             : idea
-        )
+        ).sort((a, b) => b.totalVotes - a.totalVotes)
       );
-  
-      const message = typeof response.data.message === 'string' ? response.data.message : 'Voto registrado';
-      enqueueSnackbar(message, { variant: 'success' });
+
+      enqueueSnackbar('Voto registrado', { variant: 'success' });
     } catch (error) {
-      console.error('Error handling vote:', error);
       const errorMessage = error.response?.data?.error || 'Error desconocido';
       enqueueSnackbar(`Error: ${errorMessage}`, { variant: 'error' });
     }
   };
-  
-  
 
-  const handleIdeaClick = (ideaId) => {
-    navigate(`/ranking/${ideaId}`); 
+  const handleRemoveVote = async (ideaId) => {
+    try {
+      const userId = authState?.user?.profile?.id;
+      if (!userId) throw new Error("User ID no encontrado");
+
+      const response = await axios.delete('http://localhost:4000/vote', {
+        data: {
+          userId: userId,
+          ideaId: ideaId,
+        },
+      });
+
+      const updatedIdea = response.data;
+      setIdeas(prevIdeas =>
+        prevIdeas.map(idea =>
+          idea.id === ideaId
+            ? { ...idea, totalVotes: updatedIdea.totalVotes, userVote: 0 }
+            : idea
+        ).sort((a, b) => b.totalVotes - a.totalVotes)
+      );
+
+      enqueueSnackbar('Voto retirado', { variant: 'info' });
+    } catch (error) {
+      enqueueSnackbar('Error al retirar el voto', { variant: 'error' });
+    }
   };
 
   return (
     <div className="project-list">
-      <h2>Lista de Ideas</h2>
-      <ul>
+      <h2 className="section-title">Ideas Innovadoras</h2>
+      <div className="project-grid">
         {ideas.map((idea) => (
-          <li key={idea.id} className="project-item" onClick={() => handleIdeaClick(idea.id)}>
+          <div key={idea.id} className="project-card" onClick={() => handleIdeaClick(idea.id)}>
             <h3 className="project-title">{idea.title}</h3>
             <p className="project-description">{idea.description}</p>
             <div className="voting-ranking-section">
               <div className="votes-section">
                 <p className="project-votes">Votos Totales: {idea.totalVotes || 0}</p>
                 <div className="voting-buttons">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      className={`star ${star <= idea.userVote ? 'voted' : ''}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleVote(idea.id, star);
-                      }}
-                    >
-                      {star <= idea.userVote ? '★' : '☆'}
-                    </span>
-                  ))}
                   <button
-                    className="vote-button"
+                    className={`vote-button ${idea.userVote > 0 ? 'disabled' : ''}`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleVote(idea.id, 1);
+                      handleVote(idea.id);
                     }}
+                    disabled={idea.userVote > 0}
                   >
-                    Me Gusta
+                    Votar
                   </button>
-                  {idea.userVote && (
+                  {idea.userVote > 0 && (
                     <button
-                      className="vote-button"
+                      className="remove-vote-button"
                       onClick={(e) => {
-                        e.stopPropagation(); 
-                        handleVote(idea.id, -1);
+                        e.stopPropagation();
+                        handleRemoveVote(idea.id);
                       }}
                     >
                       Retirar Voto
@@ -111,12 +125,12 @@ const ProjectList = () => {
                 </div>
               </div>
               <div className="ranking-section">
-                <p className="ranking">Ranking</p>
+                <p className="ranking">Ranking: {idea.ranking}</p>
               </div>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

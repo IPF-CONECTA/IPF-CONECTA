@@ -1,85 +1,106 @@
-/* vote.css */
 .project-list {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .project-item {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-  }
-  
-  .project-title {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-  }
-  
-  .project-description {
-    font-size: 1em;
-    margin-bottom: 10px;
-  }
-  
-  .voting-ranking-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  
-  .votes-section {
-    flex: 1;
-  }
-  
-  .ranking-section {
-    flex: 1;
-    text-align: center;
-  }
-  
-  .project-votes {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .voting-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .star {
-    cursor: pointer;
-    font-size: 24px;
-    color: #ffcc00;
-  }
-  
-  .star.voted {
-    color: #ffcc00;
-  }
-  
-  .vote-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .vote-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 1.2em;
-  }
-  
-  .error {
-    color: red;
-    text-align: center;
-  }
-  
+  padding: 60px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.project-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.project-description {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.voting-ranking-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.votes-section {
+  flex: 1;
+}
+
+.project-votes {
+  font-weight: bold;
+}
+
+.voting-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star {
+  cursor: pointer;
+  font-size: 24px;
+  color: #ffcc00;
+}
+
+.star.voted {
+  color: #ffcc00;
+}
+
+.remove-vote-button {
+  background-color: #dc3545; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.vote-button {
+  background-color: #007bff; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.vote-button.disabled {
+  background-color: #ccc;
+  color: #666; 
+  cursor: not-allowed; 
+}
+
+.remove-vote-button:hover {
+  background-color: #e63939;
+}
+
+.ranking-section {
+  text-align: center;
+}
+
+.ranking {
+  font-weight: bold;
+}

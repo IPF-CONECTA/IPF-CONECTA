@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import '../../public/ranking.css'; 
 
 const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
@@ -8,11 +9,11 @@ const RankingList = () => {
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/ranking');
+        const response = await axios.get("http://localhost:4000/idea");
         setIdeas(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching ranking:', error);
+        console.error("Error fetching ranking:", error);
         setLoading(false);
       }
     };
@@ -21,17 +22,17 @@ const RankingList = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="loading">Cargando...</p>;
   }
 
   return (
-    <div>
-      <h2>Ranking de Proyectos</h2>
-      <ul>
+    <div className="ranking-container">
+      <h2 className="ranking-title">Ranking de Proyectos</h2>
+      <ul className="ranking-list">
         {ideas.map((idea) => (
-          <li key={idea.id}>
-            <h3>{idea.title}</h3>
-            <p>Votos Totales: {idea.totalVotes}</p>
+          <li key={idea.id} className="ranking-item">
+            <h3 className="idea-title">{idea.title}</h3>
+            <p className="idea-votes">Votos Totales: {idea.totalVotes}</p>
           </li>
         ))}
       </ul>

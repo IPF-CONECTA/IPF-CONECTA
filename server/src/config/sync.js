@@ -58,7 +58,7 @@ export const createTablesAndRelations = async () => {
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // ===================================================================================
-  //await createRoles();
+  // await createRoles();
   // await createUserStates();
   // await createLangLevels();
   // await createSkills();
@@ -66,7 +66,7 @@ export const createTablesAndRelations = async () => {
   // await createLangs();
   // await createCountries();
   // await createStates();
-  //await createCities();
+  // await createCities();
   // await createContractTypes();
   // await createCompanyIndustry();
   // await createModalities();
