@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import styles from "../../public/css/SkillViewUser.module.css";
 
 // Función para obtener habilidades desde el backend
@@ -32,38 +32,30 @@ const fetchUserId = async () => {
     }
 
     const data = await response.json();
-    return data.id; // Asegúrate de que esto coincida con la estructura de tu respuesta
+    return data.id;
   } catch (error) {
     console.error("Error fetching userId:", error.message);
     return null;
   }
 };
 
-// Función para obtener habilidades vinculadas del backend
-const fetchLinkedSkills = async () => {
-  const token = localStorage.getItem('token');
-  const userId = await fetchUserId();
-
-  if (!token || !userId) {
-    console.error('Token o userId no disponible, inicie sesión nuevamente');
-    return [];
-  }
-
+// Nueva función para obtener habilidades vinculadas al usuario
+const fetchUserSkills = async (userId) => {
   try {
     const response = await fetch(`http://localhost:4000/get-user-skills/${userId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+      throw new Error('Error al obtener habilidades vinculadas');
     }
 
     const data = await response.json();
-    return data.skills; // Asegúrate de que esto coincida con la estructura de tu respuesta
+    return data.skills || [];
   } catch (error) {
-    console.error("Error fetching linked skills:", error.message);
+    console.error('Error fetching user skills:', error.message);
     return [];
   }
 };
@@ -74,14 +66,14 @@ const linkSkill = async (skillId) => {
 
   if (!token) {
     console.error('Token no disponible, inicie sesión nuevamente');
-    return null;
+    return;
   }
 
   try {
     const userId = await fetchUserId();
     if (!userId) {
       console.error('userId no disponible');
-      return null;
+      return;
     }
 
     const response = await fetch('http://localhost:4000/add-skill', {
@@ -100,11 +92,10 @@ const linkSkill = async (skillId) => {
 
     const result = await response.json();
     console.log('Habilidad vinculada:', result);
-    return result; // Devuelve el resultado para poder usarlo
+    return result.skill; // Asegúrate de retornar solo la habilidad vinculada
   } catch (error) {
     console.error('Error linking skill:', error);
     alert('Error al vincular la habilidad: ' + error.message);
-    return null; // Devuelve null si ocurre un error
   }
 };
 
@@ -114,23 +105,17 @@ const unlinkSkill = async (skillId) => {
 
   if (!token) {
     console.error('Token no disponible, inicie sesión nuevamente');
-    return null;
+    return;
   }
 
   try {
-    const userId = await fetchUserId();
-    if (!userId) {
-      console.error('userId no disponible');
-      return null;
-    }
-
     const response = await fetch('http://localhost:4000/unlink-skill', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ userId, skillId }),
+      body: JSON.stringify({ skillId }),
     });
 
     if (!response.ok) {
@@ -138,18 +123,18 @@ const unlinkSkill = async (skillId) => {
       throw new Error(`Error ${response.status}: ${errorText}`);
     }
 
-    console.log('Habilidad desvinculada:', skillId);
-    return skillId; // Devuelve el skillId para poder usarlo
+    const result = await response.json();
+    console.log('Habilidad desvinculada:', result);
+    return result;
   } catch (error) {
     console.error('Error unlinking skill:', error);
     alert('Error al desvincular la habilidad: ' + error.message);
-    return null; // Devuelve null si ocurre un error
   }
 };
 
 export default function SkillViewUser() {
   const [skills, setSkills] = useState([]);
-  const [linkedSkills, setLinkedSkills] = useState([]); // Cambiar a un array vacío
+  const [linkedSkills, setLinkedSkills] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -172,22 +157,31 @@ export default function SkillViewUser() {
       }
     };
 
-    loadSkills();
-  }, [searchQuery, page]);
-
-  useEffect(() => {
-    const loadLinkedSkills = async () => {
-      const linkedSkills = await fetchLinkedSkills();
-      setLinkedSkills(linkedSkills);
+    const loadUserSkills = async () => {
+      const userId = await fetchUserId();
+      if (userId) {
+        const userSkills = await fetchUserSkills(userId);
+        setLinkedSkills(userSkills);
+      }
     };
 
-    loadLinkedSkills();
-  }, []);
+    loadSkills();
+    loadUserSkills(); // Cargar habilidades vinculadas
+  }, [searchQuery, page]);
 
   const handleLinkSkill = async (skillId) => {
     const result = await linkSkill(skillId);
     if (result) {
-      setLinkedSkills(prev => [...prev, { id: result.skillId, name: result.name }]);
+      // Actualizar el estado de habilidades vinculadas
+      setLinkedSkills(prev => [...prev, result]);
+
+      // Actualizar el estado de habilidades disponibles para marcar la habilidad como vinculada
+      setSkills(prevSkills =>
+        prevSkills.map(skill =>
+          skill.id === result.id ? { ...skill, linked: true } : skill
+        )
+      );
+
       setSuccessMessage('Habilidad vinculada con éxito!');
     }
   };
@@ -195,7 +189,16 @@ export default function SkillViewUser() {
   const handleUnlinkSkill = async (skillId) => {
     const result = await unlinkSkill(skillId);
     if (result) {
+      // Actualizar el estado de habilidades vinculadas
       setLinkedSkills(prev => prev.filter(skill => skill.id !== skillId));
+
+      // Actualizar el estado de habilidades disponibles para marcar la habilidad como desvinculada
+      setSkills(prevSkills =>
+        prevSkills.map(skill =>
+          skill.id === skillId ? { ...skill, linked: false } : skill
+        )
+      );
+
       setSuccessMessage('Habilidad desvinculada con éxito!');
     }
   };

@@ -24,9 +24,8 @@ export const linkSkillToUser = async (req, res) => {
 
     // Verificar si la relación ya existe
     const existingLink = await SkillsUser.findOne({
-      where: { userId:userExists.id, skillId: skillExists.id }
+      where: { userId: userExists.id, skillId: skillExists.id }
     });
-    console.log(existingLink)
     if (existingLink) {
       // Si ya existe, loguear y devolver un mensaje de error
       console.log(`La habilidad con ID ${skillId} ya está vinculada al usuario con ID ${userId}.`);
@@ -46,19 +45,29 @@ export const linkSkillToUser = async (req, res) => {
   }
 };
 
-// Controlador para obtener las habilidades del usuario autenticado// Controlador para obtener las habilidades del usuario autenticado
+// Controlador para obtener las habilidades del usuario autenticado
+// Controlador para obtener las habilidades del perfil del usuario autenticado
 export const getUserSkills = async (req, res) => {
-  const userId = req.params.userId; // Obtiene el userId de los parámetros
+  const userId = req.user.id; // Obtiene el userId del token
 
   try {
-    // Busca las habilidades vinculadas del usuario
+    // Buscar el profile asociado al userId
+    const profile = await Profile.findOne({ where: { userId } });
+    
+    if (!profile) {
+      return res.status(404).json({ message: 'El perfil no existe para este usuario.' });
+    }
+
+    const profileId = profile.id; // Obtener el profileId
+
+    // Busca las habilidades vinculadas del perfil
     const linkedSkills = await SkillsUser.findAll({
-      where: { userId }, // Asegúrate de que la columna 'userId' exista
-      include: [{ model: Skill }] // Incluye la relación con Skill
+      where: { userId: profileId }, // Cambia esto si SkillsUser usa profileId
+      include: [{ model: Skill }] // Asegúrate de que "Skill" esté correctamente asociado en el modelo
     });
 
     if (!linkedSkills || linkedSkills.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron habilidades para este usuario.' });
+      return res.status(404).json({ message: 'No se encontraron habilidades para este perfil.' });
     }
 
     // Extraer habilidades y devolverlas
@@ -66,24 +75,34 @@ export const getUserSkills = async (req, res) => {
     res.json({ skills });
   } catch (error) {
     console.error('Error al obtener habilidades vinculadas:', error);
-    res.status(500).json({ message: 'Error al obtener habilidades vinculadas', error: error.message });
+    res.status(500).json({ message: 'Error al obtener habilidades vinculadas' });
   }
 };
 
 
+// Controlador para desvincular una habilidad del usuario
 // Controlador para desvincular una habilidad del usuario
 export const unlinkSkill = async (req, res) => {
   const { skillId } = req.body; // Obtener el skillId del cuerpo de la solicitud
   const userId = req.user.id; // Obtener el userId del token
 
   try {
-    // Verificar si la relación existe
+    // Buscar el profile asociado al userId
+    const profile = await Profile.findOne({ where: { userId } });
+    
+    if (!profile) {
+      return res.status(404).json({ message: 'El perfil no existe para este usuario.' });
+    }
+
+    const profileId = profile.id; // Obtener el profileId
+
+    // Verificar si la relación existe usando profileId
     const existingLink = await SkillsUser.findOne({
-      where: { userId, skillId }
+      where: { userId: profileId, skillId }
     });
 
     if (!existingLink) {
-      return res.status(404).json({ message: 'La habilidad no está vinculada a este usuario.' });
+      return res.status(404).json({ message: 'La habilidad no está vinculada a este perfil.' });
     }
 
     // Desvincular la habilidad
