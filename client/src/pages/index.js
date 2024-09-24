@@ -1,6 +1,7 @@
 export * from "./AssociationsPanelPage";
 export * from "./CompaniesPanelPage";
 export * from "./CompanyConfirmedPage";
+export * from "./CreateProjectPage";
 export * from "./CompanyRegisterPage";
 export * from "./CreateCompanyUbicationPage";
 export * from "./CreateJobsFormPage";
@@ -15,6 +16,7 @@ export * from "./MessageRecruiterPage";
 export * from "./SelectCompanyPage";
 export * from "./PostPage";
 export * from "./ProfilePage";
+export * from "./ProfileProjectsPage";
 export * from "./SupportPage";
 export * from "./CreateJobsFormPage";
 export * from "./AdminDashboardPage";

@@ -39,7 +39,7 @@ const HomeNav = () => {
           }}
         >
           <Link
-            to={`/perfil/${authState.user.profile.id}`}
+            to={`/perfil/${authState.user.username}`}
             className={
               selectedPage === "perfil"
                 ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`

@@ -141,7 +141,7 @@ const PostCard = ({ post }) => {
                   height={35}
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/perfil/${post.profile.id}`);
+                    navigate(`/perfil/${post.profile.user.username}`);
                   }}
                   onMouseEnter={() => handleShowProfile(true, post.profile.id)}
                   onMouseLeave={() => handleShowProfile(false, post.profile.id)}

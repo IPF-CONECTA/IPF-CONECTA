@@ -106,7 +106,7 @@ const Post = ({ post, setWrite }) => {
                     }
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/perfil/${post.profile.id}`);
+                      navigate(`/perfil/${post.profile.user.username}`);
                     }}
                     onMouseLeave={() =>
                       handleShowProfile(false, post.profile.id)

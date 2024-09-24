@@ -29,7 +29,7 @@ export const ProfileHover = ({
           alt="profile pic"
           onClick={(e) => {
             e.stopPropagation();
-            navigate(`/perfil/${profileInfo.profile.id}`);
+            navigate(`/perfil/${profileInfo.profile.user.username}`);
           }}
         />
         <div className={`d-flex flex-column ${styles.followButton}`}>

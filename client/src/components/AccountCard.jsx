@@ -65,7 +65,7 @@ const AccountCard = ({ account }) => {
           alt={account.profile.names}
           onClick={(e) => {
             e.stopPropagation();
-            navigate(`/perfil/${account.profile.id}`);
+            navigate(`/perfil/${account.username}`);
           }}
           onMouseEnter={() => handleShowProfile(true, account.profile.id)}
           onMouseLeave={() => handleShowProfile(false, account.profile.id)}

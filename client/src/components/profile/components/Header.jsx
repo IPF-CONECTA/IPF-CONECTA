@@ -3,7 +3,6 @@ import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../../services/feedServices";
 
 const Header = ({ profileData, setProfileData }) => {
-  console.log(profileData);
   const handleFollow = async () => {
     const { statusCode } = await followOrUnfollow(profileData.profile.id);
     if (statusCode !== 201) return;

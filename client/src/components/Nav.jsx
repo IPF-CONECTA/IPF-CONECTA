@@ -65,7 +65,7 @@ export const Nav = () => {
                   <li>
                     <Link
                       className="dropdown-item w-100 d-flex p-0 justify-content-between"
-                      to={`/perfil/${authState.user.profile.id}`}
+                      to={`/perfil/${authState.user.username}`}
                     >
                       Mi perfil
                       <img

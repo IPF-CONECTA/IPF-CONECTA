@@ -10,6 +10,7 @@ import styles from "../../public/css/jobDetails.module.css";
 import { BASE_URL } from "../constants/BASE_URL";
 
 export const JobDetails = ({ jobId }) => {
+  const [postulate, setPostulate] = useState(false);
   const { authState } = useContext(authContext);
   const location = useLocation();
   const noti = useNoti();
@@ -22,9 +23,17 @@ export const JobDetails = ({ jobId }) => {
     const getJobInfo = async () => {
       if (jobId != null) {
         try {
-          const res = await axios.get(`http://localhost:4000/get-job/${jobId}`);
+          const res = await axios.get(
+            `http://localhost:4000/get-job/${jobId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${authService.getToken()}`,
+              },
+            }
+          );
           console.log(res.data);
-          setSelectedJob(res.data);
+          setSelectedJob(res.data.job);
+          setPostulate(res.data.postulated);
         } catch (error) {
           console.error("Error fetching job data:", error);
         }
@@ -47,6 +56,7 @@ export const JobDetails = ({ jobId }) => {
           },
         }
       );
+      setPostulate(true);
       //console.log(response.data);
       noti(response.data.message, "success");
     } catch (error) {
@@ -108,14 +118,25 @@ export const JobDetails = ({ jobId }) => {
                 </span>{" "}
               </button>
 
-              {authState.role === "student" && (
-                <button
-                  className="btn btn-success"
-                  onClick={handleCreatePostulation}
-                >
-                  Postularse
-                </button>
-              )}
+              {authState.role === "student" &&
+                (postulate ? (
+                  <button
+                    disabled
+                    type="submit"
+                    className="btn btn-outline-success "
+                    onClick={() => setPostulate(false)}
+                  >
+                    Postulado{" "}
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    onClick={handleCreatePostulation}
+                  >
+                    Postularse{" "}
+                  </button>
+                ))}
             </div>
           </header>
           <article>

@@ -17,7 +17,7 @@ const ExperienceContainer = ({ own, experiencesData }) => {
             >
               <span className="material-symbols-outlined text-dark-emphasis">
                 add
-              </span>{" "}
+              </span>
             </button>
             <button className="btn d-flex p-0 align-items-center">
               <span className="material-symbols-outlined text-dark-emphasis">

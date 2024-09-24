@@ -38,6 +38,7 @@ export const getUserInfoCtrl = async (req, res) => {
     try {
         if (id == profileId) return res.status(400).json()
         const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
+        console.log(profile)
         if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }

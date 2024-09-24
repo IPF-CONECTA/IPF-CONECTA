@@ -20,6 +20,7 @@ import profileRoutes from "./modules/profile/profileRoutes.js";
 import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
 import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
+import projectRoutes from "./modules/users/project/projectRoutes.js";
 
 export const routes = (app) => {
   app.use(userRoutes);
@@ -39,9 +40,10 @@ export const routes = (app) => {
   app.use(contractTypeRoutes);
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
-  app.use(profileRoutes)
-  app.use(experienceRoutes)
+  app.use(profileRoutes);
+  app.use(experienceRoutes);
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
   app.use(aboutRoutes)
+  app.use(projectRoutes);
 };

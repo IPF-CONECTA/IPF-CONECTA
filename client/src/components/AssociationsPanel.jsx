@@ -41,51 +41,48 @@ export const AssociationsPanel = () => {
   }, [selectedAssociation]);
 
   const handleTabClick = (tab) => {
-    setTab(tab);
-    setAssociations([]);
-  };
+    const handleTabClick = (tab) => {
+      setTab(tab);
+      setAssociations([]);
+    };
 
-  useEffect(() => {
-    if (alert.show) {
-      const timer = setTimeout(
-        () => setAlert({ show: false, message: "", type: "" }),
-        3000
-      );
-      return () => clearTimeout(timer);
-    }
-  }, [alert]);
+    const handleAssociationStatus = async (id, status, message) => {
+      if (status === "rechazar" && !message) {
+        noti("Por favor, justifica el motivo del rechazo", "warning");
+        return;
+      }
+      await updateAssociationStatus(id, status, message);
+    };
 
-  const acceptRequest = (index) => {
-    setAlert({
-      show: true,
-      message: `Solicitud de ${associations[index].company.name} aceptada.`,
-      type: "success",
-    });
-    const newAssociations = associations.filter((_, i) => i !== index);
-    setAssociations(newAssociations);
-  };
+    useEffect(() => {
+      if (alert.show) {
+        const timer = setTimeout(
+          () => setAlert({ show: false, message: "", type: "" }),
+          3000
+        );
+        return () => clearTimeout(timer);
+      }
+    }, [alert]);
 
-  const rejectRequest = (index, reason) => {
-    setAlert({
-      show: true,
-      message: `Solicitud de ${associations[index].company.name} rechazada. Razón: ${reason}`,
-      type: "danger",
-    });
-    const newAssociations = associations.filter((_, i) => i !== index);
-    setAssociations(newAssociations);
-  };
-  const handleAssociationStatus = async (id, status) => {
-    if (status === "Rechazada" && !justification) {
-      noti("Por favor, justifica el motivo del rechazo", "warning");
-      return;
-    }
-    await updateAssociationStatus(id, status, justification);
-    setJustification("");
-    noti(`Solicitud ${status.toLowerCase()} exitosamente`, "success");
+    const acceptRequest = (index) => {
+      setAlert({
+        show: true,
+        message: `Solicitud de ${associations[index].company.name} aceptada.`,
+        type: "success",
+      });
+      const newAssociations = associations.filter((_, i) => i !== index);
+      setAssociations(newAssociations);
+    };
 
-    setAssociations((prevAssociations) =>
-      prevAssociations.filter((association) => association.id !== id)
-    );
+    const rejectRequest = (index, reason) => {
+      setAlert({
+        show: true,
+        message: `Solicitud de ${associations[index].company.name} rechazada. Razón: ${reason}`,
+        type: "danger",
+      });
+      const newAssociations = associations.filter((_, i) => i !== index);
+      setAssociations(newAssociations);
+    };
 
     setSelectedAssociation(null);
     navigate("/admin/asociaciones");
@@ -200,12 +197,12 @@ export const AssociationsPanel = () => {
                 <div className="d-flex align-items-center">
                   <img
                     src={
-                      selectedAssociation.profile.profilePic ||
+                      selectedAssociation.company.logoUrl ||
                       "https://via.placeholder.com/100"
                     }
-                    alt="Foto de perfil"
-                    className="rounded-circle me-2"
-                    style={{ width: "30px", height: "30px" }}
+                    alt={`${selectedAssociation.company.name} Logo`}
+                    className="img-fluid"
+                    style={{ maxHeight: "100px" }}
                   />
                   <div>
                     <span className="fw-bold">
