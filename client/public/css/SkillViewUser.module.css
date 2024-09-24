@@ -24,17 +24,16 @@
   text-align: center;
 }
 
-
 .skill {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  margin-bottom: 10px; /* Moved margin here for better spacing */
 }
 
-
-.pageButton{
+.pageButton {
   background-color: #4CAF50;
   color: white;
   padding: 10px 15px;
@@ -44,13 +43,56 @@
   font-size: 14px;
   margin: 10px;
   text-align: center;
-}  
-.pageButton:hover{
+}
+
+.pageButton:hover {
   background-color: #1e5620;
 }
-.pagination{
+
+.pagination {
   display: flex;
   justify-content: center;
   text-align: center;
-  
+}
+
+.container {
+  /* Estilos del contenedor principal */
+}
+
+.title {
+  /* Estilos del título */
+}
+
+.searchContainer {
+  /* Estilos del contenedor de búsqueda */
+}
+
+.searchInput {
+  /* Estilos del input de búsqueda */
+}
+
+.skillList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.linked {
+  color: green;
+  font-weight: bold;
+}
+
+.linkButton {
+  background-color: yellow;
+}
+
+.unlinkButton {
+  /* Estilos del botón de desvincular */
+}
+
+.emptyMessage {
+  /* Estilos del mensaje de habilidades no encontradas */
+}
+
+.successMessage {
+  /* Estilos del mensaje de éxito */
 }

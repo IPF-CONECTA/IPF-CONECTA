@@ -21,8 +21,7 @@ const fetchUserId = async () => {
   }
 
   try {
-    // Aquí deberías llamar al endpoint que devuelva el userId
-    const response = await fetch('http://localhost:4000/get-user/self', { // Cambia el endpoint según tu API
+    const response = await fetch('http://localhost:4000/get-user/self', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -40,20 +39,49 @@ const fetchUserId = async () => {
   }
 };
 
+// Función para obtener habilidades vinculadas del backend
+const fetchLinkedSkills = async () => {
+  const token = localStorage.getItem('token');
+  const userId = await fetchUserId();
+
+  if (!token || !userId) {
+    console.error('Token o userId no disponible, inicie sesión nuevamente');
+    return [];
+  }
+
+  try {
+    const response = await fetch(`http://localhost:4000/get-user-skills/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.skills; // Asegúrate de que esto coincida con la estructura de tu respuesta
+  } catch (error) {
+    console.error("Error fetching linked skills:", error.message);
+    return [];
+  }
+};
+
 // Función para vincular una habilidad al usuario
 const linkSkill = async (skillId) => {
   const token = localStorage.getItem('token');
 
   if (!token) {
     console.error('Token no disponible, inicie sesión nuevamente');
-    return;
+    return null;
   }
 
   try {
-    const userId = await fetchUserId(); // Obtén el userId aquí
+    const userId = await fetchUserId();
     if (!userId) {
       console.error('userId no disponible');
-      return;
+      return null;
     }
 
     const response = await fetch('http://localhost:4000/add-skill', {
@@ -72,16 +100,56 @@ const linkSkill = async (skillId) => {
 
     const result = await response.json();
     console.log('Habilidad vinculada:', result);
-    return result;
+    return result; // Devuelve el resultado para poder usarlo
   } catch (error) {
     console.error('Error linking skill:', error);
     alert('Error al vincular la habilidad: ' + error.message);
+    return null; // Devuelve null si ocurre un error
+  }
+};
+
+// Función para desvincular una habilidad del usuario
+const unlinkSkill = async (skillId) => {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    console.error('Token no disponible, inicie sesión nuevamente');
+    return null;
+  }
+
+  try {
+    const userId = await fetchUserId();
+    if (!userId) {
+      console.error('userId no disponible');
+      return null;
+    }
+
+    const response = await fetch('http://localhost:4000/unlink-skill', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ userId, skillId }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
+    console.log('Habilidad desvinculada:', skillId);
+    return skillId; // Devuelve el skillId para poder usarlo
+  } catch (error) {
+    console.error('Error unlinking skill:', error);
+    alert('Error al desvincular la habilidad: ' + error.message);
+    return null; // Devuelve null si ocurre un error
   }
 };
 
 export default function SkillViewUser() {
   const [skills, setSkills] = useState([]);
-  const [linkedSkills, setLinkedSkills] = useState([]);
+  const [linkedSkills, setLinkedSkills] = useState([]); // Cambiar a un array vacío
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -107,11 +175,28 @@ export default function SkillViewUser() {
     loadSkills();
   }, [searchQuery, page]);
 
+  useEffect(() => {
+    const loadLinkedSkills = async () => {
+      const linkedSkills = await fetchLinkedSkills();
+      setLinkedSkills(linkedSkills);
+    };
+
+    loadLinkedSkills();
+  }, []);
+
   const handleLinkSkill = async (skillId) => {
     const result = await linkSkill(skillId);
-    if (result && result.skill) {
-      setLinkedSkills(prev => [...prev, result.skill]);
-      setSuccessMessage('Habilidad vinculada con éxito!'); // Mensaje de éxito
+    if (result) {
+      setLinkedSkills(prev => [...prev, { id: result.skillId, name: result.name }]);
+      setSuccessMessage('Habilidad vinculada con éxito!');
+    }
+  };
+
+  const handleUnlinkSkill = async (skillId) => {
+    const result = await unlinkSkill(skillId);
+    if (result) {
+      setLinkedSkills(prev => prev.filter(skill => skill.id !== skillId));
+      setSuccessMessage('Habilidad desvinculada con éxito!');
     }
   };
 
@@ -162,7 +247,15 @@ export default function SkillViewUser() {
             <li key={skill.id} className={styles.skill}>
               {skill.name}
               {isSkillLinked(skill.id) ? (
-                <span className={styles.linked}>Vinculada</span>
+                <>
+                  <span className={styles.linked}>Vinculada</span>
+                  <button
+                    onClick={() => handleUnlinkSkill(skill.id)}
+                    className={styles.unlinkButton}
+                  >
+                    Desvincular
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={() => handleLinkSkill(skill.id)}
