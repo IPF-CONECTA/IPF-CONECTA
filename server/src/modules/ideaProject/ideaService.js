@@ -1,6 +1,7 @@
+import { Vote } from "../votesProjects/voteModel.js";
 import { Idea } from "./ideaModel.js";
 
-export const addIdea = async (idea) => {
+export const addIdeaSvc = async (idea) => {
   try {
     return await Idea.create(idea);
   } catch (error) {
@@ -8,15 +9,24 @@ export const addIdea = async (idea) => {
   }
 };
 
-export const getIdeas = async () => {
+export const getIdeasSvc = async (id) => {
   try {
-    return await Idea.findAll();
+    const ideas = await Idea.findAll({
+      include: [
+        {
+          model: Vote,
+          as: 'votes',
+          attributes: ['id', 'profileId'],
+        },
+      ]
+    })
+    return ideas;
   } catch (error) {
     throw error;
   }
 };
 
-export const getIdeaById = async (id) => {
+export const getIdeaByIdSvc = async (id) => {
   try {
     return await Idea.findByPk(id);
   } catch (error) {
@@ -24,7 +34,7 @@ export const getIdeaById = async (id) => {
   }
 };
 
-export const updateIdea = async (id, idea) => {
+export const updateIdeaSvc = async (id, idea) => {
   try {
     const [rows] = await Idea.update(idea, {
       where: { id },
@@ -35,7 +45,7 @@ export const updateIdea = async (id, idea) => {
   }
 };
 
-export const deleteIdea = async (id) => {
+export const deleteIdeaSvc = async (id) => {
   try {
     const idea = await Idea.findByPk(id);
     await idea.destroy();

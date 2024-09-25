@@ -6,31 +6,7 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import styles from "../../public/ideaprojects.module.css";
 import { authContext } from "../context/auth/Context";
-
-const fetchIdeas = async (token) => {
-  try {
-    const response = await axios.get("http://localhost:4000/idea", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error("Error al obtener las ideas");
-  }
-};
-
-const createIdea = async (idea, token, userId) => {
-  try {
-    if (!userId) throw new Error("User ID is missing. Please log in again.");
-
-    await axios.post(
-      "http://localhost:4000/idea",
-      { ...idea, userId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-  } catch (error) {
-    throw new Error("Error al crear la idea: " + error.message);
-  }
-};
+import { authService } from "../services/authService";
 
 export const IdeaProjects = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -39,8 +15,8 @@ export const IdeaProjects = () => {
   const [newIdea, setNewIdea] = useState({
     title: "",
     description: "",
-    category: "Tecnología",  
-    state: "Activo",  
+    category: "Tecnología",
+    state: "Activo",
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
@@ -50,6 +26,36 @@ export const IdeaProjects = () => {
 
   const userId = user?.profile?.id;
   const navigate = useNavigate();
+
+  const fetchIdeas = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/idea", {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error("Error al obtener las ideas");
+    }
+  };
+
+  const createIdea = async (idea) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/idea",
+        { ...idea, profileId: userId }, 
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error("Error al crear la idea: " + error.message);
+    }
+  };
 
   useEffect(() => {
     const loadIdeas = async () => {
@@ -82,16 +88,26 @@ export const IdeaProjects = () => {
       return;
     }
 
-    if (!newIdea.title || !newIdea.description || !newIdea.category || !newIdea.state) {
+    if (
+      !newIdea.title ||
+      !newIdea.description ||
+      !newIdea.category ||
+      !newIdea.state
+    ) {
       enqueueSnackbar("Por favor, completa todos los campos.", {
         variant: "warning",
       });
       return;
     }
     try {
-      await createIdea(newIdea, token, userId);
+      await createIdea(newIdea);
       enqueueSnackbar("Idea añadida exitosamente!", { variant: "success" });
-      setNewIdea({ title: "", description: "", category: "Tecnología", state: "Activo" });
+      setNewIdea({
+        title: "",
+        description: "",
+        category: "Tecnología",
+        state: "Activo",
+      });
       const data = await fetchIdeas(token);
       setIdeas(data);
       setFilteredIdeas(data);
@@ -128,7 +144,10 @@ export const IdeaProjects = () => {
                     required
                   />
                 </Form.Group>
-                <Form.Group controlId="formDescription" className={styles.formGroup}>
+                <Form.Group
+                  controlId="formDescription"
+                  className={styles.formGroup}
+                >
                   <Form.Label>Descripción</Form.Label>
                   <Form.Control
                     as="textarea"
@@ -141,7 +160,10 @@ export const IdeaProjects = () => {
                     required
                   />
                 </Form.Group>
-                <Form.Group controlId="formCategory" className={styles.formGroup}>
+                <Form.Group
+                  controlId="formCategory"
+                  className={styles.formGroup}
+                >
                   <Form.Label>Categoría</Form.Label>
                   <Form.Control
                     as="select"

@@ -1,92 +1,96 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
-import { useSnackbar } from 'notistack';
-import { authContext } from '../context/auth/Context';
-import { useNavigate } from 'react-router-dom';
-import '../../public/vote.css'; 
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { useSnackbar } from "notistack";
+import { authContext } from "../context/auth/Context";
+import { useNavigate } from "react-router-dom";
+import "../../public/vote.css";
+import { authService } from "../services/authService";
 
 const ProjectList = () => {
-  const { authState } = useContext(authContext); 
+  const { authState } = useContext(authContext);
   const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [ideas, setIdeas] = useState([]);
 
-  useEffect(() => {
-    const fetchIdeas = async () => {
-      try {
-        const response = await axios.get('http://localhost:4000/idea');
-        setIdeas(response.data.map(idea => ({
-          ...idea,
-          totalVotes: idea.totalVotes || 0, 
-          userVote: idea.userVote || 0,
-        })));
-      } catch (error) {
-        enqueueSnackbar('Error al obtener ideas', { variant: 'error' });
-      }
-    };
-
-    fetchIdeas();
-  }, []);
-
-  const handleVote = async (ideaId) => {
+  const fetchIdeas = async () => {
     try {
-      const userId = authState?.user?.profile?.id;
-      if (!userId) throw new Error("User ID no encontrado");
-
-      // Verifica si el usuario ya votó
-      const idea = ideas.find(idea => idea.id === ideaId);
-      if (idea.userVote > 0) {
-        enqueueSnackbar('Ya has votado por esta idea. Retira tu voto si deseas volver a votar.', { variant: 'warning' });
-        return;
-      }
-
-      const response = await axios.post('http://localhost:4000/vote', {
-        userId: userId,
-        ideaId: ideaId,
-        vote: 1, 
+      const response = await axios.get("http://localhost:4000/idea", {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
       });
-
-      const updatedIdea = response.data;
-      setIdeas(prevIdeas =>
-        prevIdeas.map(idea =>
-          idea.id === ideaId
-            ? { ...idea, totalVotes: updatedIdea.totalVotes, userVote: 1 }
-            : idea
-        ).sort((a, b) => b.totalVotes - a.totalVotes)
+      setIdeas(
+        response.data.map((idea) => ({
+          ...idea,
+          userVote: idea.userVote || 0,
+        }))
       );
-
-      enqueueSnackbar('Voto registrado', { variant: 'success' });
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Error desconocido';
-      enqueueSnackbar(`Error: ${errorMessage}`, { variant: 'error' });
+      enqueueSnackbar("Error al obtener ideas", { variant: "error" });
+      console.error("Error fetching ideas:", error);
     }
   };
 
-  const handleRemoveVote = async (ideaId) => {
+  useEffect(() => {
+    fetchIdeas();
+  }, []);
+
+  const handleToggleVote = async (ideaId) => {
     try {
-      const userId = authState?.user?.profile?.id;
-      if (!userId) throw new Error("User ID no encontrado");
+      const profileId = authState?.user?.profile?.id;
+      if (!profileId) throw new Error("User ID no encontrado");
 
-      const response = await axios.delete('http://localhost:4000/vote', {
-        data: {
-          userId: userId,
-          ideaId: ideaId,
-        },
-      });
+      const idea = ideas.find((idea) => idea.id === ideaId);
 
-      const updatedIdea = response.data;
-      setIdeas(prevIdeas =>
-        prevIdeas.map(idea =>
-          idea.id === ideaId
-            ? { ...idea, totalVotes: updatedIdea.totalVotes, userVote: 0 }
-            : idea
-        ).sort((a, b) => b.totalVotes - a.totalVotes)
-      );
-
-      enqueueSnackbar('Voto retirado', { variant: 'info' });
+      if (idea.userVote > 0) {
+        const response = await axios.delete(
+          `http://localhost:4000/vote/${ideaId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authService.getToken()}`,
+            },
+          }
+        );
+        setIdeas((prevIdeas) =>
+          prevIdeas.map((idea) =>
+            idea.id === ideaId
+              ? { ...idea, totalVotes: response.data.totalVotes, userVote: 0 }
+              : idea
+          )
+        );
+        enqueueSnackbar("Voto retirado", { variant: "info" });
+      } else {
+        const response = await axios.post(
+          "http://localhost:4000/vote",
+          {
+            profileId: profileId,
+            ideaId: ideaId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authService.getToken()}`,
+            },
+          }
+        );
+        setIdeas((prevIdeas) =>
+          prevIdeas.map((idea) =>
+            idea.id === ideaId
+              ? { ...idea, totalVotes: response.data.totalVotes, userVote: 1 }
+              : idea
+          )
+        );
+        enqueueSnackbar("Voto registrado", { variant: "success" });
+      }
     } catch (error) {
-      enqueueSnackbar('Error al retirar el voto', { variant: 'error' });
+      const errorMessage =
+        error.response?.data?.error || error.message || "Error desconocido";
+      enqueueSnackbar(`Error: ${errorMessage}`, { variant: "error" });
+      console.error("Error al votar o retirar voto:", error);
     }
+  };
+
+  const handleIdeaClick = (ideaId) => {
+    navigate(`/idea/${ideaId}`);
   };
 
   return (
@@ -94,39 +98,25 @@ const ProjectList = () => {
       <h2 className="section-title">Ideas Innovadoras</h2>
       <div className="project-grid">
         {ideas.map((idea) => (
-          <div key={idea.id} className="project-card" onClick={() => handleIdeaClick(idea.id)}>
+          <div
+            key={idea.id}
+            className="project-card"
+            onClick={() => handleIdeaClick(idea.id)}
+          >
             <h3 className="project-title">{idea.title}</h3>
             <p className="project-description">{idea.description}</p>
-            <div className="voting-ranking-section">
-              <div className="votes-section">
-                <p className="project-votes">Votos Totales: {idea.totalVotes || 0}</p>
-                <div className="voting-buttons">
-                  <button
-                    className={`vote-button ${idea.userVote > 0 ? 'disabled' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleVote(idea.id);
-                    }}
-                    disabled={idea.userVote > 0}
-                  >
-                    Votar
-                  </button>
-                  {idea.userVote > 0 && (
-                    <button
-                      className="remove-vote-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveVote(idea.id);
-                      }}
-                    >
-                      Retirar Voto
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="ranking-section">
-                <p className="ranking">Ranking: {idea.ranking}</p>
-              </div>
+            <div className="voting-buttons-container">
+              <button
+                className={`vote-button ${idea.userVote > 0 ? "voted" : ""}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggleVote(idea.id);
+                }}
+              >
+                <span className="material-icons">
+                  {idea.userVote > 0 ? "favorite" : "favorite_border"}
+                </span>
+              </button>
             </div>
           </div>
         ))}

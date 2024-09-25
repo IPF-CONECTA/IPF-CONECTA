@@ -27,6 +27,24 @@ export const Nav = () => {
               className="d-inline-block align-text-top"
             />
           </Link>
+          <Link className="navbar-brand" to="/panel-votacion">
+            <img
+              src={logoImage}
+              alt="Logo"
+              width="35"
+              height="40"
+              className="d-inline-block align-text-top"
+            />
+          </Link>
+          <Link className="navbar-brand" to="/proyectos-ideas">
+            <img
+              src={logoImage}
+              alt="Logo"
+              width="35"
+              height="40"
+              className="d-inline-block align-text-top"
+            />
+          </Link>
           <div className="d-flex w-50 justify-content-between">
             {authState.isLogged ? (
               <Link

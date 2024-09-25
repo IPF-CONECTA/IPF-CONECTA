@@ -255,10 +255,10 @@ export const createRelations = async () => {
       foreignKey: "profileId",
     });
     Idea.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Profile.hasMany(Idea, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Vote.belongsTo(Idea, {
       foreignKey: "ideaId",
@@ -267,10 +267,10 @@ export const createRelations = async () => {
       foreignKey: "ideaId",
     });
     Vote.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Profile.hasMany(Vote, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
   } catch (error) {
     console.log(error);

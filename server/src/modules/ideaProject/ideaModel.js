@@ -18,7 +18,7 @@ export const Idea = sequelize.define("idea", {
     type: DataTypes.STRING(64),
     allowNull: false,
   },
-  userId: {
+  profileId: {
     type: DataTypes.UUID,
     allowNull: false,
   },

@@ -1,14 +1,11 @@
 import express from 'express';
-import { createVote, fetchVotes, fetchVoteDetails, removeVote } from './voteController.js';
+import { createVote, removeVote } from './voteController.js';
+import { isToken } from '../../middlewares/jwt/isVerifiedAccount.js'
 
 const router = express.Router();
 
-router.post('/vote', createVote);
+router.post('/vote',isToken, createVote);
 
-router.get('/ranking', fetchVotes);
-
-router.get('/ranking/:id', fetchVoteDetails);
-
-router.delete('/vote', removeVote);
+router.delete('/vote/:ideaId',isToken, removeVote);
 
 export default router;

@@ -1,56 +1,32 @@
 import { Idea } from '../ideaProject/ideaModel.js';
 import { Vote } from './voteModel.js';
 
-export const addVote = async (vote) => {
+export const addVote = async (id, ideaId) => {
   try {
-    const newVote = await Vote.create(vote);
+    const newVote = await Vote.create({
+      profileId: id,
+      ideaId,
+    });
+    console.log('New vote created:', newVote);
 
-    const idea = await Idea.findByPk(vote.ideaId);
-    if (idea) {
-      const votesCount = await Vote.count({ where: { ideaId: vote.ideaId } });
-      idea.totalVotes = votesCount;
-      await idea.save();
-    }
-
-    return { ...newVote.toJSON(), totalVotes: idea ? idea.totalVotes : 0 };
+    return newVote;
   } catch (error) {
+    console.error('Error adding vote:', error);
     throw error;
   }
 };
 
-export const getVotes = async () => {
+export const deleteVote = async (id, ideaId) => {
   try {
-    return await Vote.findAll();
-  } catch (error) {
-    throw error;
-  }
-};
+    const deletedVote = await Vote.destroy({ where: { profileId: id, ideaId } });
 
-export const getVoteById = async (id) => {
-  try {
-    return await Vote.findByPk(id);
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const deleteVote = async (vote) => {
-  try {
-    const deletedCount = await Vote.destroy({ where: vote });
-
-    if (deletedCount === 0) {
+    if (deletedVote === 0) {
       throw new Error("No se encontró ningún voto para eliminar.");
     }
 
-    const idea = await Idea.findByPk(vote.ideaId);
-    if (idea) {
-      const votesCount = await Vote.count({ where: { ideaId: vote.ideaId } });
-      idea.totalVotes = votesCount;
-      await idea.save();
-    }
-
-    return { deletedCount, totalVotes: idea ? idea.totalVotes : 0 };
+    return deletedVote;
   } catch (error) {
+    console.error('Error deleting vote:', error);
     throw error;
   }
 };

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Card, Spinner, Row, Col } from "react-bootstrap";
 import '../../public/ideadetails.css';
+import { authService } from "../services/authService";
 
 export const IdeaDetails = () => {
   const { ideaId } = useParams();
@@ -13,7 +14,11 @@ export const IdeaDetails = () => {
   useEffect(() => {
     const fetchIdeaDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/idea/${ideaId}`);
+        const response = await axios.get(`http://localhost:4000/idea/${ideaId}`, {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          }
+        });
         setIdea(response.data);
         setLoading(false);
       } catch (error) {

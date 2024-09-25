@@ -6,16 +6,12 @@ export const Vote = sequelize.define("vote", {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
   },
-  userId: {
+  profileId: {
     type: DataTypes.UUID,
     allowNull: false,
   },
   ideaId: {
     type: DataTypes.UUID,
     allowNull: false,
-  },
-  vote: {
-    type: DataTypes.STRING(64),
-    allowNull: false,
-  },
+  }
 });
