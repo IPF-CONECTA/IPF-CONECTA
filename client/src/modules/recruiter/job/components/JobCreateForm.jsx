@@ -12,7 +12,7 @@ import {
   getCompaniesByUser,
   getContractTypes,
   getModalities,
-} from "../../../../services/jobServices";
+} from "../services/jobServices";
 
 export const CreateJobForm = () => {
   const navigate = useNavigate();

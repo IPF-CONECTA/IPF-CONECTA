@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styles from "../../../../public/css/profile.module.css";
 import { useForm } from "react-hook-form";
+
 import { useNoti } from "../../../hooks/useNoti";
-import { deleteAbout, updateAbout } from "../services";
+import { deleteAbout, updateAbout } from "../../../components/profile/services";
+
+import styles from "../../../../public/css/profile.module.css";
 
 const AboutCard = ({ own, aboutData, profileId }) => {
   const noti = useNoti();

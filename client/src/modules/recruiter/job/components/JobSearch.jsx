@@ -6,7 +6,7 @@ import { JobDetails } from "./JobDetails";
 
 import { authContext } from "../../../../context/auth/Context";
 import { useNoti } from "../../../../hooks/useNoti";
-import { getJobs } from "../../../../services/jobServices";
+import { getJobs } from "../services/jobServices";
 
 import styles from "../../../../../public/css/jobSearch.module.css";
 

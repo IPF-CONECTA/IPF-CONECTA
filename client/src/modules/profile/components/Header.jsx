@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../../../public/css/profile.module.css";
-import { followOrUnfollow } from "../../../services/feedServices";
+import { followOrUnfollow } from "../../feed/services/feedServices";
 
 const Header = ({ profileData, setProfileData }) => {
   const handleFollow = async () => {

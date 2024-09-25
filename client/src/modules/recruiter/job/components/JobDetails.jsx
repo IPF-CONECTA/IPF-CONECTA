@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNoti } from "../../../../hooks/useNoti";
 import { authContext } from "../../../../context/auth/Context";
 
-import { authService } from "../../../../services/authService";
+import { authService } from "../../../auth/services/authService";
 import styles from "../../../../../public/css/jobDetails.module.css";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 
