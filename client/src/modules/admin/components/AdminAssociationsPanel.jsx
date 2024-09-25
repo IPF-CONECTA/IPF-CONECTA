@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import {
   updateAssociationStatus,
   getAssociationsSvc,
 } from "../services/adminServices";
-import { useNavigate } from "react-router-dom";
-import { useNoti } from "../hooks/useNoti";
+
+import { useNoti } from "../../../hooks/useNoti";
 
 const BASE_URL = "http://localhost:4000/logoUrl/";
 
-export const AssociationsPanel = () => {
+export const AdminAssociationsPanel = () => {
   const [selectedAssociation, setSelectedAssociation] = useState(null);
   const [associations, setAssociations] = useState([]);
   const [tab, setTab] = useState("Pendiente");

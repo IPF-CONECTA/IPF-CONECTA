@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "../../public/main.module.css";
-import { useNoti } from "../hooks/useNoti";
 import Pagination from "@mui/material/Pagination";
-import { authService } from "../services/authService";
 import DOMPurify from "dompurify";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,10 +10,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
+import { useNoti } from "../../../hooks/useNoti";
+import { authService } from "../../../services/authService";
+import styles from "../../../../public/main.module.css";
 // URL base de tu servidor para imágenes
 const BASE_URL = "http://localhost:4000/logoUrl/";
 
-export const CompaniesPanel = () => {
+export const AdminCompaniesPanel = () => {
   const noti = useNoti();
   const [activeTab, setActiveTab] = useState("Aprobada");
   const [selectedCompany, setSelectedCompany] = useState(null);
