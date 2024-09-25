@@ -1,9 +1,10 @@
-import { useForm } from "react-hook-form";
-import React, { useContext, useEffect } from "react";
-import styles from "../../public/css/login.module.css";
-import { authContext } from "../context/auth/Context";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useNoti } from "../hooks/useNoti";
+import { useForm } from "react-hook-form";
+
+import { authContext } from "../../../context/auth/Context";
+import styles from "../../../../public/css/login.module.css";
+import { useNoti } from "../../../hooks/useNoti";
 
 export const LoginForm = () => {
   const { login, authState } = useContext(authContext);

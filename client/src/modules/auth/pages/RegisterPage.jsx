@@ -1,4 +1,5 @@
-import { Footer, Nav, RegisterForm } from "../components";
+import { Footer, Nav } from "../../ui/components";
+import { RegisterForm } from "../components/RegisterForm";
 
 export const RegisterPage = () => {
   return (

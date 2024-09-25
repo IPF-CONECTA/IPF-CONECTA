@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../../public/css/register.module.css";
-import { useNoti } from "../hooks/useNoti";
+import axios from "axios";
+
+import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../services/authService";
+import styles from "../../../../public/css/register.module.css";
 
 export const RegisterForm = () => {
   const noti = useNoti();

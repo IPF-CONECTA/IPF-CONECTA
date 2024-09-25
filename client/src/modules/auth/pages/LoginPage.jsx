@@ -1,4 +1,5 @@
-import { Nav, LoginForm, Footer } from "../components";
+import { Footer, Nav } from "../../ui/components";
+import { LoginForm } from "../components/LoginForm";
 
 export const LoginPage = () => {
   return (

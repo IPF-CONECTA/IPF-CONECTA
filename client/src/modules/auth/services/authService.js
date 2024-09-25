@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNoti } from "../hooks/useNoti";
+import { useNoti } from "../../../hooks/useNoti";
 export const authService = {
   submitVerificationCode: async (code) => {
     try {
@@ -13,33 +13,35 @@ export const authService = {
         }
       );
 
-      return response
+      return response;
     } catch (error) {
-      return error
+      return error;
     }
   },
   isUsername: async (username) => {
     try {
-      const res = await axios.post('http://localhost:4000/auth/is-username-available',
+      const res = await axios.post(
+        "http://localhost:4000/auth/is-username-available",
         {
-          username
+          username,
         }
-      )
-      return res.status
+      );
+      return res.status;
     } catch (error) {
-      return error.status
+      return error.status;
     }
   },
   isEmail: async (email) => {
     try {
-      const res = await axios.post('http://localhost:4000/auth/is-email-available',
+      const res = await axios.post(
+        "http://localhost:4000/auth/is-email-available",
         {
-          email
+          email,
         }
-      )
-      return res.status
+      );
+      return res.status;
     } catch (error) {
-      return error.status
+      return error.status;
     }
   },
   login: async ({ email, password }) => {
@@ -52,8 +54,12 @@ export const authService = {
       });
       return { data: res.data, status: res.status };
     } catch (error) {
-      const errorMsg = error?.response?.data?.message || error?.response?.data?.errors?.[0]?.msg || "Unknown error";
-      const errorStatus = error?.response?.status || error?.code || "Unknown status";
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Unknown error";
+      const errorStatus =
+        error?.response?.status || error?.code || "Unknown status";
       return { message: errorMsg, status: errorStatus };
     }
   },
@@ -83,7 +89,7 @@ export const authService = {
       return { data: res.data, status: res.status };
     } catch (error) {
       console.log(error);
-      return error
+      return error;
     }
   },
 };
