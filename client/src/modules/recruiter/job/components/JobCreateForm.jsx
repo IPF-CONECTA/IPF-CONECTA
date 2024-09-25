@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
+import axios from "axios";
 import Select from "react-select";
 import "react-quill/dist/quill.snow.css";
-import styles from "../../public/css/CreateJobsForm.module.css";
+
+import { useNoti } from "../../../../hooks/useNoti";
+import styles from "../../../../../public/css/CreateJobsForm.module.css";
 import {
   findSkills,
   getCompaniesByUser,
   getContractTypes,
   getModalities,
-} from "../services/jobServices";
+} from "../../../../services/jobServices";
 
-export const CreateJobsForm = () => {
+export const CreateJobForm = () => {
   const navigate = useNavigate();
   const noti = useNoti();
   const modules = {

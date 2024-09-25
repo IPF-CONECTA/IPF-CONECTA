@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styles from "../../public/css/homeNav.module.css";
-import { authContext } from "../context/auth/Context";
-const HomeNav = () => {
+
+import styles from "../../../../public/css/homeNav.module.css";
+import { authContext } from "../../../context/auth/Context";
+
+export const HomeNav = () => {
   const [selectedPage, setSelectedPage] = useState("inicio");
   const { authState } = useContext(authContext);
 
@@ -184,5 +186,3 @@ const HomeNav = () => {
     </aside>
   );
 };
-
-export default HomeNav;

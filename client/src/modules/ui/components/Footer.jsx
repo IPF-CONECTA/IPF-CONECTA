@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "../../public/css/footer.module.css";
-import logoImage from "../../public/iconoipf.png";
 import { Link } from "react-router-dom";
+
+import styles from "../../../../public/css/footer.module.css";
+import logoImage from "../../../../public/iconoipf.png";
 
 export const Footer = () => {
   return (

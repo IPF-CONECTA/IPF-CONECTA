@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logoImage from "../../public/iconoipf.png";
-// import "../../public/nav.css";
-import { authContext } from "../context/auth/Context";
-import styles from "../../public/css/nav.module.css";
+
+import { authContext } from "../../../context/auth/Context";
+import logoImage from "../../../../public/iconoipf.png";
+import styles from "../../../../public/css/nav.module.css";
 
 export const Nav = () => {
   const { authState, logout } = useContext(authContext);

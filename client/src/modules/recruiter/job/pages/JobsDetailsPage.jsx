@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Nav, Footer, JobDetails } from "../components";
+import { JobDetails } from "../components/JobDetails";
 
 export const JobDetailsPage = (jobId) => {
   return (

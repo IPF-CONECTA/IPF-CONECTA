@@ -1,7 +1,7 @@
-import React from "react";
-import { getTime } from "../helpers/getTime";
-import { BASE_URL } from "../constants/BASE_URL";
-import styles from "../../public/css/jobCard.module.css";
+import { getTime } from "../../../../helpers/getTime";
+import { BASE_URL } from "../../../../constants/BASE_URL";
+import styles from "../../../../../public/css/jobCard.module.css";
+
 export const JobCard = ({ job, onClick, selectedJob }) => {
   return (
     <>

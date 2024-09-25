@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { JobCard } from "./JobCard";
 import { JobDetails } from "./JobDetails";
 
-import { authContext } from "../context/auth/Context";
-import { useNoti } from "../hooks/useNoti";
-import { getJobs } from "../services/jobServices";
+import { authContext } from "../../../../context/auth/Context";
+import { useNoti } from "../../../../hooks/useNoti";
+import { getJobs } from "../../../../services/jobServices";
 
-import styles from "../../public/css/jobSearch.module.css";
+import styles from "../../../../../public/css/jobSearch.module.css";
 
 export const JobSearch = () => {
   const noti = useNoti();
