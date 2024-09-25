@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { projectsService } from "../../services/projectsServices";
-
 import { useParams } from "react-router-dom";
+
+import { projectsService } from "../project/services/projectsServices";
 
 export const ProfileProjects = () => {
   const [projects, setProjects] = useState([]);

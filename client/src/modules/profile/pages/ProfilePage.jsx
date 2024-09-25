@@ -1,5 +1,6 @@
 import React from "react";
-import { Nav, Profile } from "../components";
+import { Nav } from "../../ui/components";
+import { Profile } from "../components/Profile";
 
 export const ProfilePage = () => {
   return (

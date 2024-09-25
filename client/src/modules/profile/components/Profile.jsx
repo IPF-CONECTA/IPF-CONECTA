@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getExperiences, getProfile } from "../../services/feedServices";
-import { useNoti } from "../../hooks/useNoti";
-import styles from "../../../public/css/profile.module.css";
-import RecomendedAccounts from "../RecomendedAccounts";
-import AboutCard from "./components/AboutCard";
-import ExperienceContainer from "./components/ExperienceContainer";
-import Header from "./components/Header";
-import Nav from "./components/Nav";
-import { projectsService } from "../../services/projectsServices";
-import { CreateProjectForm } from "../CreateProjectForm";
-import Projects from "./components/Projects";
+import { useNoti } from "../../../hooks/useNoti";
+
+import { getExperiences, getProfile } from "../../feed/services/feedServices";
+import { projectsService } from "../project/services/projectsServices";
+
+import { AboutCard } from "./AboutCard";
+import { ExperienceContainer } from "./ExperienceContainer";
+import { Header } from "./ProfileHeader";
+import { Nav } from "./ProfileNav";
+
+import { Projects } from "../project/components/Projects";
+import { CreateProjectForm } from "../project/components/CreateProjectForm";
+
+import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
+
+import styles from "../../../../public/css/profile.module.css";
 
 export const Profile = () => {
   const noti = useNoti();

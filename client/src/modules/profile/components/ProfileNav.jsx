@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Nav = () => {
+export const Nav = () => {
   return (
     <nav className="w-100 d-flex justify-content-evenly border py-2">
       <Link to={"#"} className="btn fw-semibold text-decoration-none text-dark">

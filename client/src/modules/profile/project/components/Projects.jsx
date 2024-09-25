@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { CreateProjectForm } from "../../CreateProjectForm";
-import ProjectCard from "./ProjectCard";
 import { Link } from "react-router-dom";
 
-const Projects = ({ username, projectsData, own }) => {
+import ProjectCard from "./ProjectCard";
+import { CreateProjectForm } from "./CreateProjectForm";
+
+export const Projects = ({ username, projectsData, own }) => {
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [projects, setProjects] = useState([]);
 
@@ -75,5 +76,3 @@ const Projects = ({ username, projectsData, own }) => {
     </section>
   );
 };
-
-export default Projects;

@@ -1,5 +1,4 @@
-import React from "react";
-import { Nav } from "../components";
+import { Nav } from "../../ui/components";
 
 export default function SavedPost() {
   return (

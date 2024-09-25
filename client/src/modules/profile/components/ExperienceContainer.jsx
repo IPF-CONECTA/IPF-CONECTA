@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 
-const ExperienceContainer = ({ own, experiencesData }) => {
+export const ExperienceContainer = ({ own, experiencesData }) => {
   const [experiences, setExperiences] = useState(experiencesData);
   const [openModal, setOpenModal] = useState(false);
   return own ? (
@@ -202,5 +202,3 @@ const ExperienceContainer = ({ own, experiencesData }) => {
     </>
   );
 };
-
-export default ExperienceContainer;
