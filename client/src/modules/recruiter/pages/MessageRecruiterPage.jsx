@@ -1,5 +1,5 @@
-import React from "react";
-import { Nav, MessageRecruiter } from "../components";
+import { Nav } from "../../ui/components";
+import { MessageRecruiter } from "../components/MessageRecruiter";
 
 export const MessageRecruiterPage = () => {
   return (

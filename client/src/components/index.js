@@ -1,5 +1,5 @@
 export * from "./CompaniesPanel";
-export * from "./CreateCompanyForm";
+export * from "../modules/recruiter/components/CreateCompanyForm";
 export * from "./CreateCompanyUbicationForm";
 export * from "../modules/recruiter/job/components/JobCreateForm";
 export * from "./CreateProjectForm";
@@ -19,8 +19,8 @@ export * from "./RecomendedAccounts";
 export * from "./RegisterForm";
 export * from "./RequestForm";
 export * from "./AssociationsPanel";
-export * from "./SelectCompany";
+export * from "../modules/recruiter/components/SelectCompany";
 export * from "./SupportForm";
 export * from "./profile/Profile";
 export * from "./profile/ProfileProjects";
-export * from "./WaitingAssociationsApproval";
+export * from "../modules/recruiter/components/WaitingAssociationsApproval";

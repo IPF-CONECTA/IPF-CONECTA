@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { useForm } from "react-hook-form";
-import { useNoti } from "../hooks/useNoti";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../services/authService";
-import "react-quill/dist/quill.snow.css";
+import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
-import styles from "../../public/css/createCompany.module.css";
+import "react-quill/dist/quill.snow.css";
+import axios from "axios";
+
+import { useNoti } from "../../../hooks/useNoti";
+import { authService } from "../../auth/services/authService";
+import styles from "../../../../public/css/createCompany.module.css";
+
 export const CreateCompanyForm = () => {
   const modules = {
     toolbar: [

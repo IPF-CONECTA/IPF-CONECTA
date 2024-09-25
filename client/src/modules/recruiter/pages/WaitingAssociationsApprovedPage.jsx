@@ -1,4 +1,5 @@
-import { Nav, WaitingAssociationsApproval, Footer } from "../components";
+import { Footer, Nav } from "../../ui/components";
+import { WaitingAssociationsApproval } from "../components/WaitingAssociationsApproval";
 
 export const WaitingAssociationsApprovalPage = () => {
   return (
