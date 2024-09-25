@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ProfileHover } from "./ProfileHover";
-import { getProfileInfo } from "../services/feedServices";
-import { useFollow } from "../hooks/useFollow";
-import styles from "../../public/css/accountCard.module.css";
 import { useNavigate } from "react-router-dom";
-const AccountCard = ({ account }) => {
+
+import { ProfileHover } from "../../../components/ProfileHover";
+import { getProfileInfo } from "../services/feedServices";
+import { useFollow } from "../../../hooks/useFollow";
+
+import styles from "../../../../public/css/accountCard.module.css";
+
+export const AccountCard = ({ account }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
@@ -112,5 +115,3 @@ const AccountCard = ({ account }) => {
     </div>
   );
 };
-
-export default AccountCard;

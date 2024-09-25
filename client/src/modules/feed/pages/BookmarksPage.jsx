@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import PostList from "../components/PostList";
-import RecomendedAccounts from "../components/RecomendedAccounts";
+import { useEffect, useState } from "react";
 
-import HomeNav from "../components/HomeNav";
+import { HomeNav } from "../../ui/components";
+import { PostList } from "../posts/components/PostList";
+import { RecomendedAccounts } from "../components/RecomendedAccounts";
+
 export const BookmarksPage = () => {
   const [accounts, setAccounts] = useState([]);
   useEffect(() => {

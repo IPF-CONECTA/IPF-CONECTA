@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styles from "../../public/css/recomendedAccounts.module.css";
-import AccountCard from "./AccountCard";
+import { useEffect, useState } from "react";
+
+import { AccountCard } from "./AccountCard";
 import { getAccounts } from "../services/feedServices";
-const RecomendedAccounts = () => {
+
+import styles from "../../../../public/css/recomendedAccounts.module.css";
+
+export const RecomendedAccounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [error, setError] = useState({ message: null, statusCode: null });
   useEffect(() => {
@@ -38,5 +41,3 @@ const RecomendedAccounts = () => {
     </aside>
   );
 };
-
-export default RecomendedAccounts;

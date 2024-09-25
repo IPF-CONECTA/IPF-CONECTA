@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import Post from "./Post";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "../../public/css/postById.module.css";
-import { getPost, postSvc } from "../services/feedServices";
-import PostCard from "./PostCard";
 
-const PostInfo = () => {
+import { getPost, postSvc } from "../../services/feedServices";
+import { PostCard } from "./PostCard";
+import { Post } from "./Post";
+
+import styles from "../../../../../public/css/postById.module.css";
+
+export const PostInfo = () => {
   const [post, setPost] = useState(null);
   const { postId } = useParams();
   const [write, setWrite] = useState(false);
@@ -152,5 +154,3 @@ const PostInfo = () => {
     </>
   );
 };
-
-export default PostInfo;

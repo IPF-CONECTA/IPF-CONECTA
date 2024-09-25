@@ -1,16 +1,24 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { getProfileInfo, like, repostSvc } from "../services/feedServices";
-import styles from "../../public/css/postCard.module.css";
-import { getTime } from "../helpers/getTime";
-import { ProfileHover } from "./ProfileHover";
+import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import { authContext } from "../context/auth/Context";
-import { postSvc } from "../services/feedServices";
-import { useNavigate } from "react-router-dom";
-const PostCard = ({ post }) => {
+
+import { getTime } from "../../../../helpers/getTime";
+import { ProfileHover } from "../../../../components/ProfileHover";
+import { authContext } from "../../../../context/auth/Context";
+
+import {
+  getProfileInfo,
+  like,
+  repostSvc,
+  postSvc,
+} from "../../services/feedServices";
+
+import styles from "../../../../../public/css/postCard.module.css";
+
+export const PostCard = ({ post }) => {
   const navigate = useNavigate();
   const { authState } = useContext(authContext);
   const [showProgress, setShowProgress] = useState(false);
@@ -352,5 +360,3 @@ const PostCard = ({ post }) => {
     </>
   );
 };
-
-export default PostCard;

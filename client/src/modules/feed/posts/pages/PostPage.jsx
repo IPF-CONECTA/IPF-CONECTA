@@ -1,14 +1,15 @@
-import React from "react";
-import PostList from "../components/PostList";
-import RecomendedAccounts from "../components/RecomendedAccounts";
-import HomeNav from "../components/HomeNav";
+import { HomeNav } from "../../../ui/components";
+
+import { RecomendedAccounts } from "../../components/RecomendedAccounts";
+import { PostInfo } from "../components/PostInfo";
+
 import styles from "../../public/css/feed.module.css";
-export const FeedPage = () => {
+export const PostPage = () => {
   return (
     <>
       <main className="d-flex justify-content-center w-100 ">
         <HomeNav />
-        <PostList />
+        <PostInfo />
         <div className={`${styles.asideContainer}`}>
           <RecomendedAccounts />
         </div>

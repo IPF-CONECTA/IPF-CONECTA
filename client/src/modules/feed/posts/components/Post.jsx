@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { getProfileInfo, like, repostSvc } from "../services/feedServices";
-import styles from "../../public/css/postById.module.css";
-import { getDate, getTime } from "../helpers/getTime";
-import { ProfileHover } from "./ProfileHover";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Post = ({ post, setWrite }) => {
+import { getDate, getTime } from "../../../../helpers/getTime";
+import { ProfileHover } from "../../../../components/ProfileHover";
+import { getProfileInfo, like, repostSvc } from "../../services/feedServices";
+
+import styles from "../../../../../public/css/postById.module.css";
+
+export const Post = ({ post, setWrite }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
@@ -274,5 +276,3 @@ const Post = ({ post, setWrite }) => {
     </>
   );
 };
-
-export default Post;

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import PostCard from "./PostCard";
-import styles from "../../public/css/feed.module.css";
-import { getPosts, postSvc } from "../services/feedServices";
-import { useNoti } from "../hooks/useNoti";
-const PostList = () => {
+
+import { getPosts, postSvc } from "../../services/feedServices";
+import { useNoti } from "../../../../hooks/useNoti";
+import { PostCard } from "./PostCard";
+
+import styles from "../../../../../public/css/feed.module.css";
+
+export const PostList = () => {
   const noti = useNoti();
   const [focused, setFocused] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -131,5 +134,3 @@ const PostList = () => {
     </div>
   );
 };
-
-export default PostList;
