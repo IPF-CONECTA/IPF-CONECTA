@@ -1,5 +1,5 @@
-import styles from "../../public/main.module.css";
 import { Link } from "react-router-dom";
+import styles from "../../../../public/main.module.css";
 
 export const Home = () => {
   const scrollToSection = (sectionId) => {

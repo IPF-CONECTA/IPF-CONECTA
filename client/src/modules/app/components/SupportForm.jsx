@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNoti } from "../hooks/useNoti";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-import "../../public/support.css";
+import { useNoti } from "../../../hooks/useNoti";
+import "../../../../public/support.css";
 
 export const SupportForm = () => {
   const noti = useNoti();

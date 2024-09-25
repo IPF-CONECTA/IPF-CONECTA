@@ -1,9 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import "../../public/css/NotFound.css";
-import iconoipf from "../../public/iconoipf.png";
 
-export const NotFoundPage = () => {
+import "../../../../public/css/NotFound.css";
+import iconoipf from "../../../../public/iconoipf.png";
+
+export const NotFoundMessage = () => {
   return (
     <div className="not-found">
       <div className="logo-container">

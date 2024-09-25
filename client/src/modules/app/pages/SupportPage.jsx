@@ -1,4 +1,6 @@
-import { Nav, Footer, SupportForm } from "../components";
+import { Nav, Footer } from "../../ui/components";
+import { SupportForm } from "../components/SupportForm";
+
 export const SupportPage = () => {
   return (
     <>
