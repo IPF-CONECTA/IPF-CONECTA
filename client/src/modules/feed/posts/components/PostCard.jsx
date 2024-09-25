@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
 import { getTime } from "../../../../helpers/getTime";
-import { ProfileHover } from "../../../../components/ProfileHover";
+import { ProfileHover } from "../../../profile/components/ProfileHover";
 import { authContext } from "../../../../context/auth/Context";
 
 import {

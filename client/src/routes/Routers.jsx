@@ -2,27 +2,27 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import {
+  AdminAssociationsPanelPage,
+  AdminCompaniesPanelPage,
+  AdminDashboardPage,
   CompanyConfirmedPage,
+  CreateCompanyPage,
   CreateCompanyUbicationPage,
+  CreateProjectPage,
   FeedPage,
   HomePage,
+  JobCreatePage,
   JobSearchPage,
-  SelectCompanyPage,
-  NotFoundPage,
   LoginPage,
-  RegisterPage,
-  CreateCompanyPage,
-  SupportPage,
-  PostPage,
   MessageRecruiterPage,
+  NotFoundPage,
+  PostPage,
   ProfilePage,
-  CreateJobsFormPage,
-  WaitingAssociationsApprovalPage,
-  AdminDashboardPage,
-  CompaniesPanelPage,
-  AssociationsPanelPage,
   ProfileProjectsPage,
-  CreateProjectPage,
+  RegisterPage,
+  SelectCompanyPage,
+  SupportPage,
+  WaitingAssociationsApprovalPage,
 } from "../pages";
 
 export const Routers = () => {
@@ -37,10 +37,13 @@ export const Routers = () => {
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin/dash" element={<AdminDashboardPage />} />
-            <Route path="/admin/empresas" element={<CompaniesPanelPage />} />
+            <Route
+              path="/admin/empresas"
+              element={<AdminCompaniesPanelPage />}
+            />
             <Route
               path="/admin/asociaciones"
-              element={<AssociationsPanelPage />}
+              element={<AdminAssociationsPanelPage />}
             />
           </Route>
           <Route path="/inicio" element={<FeedPage />} />
@@ -48,7 +51,7 @@ export const Routers = () => {
         </Route>
         <Route path="/perfil/:username" element={<ProfilePage />} />
         <Route path="/:usuario/proyectos" element={<ProfileProjectsPage />} />
-        <Route path="/guardados" element={<ProfilePage />} />r
+        <Route path="/guardados" element={<ProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
@@ -70,7 +73,7 @@ export const Routers = () => {
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
-        <Route path="/nuevo-empleo" element={<CreateJobsFormPage />} />
+        <Route path="/nuevo-empleo" element={<JobCreatePage />} />
       </Routes>
     </BrowserRouter>
   );

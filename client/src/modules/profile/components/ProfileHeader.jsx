@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../feed/services/feedServices";
 
-const Header = ({ profileData, setProfileData }) => {
+export const Header = ({ profileData, setProfileData }) => {
   const handleFollow = async () => {
     const { statusCode } = await followOrUnfollow(profileData.profile.id);
     if (statusCode !== 201) return;
@@ -74,5 +74,3 @@ const Header = ({ profileData, setProfileData }) => {
     </header>
   );
 };
-
-export default Header;

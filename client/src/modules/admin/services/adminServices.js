@@ -1,5 +1,5 @@
 import axios from "axios";
-import { authService } from "./authService";
+import { authService } from "../../auth/services/authService";
 export const getAssociationsSvc = async (status) => {
   try {
     const res = await axios.get(

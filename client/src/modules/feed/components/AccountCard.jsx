@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ProfileHover } from "../../../components/ProfileHover";
+import { ProfileHover } from "../../profile/components/ProfileHover";
 import { getProfileInfo } from "../services/feedServices";
 import { useFollow } from "../../../hooks/useFollow";
 

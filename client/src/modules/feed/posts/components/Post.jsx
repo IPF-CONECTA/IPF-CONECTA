@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { getDate, getTime } from "../../../../helpers/getTime";
-import { ProfileHover } from "../../../../components/ProfileHover";
+import { ProfileHover } from "../../../profile/components/ProfileHover";
 import { getProfileInfo, like, repostSvc } from "../../services/feedServices";
 
 import styles from "../../../../../public/css/postById.module.css";

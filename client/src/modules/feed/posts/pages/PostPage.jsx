@@ -3,7 +3,7 @@ import { HomeNav } from "../../../ui/components";
 import { RecomendedAccounts } from "../../components/RecomendedAccounts";
 import { PostInfo } from "../components/PostInfo";
 
-import styles from "../../public/css/feed.module.css";
+import styles from "../../../../../public/css/feed.module.css";
 export const PostPage = () => {
   return (
     <>

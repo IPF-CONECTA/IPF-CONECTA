@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import { useNoti } from "../../../hooks/useNoti";
-import { authService } from "../../../services/authService";
+import { authService } from "../../auth/services/authService";
 import styles from "../../../../public/main.module.css";
 // URL base de tu servidor para imágenes
 const BASE_URL = "http://localhost:4000/logoUrl/";

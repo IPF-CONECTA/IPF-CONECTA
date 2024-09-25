@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+
+import "../../../../public/panel.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../public/panel.css";
 
 export default function RequestForm({ addRequest }) {
   const [name, setName] = useState("");

@@ -1,15 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { Nav, Footer } from "../../ui/components";
-import { AssociationsPanel } from "../components/AdminAssociationsPanel";
+import { AdminAssociationsPanel } from "../components/AdminAssociationsPanel";
 
 import "../../../../public/panel.css";
 
-export const AssociationsPanelPage = () => {
+export const AdminAssociationsPanelPage = () => {
   return (
     <>
       <Nav />
-      <AssociationsPanel />
+      <AdminAssociationsPanel />
       <Footer />
     </>
   );

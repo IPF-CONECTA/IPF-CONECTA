@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import { authContext } from "./Context.js";
 import { authReducer } from "./reducer.js";
 import { useNoti } from "../../hooks/useNoti.jsx";
-import { authService } from "../../services/authService.js";
+import { authService } from "../../modules/auth/services/authService.js";
 
 export const AuthProvider = ({ children }) => {
   const token = authService.getToken();

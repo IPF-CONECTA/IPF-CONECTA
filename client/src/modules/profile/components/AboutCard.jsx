@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useNoti } from "../../../hooks/useNoti";
-import { deleteAbout, updateAbout } from "../../../components/profile/services";
+import { deleteAbout, updateAbout } from "../services/services";
 
 import styles from "../../../../public/css/profile.module.css";
 
-const AboutCard = ({ own, aboutData, profileId }) => {
+export const AboutCard = ({ own, aboutData, profileId }) => {
   const noti = useNoti();
   const [about, setAbout] = useState(aboutData);
   const [editDescription, setEditDescription] = useState(false);
@@ -124,5 +124,3 @@ const AboutCard = ({ own, aboutData, profileId }) => {
     </section>
   );
 };
-
-export default AboutCard;

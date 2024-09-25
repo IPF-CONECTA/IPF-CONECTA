@@ -1,8 +1,8 @@
 // src/components/ProfileHover.jsx
-import React, { useState } from "react";
-import styles from "../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
-import { useFollow } from "../hooks/useFollow";
 import { useNavigate } from "react-router-dom";
+
+import styles from "../../../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
+import { useFollow } from "../../../hooks/useFollow";
 
 export const ProfileHover = ({
   profile,
