@@ -27,24 +27,6 @@ export const Nav = () => {
               className="d-inline-block align-text-top"
             />
           </Link>
-          <Link className="navbar-brand" to="/panel-votacion">
-            <img
-              src={logoImage}
-              alt="Logo"
-              width="35"
-              height="40"
-              className="d-inline-block align-text-top"
-            />
-          </Link>
-          <Link className="navbar-brand" to="/proyectos-ideas">
-            <img
-              src={logoImage}
-              alt="Logo"
-              width="35"
-              height="40"
-              className="d-inline-block align-text-top"
-            />
-          </Link>
           <div className="d-flex w-50 justify-content-between">
             {authState.isLogged ? (
               <Link
@@ -86,6 +68,34 @@ export const Nav = () => {
                       to={`/perfil/${authState.user.profile.id}`}
                     >
                       Mi perfil
+                      <img
+                        height={24}
+                        width={24}
+                        src={authState.user.profile.profilePic}
+                        alt="tu foto de perfil"
+                      />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item w-100 d-flex p-0 justify-content-between"
+                      to={'/proyectos-ideas'}
+                    >
+                      Crear Idea
+                      <img
+                        height={24}
+                        width={24}
+                        src={authState.user.profile.profilePic}
+                        alt="tu foto de perfil"
+                      />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item w-100 d-flex p-0 justify-content-between"
+                      to={'/panel-votacion'}
+                    >
+                      Votar Idea
                       <img
                         height={24}
                         width={24}
