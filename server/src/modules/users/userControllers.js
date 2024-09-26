@@ -55,7 +55,8 @@ export const getUserInfoCtrl = async (req, res) => {
 export const createUserController = async (req, res) => {
     const { user } = req.body
     try {
-        await createUser(user)
+        const newUser = await createUser(user)
+        if (!newUser) return res.status(400).json({ message: 'No se pudo crear el usuario' })
         res.status(201).json({ message: 'Usuario generado con exito' })
     } catch (error) {
         if (error.message == 'Rol no valido') {

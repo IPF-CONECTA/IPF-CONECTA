@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 import { useNoti } from "../hooks/useNoti";
@@ -12,11 +11,7 @@ import { BASE_URL } from "../constants/BASE_URL";
 export const JobDetails = ({ jobId }) => {
   const [postulate, setPostulate] = useState(false);
   const { authState } = useContext(authContext);
-  const location = useLocation();
   const noti = useNoti();
-  const profileId = location.state;
-
-  console.log(profileId);
 
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
@@ -31,7 +26,6 @@ export const JobDetails = ({ jobId }) => {
               },
             }
           );
-          console.log(res.data);
           setSelectedJob(res.data.job);
           setPostulate(res.data.postulated);
         } catch (error) {
@@ -47,7 +41,7 @@ export const JobDetails = ({ jobId }) => {
       const response = await axios.post(
         "http://localhost:4000/create-job-postulation",
         {
-          profileId,
+          profileId: authState.profile.id,
           jobId,
         },
         {
@@ -57,11 +51,9 @@ export const JobDetails = ({ jobId }) => {
         }
       );
       setPostulate(true);
-      //console.log(response.data);
       noti(response.data.message, "success");
     } catch (error) {
       noti(error.response.data.error, "error");
-      //console.error("Error creating postulation:", error);
     }
   };
 

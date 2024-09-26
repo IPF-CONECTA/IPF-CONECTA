@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNoti } from "../hooks/useNoti";
 import { useNavigate } from "react-router-dom";
@@ -12,18 +12,14 @@ import {
   getContractTypes,
   getModalities,
 } from "../services/jobServices";
+import Editor from "../ui/Editor";
+import { useForm } from "react-hook-form";
 
 export const CreateJobsForm = () => {
   const navigate = useNavigate();
   const noti = useNoti();
-  const modules = {
-    toolbar: [
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ header: [1, 2, 3, false] }],
-      [{ align: [] }],
-    ],
-  };
+  const { register, handleSubmit, setValue, watch } = useForm();
+
   const [companies, setCompanies] = useState([]);
   const [skills, setSkills] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
@@ -31,56 +27,8 @@ export const CreateJobsForm = () => {
   const [contractTypes, setContractTypes] = useState([]);
   const [search, setSearch] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: `
-    <p><strong>El candidato ideal</strong> será responsable de desarrollar aplicaciones de alta calidad. También será responsable de diseñar e implementar código escalable y testeable.</p>
-    <strong>Responsabilidades:</strong>
-    <ul>
-      <li>Desarrollar software y aplicaciones web de calidad</li>
-      <li>Analizar y mantener aplicaciones de software existentes</li>
-      <li>Diseñar código altamente escalable y testeable</li>
-    </ul>
-    <strong>Calificaciones:</strong>
-    <ul>
-      <li>Licenciatura o experiencia equivalente en Ciencias de la Computación o campo relacionado</li>
-      <li>Experiencia en desarrollo con lenguajes de programación</li>
-      <li>Habilidades en bases de datos SQL o relacionales</li>
-    </ul>
-    `,
-    companyId: "",
-    modalityId: "",
-    contractTypeId: "",
-    skills: [],
-    applicationLink: "",
-  });
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const quillRef = useRef(null);
 
-    if (formData.description.length < 10) {
-      noti("La descripción debe tener al menos 10 caracteres", "danger");
-      return;
-    }
-
-    axios
-      .post(
-        "http://localhost:4000/create-job",
-        { jobOffer: { ...formData }, skills: formData.skills },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then(() => {
-        noti("Job created successfully", "success");
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log("Error:", error.response.data);
-        noti("Error creating job", "danger");
-      });
-  };
   useEffect(() => {
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
@@ -108,12 +56,8 @@ export const CreateJobsForm = () => {
       try {
         const data = await getCompaniesByUser();
         if (data.length <= 1) {
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            companyId: data[0].company.id,
-          }));
+          setValue("companyId", data[0].company.id); // Utilizamos setValue de react-hook-form
         }
-        console.log(data);
         setCompanies(data);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -143,42 +87,45 @@ export const CreateJobsForm = () => {
     fetchContractTypes();
   }, []);
 
-  function handleInputChange(e) {
-    if (!e.target) return;
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  }
+  const submitForm = (data) => {
+    if (data.description.length < 10) {
+      noti("La descripción debe tener al menos 10 caracteres", "danger");
+      return;
+    }
 
-  function handleSearchChange(value) {
-    setSearch(value);
-  }
-
-  const handleDescriptionChange = (value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      description: value,
-    }));
-  };
-
-  const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    axios
+      .post(
+        "http://localhost:4000/create-job",
+        {
+          jobOffer: { ...data },
+          skills: selectedSkills.map((skill) => skill.value),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(() => {
+        noti("Job created successfully", "success");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("Error:", error.response.data);
+        noti("Error creating job", "danger");
+      });
   };
 
   const handleSkillChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      skills: selectedOptions
-        ? selectedOptions.map((option) => option.value)
-        : [],
-    }));
+    setValue(
+      "skills",
+      selectedOptions ? selectedOptions.map((option) => option.value) : []
+    );
+  };
+
+  const handleSearchChange = (value) => {
+    setSearch(value);
   };
 
   const fetchSkills = async (query) => {
@@ -202,25 +149,22 @@ export const CreateJobsForm = () => {
 
   return (
     <div className="w-100 d-flex justify-content-center">
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit(submitForm)} className={styles.form}>
         <div className="mb-2">
           <label htmlFor="title">Título</label>
           <input
             type="text"
             name="title"
             className={`m-0 p-2`}
-            value={formData.title}
-            onChange={handleInputChange}
+            {...register("title", { required: true })} // Register para manejar el input
           />
         </div>
         <div className="mb-2">
           <label htmlFor="description">Descripción</label>
-          <ReactQuill
+          <Editor
+            ref={quillRef}
             name="description"
-            value={formData.description}
-            onChange={handleDescriptionChange}
-            modules={modules}
-            theme="snow"
+            onChange={(value) => setValue("description", value)}
           />
         </div>
         {companies.length > 1 && (
@@ -229,8 +173,7 @@ export const CreateJobsForm = () => {
             <select
               name="companyId"
               className={`form-select ${styles.formSelect}`}
-              value={formData.companyId}
-              onChange={handleInputChange}
+              {...register("companyId")}
             >
               <option value="">Selecciona la empresa</option>
               {companies.map((company) => (
@@ -262,8 +205,7 @@ export const CreateJobsForm = () => {
           <select
             name="modalityId"
             className={`form-select`}
-            value={formData.modalityId}
-            onChange={handleSelectChange}
+            {...register("modalityId")}
           >
             <option value="">Selecciona la modalidad</option>
             {modalities.map((modality) => (
@@ -278,8 +220,7 @@ export const CreateJobsForm = () => {
           <select
             name="contractTypeId"
             className={`form-select`}
-            value={formData.contractTypeId}
-            onChange={handleSelectChange}
+            {...register("contractTypeId")}
           >
             <option value="">Selecciona el tipo de contrato</option>
             {contractTypes.map((type) => (

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { projectsService } from "../services/projectsServices";
@@ -6,40 +6,39 @@ import { useNoti } from "../hooks/useNoti";
 import { Dialog } from "@mui/material";
 import ReactQuill from "react-quill";
 import { useForm } from "react-hook-form";
+import Editor from "../ui/Editor";
 
 export const CreateProjectForm = ({
   openProjectModal,
   setOpenProjectModal,
+  onProjectSubmit,
 }) => {
-  const { register, handleSubmit, setValue, watch } = useForm();
-  const modules = {
-    toolbar: [
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ header: [1, 2, 3, false] }],
-      [{ align: [] }],
-    ],
-  };
+  const { register, handleSubmit, setValue, reset } = useForm();
+
   const quillRef = useRef(null);
 
   const noti = useNoti();
 
   const [privacity, setPrivacity] = useState("publico");
 
+  useEffect(() => {
+    reset();
+  }, [openProjectModal]);
+
   const handleSwitchChange = (e) => {
     setPrivacity(e.target.checked ? "publico" : "privado");
   };
 
   const handleSubmitProject = async (data) => {
-    console.log(data);
     data.privacity == true
       ? (data.privacity = "publico")
       : (data.privacity = "privado");
     const res = await projectsService.createProject(data);
-    console.log(res);
     if (res.status != 201) {
-      return noti("Ha ocurrido algo", "danger");
+      return res.errors.map((error) => noti(error.msg, "danger"));
     }
+    onProjectSubmit();
+    reset();
     setOpenProjectModal(false);
     noti("Proyecto creado con exito", "success");
   };
@@ -95,13 +94,9 @@ export const CreateProjectForm = ({
         />
         <div className="mb-2">
           <label htmlFor="description">Descripción detallada</label>
-          <ReactQuill
+          <Editor
             ref={quillRef}
-            name="description"
-            value={watch("description") || ""}
             onChange={(value) => setValue("description", value)}
-            modules={modules}
-            theme="snow"
           />
         </div>
         <label className="mb-0">

@@ -24,7 +24,7 @@ export const JobSearch = () => {
     async function fetchData() {
       const res = await getJobs();
       setJobs(res.data.jobs);
-      setCantJobs(des.data.total);
+      setCantJobs(res.data.total);
     }
     fetchData();
   }, []);
@@ -89,7 +89,7 @@ export const JobSearch = () => {
                 type="submit"
                 className={`btn p-0 me-1 d-flex ${styles.searchButton}`}
               >
-                <span class="material-symbols-outlined text-secondary">
+                <span className="material-symbols-outlined text-secondary">
                   search
                 </span>
               </button>

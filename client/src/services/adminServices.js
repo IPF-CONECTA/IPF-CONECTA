@@ -28,9 +28,9 @@ export const updateAssociationStatus = async (id, status, justification) => {
                 },
             }
         );
-        return res.status;
+        return { status: res.status };
     } catch (error) {
         console.error("Error al actualizar el estado de la solicitud:", error);
-        return error.response?.status;
+        return { status: error.response?.status, error: error.response.data.errors || error.response.data.message || "Hubo un error, intentalo de nuevo mas tarde" };
     }
 }

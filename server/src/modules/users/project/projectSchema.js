@@ -4,14 +4,21 @@ export const createProjectSchema = [
   body("project.name")
     .notEmpty()
     .withMessage("Ingrese el nombre del proyecto")
-    .isLength({ min: 10 })
+    .isLength({ min: 5 })
     .withMessage("El nombre del proyecto debe tener al menos 15 caracteres"),
   body("project.description")
     .notEmpty()
     .withMessage("Ingrese la descripcion del proyecto")
-    .isLength({ min: 5 })
+    .isLength({ min: 15 })
     .withMessage(
-      "La descripcion del proyecto debe tener al menos 5 caracteres y maximo 30"
+      "La descripcion del proyecto debe tener al menos 15 caracteres"
+    ),
+  body("project.smallDescription")
+    .notEmpty()
+    .withMessage("Ingrese la descripcion corta del proyecto")
+    .isLength({ min: 5, max: 30 })
+    .withMessage(
+      "La descripcion corta del proyecto debe tener entre 5 y 30 caracteres"
     ),
   body("project.status")
     .notEmpty()

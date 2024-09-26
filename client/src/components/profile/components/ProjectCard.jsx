@@ -10,7 +10,7 @@ const ProjectCard = ({ project, username }) => {
         </div>
         <div className="w-100 d-flex justify-content-center">
           <img
-            height={50}
+            height={70}
             src={project.projectLogo}
             alt={"logo del proyecto"}
           />
@@ -23,10 +23,10 @@ const ProjectCard = ({ project, username }) => {
             <span className="fw-semibold">{project.status}</span>
           </div>
 
-          <button className="btn btn-light border rounded px-2 py-1">
+          <button className="btn btn-light border rounded px-2 py-0">
             <Link
               to={`/${username}/proyectos/${project.id}`}
-              className="text-decoration-none text-secondary"
+              className="text-decoration-none text-secondary fw-semibold"
             >
               Ver
             </Link>

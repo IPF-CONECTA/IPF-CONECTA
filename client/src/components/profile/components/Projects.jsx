@@ -3,7 +3,7 @@ import { CreateProjectForm } from "../../CreateProjectForm";
 import ProjectCard from "./ProjectCard";
 import { Link } from "react-router-dom";
 
-const Projects = ({ username, projectsData, own }) => {
+const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [projects, setProjects] = useState([]);
 
@@ -34,6 +34,7 @@ const Projects = ({ username, projectsData, own }) => {
         )}
       </div>
       <CreateProjectForm
+        onProjectSubmit={onProjectSubmit}
         openProjectModal={openProjectModal}
         setOpenProjectModal={setOpenProjectModal}
       />
@@ -59,7 +60,7 @@ const Projects = ({ username, projectsData, own }) => {
                 );
               })}
         </div>
-        {projectsData && projectsData.length > 3 && (
+        {projectsData && projectsData.length > 3 && !own && (
           <div className="w-100 d-flex justify-content-end">
             <Link
               to={`/perfil/${username}/proyectos`}

@@ -7,6 +7,7 @@ import { authService } from "../services/authService";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import styles from "../../public/css/createCompany.module.css";
+import Editor from "../ui/Editor";
 export const CreateCompanyForm = () => {
   const modules = {
     toolbar: [
@@ -97,13 +98,17 @@ export const CreateCompanyForm = () => {
         }
       );
       noti("Empresa creada exitosamente!", "success");
-      navigate(`/company/${response.data.id}`);
+      navigate(`/crear-sede/${response.data.id}`);
     } catch (error) {
       console.log(error);
-      noti(
-        error.response?.data?.message || "Error al crear la empresa",
-        "error"
-      );
+      error.response.data.errors
+        ? error.response.data.errors.forEach((error) => {
+            noti(error.msg, "error");
+          })
+        : noti(
+            error.response?.data?.message || "Error al crear la empresa",
+            "error"
+          );
     }
   };
 
@@ -134,12 +139,9 @@ export const CreateCompanyForm = () => {
           </div>
           <div className="mb-2">
             <label htmlFor="description">Descripción</label>
-            <ReactQuill
+            <Editor
               ref={quillRef}
-              value={watch("description") || ""}
               onChange={(value) => setValue("description", value)}
-              modules={modules}
-              theme="snow"
             />
           </div>
           <div>

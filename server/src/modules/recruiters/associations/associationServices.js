@@ -27,7 +27,7 @@ export const associateNewCompanySvc = async (message, userId, company) => {
             companyId: newCompany.id,
             message,
         });
-        return association, newCompany.id;
+        return newCompany.id;
     } catch (error) {
         throw new Error(error.message);
     }

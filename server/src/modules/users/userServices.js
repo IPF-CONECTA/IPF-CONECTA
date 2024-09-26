@@ -141,6 +141,7 @@ export const createUser = async (user) => {
     const createdUser = await User.create(
       {
         email: user.email,
+        username: user.username,
         roleId: roleId,
         password: hashpass,
       },
@@ -158,6 +159,7 @@ export const createUser = async (user) => {
     );
 
     await t.commit();
+    return createdUser;
   } catch (error) {
     console.log(error);
   }

@@ -9,7 +9,6 @@ import ExperienceContainer from "./components/ExperienceContainer";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import { projectsService } from "../../services/projectsServices";
-import { CreateProjectForm } from "../CreateProjectForm";
 import Projects from "./components/Projects";
 
 export const Profile = () => {
@@ -30,6 +29,14 @@ export const Profile = () => {
     fetchProfile(username);
   }, [username]);
 
+  const fetchProyects = async () => {
+    const res = await projectsService.getProjects(profileData.profile.id);
+    console.log(res);
+    if (res.status !== 200) {
+      return noti("error", "error");
+    }
+    setProjects(res.data);
+  };
   useEffect(() => {
     if (profileData && profileData.profile) {
       const fetchExperiences = async (id) => {
@@ -43,14 +50,6 @@ export const Profile = () => {
       };
 
       fetchExperiences(profileData.profile.id);
-      const fetchProyects = async () => {
-        const res = await projectsService.getProjects(profileData.profile.id);
-        console.log(res);
-        if (res.status !== 200) {
-          return noti("error", "error");
-        }
-        setProjects(res.data);
-      };
       fetchProyects();
     }
   }, [profileData]);
@@ -78,10 +77,10 @@ export const Profile = () => {
               />
               {(profileData.own || projects.length > 0) && (
                 <Projects
-                  own={profileData.own}
                   username={profileData.profile.user.username}
-                  names={profileData.profile.names}
                   projectsData={projects}
+                  own={profileData.own}
+                  onProjectSubmit={fetchProyects}
                 />
               )}
             </main>

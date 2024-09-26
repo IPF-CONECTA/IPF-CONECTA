@@ -43,9 +43,6 @@ export const SelectCompany = () => {
     };
   }, [search]);
 
-  useEffect(() => {
-    console.log("empresa", company);
-  }, [company]);
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };

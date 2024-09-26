@@ -1,7 +1,8 @@
 import { body } from "express-validator";
 export const authLoginSchema = [
     body('user.email')
-        .isEmail().withMessage('Ingrese un email valido'),
+        .notEmpty()
+        .withMessage('Ingrese el email o username'),
     body('user.password')
         .notEmpty()
         .withMessage('Ingrese la contraseña')

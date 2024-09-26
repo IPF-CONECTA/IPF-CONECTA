@@ -9,11 +9,7 @@ export const LoginForm = () => {
   const { login, authState } = useContext(authContext);
   const navigate = useNavigate();
   const noti = useNoti();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   function showPass() {
     var x = document.getElementById("myInput");
@@ -87,13 +83,13 @@ export const LoginForm = () => {
           <div className="form-floating mb-3 mt-2">
             <input
               {...register("email")}
-              type="email"
+              type="text"
               className="form-control w-100"
               id="floatingInput"
-              placeholder="name@example.com"
+              placeholder="Email o username"
             />
             <label htmlFor="floatingInput" className="bg-transparent">
-              Email
+              Email o username
             </label>
           </div>
           <div className="form-floating mb-3">
@@ -102,7 +98,7 @@ export const LoginForm = () => {
               type="password"
               className="form-control w-100"
               id="floatingPassword"
-              placeholder="Password"
+              placeholder="Contraseña"
             />
             <label htmlFor="floatingPassword" className="bg-transparent">
               Contraseña

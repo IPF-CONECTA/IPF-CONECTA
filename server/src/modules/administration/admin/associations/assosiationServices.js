@@ -1,7 +1,11 @@
 import { Profile } from "../../../profile/profileModel.js";
 import { Association } from "../../../recruiters/associations/associationModel.js";
+import { CompanyIndustry } from "../../../recruiters/companies/companyIndustry/companyIndustryModel.js";
 import { Company } from "../../../recruiters/companies/companyModel.js";
+import { CompanyUbication } from "../../../recruiters/companies/companyUbication/companyUbicationModel.js";
+import { City } from "../../../ubications/models/cityModel.js";
 import { Country } from "../../../ubications/models/countryModel.js";
+import { State } from "../../../ubications/models/stateModel.js";
 import { User } from "../../../users/userModel.js";
 
 export const getAssociations = async (status) => {
@@ -36,12 +40,16 @@ export const getAssociationById = async (id) => {
   try {
     const association = await Association.findByPk(id, {
       where: { status: "Pendiente" },
-      attributes: ["id", "message"],
+      attributes: ["id", "message", "status"],
       include: [
         {
-          model: User,
-          as: "user",
-          attributes: ["id", "profilePic", "names", "surnames", "email"],
+          model: Profile,
+          as: "profile",
+          attributes: ["id", "profilePic", "names", "surnames",],
+          include: {
+            model: User,
+            attributes: ['email', 'username']
+          }
         },
         {
           model: Company,
@@ -58,9 +66,28 @@ export const getAssociationById = async (id) => {
           ],
           include: [
             {
-              model: Country,
-              attributes: ["name", "emoji"],
+              model: CompanyIndustry,
+              attributes: ["name"],
             },
+            {
+              model: Country,
+              attributes: ["name", "emoji", "id"],
+            },
+            {
+              model: CompanyUbication,
+              include: [{
+                model: Country,
+                attributes: ["name", "emoji"],
+              },
+              {
+                model: State,
+                attributes: ["name"],
+              },
+              {
+                model: City,
+                attributes: ["name"],
+              }]
+            }
           ],
         },
       ],

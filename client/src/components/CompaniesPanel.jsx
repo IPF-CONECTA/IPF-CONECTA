@@ -175,7 +175,6 @@ export const CompaniesPanel = () => {
                     className={styles.Company}
                     onClick={() => handleCompanyClick(company)}
                   >
-                    {/* Construye la URL completa para el logo */}
                     <img
                       src={`${BASE_URL}${company.logoUrl}`}
                       height={40}
@@ -206,7 +205,6 @@ export const CompaniesPanel = () => {
         </div>
       </div>
 
-      {/* Modal de Detalles de la Empresa */}
       {selectedCompany && (
         <Dialog
           open={Boolean(selectedCompany)}
@@ -218,7 +216,6 @@ export const CompaniesPanel = () => {
             <div className={` d-flex flex-column`}>
               <div className={styles.CompanyDetails}>
                 <div className="d-flex flex-row justify-content-start">
-                  {/* Construye la URL completa para el logo */}
                   <img
                     src={`${BASE_URL}${selectedCompany.logoUrl}`}
                     alt={`Logo de ${selectedCompany.name}`}
@@ -332,13 +329,11 @@ export const CompaniesPanel = () => {
           <DialogContentText>
             Por favor, ingresa la razón del rechazo para la empresa.
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Justificación"
+          <input
             type="text"
             fullWidth
-            variant="outlined"
+            className="mt-2"
+            placeholder="Justificación"
             value={justification}
             onChange={(e) => setJustification(e.target.value)}
           />
