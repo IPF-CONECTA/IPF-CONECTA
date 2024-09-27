@@ -79,20 +79,6 @@
 .linked {
   color: green;
   font-weight: bold;
-}
-
-.linkButton {
-  background-color: yellow;
-}
-
-.unlinkButton {
-  /* Estilos del botón de desvincular */
-}
-
-.emptyMessage {
-  /* Estilos del mensaje de habilidades no encontradas */
-}
-
-.successMessage {
-  /* Estilos del mensaje de éxito */
+  display: inline-block; /* O inline, dependiendo de tu estructura */
+  text-align: center; /* Centrar el texto */
 }

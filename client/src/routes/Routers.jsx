@@ -25,8 +25,8 @@ import {
   WaitingAssociationsApprovalPage,
   Ideas,
 } from "../pages";
-import SkillViewAdmin from "../components/SkillViewAdmin";
-import SkillViewUser from "../components/SkillViewUser";
+import SkillViewAdmin from "../modules/recruiter/components/SkillViewAdmin";
+import SkillViewUser from "../modules/recruiter/components/SkillViewUser";
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -36,6 +36,8 @@ export const Routers = () => {
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/Skills" element={<SkillViewAdmin />} />
+          <Route path="/Skill" element={<SkillViewUser />} />
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin/dash" element={<AdminDashboardPage />} />

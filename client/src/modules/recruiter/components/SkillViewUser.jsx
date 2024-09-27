@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
-import styles from "../../public/css/SkillViewUser.module.css";
+import styles from "../../../../public/css/SkillViewUser.module.css";
+import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap
 
 // Función para obtener habilidades desde el backend
 const fetchSkills = async (searchQuery = '', page = 1, limit = 8) => {
@@ -65,15 +66,13 @@ const linkSkill = async (skillId) => {
   const token = localStorage.getItem('token');
 
   if (!token) {
-    console.error('Token no disponible, inicie sesión nuevamente');
-    return;
+    throw new Error('Token no disponible, inicie sesión nuevamente');
   }
 
   try {
     const userId = await fetchUserId();
     if (!userId) {
-      console.error('userId no disponible');
-      return;
+      throw new Error('userId no disponible');
     }
 
     const response = await fetch('http://localhost:4000/add-skill', {
@@ -95,7 +94,7 @@ const linkSkill = async (skillId) => {
     return result.skill; // Asegúrate de retornar solo la habilidad vinculada
   } catch (error) {
     console.error('Error linking skill:', error);
-    alert('Error al vincular la habilidad: ' + error.message);
+    throw error; // Re-lanzar el error para manejarlo en el componente
   }
 };
 
@@ -104,8 +103,7 @@ const unlinkSkill = async (skillId) => {
   const token = localStorage.getItem('token');
 
   if (!token) {
-    console.error('Token no disponible, inicie sesión nuevamente');
-    return;
+    throw new Error('Token no disponible, inicie sesión nuevamente');
   }
 
   try {
@@ -128,7 +126,7 @@ const unlinkSkill = async (skillId) => {
     return result;
   } catch (error) {
     console.error('Error unlinking skill:', error);
-    alert('Error al desvincular la habilidad: ' + error.message);
+    throw error; // Re-lanzar el error para manejarlo en el componente
   }
 };
 
@@ -139,7 +137,7 @@ export default function SkillViewUser() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
@@ -150,56 +148,89 @@ export default function SkillViewUser() {
         setSkills(data.skills);
         setTotalPages(data.totalPages);
       } catch (err) {
-        setError('Error al cargar habilidades: ' + err.message);
+        setErrorMessage('Error al cargar habilidades: ' + err.message);
         console.error('Error en loadSkills:', err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    const loadUserSkills = async () => {
-      const userId = await fetchUserId();
-      if (userId) {
-        const userSkills = await fetchUserSkills(userId);
-        setLinkedSkills(userSkills);
-      }
-    };
-
     loadSkills();
-    loadUserSkills(); // Cargar habilidades vinculadas
   }, [searchQuery, page]);
 
+  // Debounce para la búsqueda
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const loadUserSkills = async () => {
+        try {
+          const userId = await fetchUserId();
+          if (userId) {
+            const userSkills = await fetchUserSkills(userId);
+            setLinkedSkills(userSkills);
+          }
+        } catch (err) {
+          setErrorMessage('Error al cargar habilidades vinculadas: ' + err.message);
+          console.error('Error en loadUserSkills:', err.message);
+        }
+      };
+
+      loadUserSkills();
+    }, 300); // Ajusta el tiempo de debounce aquí (300 ms)
+
+    return () => {
+      clearTimeout(handler); // Limpiar el timeout
+    };
+  }, [searchQuery]); // Dependencia del estado de búsqueda
+
   const handleLinkSkill = async (skillId) => {
-    const result = await linkSkill(skillId);
-    if (result) {
-      // Actualizar el estado de habilidades vinculadas
-      setLinkedSkills(prev => [...prev, result]);
+    try {
+      const result = await linkSkill(skillId);
+      if (result) {
+        // Actualizar el estado de habilidades vinculadas inmediatamente
+        setLinkedSkills(prev => [...prev, result]);
 
-      // Actualizar el estado de habilidades disponibles para marcar la habilidad como vinculada
-      setSkills(prevSkills =>
-        prevSkills.map(skill =>
-          skill.id === result.id ? { ...skill, linked: true } : skill
-        )
-      );
+        // Actualizar el estado de habilidades disponibles, marcando la habilidad como vinculada
+        setSkills(prevSkills =>
+          prevSkills.map(skill =>
+            skill.id === result.id ? { ...skill, linked: true } : skill
+          )
+        );
 
-      setSuccessMessage('Habilidad vinculada con éxito!');
+        // Mostrar mensaje de éxito
+        setSuccessMessage('Habilidad vinculada con éxito!');
+        
+        // Limpiar el mensaje después de 3 segundos
+        setTimeout(() => setSuccessMessage(''), 3000);
+      }
+    } catch (error) {
+      setErrorMessage('Error al vincular la habilidad: ' + error.message);
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
   const handleUnlinkSkill = async (skillId) => {
-    const result = await unlinkSkill(skillId);
-    if (result) {
-      // Actualizar el estado de habilidades vinculadas
-      setLinkedSkills(prev => prev.filter(skill => skill.id !== skillId));
+    try {
+      const result = await unlinkSkill(skillId);
+      if (result) {
+        // Actualizar el estado de habilidades vinculadas
+        setLinkedSkills(prev => prev.filter(skill => skill.id !== skillId));
 
-      // Actualizar el estado de habilidades disponibles para marcar la habilidad como desvinculada
-      setSkills(prevSkills =>
-        prevSkills.map(skill =>
-          skill.id === skillId ? { ...skill, linked: false } : skill
-        )
-      );
+        // Actualizar el estado de habilidades disponibles para marcar la habilidad como desvinculada
+        setSkills(prevSkills =>
+          prevSkills.map(skill =>
+            skill.id === skillId ? { ...skill, linked: false } : skill
+          )
+        );
 
-      setSuccessMessage('Habilidad desvinculada con éxito!');
+        // Mostrar mensaje de éxito
+        setSuccessMessage('Habilidad desvinculada con éxito!');
+        
+        // Limpiar el mensaje después de 3 segundos
+        setTimeout(() => setSuccessMessage(''), 3000);
+      }
+    } catch (error) {
+      setErrorMessage('Error al desvincular la habilidad: ' + error.message);
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
@@ -220,12 +251,16 @@ export default function SkillViewUser() {
     if (page > 1) setPage(page - 1);
   };
 
+  const closeSuccessMessage = () => {
+    setSuccessMessage('');
+  };
+
+  const closeErrorMessage = () => {
+    setErrorMessage(null);
+  };
+
   if (loading) {
     return <p>Cargando habilidades...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
   }
 
   return (
@@ -244,7 +279,24 @@ export default function SkillViewUser() {
         />
       </div>
 
+      {/* Mostrar mensaje de éxito */}
+      {successMessage && (
+        <div className="alert alert-success alert-dismissible fade show" role="alert">
+          {successMessage}
+          <button type="button" className="btn-close" aria-label="Close" onClick={closeSuccessMessage}></button>
+        </div>
+      )}
+
+      {/* Mostrar mensaje de error */}
+      {errorMessage && (
+        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+          {errorMessage}
+          <button type="button" className="btn-close" aria-label="Close" onClick={closeErrorMessage}></button>
+        </div>
+      )}
+
       {skills.length > 0 ? (
+
         <ul className={styles.skillList}>
           {skills.map(skill => (
             <li key={skill.id} className={styles.skill}>
@@ -254,7 +306,7 @@ export default function SkillViewUser() {
                   <span className={styles.linked}>Vinculada</span>
                   <button
                     onClick={() => handleUnlinkSkill(skill.id)}
-                    className={styles.unlinkButton}
+                    className={`${styles.unlinkButton} btn btn-danger btn-sm ms-2`}
                   >
                     Desvincular
                   </button>
@@ -262,7 +314,7 @@ export default function SkillViewUser() {
               ) : (
                 <button
                   onClick={() => handleLinkSkill(skill.id)}
-                  className={styles.linkButton}
+                  className={`${styles.linkButton} btn btn-primary btn-sm ms-2`}
                 >
                   Aprender
                 </button>
@@ -274,14 +326,12 @@ export default function SkillViewUser() {
         <p className={styles.emptyMessage}>No se encontraron habilidades.</p>
       )}
       
-      {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
-
       <div className={styles.pagination}>
-        <button className={styles.pageButton} onClick={prevPage} disabled={page === 1}>
+        <button className="btn btn-info me-2" onClick={prevPage} disabled={page === 1}>
           Anterior
         </button>
-        <span className="mt-3">Página {page} de {totalPages}</span>
-        <button className={styles.pageButton} onClick={nextPage} disabled={page === totalPages}>
+        <span className="mx-3">Página {page} de {totalPages}</span>
+        <button className="btn btn-info ms-2" onClick={nextPage} disabled={page === totalPages}>
           Siguiente
         </button>
       </div>

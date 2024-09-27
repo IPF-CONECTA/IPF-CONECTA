@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUserSkills, linkSkillToUser, unlinkSkill } from './skillUserController.js'; // Asegúrate de importar unlinkSkill
+import { getUserSkills, linkSkillToUser, unlinkSkill } from './skillsUserController.js'; // Asegúrate de importar unlinkSkill
 import { isToken } from '../../../middlewares/jwt/isVerifiedAccount.js';
 
 const SkillUserRouter = Router();

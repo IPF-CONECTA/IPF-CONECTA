@@ -8,6 +8,7 @@ import ubicationRoutes from "./modules/ubications/ubicationRoutes.js";
 import associationRoutes from "./modules/recruiters/associations/associationRoutes.js";
 import companyIndustriesRoutes from "./modules/recruiters/companies/companyIndustry/companyIndustryRoutes.js";
 import skillsRoutes from "./modules/skills/skillsRoutes.js";
+import SkillUserRouter from "./modules/users/skills_user/skillsUserRoutes.js";
 import postRoutes from "./modules/posts/postRoutes.js";
 import followerRoutes from "./modules/followers/followerRoutes.js";
 import repostRoutes from "./modules/posts/reposts/repostRoutes.js";
@@ -23,6 +24,7 @@ import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/users/project/projectRoutes.js";
 import ideaRoutes from "./modules/ideas/ideaRoutes.js";
 import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
+
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -34,6 +36,7 @@ export const routes = (app) => {
   app.use(ubicationRoutes);
   app.use(companyIndustriesRoutes);
   app.use(skillsRoutes);
+  app.use(SkillUserRouter)
   app.use("/feed", postRoutes);
   app.use(followerRoutes);
   app.use(repostRoutes);

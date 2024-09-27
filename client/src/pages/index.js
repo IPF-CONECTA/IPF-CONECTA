@@ -1,5 +1,4 @@
 //Admin pages:
-
 export { AdminAssociationsPanelPage } from "../modules/admin/pages/AdminAssociationsPanelPage";
 export { AdminCompaniesPanelPage } from "../modules/admin/pages/AdminCompaniesPanelPage";
 export { AdminDashboardPage } from "../modules/admin/pages/AdminDashboardPage";
