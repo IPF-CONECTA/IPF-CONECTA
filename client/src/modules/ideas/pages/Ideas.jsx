@@ -11,7 +11,9 @@ export const Ideas = () => {
         <div className={`${styles.innovativeIdeas} mx-3`}>
           <ListOfIdeas />
         </div>
-        <div className={`${styles.rankingSection}`}>
+        <div className={`${styles.rankingSection} p-4`}>
+          <h2 className="text-center text-success mb-4">Proyectos favoritos</h2>
+
           <RankingList />
         </div>
       </div>

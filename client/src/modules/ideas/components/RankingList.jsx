@@ -6,7 +6,7 @@ import {
   getRankingIdeasLogged,
 } from "../services/ideaServices";
 import { useNoti } from "../../../hooks/useNoti";
-
+import styles from "../../../../public/css/ranking.module.css";
 export const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
   const { authState } = useContext(authContext);
@@ -33,28 +33,24 @@ export const RankingList = () => {
     return () => {
       document.head.removeChild(link);
     };
-  }, [authState, noti]);
+  }, [authState]);
 
   return (
-    <div className="container my-5 p-4 bg-light shadow-sm rounded">
-      <h2
-        className="text-center text-success mb-4"
-        style={{ fontFamily: "Roboto, sans-serif" }}
-      >
-        Proyectos con más Favoritos
-      </h2>
-      <div className="row row-cols-1 row-cols-md-2 g-4">
+    <div className="container rounded w-50">
+      <div className="row row-cols-1  g-4">
         {ideas.map((idea, index) => (
           <div className="col" key={idea.id}>
-            <div className={`position-relative p-3 border rounded shadow-sm`}>
+            <div className={`position-relative rounded shadow-sm`}>
               <span
                 className={`position-absolute top-0 start-0 translate-middle badge rounded-pill ${
+                  styles.placeIcon
+                } ${
                   index === 0
                     ? "bg-warning text-dark"
                     : index === 1
                     ? "bg-secondary"
                     : index === 2
-                    ? "bg-danger"
+                    ? `${styles.thirdPlace}`
                     : "bg-success text-white"
                 }`}
               >

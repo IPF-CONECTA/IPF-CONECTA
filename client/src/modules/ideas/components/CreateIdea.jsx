@@ -101,9 +101,12 @@ export const IdeaProjects = () => {
       <Row className="justify-content-center mb-4">
         <Col md={6} lg={5}>
           <Card className="shadow-lg">
-            <Card.Body>
-              <h3 className="text-center mb-4">Añadir Nueva Idea</h3>
-              <Form onSubmit={handleAddIdea}>
+            <Card.Body className="p-4">
+              <span className="fw-semibold fs-3 ">Añadir Nueva Idea</span>
+              <Form
+                onSubmit={handleAddIdea}
+                className="border-0 shadow-none p-0"
+              >
                 <Form.Group controlId="formTitle" className="mb-3">
                   <Form.Label>Título</Form.Label>
                   <Form.Control
@@ -133,6 +136,7 @@ export const IdeaProjects = () => {
                   <Form.Label>Categoría</Form.Label>
                   <Form.Control
                     as="select"
+                    className="w-100"
                     value={newIdea.category}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, category: e.target.value })
@@ -150,6 +154,7 @@ export const IdeaProjects = () => {
                   <Form.Label>Estado</Form.Label>
                   <Form.Control
                     as="select"
+                    className="w-100"
                     value={newIdea.state}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, state: e.target.value })
@@ -160,11 +165,11 @@ export const IdeaProjects = () => {
                     <option>Finalizado</option>
                   </Form.Control>
                 </Form.Group>
-                <center>
+                <div className="d-flex justify-content-end">
                   <Button variant="primary" type="submit" className="mt-3">
                     Añadir Idea
                   </Button>
-                </center>
+                </div>
               </Form>
             </Card.Body>
           </Card>
@@ -200,7 +205,9 @@ export const IdeaProjects = () => {
                     </Card>
                   ))
                 ) : (
-                  <p className="text-center text-muted">No hay ideas disponibles.</p>
+                  <p className="text-center text-muted">
+                    No hay ideas disponibles.
+                  </p>
                 )}
               </div>
             </Card.Body>

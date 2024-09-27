@@ -8,7 +8,9 @@ export const ListOfIdeas = () => {
   const noti = useNoti();
   const [ideas, setIdeas] = useState([]);
   const { authState } = useContext(authContext);
-
+  useEffect(() => {
+    console.log(ideas);
+  }, [ideas]);
   const fetchIdeas = async () => {
     const res = authState.isLogged ? await getIdeasLogged() : await getIdeas();
     if (res.status !== 200) {
@@ -19,10 +21,10 @@ export const ListOfIdeas = () => {
 
   useEffect(() => {
     fetchIdeas();
-  }, [authState]);
+  }, []);
 
   return (
-    <div className="container my-5 p-4 bg-light shadow-sm rounded">
+    <div className="container p-4 bg-light shadow-sm rounded">
       <h2 className="text-center text-primary mb-4">Nuevas Ideas</h2>
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {ideas.map((idea) => (

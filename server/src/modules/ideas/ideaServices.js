@@ -28,7 +28,7 @@ export const getIdeasSvc = async (id) => {
                 },
 
             ],
-            limit: 5,
+            limit: 6,
             attributes: {
                 include: [
                     [
@@ -66,7 +66,7 @@ export const getIdeasOrderByVotesSvc = async (id) => {
                     attributes: ['id', 'profileId'],
                 },
             ],
-            limit: 5,
+            limit: 3,
             attributes: {
                 include: [
                     [

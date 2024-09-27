@@ -27,7 +27,7 @@ export const IdeaCard = ({ idea }) => {
 
   return (
     <div
-      className="card h-100 shadow-sm border-0 cursor-pointer"
+      className={`card h-100 shadow-sm border-0 cursor-pointer ${styles.ideaCard}`}
       onClick={() => navigate(`/idea/${idea.id}`)} // Navegación al detalle de la idea
     >
       <div className="card-body d-flex flex-column">
@@ -35,7 +35,7 @@ export const IdeaCard = ({ idea }) => {
         <p className="card-text text-muted flex-grow-1">{idea.description}</p>
         <div className="d-flex justify-content-between align-items-center mt-3">
           <button
-            className="btn btn-light"
+            className="btn btn-light d-flex"
             onClick={(e) => {
               e.stopPropagation();
               authState.isLogged

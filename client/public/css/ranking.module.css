@@ -25,3 +25,11 @@
 .ideaInfo {
   flex: 1;
 }
+
+.thirdPlace {
+  background-color: #ce8946;
+}
+
+.placeIcon {
+  z-index: 1000;
+}
