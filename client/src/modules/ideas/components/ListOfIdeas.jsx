@@ -22,11 +22,13 @@ export const ListOfIdeas = () => {
   }, [authState]);
 
   return (
-    <div className="project-list">
-      <h2 className="section-title">Nuevas ideas</h2>
-      <div className="project-grid">
+    <div className="container my-5 p-4 bg-light shadow-sm rounded">
+      <h2 className="text-center text-primary mb-4">Nuevas Ideas</h2>
+      <div className="row row-cols-1 row-cols-md-2 g-4">
         {ideas.map((idea) => (
-          <IdeaCard key={idea.id} idea={idea} />
+          <div className="col" key={idea.id}>
+            <IdeaCard idea={idea} />
+          </div>
         ))}
       </div>
     </div>

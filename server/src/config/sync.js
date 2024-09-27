@@ -47,12 +47,14 @@ import {
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
 import { Project } from "../modules/users/project/projectModel.js";
+import { Idea } from "../modules/ideas/ideaModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
   console.log("Tables created successfully");
+
 
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||

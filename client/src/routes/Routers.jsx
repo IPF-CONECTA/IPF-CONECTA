@@ -24,6 +24,8 @@ import {
   SupportPage,
   WaitingAssociationsApprovalPage,
   Ideas,
+  CreateIdeas,
+  DetailsIdeas,
 } from "../pages";
 
 export const Routers = () => {
@@ -76,6 +78,8 @@ export const Routers = () => {
         <Route path="/contacto" element={<SupportPage />} />
         <Route path="/nuevo-empleo" element={<JobCreatePage />} />
         <Route path="/ideas-de-proyectos" element={<Ideas />} />
+        <Route path="/idea/:ideaId" element={<DetailsIdeas />} />
+        <Route path="/crear-idea" element={<CreateIdeas />} />
       </Routes>
     </BrowserRouter>
   );

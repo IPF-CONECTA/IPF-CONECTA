@@ -2,7 +2,7 @@ import React from "react";
 import { ListOfIdeas } from "../components/ListOfIdeas";
 import { RankingList } from "../components/RankingList";
 import styles from "../../../../public/css/ideas.module.css";
-import { Nav } from "../../ui/components";
+import { Nav, Footer } from "../../ui/components";
 export const Ideas = () => {
   return (
     <>
@@ -15,6 +15,7 @@ export const Ideas = () => {
           <RankingList />
         </div>
       </div>
+      <Footer />
     </>
   );
 };

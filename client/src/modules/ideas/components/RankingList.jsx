@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import styles from "../../../../public/css/ranking.module.css";
 import { IdeaCard } from "./IdeaCard";
 import { authContext } from "../../../context/auth/Context";
 import {
@@ -12,36 +11,60 @@ export const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
   const { authState } = useContext(authContext);
   const noti = useNoti();
+
   useEffect(() => {
+    const link = document.createElement("link");
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
     const fetchRanking = async () => {
-      try {
-        const res = authState.isLogged
-          ? await getRankingIdeasLogged()
-          : await getRankingIdeas();
-
-        if (res.status !== 200) {
-          return noti(res.error || "hubo un error", "error");
-        }
-
-        setIdeas(res.data);
-      } catch (error) {
-        console.error("Error fetching ranking:", error);
-      }
+      const res = authState.isLogged
+        ? await getRankingIdeasLogged()
+        : await getRankingIdeas();
+      if (res.status !== 200)
+        return noti(res.error || "Hubo un error", "error");
+      setIdeas(res.data);
     };
 
     fetchRanking();
-  }, [authState]);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, [authState, noti]);
 
   return (
-    <div className={`${styles.rankingContainer} shadow-sm`}>
-      <span className="text-center fs-3 fw-semibold text-dark mb-2">
-        Proyectos con más favoritos
-      </span>
-      <ul className="p-0">
-        {ideas.map((idea) => (
-          <IdeaCard key={idea.id} idea={idea} />
+    <div className="container my-5 p-4 bg-light shadow-sm rounded">
+      <h2
+        className="text-center text-success mb-4"
+        style={{ fontFamily: "Roboto, sans-serif" }}
+      >
+        Proyectos con más Favoritos
+      </h2>
+      <div className="row row-cols-1 row-cols-md-2 g-4">
+        {ideas.map((idea, index) => (
+          <div className="col" key={idea.id}>
+            <div className={`position-relative p-3 border rounded shadow-sm`}>
+              <span
+                className={`position-absolute top-0 start-0 translate-middle badge rounded-pill ${
+                  index === 0
+                    ? "bg-warning text-dark"
+                    : index === 1
+                    ? "bg-secondary"
+                    : index === 2
+                    ? "bg-danger"
+                    : "bg-success text-white"
+                }`}
+              >
+                {index + 1}
+              </span>
+              <IdeaCard idea={idea} />
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
