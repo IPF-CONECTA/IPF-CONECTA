@@ -49,3 +49,13 @@ export const getProfileByUsername = async (id, username) => {
         throw error
     }
 }
+
+export const getProfileById = async (id) => {
+    try {
+        const profile = await Profile.findByPk(id)
+        if (!profile) throw new error("No se encontro el perfil")
+        return profile
+    } catch (error) {
+        throw error
+    }
+}

@@ -7,7 +7,7 @@ export const Association = sequelize.define('association', {
         primaryKey: true,
         allowNull: false
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     },

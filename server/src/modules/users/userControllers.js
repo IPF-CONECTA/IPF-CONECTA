@@ -1,5 +1,5 @@
 
-import { createUser, getUserInfoSvc, getRecomendedUsersSvc, getUsers, getUserById } from './userServices.js';
+import { createUser, getProfileInfoSvc, getRecomendedUsersSvc, getUsers } from './userServices.js';
 
 export const getUsersController = async (_req, res) => {
     try {
@@ -22,7 +22,7 @@ export const getUserByIdCtrl = async (req, res) => {
         const { profileId } = req.params;
         if (!id || !profileId) return res.status(400).json();
         if (id == profileId) return res.status(400)
-        const profile = await getUserInfoSvc(id, profileId);
+        const profile = await getProfileInfoSvc(id, profileId);
         if (!profile) return res.status(404).json();
 
         res.status(200).json(profile)
@@ -37,7 +37,7 @@ export const getUserInfoCtrl = async (req, res) => {
     const { profileId } = req.params;
     try {
         if (id == profileId) return res.status(400).json()
-        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
+        const { profile, following, cantFollowers, cantFollowing } = await getProfileInfoSvc(id, profileId)
         console.log(profile)
         if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' })

@@ -14,7 +14,7 @@ export const LangsUser = sequelize.define('langsUser', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     },

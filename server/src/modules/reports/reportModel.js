@@ -14,7 +14,7 @@ export const Report = sequelize.define('report', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    userId: {
+    profileId: {
         allowNull: false,
         type: DataTypes.UUID,
     }

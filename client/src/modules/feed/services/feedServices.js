@@ -181,8 +181,8 @@ export const getExperiences = async (profileId) => {
       }
     );
 
-    return res.data, res.status;
+    return { data: res.data, status: res.status };
   } catch (error) {
-    return error.status;
+    return { status: error.status };
   }
 };

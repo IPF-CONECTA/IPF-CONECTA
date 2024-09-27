@@ -6,7 +6,7 @@ export const Certification = sequelize.define('certification', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     },

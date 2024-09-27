@@ -6,7 +6,7 @@ export const Contact = sequelize.define('contact', {
         primaryKey: true,
         autoIncrement: true
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     },

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../users/userModel.js";
 
-export const getAllCompaniesCtrl = async (req, res) => {
+export const getAllCompaniesCtrl = async (_req, res) => {
     try {
         const companies = await getAllCompaniesCtrl()
         if (companies.length === 0) {

@@ -10,6 +10,8 @@ import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
 import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
+import { getSkills } from "../project/skills/services";
+import { SkillsContainer } from "../skills/components/SkillsContainer";
 
 export const Profile = () => {
   const noti = useNoti();
@@ -17,41 +19,49 @@ export const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
   const [projects, setProjects] = useState([]);
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const res = await getProfile(username);
-      if (res.status !== 200) {
-        return noti(res.message, "error");
-      }
-      setProfileData(res.data);
-    };
+  const [skills, setSkills] = useState([]);
 
-    fetchProfile(username);
-  }, [username]);
+  const fetchProfile = async () => {
+    const res = await getProfile(username);
+    if (res.status !== 200) {
+      return noti(res.message, "error");
+    }
+    setProfileData(res.data);
+  };
 
-  const fetchProyects = async () => {
+  const fetchProjects = async () => {
     const res = await projectsService.getProjects(profileData.profile.id);
     if (res.status !== 200) {
       return noti("error", "error");
     }
     setProjects(res.data);
   };
+  const fetchExperiences = async () => {
+    const res = await getExperiences(profileData.profile.id);
+    if (res.status !== 200 && res.status !== 404) {
+      return noti("error", "error");
+    }
+    if (res.status === 200) {
+      setExperiences(res.data);
+    }
+  };
+  const fetchSkills = async () => {
+    const res = await getSkills(profileData.profile.id);
+    if (res.status !== 200) {
+      return noti("Hubo un error la obtener las habilidades");
+    }
+
+    setSkills(res.data);
+  };
 
   useEffect(() => {
+    fetchProfile(username);
+  }, [username]);
+  useEffect(() => {
     if (profileData && profileData.profile) {
-      const fetchExperiences = async (id) => {
-        const res = await getExperiences(id);
-        if (res !== 200 && res !== 404) {
-          return noti("error", "error");
-        }
-        if (res.status === 200) {
-          setExperiences(res.data);
-        }
-      };
-
-      fetchExperiences(profileData.profile.id);
-
-      fetchProyects();
+      fetchExperiences();
+      fetchProjects();
+      fetchSkills();
     }
   }, [profileData]);
 
@@ -82,7 +92,14 @@ export const Profile = () => {
                   username={profileData.profile.user.username}
                   names={profileData.profile.names}
                   projectsData={projects}
-                  onProjectSubmit={fetchProyects}
+                  onProjectSubmit={fetchProjects}
+                />
+              )}
+              {(profileData.own || skills.length > 0) && (
+                <SkillsContainer
+                  skills={skills}
+                  own={profileData.own}
+                  onSkillSubmit={fetchSkills}
                 />
               )}
             </main>

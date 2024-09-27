@@ -16,3 +16,13 @@ export const findSkillSvc = async (query) => {
         throw new Error('Error en la búsqueda de habilidades')
     }
 }
+
+export const getSkillByPk = async (id) => {
+    try {
+        const skill = Skill.findByPk(id)
+        if (!skill) throw new Error("No se encontró la skill")
+        return skill
+    } catch (error) {
+        throw error
+    }
+}

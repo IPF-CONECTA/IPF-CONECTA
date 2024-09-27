@@ -1,6 +1,6 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
 
-export const SkillsUser = sequelize.define('skillsUser', {
+export const SkillsProfile = sequelize.define('skillsProfile', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -10,7 +10,7 @@ export const SkillsUser = sequelize.define('skillsUser', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    userId: {
+    profileId: {
         type: DataTypes.UUID,
         allowNull: false
     },

@@ -23,6 +23,7 @@ import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/users/project/projectRoutes.js";
 import ideaRoutes from "./modules/ideas/ideaRoutes.js";
 import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
+import SkillProfileRoutes from "./modules/users/skills_user/skillProfileRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -49,4 +50,5 @@ export const routes = (app) => {
   app.use(projectRoutes);
   app.use(ideaRoutes);
   app.use(voteRoutes)
+  app.use(SkillProfileRoutes)
 };

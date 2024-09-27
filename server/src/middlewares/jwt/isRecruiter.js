@@ -33,7 +33,7 @@ export const isApprovedAssociation = async (req, res, next) => {
     if (!token) throw new Error("Inicie sesion para continuar");
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
     const association = Association.findOne({
-      where: { userId: userId, companyId: companyId },
+      where: { profileId: userId, companyId: companyId },
     });
     if (!association)
       throw new Error("No tiene permiso para realizar esta accion");

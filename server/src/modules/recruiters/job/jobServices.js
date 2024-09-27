@@ -15,7 +15,7 @@ import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryMod
 import { Profile } from "../../profile/profileModel.js";
 import { JobPostulation } from "./jobPostulation/jobPostulationModel.js";
 
-export const createNewJobSvc = async (jobOffer, userId) => {
+export const createNewJobSvc = async (jobOffer, profileId) => {
   try {
     const isCompany = await Company.findByPk(jobOffer.companyId);
 
@@ -23,7 +23,7 @@ export const createNewJobSvc = async (jobOffer, userId) => {
     const newJob = await Job.create(
       {
         companyId: jobOffer.companyId,
-        userId: userId,
+        profileId: profileId,
         title: jobOffer.title,
         modalityId: jobOffer.modalityId,
         description: jobOffer.description,
@@ -79,7 +79,7 @@ export const getJobsSvc = async () => {
 export const getJobByIdSvc = async (id, profileId) => {
   try {
     const job = await Job.findByPk(id, {
-      attributes: { exclude: ["active", "companyId", "userId", "updatedAt"] },
+      attributes: { exclude: ["active", "companyId", "profileId", "updatedAt"] },
       include: [
         {
           model: Company,

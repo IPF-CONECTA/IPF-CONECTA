@@ -16,7 +16,7 @@ import { CompanyIndustry } from "../modules/recruiters/companies/companyIndustry
 import { Company } from "../modules/recruiters/companies/companyModel.js";
 import { Association } from "../modules/recruiters/associations/associationModel.js";
 import { LangsUser } from "../modules/users/langs_user/langsUserModel.js";
-import { SkillsUser } from "../modules/users/skills_user/skillsUserModel.js";
+import { SkillsProfile } from "../modules/users/skills_user/skillProfileModel.js";
 import { Job } from "../modules/recruiters/job/jobModel.js";
 import { ContractType } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js";
@@ -78,7 +78,7 @@ export const createRelations = async () => {
       as: "posts",
     });
     Profile.hasMany(LangsUser, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     LangsUser.belongsTo(Lang, {
       foreignKey: "langId",
@@ -87,7 +87,7 @@ export const createRelations = async () => {
       foreignKey: "langLevelId",
     });
     LangsUser.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
 
     //Projects
@@ -128,7 +128,7 @@ export const createRelations = async () => {
     });
 
     Profile.hasMany(Repost, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Post.hasMany(Like, {
       foreignKey: "postId",
@@ -137,11 +137,11 @@ export const createRelations = async () => {
       foreignKey: "postId",
     });
     Profile.hasMany(Like, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
       as: "likes",
     });
     Like.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Post.hasMany(Report, {
       foreignKey: "postId",
@@ -163,10 +163,10 @@ export const createRelations = async () => {
       foreignKey: "postId",
     });
     Profile.hasMany(Report, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Report.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     ReportReason.hasMany(Report, {
       foreignKey: "reasonId",
@@ -204,13 +204,13 @@ export const createRelations = async () => {
     Profile.belongsTo(UserState, {
       foreignKey: "userStateId",
     });
-    Profile.hasMany(SkillsUser, {
-      foreignKey: "userId",
+    Profile.hasMany(SkillsProfile, {
+      foreignKey: "profileId",
     });
-    SkillsUser.belongsTo(Skill, {
+    SkillsProfile.belongsTo(Skill, {
       foreignKey: "skillId",
     });
-    Skill.hasMany(SkillsUser, {
+    Skill.hasMany(SkillsProfile, {
       foreignKey: "skillId",
     });
     CompanyIndustry.hasMany(Company, {
@@ -223,11 +223,11 @@ export const createRelations = async () => {
       foreignKey: "companyId",
     });
     Profile.hasMany(Association, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
       as: "profile",
     });
     Association.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
       as: "profile",
     });
     Association.belongsTo(Company, {
@@ -242,10 +242,10 @@ export const createRelations = async () => {
       foreignKey: "modalityId",
     });
     Profile.hasMany(Job, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
     Job.belongsTo(Profile, {
-      foreignKey: "userId",
+      foreignKey: "profileId",
     });
 
     Job.belongsTo(Company, {
