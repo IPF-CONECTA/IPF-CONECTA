@@ -1,0 +1,27 @@
+.rankingContainer {
+  max-width: 400px;
+}
+
+/* .ranking-list {
+  list-style-type: none;
+  padding: 0;
+} */
+
+.rankingItem {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.rankingItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.rankingcon {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.ideaInfo {
+  flex: 1;
+}

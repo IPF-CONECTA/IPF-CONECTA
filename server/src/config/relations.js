@@ -29,6 +29,8 @@ import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { Profile } from "../modules/profile/profileModel.js";
 import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
 import { Project } from "../modules/users/project/projectModel.js";
+import { Vote } from "../modules/ideas/votes/voteModel.js";
+import { Idea } from "../modules/ideas/ideaModel.js";
 
 export const createRelations = async () => {
   try {
@@ -277,6 +279,24 @@ export const createRelations = async () => {
       foreignKey: "skillId",
     });
     Profile.hasMany(WorkExperience, {
+      foreignKey: "profileId",
+    });
+    Idea.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+    Profile.hasMany(Idea, {
+      foreignKey: "profileId",
+    });
+    Vote.belongsTo(Idea, {
+      foreignKey: "ideaId",
+    });
+    Idea.hasMany(Vote, {
+      foreignKey: "ideaId",
+    });
+    Vote.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+    Profile.hasMany(Vote, {
       foreignKey: "profileId",
     });
   } catch (error) {

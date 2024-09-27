@@ -21,7 +21,8 @@ import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.j
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
 import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/users/project/projectRoutes.js";
-
+import ideaRoutes from "./modules/ideas/ideaRoutes.js";
+import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -46,4 +47,6 @@ export const routes = (app) => {
   app.use(jobPostulationRoutes);
   app.use(aboutRoutes)
   app.use(projectRoutes);
+  app.use(ideaRoutes);
+  app.use(voteRoutes)
 };

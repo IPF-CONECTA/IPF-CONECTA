@@ -91,7 +91,7 @@ export const authLogInSvc = async (user) => {
       }
     })
     if (!isUser) {
-      throw new Error('No se encontro una cuenta con ese email')
+      throw new Error('No se encontro una cuenta con ese email o nombre de usuario')
     }
     const validPassword = await bcrypt.compare(user.password, isUser.password);
     if (!validPassword) throw new Error("Contraseña incorrecta");

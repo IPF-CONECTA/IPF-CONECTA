@@ -21,14 +21,14 @@ projectRoutes.post(
   createProjectCtrl
 );
 projectRoutes.get("/projects/:profileId", isToken, getProjectsCtrl);
-projectRoutes.get("/:id", isToken, getProjectByIdCtrl);
+projectRoutes.get("/project/:id", isToken, getProjectByIdCtrl);
 projectRoutes.patch(
-  "/:id",
+  "/project/:id",
   isToken,
   updateProjectSchema,
   validateSchema,
   updateProjectCtrl
 );
-projectRoutes.delete("/:id", isToken, deleteProjectCtrl);
+projectRoutes.delete("/project/:id", isToken, deleteProjectCtrl);
 
 export default projectRoutes;

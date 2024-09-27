@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./app.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Layout } from "./components/Layout.jsx";
+import { Layout } from "./modules/ui/components";
 import { SnackbarProvider } from "notistack";
 import { AuthProvider } from "./context/auth/Provider.jsx";
 
