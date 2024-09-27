@@ -25,7 +25,7 @@ const ProjectCard = ({ project, username }) => {
 
           <button className="btn btn-light border rounded px-2 py-0">
             <Link
-              to={`/${username}/proyectos/${project.id}`}
+              to={`${project.projectLink}`}
               className="text-decoration-none text-secondary fw-semibold"
             >
               Ver
