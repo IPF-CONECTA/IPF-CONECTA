@@ -18,17 +18,11 @@ import companyUbicationRoutes from "./modules/recruiters/companies/companyUbicat
 import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
 import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
-<<<<<<< HEAD
-import ideaRouter from "./modules/ideaProject/ideaRoute.js"
-import voteRouter from "./modules/votesProjects/voteRoute.js"
-
-=======
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
 import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/users/project/projectRoutes.js";
 import ideaRoutes from "./modules/ideas/ideaRoutes.js";
 import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
->>>>>>> main
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -47,12 +41,6 @@ export const routes = (app) => {
   app.use(contractTypeRoutes);
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
-<<<<<<< HEAD
-  app.use(profileRoutes)
-  app.use(experienceRoutes)
-  app.use(ideaRouter)
-  app.use(voteRouter)
-=======
   app.use(profileRoutes);
   app.use(experienceRoutes);
   app.use(uploadRoutes);
@@ -61,5 +49,4 @@ export const routes = (app) => {
   app.use(projectRoutes);
   app.use(ideaRoutes);
   app.use(voteRoutes)
->>>>>>> main
 };

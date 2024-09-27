@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-export * from "./AssociationsPanelPage";
-export * from "./CompaniesPanelPage";
-export * from "./CompanyConfirmedPage";
-export * from "./CompanyRegisterPage";
-export * from "./CreateCompanyUbicationPage";
-export * from "./CreateJobsFormPage";
-export * from "./FeedPage";
-export * from "./HomePage";
-export * from "./JobsDetailsPage";
-export * from "./JobSearchPage";
-export * from "./LoginPage";
-export * from "./NotFoundPage";
-export * from "./RegisterPage";
-export * from "./MessageRecruiterPage";
-export * from "./SelectCompanyPage";
-export * from "./PostPage";
-export * from "./ProfilePage";
-export * from "./SupportPage";
-export * from "./CreateJobsFormPage";
-export * from "./AdminDashboardPage";
-export * from "./WaitingAssociationsApprovedPage";
-export * from "./IdeaProjectsPage";
-export * from "./IdeaDetailsPage";
-export * from "./PanelVotePage";
-=======
 //Admin pages:
 
 export { AdminAssociationsPanelPage } from "../modules/admin/pages/AdminAssociationsPanelPage";
@@ -70,4 +44,5 @@ export { JobDetailsPage } from "../modules/recruiter/job/pages/JobsDetailsPage";
 
 // Projects ideas
 export { Ideas } from "../modules/ideas/pages/Ideas"
->>>>>>> main
+export { DetailsIdeas } from "../modules/ideas/pages/IdeaDetailsPage"
+export { CreateIdeas } from "../modules/ideas/pages/CreateIdeaPage"

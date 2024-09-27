@@ -23,16 +23,9 @@ import {
   SelectCompanyPage,
   SupportPage,
   WaitingAssociationsApprovalPage,
-<<<<<<< HEAD
-  AdminDashboardPage,
-  CompaniesPanelPage,
-  AssociationsPanelPage,
-  IdeaProjectsPage,
-  IdeaDetailsPage,
-  PanelVotePage
-=======
   Ideas,
->>>>>>> main
+  CreateIdeas,
+  DetailsIdeas,
 } from "../pages";
 
 export const Routers = () => {
@@ -68,7 +61,6 @@ export const Routers = () => {
         <Route path="/registrate" element={<RegisterPage />} />
         <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
         <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
-        <Route path="/idea/:ideaId" element={<IdeaDetailsPage />} />
         <Route
           path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
@@ -84,14 +76,10 @@ export const Routers = () => {
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
-<<<<<<< HEAD
-        <Route path="/nuevo-empleo" element={<CreateJobsFormPage />} />
-        <Route path="/proyectos-ideas" element={<IdeaProjectsPage />} />
-        <Route path="/panel-votacion" element={<PanelVotePage />} />
-=======
         <Route path="/nuevo-empleo" element={<JobCreatePage />} />
         <Route path="/ideas-de-proyectos" element={<Ideas />} />
->>>>>>> main
+        <Route path="/idea/:ideaId" element={<DetailsIdeas />} />
+        <Route path="/crear-idea" element={<CreateIdeas />} />
       </Routes>
     </BrowserRouter>
   );

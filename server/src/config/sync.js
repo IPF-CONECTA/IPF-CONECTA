@@ -46,23 +46,15 @@ import {
 } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
-<<<<<<< HEAD
-import { Idea } from "../modules/ideaProject/ideaModel.js";
-import { Vote } from "../modules/votesProjects/voteModel.js";
-=======
 import { Project } from "../modules/users/project/projectModel.js";
->>>>>>> main
+import { Idea } from "../modules/ideas/ideaModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
-<<<<<<< HEAD
-/*   await Ranking.sync({ force: true }); */
-
-=======
->>>>>>> main
   console.log("Tables created successfully");
+
 
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||

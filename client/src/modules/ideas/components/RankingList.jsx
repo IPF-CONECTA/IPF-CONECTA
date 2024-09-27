@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import styles from "../../../../public/css/ranking.module.css";
 import { IdeaCard } from "./IdeaCard";
 import { authContext } from "../../../context/auth/Context";
 import {
@@ -12,36 +11,28 @@ export const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
   const { authState } = useContext(authContext);
   const noti = useNoti();
+
   useEffect(() => {
     const fetchRanking = async () => {
-      try {
-        const res = authState.isLogged
-          ? await getRankingIdeasLogged()
-          : await getRankingIdeas();
-
-        if (res.status !== 200) {
-          return noti(res.error || "hubo un error", "error");
-        }
-
-        setIdeas(res.data);
-      } catch (error) {
-        console.error("Error fetching ranking:", error);
-      }
+      const res = authState.isLogged
+        ? await getRankingIdeasLogged()
+        : await getRankingIdeas();
+      if (res.status !== 200) return noti(res.error || "Hubo un error", "error");
+      setIdeas(res.data);
     };
-
     fetchRanking();
   }, [authState]);
 
   return (
-    <div className={`${styles.rankingContainer} shadow-sm`}>
-      <span className="text-center fs-3 fw-semibold text-dark mb-2">
-        Proyectos con más favoritos
-      </span>
-      <ul className="p-0">
+    <div className="container my-5 p-4 bg-light shadow-sm rounded">
+      <h2 className="text-center text-success mb-4">Proyectos con más Favoritos</h2>
+      <div className="row row-cols-1 row-cols-md-2 g-4">
         {ideas.map((idea) => (
-          <IdeaCard key={idea.id} idea={idea} />
+          <div className="col" key={idea.id}>
+            <IdeaCard idea={idea} />
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

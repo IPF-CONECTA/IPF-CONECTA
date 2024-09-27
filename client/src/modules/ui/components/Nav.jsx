@@ -68,50 +68,6 @@ export const Nav = () => {
                   </span>
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-end p-0 p-2">
-<<<<<<< HEAD:client/src/components/Nav.jsx
-                  <li>
-                    <Link
-                      className="dropdown-item w-100 d-flex p-0 justify-content-between"
-                      to={`/perfil/${authState.user.profile.id}`}
-                    >
-                      Mi perfil
-                      <img
-                        height={24}
-                        width={24}
-                        src={authState.user.profile.profilePic}
-                        alt="tu foto de perfil"
-                      />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="dropdown-item w-100 d-flex p-0 justify-content-between"
-                      to={'/proyectos-ideas'}
-                    >
-                      Crear Idea
-                      <img
-                        height={24}
-                        width={24}
-                        src={authState.user.profile.profilePic}
-                        alt="tu foto de perfil"
-                      />
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="dropdown-item w-100 d-flex p-0 justify-content-between"
-                      to={'/panel-votacion'}
-                    >
-                      Votar Idea
-                      <img
-                        height={24}
-                        width={24}
-                        src={authState.user.profile.profilePic}
-                        alt="tu foto de perfil"
-                      />
-                    </Link>
-                  </li>
-=======
                   {authState.role !== "admin" && (
                     <li>
                       <Link
@@ -128,7 +84,6 @@ export const Nav = () => {
                       </Link>
                     </li>
                   )}
->>>>>>> main:client/src/modules/ui/components/Nav.jsx
                   {authState.role === "admin" && (
                     <>
                       <li>
