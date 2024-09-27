@@ -26,6 +26,7 @@ export const JobDetails = ({ jobId }) => {
               },
             }
           );
+          console.log(res);
           setSelectedJob(res.data.job);
           setPostulate(res.data.postulated);
         } catch (error) {
@@ -36,13 +37,15 @@ export const JobDetails = ({ jobId }) => {
     getJobInfo();
   }, [jobId]);
 
-  const handleCreatePostulation = async () => {
+  const handleCreatePostulation = async (id) => {
+    console.log(id);
+    console.log(authState);
     try {
       const response = await axios.post(
         "http://localhost:4000/create-job-postulation",
         {
-          profileId: authState.profile.id,
-          jobId,
+          profileId: authState.user.profile.id,
+          jobId: id,
         },
         {
           headers: {
@@ -53,6 +56,7 @@ export const JobDetails = ({ jobId }) => {
       setPostulate(true);
       noti(response.data.message, "success");
     } catch (error) {
+      console.log(error);
       noti(error.response.data.error, "error");
     }
   };
@@ -90,7 +94,7 @@ export const JobDetails = ({ jobId }) => {
                 <ul className={`dropdown-menu dropdown-menu-end`}>
                   <li className="d-flex flex-column">
                     <a
-                      className="dropdown-item text-danger h-100 d-flex  fw-bold"
+                      className="dropdown-item text-danger h-100 d-flex  fw-semibold"
                       href="#"
                     >
                       <span className={`material-symbols-outlined pe-1 `}>
@@ -123,8 +127,8 @@ export const JobDetails = ({ jobId }) => {
                 ) : (
                   <button
                     type="submit"
-                    className="btn btn-success"
-                    onClick={handleCreatePostulation}
+                    className="btn btn-success fw-semibold"
+                    onClick={() => handleCreatePostulation(selectedJob.id)}
                   >
                     Postularse{" "}
                   </button>
@@ -141,11 +145,11 @@ export const JobDetails = ({ jobId }) => {
               </span>
             </div>
             <p className="mb-1">
-              <strong>Tipo de contrato: </strong>
+              <span className="fw-semibold">Tipo de contrato: </span>
               {selectedJob.contractType.name}
             </p>
             <div>
-              <span className="fw-bold">Descripción</span>
+              <span className="fw-semibold">Descripción</span>
               <div
                 className="mt-1 p-2"
                 dangerouslySetInnerHTML={{ __html: selectedJob.description }}

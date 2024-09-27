@@ -154,7 +154,6 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
               <select
                 className="form-select"
                 id="state"
-                required
                 value={selectedState}
                 onChange={handleStateChange}
               >
@@ -186,7 +185,6 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
               <select
                 className="form-select"
                 id="city"
-                required
                 value={selectedCity}
                 onChange={handleCityChange}
               >
@@ -218,7 +216,6 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
               placeholder="Ingrese la dirección de la sede"
               value={address}
               onChange={handleAddressChange}
-              required
             />
           </div>
         </div>

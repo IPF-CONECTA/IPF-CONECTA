@@ -52,8 +52,8 @@ export const JobSearch = () => {
 
   const handleMoreJobsBtn = async (page) => {
     setCurrentPage(page);
-    const data = await getJobs(query, page);
-    setJobs([...jobs, ...data.jobs]);
+    const res = await getJobs(query, page);
+    setJobs([...jobs, ...res.data.jobs]);
     setCantJobs(jobs.length);
   };
   const handleCardClick = async (id) => {

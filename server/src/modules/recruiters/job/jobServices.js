@@ -79,7 +79,7 @@ export const getJobsSvc = async () => {
 export const getJobByIdSvc = async (id, profileId) => {
   try {
     const job = await Job.findByPk(id, {
-      attributes: { exclude: ["active", "companyId", "profileId", "updatedAt"] },
+      attributes: { exclude: ["active", "companyId", "userId", "updatedAt"] },
       include: [
         {
           model: Company,
@@ -112,11 +112,21 @@ export const getJobByIdSvc = async (id, profileId) => {
         {
           model: Modality,
           attributes: ["name"],
-        },
+        }
       ],
     });
 
-    return job;
+    const postulate = await JobPostulation.findOne({
+      where: {
+        profileId,
+        jobId: id,
+      },
+    });
+
+    return {
+      job,
+      postulated: postulate ? true : false,
+    };
   } catch (error) {
     throw new Error(error.message);
   }

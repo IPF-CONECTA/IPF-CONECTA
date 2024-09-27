@@ -8,7 +8,8 @@ export const findSkillSvc = async (query) => {
                 name: {
                     [Op.iLike]: `%${query}%`
                 }
-            }
+            },
+            limit: 8
         })
         return results
     } catch (error) {

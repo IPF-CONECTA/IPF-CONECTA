@@ -4,6 +4,7 @@ import { AddSkillForm } from "./AddSkillForm";
 
 export const SkillsContainer = ({ skills, own, onSkillSubmit }) => {
   const [openSkillModal, setOpenSkillModal] = useState(false);
+
   return (
     <section className="bg-body-tertiary">
       <div className="d-flex flex-column">
@@ -23,6 +24,7 @@ export const SkillsContainer = ({ skills, own, onSkillSubmit }) => {
               <AddSkillForm
                 openSkillModal={openSkillModal}
                 setOpenSkillModal={setOpenSkillModal}
+                onSkillsSubmit={onSkillSubmit}
               />
               <button className="btn d-flex p-0 align-items-center">
                 <span className="material-symbols-outlined text-dark-emphasis">
