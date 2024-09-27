@@ -43,9 +43,9 @@ export const getUserInfoCtrl = async (req, res) => {
     const { profileId } = req.params;
 
     try {
-        if (id === profileId) return res.status(400).json({ message: 'No se puede obtener información del propio usuario' });
-
-        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId);
+        if (id == profileId) return res.status(400).json()
+        const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
+        console.log(profile)
         if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
@@ -75,8 +75,9 @@ export const createUserController = async (req, res) => {
     const { user } = req.body;
 
     try {
-        await createUser(user);
-        res.status(201).json({ message: 'Usuario generado con éxito' });
+        const newUser = await createUser(user)
+        if (!newUser) return res.status(400).json({ message: 'No se pudo crear el usuario' })
+        res.status(201).json({ message: 'Usuario generado con exito' })
     } catch (error) {
         if (error.message === 'Rol no válido') {
             return res.status(400).json({ message: error.message });

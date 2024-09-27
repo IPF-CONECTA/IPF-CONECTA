@@ -28,6 +28,10 @@ import { CompanyUbication } from "../modules/recruiters/companies/companyUbicati
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { Profile } from "../modules/profile/profileModel.js";
 import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
+import { Project } from "../modules/users/project/projectModel.js";
+import { Vote } from "../modules/ideas/votes/voteModel.js";
+import { Idea } from "../modules/ideas/ideaModel.js";
+
 export const createRelations = async () => {
   try {
     User.hasOne(Profile, {
@@ -85,6 +89,16 @@ export const createRelations = async () => {
     LangsUser.belongsTo(Profile, {
       foreignKey: "userId",
     });
+
+    //Projects
+    Profile.hasMany(Project, {
+      foreignKey: "profileId",
+    });
+    Project.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+
+    //Posts
     Post.belongsTo(Profile, {
       foreignKey: "profileId",
       as: "profile",
@@ -100,6 +114,7 @@ export const createRelations = async () => {
 
     Job.hasMany(JobPostulation, {
       foreignKey: "jobId",
+      as: "postulate",
     });
     JobPostulation.belongsTo(Job, {
       foreignKey: "jobId",
@@ -264,6 +279,24 @@ export const createRelations = async () => {
       foreignKey: "skillId",
     });
     Profile.hasMany(WorkExperience, {
+      foreignKey: "profileId",
+    });
+    Idea.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+    Profile.hasMany(Idea, {
+      foreignKey: "profileId",
+    });
+    Vote.belongsTo(Idea, {
+      foreignKey: "ideaId",
+    });
+    Idea.hasMany(Vote, {
+      foreignKey: "ideaId",
+    });
+    Vote.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+    Profile.hasMany(Vote, {
       foreignKey: "profileId",
     });
   } catch (error) {

@@ -2,25 +2,28 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminRoutes, ProtectedRoutes } from "./ProtectedRoutes";
 import {
+  AdminAssociationsPanelPage,
+  AdminCompaniesPanelPage,
+  AdminDashboardPage,
   CompanyConfirmedPage,
+  CreateCompanyPage,
   CreateCompanyUbicationPage,
+  CreateProjectPage,
   FeedPage,
   HomePage,
+  JobCreatePage,
   JobSearchPage,
-  SelectCompanyPage,
-  NotFoundPage,
   LoginPage,
-  RegisterPage,
-  CreateCompanyPage,
-  SupportPage,
-  PostPage,
   MessageRecruiterPage,
+  NotFoundPage,
+  PostPage,
   ProfilePage,
-  CreateJobsFormPage,
+  ProfileProjectsPage,
+  RegisterPage,
+  SelectCompanyPage,
+  SupportPage,
   WaitingAssociationsApprovalPage,
-  AdminDashboardPage,
-  CompaniesPanelPage,
-  AssociationsPanelPage,
+  Ideas,
 } from "../pages";
 import SkillViewAdmin from "../components/SkillViewAdmin";
 import SkillViewUser from "../components/SkillViewUser";
@@ -36,20 +39,21 @@ export const Routers = () => {
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin/dash" element={<AdminDashboardPage />} />
-            <Route path="/admin/empresas" element={<CompaniesPanelPage />} />
+            <Route
+              path="/admin/empresas"
+              element={<AdminCompaniesPanelPage />}
+            />
             <Route
               path="/admin/asociaciones"
-              element={<AssociationsPanelPage />}
+              element={<AdminAssociationsPanelPage />}
             />
           </Route>
           <Route path="/inicio" element={<FeedPage />} />
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
-        <Route path="/perfil/:profileId" element={<ProfilePage />} />
+        <Route path="/perfil/:username" element={<ProfilePage />} />
+        <Route path="/:usuario/proyectos" element={<ProfileProjectsPage />} />
         <Route path="/guardados" element={<ProfilePage />} />
-        <Route path="/skills" element={< SkillViewAdmin />} />
-        <Route path="/skill" element={< SkillViewUser />} />
-
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
@@ -60,6 +64,7 @@ export const Routers = () => {
           path="/crear-sede/:companyId"
           element={<CreateCompanyUbicationPage />}
         />
+        <Route path="/nuevo-proyecto" element={<CreateProjectPage />} />
         <Route
           path="/mis-empresas"
           element={<WaitingAssociationsApprovalPage />}
@@ -70,7 +75,8 @@ export const Routers = () => {
         />
         <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
-        <Route path="/nuevo-empleo" element={<CreateJobsFormPage />} />
+        <Route path="/nuevo-empleo" element={<JobCreatePage />} />
+        <Route path="/ideas-de-proyectos" element={<Ideas />} />
       </Routes>
     </BrowserRouter>
   );

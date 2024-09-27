@@ -19,8 +19,10 @@ import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
 import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
-import SkillUserRouter from "./modules/users/skills_user/skillUserRoutes.js";
-
+import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
+import projectRoutes from "./modules/users/project/projectRoutes.js";
+import ideaRoutes from "./modules/ideas/ideaRoutes.js";
+import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -39,9 +41,12 @@ export const routes = (app) => {
   app.use(contractTypeRoutes);
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
-  app.use(profileRoutes)
-  app.use(experienceRoutes)
+  app.use(profileRoutes);
+  app.use(experienceRoutes);
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
-  app.use(SkillUserRouter)
+  app.use(aboutRoutes)
+  app.use(projectRoutes);
+  app.use(ideaRoutes);
+  app.use(voteRoutes)
 };

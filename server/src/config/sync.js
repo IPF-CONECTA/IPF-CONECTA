@@ -46,12 +46,12 @@ import {
 } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
+import { Project } from "../modules/users/project/projectModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
-
   console.log("Tables created successfully");
 
   // ===================================================================================
