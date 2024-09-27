@@ -1,10 +1,10 @@
-import { getProfileById } from "./profileServices.js"
+import { getProfileByUsername } from "./profileServices.js"
 
 export const getProfileByIdCtrl = async (req, res) => {
     const { id } = req.user.profile;
-    const { profileId } = req.params
+    const { username } = req.params
     try {
-        const response = await getProfileById(id, profileId)
+        const response = await getProfileByUsername(id, username)
         if (!res) return res.status(404).json()
         res.status(200).json(response)
     } catch (error) {

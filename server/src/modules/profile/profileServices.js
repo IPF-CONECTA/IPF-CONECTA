@@ -3,13 +3,16 @@ import { Role } from "../roles/roleModel.js"
 import { User } from "../users/userModel.js"
 import { Profile } from "./profileModel.js"
 
-export const getProfileById = async (id, profileId) => {
+export const getProfileByUsername = async (id, username) => {
     try {
-        const profile = await Profile.findByPk(profileId, {
+        const profile = await Profile.findOne({
             attributes: ['id', 'names', 'surnames', 'profilePic', 'title', 'about'],
             include: {
                 model: User,
-                attributes: ['id'],
+                where: {
+                    username
+                },
+                attributes: ['id', 'username'],
                 include: {
                     model: Role,
                     attributes: ['name']
@@ -28,9 +31,9 @@ export const getProfileById = async (id, profileId) => {
         })
         const res = { profile, cantFollowers, cantFollowing, own: true }
 
-        if (id !== profileId) {
+        if (id !== profile.id) {
             res.own = false;
-            res.following = false;
+            res.isFollowing = false;
             const following = await Follower.findOne({
                 where: {
                     followingId: profile.id,
@@ -38,7 +41,7 @@ export const getProfileById = async (id, profileId) => {
                 }
             })
             if (following) {
-                res.following = true
+                res.isFollowing = true
             }
         }
         return res

@@ -4,6 +4,6 @@ import { getProfileByIdCtrl } from "./profileControllers.js";
 
 const profileRoutes = Router()
 
-profileRoutes.get('/get-user-profile/:profileId', isToken, getProfileByIdCtrl)
+profileRoutes.get('/get-user-profile/:username', isToken, getProfileByIdCtrl)
 
 export default profileRoutes

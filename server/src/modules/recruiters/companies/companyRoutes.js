@@ -10,13 +10,13 @@ import { validateSchema } from "../../../middlewares/expressValidator.js";
 import { isRecruiter } from "../../../middlewares/jwt/isRecruiter.js";
 import { isToken, isVerifiedAccount } from "../../../middlewares/jwt/isVerifiedAccount.js";
 import { getCompanyByIdCtrl } from "../../administration/admin/companies/companyControllers.js";
-
+import upload from "../../../config/multerConfig.js";
 const companyRoutes = Router();
 
 companyRoutes.get('/get-companies', getApprovedCompaniesCtrl)
-companyRoutes.get('/find-companies', findCompanyCtrl)
+companyRoutes.get('/find-companies', isToken, findCompanyCtrl)
 companyRoutes.get('/get-company/:id', getCompanyByIdCtrl)
-companyRoutes.post('/create-company', isToken, isRecruiter, companySchema, validateSchema, associateNewCompanyCtrl)
+companyRoutes.post('/create-company', isToken, isRecruiter, upload.single("logoUrl"), companySchema, validateSchema, associateNewCompanyCtrl)
 companyRoutes.post("/contact", sendContactCompanyCtrl);
 
 export default companyRoutes;

@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import { authContext } from "./Context.js";
 import { authReducer } from "./reducer.js";
 import { useNoti } from "../../hooks/useNoti.jsx";
-import { authService } from "../../services/authService.js";
+import { authService } from "../../modules/auth/services/authService.js";
 
 export const AuthProvider = ({ children }) => {
   const token = authService.getToken();
@@ -46,7 +46,6 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const res = await authService.login(credentials);
-    console.log({ res });
     if (res.status != 200) {
       return noti(res.message || "error", "error");
     }

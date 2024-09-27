@@ -1,0 +1,35 @@
+.combined-view {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+}
+
+.innovative-ideas-section,
+.ranking-section {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.innovative-ideas-section {
+  max-width: 60%;
+}
+
+.ranking-section {
+  max-width: 35%;
+}
+
+.project-list,
+.ranking-container {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.ranking-list {
+  list-style: none;
+  padding: 0;
+}
+
+.idea-title {
+  font-weight: bold;
+}

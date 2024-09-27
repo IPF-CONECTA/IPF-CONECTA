@@ -10,11 +10,19 @@ import { sequelize } from "../../config/db.js";
 import { Profile } from "../profile/profileModel.js";
 import { getUserById } from "../users/userServices.js";
 import { getApprovedAssociationsByUser } from "../recruiters/associations/associationServices.js";
+import { Op } from "sequelize";
 
 export const authSignUpSvc = async (user) => {
   const t = await sequelize.transaction();
   try {
-    const existingUser = await User.findOne({ where: { email: user.email } });
+    const existingUser = await User.findOne({
+      where: {
+        [Op.or]: [
+          { username: user.username },
+          { email: user.email }
+        ]
+      }
+    });
 
     if (existingUser) {
       throw new Error("El usuario ya existe en nuestro sistema.");
@@ -26,6 +34,7 @@ export const authSignUpSvc = async (user) => {
     }
 
     const createdUser = await User.create({
+      username: user.username,
       email: user.email,
       roleId: roleId,
       password: user.password,
@@ -40,19 +49,12 @@ export const authSignUpSvc = async (user) => {
       state: 1,
     }, { transaction: t });
 
-    const role = await getRoles(createdUser.roleId)
 
-    const userInfo = {
-      id: createdUser.id,
-      names: createdUser.names,
-      email: createdUser.email,
-      profilePic: profile.profilePic,
-      role: role
-    }
     const token = jwt.sign(
       { userId: createdUser.id },
       process.env.TOKEN_SECRET_KEY
     );
+
     await t.commit();
     await sendConfirmAccountSvc(createdUser.id);
     return token;
@@ -61,13 +63,35 @@ export const authSignUpSvc = async (user) => {
     throw new Error(error.message);
   }
 };
+
+export const authIsEmailAvailableSvc = async (email) => {
+  try {
+    return User.findOne({ where: { email } })
+  } catch (error) {
+    throw error
+  }
+}
+export const authIsUsernameAvailableSvc = async (username) => {
+  try {
+    return User.findOne({ where: { username } })
+  } catch (error) {
+    throw error
+  }
+}
 // Si el usuario que se loguea tiene el campo verified == false, se le envia el correo de confirmacion
 // La funcion retorna isVerified, en el cliente se debe verificar si es true o false para mostrar la pagina correspondiente
 export const authLogInSvc = async (user) => {
   try {
-    const isUser = await User.findOne({ where: { email: user.email } })
+    const isUser = await User.findOne({
+      where: {
+        [Op.or]: [
+          { username: user.email },
+          { email: user.email }
+        ]
+      }
+    })
     if (!isUser) {
-      throw new Error('No se encontro una cuenta con ese email')
+      throw new Error('No se encontro una cuenta con ese email o nombre de usuario')
     }
     const validPassword = await bcrypt.compare(user.password, isUser.password);
     if (!validPassword) throw new Error("Contraseña incorrecta");
@@ -81,8 +105,6 @@ export const authLogInSvc = async (user) => {
 
     const existingUser = await getUserById(isUser.id)
 
-
-
     const response = { token, existingUser, isVerified };
 
     if (existingUser.role.name === 'recruiter') {
@@ -92,8 +114,6 @@ export const authLogInSvc = async (user) => {
     return response;
 
   } catch (error) {
-    console.log('error aca')
-    console.log(error)
     throw new Error(error.message)
   }
 }
@@ -121,26 +141,33 @@ export const sendConfirmAccountSvc = async (userId) => {
   }
 };
 
-export const confirmAccountSvc = async (userId, receivedCode) => {
+export const confirmAccountSvc = async (id, receivedCode) => {
   try {
-    const { verified, verifyCode } = await User.findByPk(userId);
-
-    if (verified == true) {
+    const user = await User.findByPk(id);
+    if (user.verified == true) {
       throw new Error("Correo ya verificado");
-    } else if (verifyCode != receivedCode) {
+    } else if (user.verifyCode != receivedCode) {
       throw new Error("Codigo incorrecto");
     }
 
     const [rowUpdated] = await User.update(
       { verified: true, verifyCode: null },
-      { where: { id: userId } }
+      { where: { id: id } }
     );
 
     if (rowUpdated < 1)
       throw new Error(
         "Hubo un error al confirmar la cuenta, intentelo de nuevo"
       );
+
+    return {
+      token: jwt.sign(
+        { userId: user.id },
+        process.env.TOKEN_SECRET_KEY
+      ), existingUser: await getUserById(id)
+    }
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 };

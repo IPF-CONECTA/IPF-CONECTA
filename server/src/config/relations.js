@@ -27,8 +27,15 @@ import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.
 import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
 import { Profile } from "../modules/profile/profileModel.js";
+<<<<<<< HEAD
 import { Idea } from "../modules/ideaProject/ideaModel.js";
 import { Vote } from "../modules/votesProjects/voteModel.js";
+=======
+import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
+import { Project } from "../modules/users/project/projectModel.js";
+import { Vote } from "../modules/ideas/votes/voteModel.js";
+import { Idea } from "../modules/ideas/ideaModel.js";
+>>>>>>> main
 
 export const createRelations = async () => {
   try {
@@ -87,6 +94,16 @@ export const createRelations = async () => {
     LangsUser.belongsTo(Profile, {
       foreignKey: "userId",
     });
+
+    //Projects
+    Profile.hasMany(Project, {
+      foreignKey: "profileId",
+    });
+    Project.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+
+    //Posts
     Post.belongsTo(Profile, {
       foreignKey: "profileId",
       as: "profile",
@@ -99,6 +116,25 @@ export const createRelations = async () => {
       foreignKey: "postId",
       as: "reposts",
     });
+<<<<<<< HEAD
+=======
+
+    Job.hasMany(JobPostulation, {
+      foreignKey: "jobId",
+      as: "postulate",
+    });
+    JobPostulation.belongsTo(Job, {
+      foreignKey: "jobId",
+    });
+
+    Profile.hasMany(JobPostulation, {
+      foreignKey: "profileId",
+    });
+    JobPostulation.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+
+>>>>>>> main
     Profile.hasMany(Repost, {
       foreignKey: "userId",
     });
@@ -219,7 +255,10 @@ export const createRelations = async () => {
     Job.belongsTo(Profile, {
       foreignKey: "userId",
     });
+<<<<<<< HEAD
     ///////////
+=======
+>>>>>>> main
 
     Job.belongsTo(Company, {
       foreignKey: "companyId",

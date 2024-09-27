@@ -35,10 +35,10 @@ export const getUserByIdCtrl = async (req, res) => {
 export const getUserInfoCtrl = async (req, res) => {
     const { id } = req.user.profile;
     const { profileId } = req.params;
-    console.log(profileId)
     try {
         if (id == profileId) return res.status(400).json()
         const { profile, following, cantFollowers, cantFollowing } = await getUserInfoSvc(id, profileId)
+        console.log(profile)
         if (!profile) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }
@@ -55,7 +55,8 @@ export const getUserInfoCtrl = async (req, res) => {
 export const createUserController = async (req, res) => {
     const { user } = req.body
     try {
-        await createUser(user)
+        const newUser = await createUser(user)
+        if (!newUser) return res.status(400).json({ message: 'No se pudo crear el usuario' })
         res.status(201).json({ message: 'Usuario generado con exito' })
     } catch (error) {
         if (error.message == 'Rol no valido') {

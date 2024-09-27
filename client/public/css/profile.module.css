@@ -1,7 +1,5 @@
 .mainContainer {
   width: 65%;
-  height: 95%;
-  padding-top: 60px;
 }
 
 .asideContainer {
@@ -12,9 +10,19 @@
   right: 0;
 }
 .header {
-  height: 125px;
+  height: fit-content;
 }
 
 .profileContainer {
   width: 65%;
+}
+
+.btnAdd {
+  height: 26px;
+}
+.noArrow::after {
+  display: none !important;
+}
+.smallText {
+  font-size: 12px;
 }
