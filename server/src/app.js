@@ -11,6 +11,17 @@ import router from "./modules/users/userRoutes.js";
 import { routes } from "./export.routes.js";
 import path from "path";
 
+import { Server } from "socket.io";
+import { createServer } from "http";
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(
@@ -23,6 +34,20 @@ app.use(morgan("combined"));
 routes(app);
 connectDB();
 createTablesAndRelations();
-app.listen(process.env.PORT, () => {
+
+io.on("connection", (socket) => {
+  console.log("Nuevo cliente conectado:", socket.id);
+
+  socket.on("chat message", (msg) => {
+    console.log("Mensaje recibido:", msg);
+    io.emit("chat message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado:", socket.id);
+  });
+});
+
+httpServer.listen(process.env.PORT, () => {
   console.log(`Server running on port http://localhost:${process.env.PORT}`);
 });

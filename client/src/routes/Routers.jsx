@@ -26,6 +26,7 @@ import {
   Ideas,
   CreateIdeas,
   DetailsIdeas,
+  Chat,
 } from "../pages";
 
 export const Routers = () => {
@@ -57,6 +58,7 @@ export const Routers = () => {
         <Route path="/guardados" element={<ProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/mensajes" element={<Chat />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/registrate" element={<RegisterPage />} />
         <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
