@@ -1,8 +1,13 @@
-import React from "react";
 import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../feed/services/feedServices";
-
+import { Link } from "react-router-dom";
+import { chatService } from "../../chat/services/chatService";
+import { useContext } from "react";
+import { authContext } from "../../../context/auth/Context.js";
 export const Header = ({ profileData, setProfileData }) => {
+  const { authState } = useContext(authContext);
+  console.log(authState);
+
   const handleFollow = async () => {
     const { statusCode } = await followOrUnfollow(profileData.profile.id);
     if (statusCode !== 201) return;
@@ -54,18 +59,34 @@ export const Header = ({ profileData, setProfileData }) => {
                   Editar perfil
                 </button>
               ) : (
-                <button
-                  onClick={() => {
-                    handleFollow(profileData.profile.id);
-                  }}
-                  className={`btn ${
-                    profileData.isFollowing
-                      ? "btn-outline-info text-white fw-bold"
-                      : "btn-info text-white fw-bold"
-                  }`}
-                >
-                  {profileData.isFollowing ? "Siguiendo" : "Seguir"}
-                </button>
+                <div className="d-flex justify-content-evenly">
+                  <button
+                    onClick={() => {
+                      handleFollow(profileData.profile.id);
+                    }}
+                    className={`btn ${
+                      profileData.isFollowing
+                        ? "btn-outline-info text-white fw-bold"
+                        : "btn-info text-white fw-bold"
+                    }`}
+                  >
+                    {profileData.isFollowing ? "Siguiendo" : "Seguir"}
+                  </button>
+                  <Link to={`/chat/${profileData.profile.user.username}`}>
+                    {" "}
+                    <button
+                      className="btn btn-outline-info text-light fw-bold"
+                      onClick={() => {
+                        chatService.createChat(
+                          authState.user.profile.id,
+                          profileData.profile.id
+                        );
+                      }}
+                    >
+                      Enviar mensaje
+                    </button>
+                  </Link>
+                </div>
               )}
             </div>
           </div>

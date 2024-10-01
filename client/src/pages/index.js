@@ -49,4 +49,5 @@ export { CreateIdeas } from "../modules/ideas/pages/CreateIdeaPage";
 
 // CHAT
 
-export { Chat } from "../modules/chat/components/Chat";
+export { ChatPage } from "../modules/chat/pages/ChatPage";
+export { MessagingPage } from "../modules/chat/pages/MessagingPage";

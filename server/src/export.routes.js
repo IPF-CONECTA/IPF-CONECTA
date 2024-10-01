@@ -24,6 +24,8 @@ import projectRoutes from "./modules/users/project/projectRoutes.js";
 import ideaRoutes from "./modules/ideas/ideaRoutes.js";
 import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
 import SkillProfileRoutes from "./modules/users/skills_user/skillProfileRoutes.js";
+import chatRouter from "./modules/chat/chatRoutes.js";
+
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -46,9 +48,10 @@ export const routes = (app) => {
   app.use(experienceRoutes);
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
-  app.use(aboutRoutes)
+  app.use(aboutRoutes);
   app.use(projectRoutes);
   app.use(ideaRoutes);
-  app.use(voteRoutes)
-  app.use(SkillProfileRoutes)
+  app.use(voteRoutes);
+  app.use(SkillProfileRoutes);
+  app.use("/chat", chatRouter);
 };

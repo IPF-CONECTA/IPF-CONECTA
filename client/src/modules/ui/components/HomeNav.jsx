@@ -95,7 +95,7 @@ export const HomeNav = () => {
           }}
         >
           <Link
-            to="/mensajes"
+            to="/mensajeria"
             className={
               selectedPage === "mensajes"
                 ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
