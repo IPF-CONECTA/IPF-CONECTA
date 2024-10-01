@@ -1,3 +1,0 @@
-mkdir ui
-mkdir ui\components
-mkdir ui\pages

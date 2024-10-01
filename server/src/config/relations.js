@@ -31,6 +31,8 @@ import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPost
 import { Project } from "../modules/users/project/projectModel.js";
 import { Vote } from "../modules/ideas/votes/voteModel.js";
 import { Idea } from "../modules/ideas/ideaModel.js";
+import { Chat } from "../modules/chat/chatModel.js";
+import { Message } from "../modules/chat/message/messageModel.js";
 
 export const createRelations = async () => {
   try {
@@ -126,6 +128,24 @@ export const createRelations = async () => {
     JobPostulation.belongsTo(Profile, {
       foreignKey: "profileId",
     });
+
+    //Chat relations
+
+    //----------
+
+    Profile.hasMany(Chat, {
+      foreignKey: "profile1Id",
+      as: "profile1",
+    });
+    Chat.hasMany(Message, {
+      foreignKey: "chatId",
+      as: "messages",
+    });
+    Message.belongsTo(Chat, {
+      foreignKey: "chatId",
+    });
+
+    //----------
 
     Profile.hasMany(Repost, {
       foreignKey: "profileId",
