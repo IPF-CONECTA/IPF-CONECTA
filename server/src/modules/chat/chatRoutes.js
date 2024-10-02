@@ -4,7 +4,7 @@ import { isToken } from "../../middlewares/jwt/isVerifiedAccount.js";
 
 const chatRouter = Router();
 
-chatRouter.post("/create", isToken, createChatCtrl);
+chatRouter.post("/create/:username", isToken, createChatCtrl);
 chatRouter.get("/get-chats", isToken, getChatsByProfileIdCtrl);
 
 export default chatRouter;

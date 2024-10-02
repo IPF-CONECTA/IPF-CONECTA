@@ -1,15 +1,19 @@
-import { createChat, getChatsByProfileId } from "./chatServices.js";
+import { createChat } from "./chatServices.js";
+import { getProfileIdByUsername } from "../users/userServices.js";
 
 export const createChatCtrl = async (req, res) => {
   try {
-    const { id: profile1Id } = req.user.profile;
-    const { profile2Id } = req.body;
+    const { id } = req.user.profile; // profile1Id
+    const { username } = req.params; // profile2Id
 
-    console.log({ profile1Id, profile2Id });
-    let chat = await createChat(profile1Id, profile2Id);
+    const profile2Id = await getProfileIdByUsername(username);
+
+    console.log({ IDLOCO: profile2Id });
+    let chat = await createChat(id, profile2Id);
     res.status(201).json({ chat });
   } catch (error) {
-    res.status(500).json({ error });
+    console.log({ aquierror: error });
+    res.status(500).json({ message: error.message });
   }
 };
 

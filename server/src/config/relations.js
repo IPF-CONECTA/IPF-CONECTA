@@ -135,7 +135,19 @@ export const createRelations = async () => {
 
     Profile.hasMany(Chat, {
       foreignKey: "profile1Id",
+      as: "chatsAsProfile1",
+    });
+    Profile.hasMany(Chat, {
+      foreignKey: "profile1Id",
+      as: "chatsAsProfile2",
+    });
+    Chat.belongsTo(Profile, {
+      foreignKey: "profile1Id",
       as: "profile1",
+    });
+    Chat.belongsTo(Profile, {
+      foreignKey: "profile2Id",
+      as: "profile2",
     });
     Chat.hasMany(Message, {
       foreignKey: "chatId",

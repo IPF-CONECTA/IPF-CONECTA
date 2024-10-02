@@ -1,11 +1,41 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { useParams } from "react-router-dom";
+
+import { chatService } from "../services/chatService";
 
 const socket = io("http://localhost:4000");
 
-export const Chat = ({ username }) => {
+export const Chat = () => {
+  const { username } = useParams();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [receiver, setReceiver] = useState({
+    username: "",
+    names: "",
+    surnames: "",
+    profilePic: "",
+  });
+
+  useEffect(() => {
+    const getChat = async () => {
+      const res = await chatService.createChat(username);
+      console.log(res);
+      if (res.status !== "201") {
+        console.log({ todomal: res.message });
+      }
+      setReceiver({
+        username: res.data.chat.profile2.user.username,
+        names: res.data.chat.profile2.names,
+        surname: res.data.chat.profile2.surnames,
+        profilePic: res.data.chat.profile2.profilePic,
+      });
+      setMessages(res.data.messages);
+    };
+
+    getChat();
+  }, [username]);
+  console.log(receiver);
 
   useEffect(() => {
     socket.on("chat message", (msg) => {
@@ -29,9 +59,9 @@ export const Chat = ({ username }) => {
       <div>
         <h2>Chat</h2>
         <div>
-          {messages.map((msg, index) => (
-            <p key={index}>{msg}</p>
-          ))}
+          {message.length > 0
+            ? messages.map((msg, index) => <p key={index}>{msg}</p>)
+            : "nO hay mensajeeeeeeeee"}
         </div>
       </div>
       <input

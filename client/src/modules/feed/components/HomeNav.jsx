@@ -5,6 +5,7 @@ import styles from "../../../../public/css/homeNav.module.css";
 import { authContext } from "../../../context/auth/Context";
 
 export const HomeNav = () => {
+  const [selectedPage, setSelectedPage] = useState("inicio");
   const { authState } = useContext(authContext);
 
   return (

@@ -74,15 +74,7 @@ export const Header = ({ profileData, setProfileData }) => {
                   </button>
                   <Link to={`/chat/${profileData.profile.user.username}`}>
                     {" "}
-                    <button
-                      className="btn btn-outline-info text-light fw-bold"
-                      onClick={() => {
-                        chatService.createChat(
-                          authState.user.profile.id,
-                          profileData.profile.id
-                        );
-                      }}
-                    >
+                    <button className="btn btn-outline-info text-light fw-bold">
                       Enviar mensaje
                     </button>
                   </Link>
