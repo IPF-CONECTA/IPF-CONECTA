@@ -26,7 +26,6 @@ export const JobDetails = ({ jobId }) => {
               },
             }
           );
-          console.log(res);
           setSelectedJob(res.data.job);
           setPostulate(res.data.postulated);
         } catch (error) {
@@ -38,8 +37,6 @@ export const JobDetails = ({ jobId }) => {
   }, [jobId]);
 
   const handleCreatePostulation = async (id) => {
-    console.log(id);
-    console.log(authState);
     try {
       const response = await axios.post(
         "http://localhost:4000/create-job-postulation",

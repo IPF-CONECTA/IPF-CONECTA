@@ -40,7 +40,6 @@ export const Post = ({ post, setWrite }) => {
 
   const handleRepost = async () => {
     const status = await repostSvc(post.id);
-    console.log(status);
     if (status !== 201 && status !== 204) {
       return;
     }

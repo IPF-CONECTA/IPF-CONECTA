@@ -9,7 +9,6 @@ export const getJobs = async (query = "", page) => {
     const res = await axios.get(
       `http://localhost:4000/job/search?query=${query}&page=${page}`
     );
-    console.log(res);
     return res;
   } catch (error) {
     return error;
@@ -40,10 +39,10 @@ export const getModalities = async () => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    return response.data;
+    return { data: response.data, status: response.status };
   } catch (error) {
     console.error("Error fetching modalities:", error);
-    return error;
+    return { status: error.status };
   }
 };
 
@@ -57,10 +56,10 @@ export const getContractTypes = async () => {
         },
       }
     );
-    return response.data;
+    return { data: response.data, status: response.status };
   } catch (error) {
     console.error("Error fetching contract types:", error);
-    return error;
+    return { status: error.status };
   }
 };
 

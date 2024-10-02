@@ -1,4 +1,6 @@
+import { Profile } from "../../profile/profileModel.js"
 import { Skill } from "../../skills/skillsModel.js"
+import { User } from "../userModel.js"
 import { SkillsProfile } from "./skillProfileModel.js"
 
 export const getSkillProfile = async (profileId, skillId) => {

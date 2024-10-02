@@ -32,7 +32,6 @@ export const LoginForm = () => {
   async function onSubmit(data) {
     const response = await login(data);
     if (response && response.role == "recruiter") {
-      console.log(response.associations.name);
       if (response.associations.length == 0) {
         navigate("/seleccionar-empresa");
       } else {

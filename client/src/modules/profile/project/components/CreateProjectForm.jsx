@@ -22,12 +22,10 @@ export const CreateProjectForm = ({
   };
 
   const handleSubmitProject = async (data) => {
-    console.log(data);
     data.privacity == true
       ? (data.privacity = "publico")
       : (data.privacity = "privado");
     const res = await projectsService.createProject(data);
-    console.log(res);
     if (res.status != 201) {
       return noti("Ha ocurrido algo", "danger");
     }

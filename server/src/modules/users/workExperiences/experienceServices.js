@@ -9,6 +9,7 @@ export const getExperiencesSvc = async (profileId) => {
     });
     return experiences
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };

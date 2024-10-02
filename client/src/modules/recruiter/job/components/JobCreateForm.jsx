@@ -114,7 +114,6 @@ export const CreateJobForm = () => {
             companyId: data[0].company.id,
           }));
         }
-        console.log(data);
         setCompanies(data);
       } catch (error) {
         console.error("Error fetching companies:", error);

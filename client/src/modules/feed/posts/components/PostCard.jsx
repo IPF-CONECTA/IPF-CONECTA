@@ -52,7 +52,6 @@ export const PostCard = ({ post }) => {
   const handleRepost = async (event) => {
     event.stopPropagation();
     const status = await repostSvc(post.id);
-    console.log(status);
     if (status !== 201 && status !== 204) {
       return;
     }

@@ -1,7 +1,7 @@
 import { RecomendedAccounts } from "../components/RecomendedAccounts";
 import { PostList } from "../posts/components/PostList";
 
-import { HomeNav } from "../../ui/components/HomeNav";
+import { HomeNav } from "../components/HomeNav";
 
 import styles from "../../../../public/css/feed.module.css";
 export const FeedPage = () => {

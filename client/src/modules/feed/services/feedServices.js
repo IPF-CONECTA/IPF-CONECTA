@@ -55,9 +55,9 @@ export const getProfile = async (username) => {
   }
 };
 
-export const getProfileInfo = async (id) => {
+export const getProfileInfo = async (username) => {
   try {
-    const res = await axios.get(`http://localhost:4000/get-user-info/${id}`, {
+    const res = await axios.get(`http://localhost:4000/get-user-info/${username}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -73,10 +73,10 @@ export const getProfileInfo = async (id) => {
   }
 };
 
-export const followOrUnfollow = async (idToFollow) => {
+export const followOrUnfollow = async (username) => {
   try {
     const res = await axios.post(
-      `http://localhost:4000/follow/${idToFollow}`,
+      `http://localhost:4000/follow/${username}`,
       {},
       {
         headers: {
@@ -170,10 +170,10 @@ export const getPost = async (postId) => {
   }
 };
 
-export const getExperiences = async (profileId) => {
+export const getExperiences = async (username) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/experiences/${profileId}`,
+      `http://localhost:4000/experiences/${username}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,

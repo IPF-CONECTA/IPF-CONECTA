@@ -41,7 +41,7 @@ export const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
       />
       <div>
         <div className="row mb-3">
-          {projects && projects.length > 1
+          {projects && projects.length >= 1
             ? projects.slice(0, 3).map((project) => {
                 return (
                   <ProjectCard

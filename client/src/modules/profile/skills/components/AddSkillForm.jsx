@@ -4,23 +4,22 @@ import { SkillSearch } from "./FindSkills";
 import axios from "axios";
 import { authService } from "../../../auth/services/authService";
 import styles from "../../../../../public/css/addSkillForm.module.css";
+import { useNoti } from "../../../../hooks/useNoti";
 export const AddSkillForm = ({
   openSkillModal,
   setOpenSkillModal,
   onSkillsSubmit,
 }) => {
   const [selectedSkills, setSelectedSkills] = useState([]);
-
   const handleSkillSelect = (selectedOption) => {
     const skills = Array.isArray(selectedOption)
       ? selectedOption
       : [selectedOption];
     setSelectedSkills(skills.map((skill) => skill.value));
   };
-
+  const noti = useNoti();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(selectedSkills);
     try {
       await Promise.all(
         selectedSkills.map((skillId) =>
@@ -35,10 +34,15 @@ export const AddSkillForm = ({
           )
         )
       );
+      if (selectedSkills.length > 1) {
+        noti("Habilidades agregadas exitosamente", "success");
+      } else {
+        noti("Habilidad agregada exitosamente", "success");
+      }
       setOpenSkillModal(false);
       onSkillsSubmit();
     } catch (error) {
-      console.error("Error adding skills:", error);
+      console.error("Hubo un error al agregar la/s skills:", error);
     }
   };
 
@@ -54,14 +58,18 @@ export const AddSkillForm = ({
       <div className="p-3">
         <span className="fw-semibold fs-4">Agregar habilidad</span>
         <form
-          className={`shadow-none border-0 mw-100 p-0 mt-2 d-flex flex-column align-items-end justify-content-between ${styles.formSkillModal}`}
+          className={`shadow-none border-0 mw-100 p-0 mt-2 d-flex flex-column justify-content-between ${styles.formSkillModal}`}
           onSubmit={handleSubmit}
         >
           <SkillSearch onSkillSelect={handleSkillSelect} />
-
-          <button type="submit" className="btn btn-primary mt-3">
-            Agregar
-          </button>
+          <span className="text-secondary">
+            Otras personas podrán ver tus habilidades y saber más de tí.
+          </span>
+          <div className="d-flex justify-content-end w-100">
+            <button type="submit" className="btn btn-dark mt-3">
+              Agregar
+            </button>
+          </div>
         </form>
       </div>
     </Dialog>

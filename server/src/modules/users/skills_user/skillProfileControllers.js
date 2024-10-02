@@ -1,6 +1,7 @@
 // Controlador para vincular o desvincular una habilidad a un usuario
 import { getProfileById } from '../../profile/profileServices.js';
 import { getSkillByPk } from '../../skills/skillsServices.js';
+import { getProfileIdByUsername } from '../userServices.js';
 import { createSkillProfile, deleteSkillProfile, getSkillProfile, getSkillsProfile } from './skillProfileServices.js';
 
 export const toggleSkill = async (req, res) => {
@@ -35,9 +36,10 @@ export const toggleSkill = async (req, res) => {
 // Controlador para obtener las habilidades del usuario autenticado
 // Controlador para obtener las habilidades del perfil del usuario autenticado
 export const getProfileSkills = async (req, res) => {
-    const { profileId } = req.params;
+    const { username } = req.params;
 
     try {
+        const profileId = await getProfileIdByUsername(username)
         const skillsProfile = await getSkillsProfile(profileId)
         if (!skillsProfile || skillsProfile.length === 0) {
             return res.status(404).json();

@@ -8,9 +8,6 @@ export const ListOfIdeas = () => {
   const noti = useNoti();
   const [ideas, setIdeas] = useState([]);
   const { authState } = useContext(authContext);
-  useEffect(() => {
-    console.log(ideas);
-  }, [ideas]);
   const fetchIdeas = async () => {
     const res = authState.isLogged ? await getIdeasLogged() : await getIdeas();
     if (res.status !== 200) {

@@ -7,7 +7,7 @@ import { deleteAbout, updateAbout } from "../services/services";
 
 import styles from "../../../../public/css/profile.module.css";
 
-export const AboutCard = ({ own, aboutData, profileId }) => {
+export const AboutCard = ({ own, aboutData, username }) => {
   const noti = useNoti();
   const [about, setAbout] = useState(null);
   const [editDescription, setEditDescription] = useState(false);
@@ -15,14 +15,14 @@ export const AboutCard = ({ own, aboutData, profileId }) => {
 
   useEffect(() => {
     setAbout(aboutData);
-  }, [aboutData, profileId]);
+  }, [aboutData, username]);
 
   useEffect(() => {
     reset();
   }, [editDescription]);
 
   const handleUpdateAbout = async (data) => {
-    const res = await updateAbout(data, profileId);
+    const res = await updateAbout(data, username);
     if (res.status !== 201) {
       return noti("Hubo un error al actualizar la descripcion", "error");
     }

@@ -31,7 +31,6 @@ export const getRankingIdeas = async () => {
     try {
         const res = await axios.get("http://localhost:4000/ideasByVotes");
 
-        console.log(res)
         return { data: res.data, status: res.status };
     } catch (error) {
         return { status: error.status, error: error.response?.data || "Hubo un error al obtener las ideas" };
@@ -44,7 +43,6 @@ export const getRankingIdeasLogged = async () => {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
         });
-        console.log(res)
         return { data: res.data, status: res.status };
     } catch (error) {
         return { status: error.status, error: error.response?.data || "Hubo un error al obtener las ideas" };
@@ -53,12 +51,11 @@ export const getRankingIdeasLogged = async () => {
 
 export const createIdea = async (idea) => {
     try {
-        const res = await axios.post("http://localhost:4000/idea", {idea}, {
+        const res = await axios.post("http://localhost:4000/idea", { idea }, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
         });
-        console.log(res)
         return { status: res.status }
     } catch (error) {
         return { status: error.status }
