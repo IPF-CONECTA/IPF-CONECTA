@@ -94,7 +94,6 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
         }
       )
       .then((response) => {
-        console.log(response.data.message);
         if (response.status === 201) {
           noti(response.data.message, "success");
           navigate("/");

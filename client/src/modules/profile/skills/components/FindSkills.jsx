@@ -27,6 +27,7 @@ export const SkillSearch = ({ onSkillSelect }) => {
 
   return (
     <Select
+      isMulti
       className="w-100"
       onInputChange={handleInputChange}
       options={options}

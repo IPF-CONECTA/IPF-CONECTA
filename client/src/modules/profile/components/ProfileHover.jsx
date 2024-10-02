@@ -11,7 +11,6 @@ export const ProfileHover = ({
   profileInfoRef,
 }) => {
   const { profileInfo, handleFollowOrUnfollow } = useFollow(profile);
-  console.log(profile);
   const navigate = useNavigate();
   return (
     <div

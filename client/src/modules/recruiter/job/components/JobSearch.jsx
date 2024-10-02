@@ -38,7 +38,6 @@ export const JobSearch = () => {
     e.preventDefault();
     setQuery(e.target.searchBar.value);
     const res = await getJobs(e.target.searchBar.value);
-    console.log(res);
     if (res.status !== 200) {
       setJobs([]);
       setSelectedJob(null);

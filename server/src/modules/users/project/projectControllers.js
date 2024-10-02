@@ -1,3 +1,4 @@
+import { getProfileIdByUsername } from "../userServices.js";
 import {
   createProjectSvc,
   getProjectByIdSvc,
@@ -21,8 +22,9 @@ export const createProjectCtrl = async (req, res) => {
 };
 
 export const getProjectsCtrl = async (req, res) => {
-  const { profileId } = req.params;
+  const { username } = req.params;
   try {
+    const profileId = await getProfileIdByUsername(username)
     const allProjects = await getProjectsSvc(profileId);
     res.status(200).json(allProjects);
   } catch (error) {

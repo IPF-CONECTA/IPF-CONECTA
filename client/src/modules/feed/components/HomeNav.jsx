@@ -5,12 +5,8 @@ import styles from "../../../../public/css/homeNav.module.css";
 import { authContext } from "../../../context/auth/Context";
 
 export const HomeNav = () => {
-  const [selectedPage, setSelectedPage] = useState("inicio");
   const { authState } = useContext(authContext);
 
-  useEffect(() => {
-    console.log(authState);
-  }, [authState]);
   return (
     <aside className={`position-fixed top-0 h-100 ${styles.homeNav}`}>
       <div
@@ -23,11 +19,7 @@ export const HomeNav = () => {
           }}
         >
           <Link
-            className={
-              selectedPage === "inicio"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
             to="/inicio"
           >
             <span className="material-symbols-outlined fs-2 pe-3">home</span>
@@ -42,11 +34,7 @@ export const HomeNav = () => {
         >
           <Link
             to={`/perfil/${authState.user.username}`}
-            className={
-              selectedPage === "perfil"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">person</span>{" "}
             <span className="fs-5 fw-bold">Perfil</span>
@@ -60,11 +48,7 @@ export const HomeNav = () => {
         >
           <Link
             to="/comunidad"
-            className={
-              selectedPage === "comunidad"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">groups</span>{" "}
             <span className="fs-5 fw-bold">Comunidad</span>
@@ -78,11 +62,7 @@ export const HomeNav = () => {
         >
           <Link
             to="/buscar-empleo"
-            className={
-              selectedPage === "empleo"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">work</span>{" "}
             <span className="fs-5 fw-bold">Empleos</span>
@@ -96,11 +76,7 @@ export const HomeNav = () => {
         >
           <Link
             to="/mensajes"
-            className={
-              selectedPage === "mensajes"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">chat</span>{" "}
             <span className="fs-5 fw-bold">Mensajes</span>
@@ -114,11 +90,7 @@ export const HomeNav = () => {
         >
           <Link
             to="/soporte"
-            className={
-              selectedPage === "soporte"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">
               support_agent
@@ -133,11 +105,7 @@ export const HomeNav = () => {
           }}
         >
           <Link
-            className={
-              selectedPage === "ajustes"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">
               settings
@@ -153,11 +121,7 @@ export const HomeNav = () => {
         >
           <Link
             to="/guardados"
-            className={
-              selectedPage === "guardados"
-                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
-                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
-            }
+            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">
               bookmark

@@ -13,7 +13,7 @@ export const ExperienceContainer = ({ own, experiencesData }) => {
   const [openExperienceModal, setOpenExperienceModal] = useState(false);
   return own ? (
     <>
-      <section className="about bg-body-tertiary w-100 text-secondary-emphasis">
+      <section className="about bg-body-tertiary w-100">
         <div className="d-flex justify-content-between mb-2">
           <span className="fw-bold fs-5">Experiencias</span>
           <div className="d-flex">
@@ -40,8 +40,7 @@ export const ExperienceContainer = ({ own, experiencesData }) => {
         <div>
           <ul className="list-group">
             <li className="list-group-item text-secondary">
-              No tienes experiencias, agrega una (esto no se muestra en tu
-              perfil)
+              Agrega experiencias a tu perfil.
             </li>
           </ul>
         </div>

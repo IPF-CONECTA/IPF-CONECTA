@@ -19,6 +19,5 @@ export const createModalities = async () => {
         { name: 'Presencial' },
         { name: 'Remoto' },
         { name: 'Hibrido' },
-        { name: 'Flexible' },
     ])
 }

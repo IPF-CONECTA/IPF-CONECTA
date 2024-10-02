@@ -4,7 +4,7 @@ import { useNoti } from "../../../hooks/useNoti";
 import { getExperiences, getProfile } from "../../feed/services/feedServices";
 import { projectsService } from "../project/services/projectsServices";
 import { AboutCard } from "./AboutCard";
-import { ExperienceContainer } from "./ExperienceContainer";
+import { ExperienceContainer } from "../experiences/components/ExperienceContainer";
 import { Header } from "./ProfileHeader";
 import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
@@ -30,14 +30,14 @@ export const Profile = () => {
   };
 
   const fetchProjects = async () => {
-    const res = await projectsService.getProjects(profileData.profile.id);
-    if (res.status !== 200) {
-      return noti("error", "error");
+    const res = await projectsService.getProjects(username);
+    if (res.status !== 200 && res.status !== 404) {
+      return noti("error?", "error");
     }
     setProjects(res.data);
   };
   const fetchExperiences = async () => {
-    const res = await getExperiences(profileData.profile.id);
+    const res = await getExperiences(username);
     if (res.status !== 200 && res.status !== 404) {
       return noti("error", "error");
     }
@@ -46,8 +46,8 @@ export const Profile = () => {
     }
   };
   const fetchSkills = async () => {
-    const res = await getSkills(profileData.profile.id);
-    if (res.status !== 200) {
+    const res = await getSkills(username);
+    if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error la obtener las habilidades");
     }
 
@@ -55,15 +55,11 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    fetchProfile(username);
+    fetchProfile();
+    fetchExperiences();
+    fetchProjects();
+    fetchSkills();
   }, [username]);
-  useEffect(() => {
-    if (profileData && profileData.profile) {
-      fetchExperiences();
-      fetchProjects();
-      fetchSkills();
-    }
-  }, [profileData]);
 
   return (
     <>
@@ -72,7 +68,7 @@ export const Profile = () => {
           className={`w-100 d-flex justify-content-evenly px-5 pt-4 ${styles.mainContainer}`}
         >
           <div
-            className={`profile d-flex flex-column align-items-center border rounded-top ${styles.profileContainer}`}
+            className={`profile d-flex flex-column align-items-center border rounded-top mb-4 ${styles.profileContainer}`}
           >
             <Header profileData={profileData} setProfileData={setProfileData} />
             <Nav />
@@ -80,13 +76,13 @@ export const Profile = () => {
               <AboutCard
                 own={profileData.own}
                 aboutData={profileData.profile.about}
-                profileId={profileData.profile.id}
+                username={username}
               />
               <ExperienceContainer
                 own={profileData.own}
                 experiencesData={experiences}
               />
-              {(profileData.own || projects.length > 0) && (
+              {(profileData.own || projects?.length > 0) && (
                 <Projects
                   own={profileData.own}
                   username={profileData.profile.user.username}
@@ -95,11 +91,12 @@ export const Profile = () => {
                   onProjectSubmit={fetchProjects}
                 />
               )}
-              {(profileData.own || skills.length > 0) && (
+              {(profileData.own || skills?.length > 0) && (
                 <SkillsContainer
-                  skills={skills}
+                  skillsData={skills}
                   own={profileData.own}
                   onSkillSubmit={fetchSkills}
+                  username={username}
                 />
               )}
             </main>

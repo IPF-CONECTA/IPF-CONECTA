@@ -73,7 +73,6 @@ export const CreateCompanyForm = () => {
     formDataToSend.append("message", data.message);
 
     if (logo) {
-      console.log(logo);
       formDataToSend.append("logoUrl", logo);
     }
 

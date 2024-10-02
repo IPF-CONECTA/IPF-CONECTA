@@ -20,7 +20,7 @@ projectRoutes.post(
   validateSchema,
   createProjectCtrl
 );
-projectRoutes.get("/projects/:profileId", isToken, getProjectsCtrl);
+projectRoutes.get("/projects/:username", isToken, getProjectsCtrl);
 projectRoutes.get("/project/:id", isToken, getProjectByIdCtrl);
 projectRoutes.patch(
   "/project/:id",

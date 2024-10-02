@@ -27,6 +27,7 @@ import {
   CreateIdeas,
   DetailsIdeas,
 } from "../pages";
+import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
 export const Routers = () => {
   return (
@@ -53,7 +54,11 @@ export const Routers = () => {
           <Route path="/post/:postId" element={<PostPage />} />
         </Route>
         <Route path="/perfil/:username" element={<ProfilePage />} />
-        <Route path="/:usuario/proyectos" element={<ProfileProjectsPage />} />
+        <Route path="/:username/proyectos" element={<ProfileProjectsPage />} />
+        <Route
+          path="/perfil/:username/habilidades"
+          element={<AllSkillsPage />}
+        />
         <Route path="/guardados" element={<ProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />

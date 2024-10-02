@@ -21,7 +21,6 @@ export const PostList = () => {
       if (statusCode !== 200) {
         return;
       }
-      console.log(data);
       setPosts(data);
     };
     if (progress === 100 || showProgress === false) {

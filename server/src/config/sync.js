@@ -53,6 +53,7 @@ export const createTablesAndRelations = async () => {
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
+  // await WorkExperience.sync({ force: true })
   console.log("Tables created successfully");
 
 

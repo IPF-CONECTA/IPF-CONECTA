@@ -5,8 +5,7 @@ import { projectsService } from "../project/services/projectsServices";
 
 export const ProfileProjects = () => {
   const [projects, setProjects] = useState([]);
-  const { usuario } = useParams();
-  console.log(usuario);
+  const { username } = useParams();
 
   useEffect(() => {
     projectsService.getProjects().then((response) => {
@@ -17,7 +16,7 @@ export const ProfileProjects = () => {
   return (
     <>
       <div className="container">
-        <h1 className="text-center mt-2 mb-2">Proyectos de: {usuario}</h1>
+        <h1 className="text-center mt-2 mb-2">Proyectos de: {username}</h1>
         <div className="row">
           {projects.map((project) => {
             return (

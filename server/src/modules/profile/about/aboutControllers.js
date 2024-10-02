@@ -1,10 +1,11 @@
+import { getProfileIdByUsername } from "../../users/userServices.js";
 import { updateAbout } from "./aboutServices.js";
 
 export const updateAboutCtrl = async (req, res) => {
     const reqUser = req.user.profile.id;
-    const { about, profileId } = req.body;
-    console.log(profileId, reqUser)
+    const { about, username } = req.body;
     try {
+        const profileId = await getProfileIdByUsername(username)
         if (!about && !profileId) {
             return res.status(400).json()
         } else if (reqUser !== profileId) {
@@ -25,10 +26,10 @@ export const updateAboutCtrl = async (req, res) => {
 
 export const deleteAboutCtrl = async (req, res) => {
     const reqUser = req.user.profile.id;
-    const { profileId } = req.params;
+    const { username } = req.params;
 
     try {
-
+        const profileId = await getProfileIdByUsername(username)
         if (!profileId) {
             return res.status(400).json
         } else if (reqUser !== profileId) {

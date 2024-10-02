@@ -5,6 +5,6 @@ import { isToken } from '../../../middlewares/jwt/isVerifiedAccount.js';
 const SkillProfileRoutes = Router();
 
 SkillProfileRoutes.post('/skillProfile/:skillId', isToken, toggleSkill);
-SkillProfileRoutes.get('/skillsProfile/:profileId', isToken, getProfileSkills);
+SkillProfileRoutes.get('/skillsProfile/:username', isToken, getProfileSkills);
 
 export default SkillProfileRoutes;

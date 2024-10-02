@@ -1,3 +1,4 @@
+import { ENUM } from "sequelize";
 import { DataTypes, sequelize } from "../../../config/db.js";
 
 
@@ -7,23 +8,31 @@ export const WorkExperience = sequelize.define('workExperience', {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
     },
-    position: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    contractType: {
+    contractTypeId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    companyName: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     companyId: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: true
     },
     ubicationId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    typeUbication: {
+    ubicationType: {
+        type: DataTypes.ENUM("city", "state", "country"),
+        allowNull: false
+    },
+    modalityId: {
         type: DataTypes.STRING,
         allowNull: false
     },
