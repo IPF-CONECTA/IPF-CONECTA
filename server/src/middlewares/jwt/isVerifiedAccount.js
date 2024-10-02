@@ -39,7 +39,7 @@ export const isToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (error.message === "jwt malformed") {
       return res.status(401).json({ message: "Inicie sesion para continuar" });
     }

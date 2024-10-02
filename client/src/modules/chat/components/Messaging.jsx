@@ -1,3 +1,10 @@
+import { HomeNav } from "../../ui/components";
+
 export const Messaging = () => {
-  return <div>Messaging component</div>;
+  return (
+    <>
+      <HomeNav />
+      Messaging component
+    </>
+  );
 };

@@ -19,4 +19,17 @@ export const chatService = {
       console.error(error);
     }
   },
+
+  getChatsByProfileId: async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/chat/get-chats", {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
