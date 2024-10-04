@@ -2,11 +2,15 @@ import axios from "axios";
 import { authService } from "../../auth/services/authService";
 
 export const chatService = {
-  createChat: async (receptor) => {
+  sendMessage: async (message, username) => {
+    console.log({ ACATATUSER2: username });
+    console.log({ ACATATMSG: message });
     try {
       const res = await axios.post(
-        `http://localhost:4000/chat/create/${receptor}`,
-        {},
+        `http://localhost:4000/message/send/${username}`,
+        {
+          message,
+        },
         { headers: { Authorization: `Bearer ${authService.getToken()}` } }
       );
       return { data: res.data, status: res.status };
@@ -26,6 +30,22 @@ export const chatService = {
       return res.data;
     } catch (error) {
       console.error(error);
+    }
+  },
+
+  getChatByUser: async (username) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/chat/get-chat/${username}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      return { data: res.data, status: res.status };
+    } catch (error) {
+      return { status: error.status, message: error.message };
     }
   },
 };

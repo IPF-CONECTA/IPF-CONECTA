@@ -1,4 +1,8 @@
-import { createChat } from "./chatServices.js";
+import {
+  createChat,
+  getChatByUser,
+  getChatsByProfileId,
+} from "./chatServices.js";
 import { getProfileIdByUsername } from "../users/userServices.js";
 
 export const createChatCtrl = async (req, res) => {
@@ -19,10 +23,26 @@ export const createChatCtrl = async (req, res) => {
 
 export const getChatsByProfileIdCtrl = async (req, res) => {
   try {
-    const { id: profileId } = req.user.profile;
-    let chats = await getChatsByProfileId(profileId);
+    const { id } = req.user.profile;
+    let chats = await getChatsByProfileId(id);
     res.status(200).json({ chats });
   } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+};
+
+export const getChatByUserCtrl = async (req, res) => {
+  try {
+    const { id } = req.user.profile;
+    const { username } = req.params;
+
+    const receptorId = await getProfileIdByUsername(username);
+    console.log({ receptorId });
+    let chat = await getChatByUser(receptorId, id);
+    res.status(200).json({ chat });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error });
   }
 };

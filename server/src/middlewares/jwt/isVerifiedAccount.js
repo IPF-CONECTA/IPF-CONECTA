@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../../modules/users/userModel.js";
 import { getUserById } from "../../modules/users/userServices.js";
+import { verifyToken } from "../../helpers/verifyToken.js";
 
 export const isVerifiedAccount = async (req, res, next) => {
   try {
@@ -31,11 +32,7 @@ export const isToken = async (req, res, next) => {
     }
 
     token = token.split(" ")[1];
-    const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
-    const user = await getUserById(userId);
-    if (!user) {
-      throw new Error("Error al verificar el token, inicie sesion nuevamente");
-    }
+    const user = await verifyToken(token);
     req.user = user;
     next();
   } catch (error) {

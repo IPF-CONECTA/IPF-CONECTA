@@ -7,12 +7,13 @@ import { __dirname } from "./helpers/__dirname.js";
 import { connectDB } from "./config/db.js";
 const app = express();
 import { createTablesAndRelations } from "./config/sync.js";
-import router from "./modules/users/userRoutes.js";
+
 import { routes } from "./export.routes.js";
-import path from "path";
 
 import { Server } from "socket.io";
 import { createServer } from "http";
+import { verifyToken } from "./helpers/verifyToken.js";
+import { sendMessage } from "./modules/chat/message/messageServices.js";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -35,11 +36,18 @@ routes(app);
 connectDB();
 createTablesAndRelations();
 
-io.on("connection", (socket) => {
-  console.log("Nuevo cliente conectado:", socket.id);
+io.on("connection", async (socket) => {
+  let token = socket.handshake.headers["authorization"];
+  token = token.split(" ")[1];
 
-  socket.on("chat message", (msg) => {
+  // const {
+  //   profile: { id },
+  // } = await verifyToken(token);
+  // console.log("Usuario conectado:", id);
+  let id = 1;
+  socket.on("chat message", (msg, receptorId) => {
     console.log("Mensaje recibido:", msg);
+    // sendMessage(receptorId, msg);
     io.emit("chat message", msg);
   });
 

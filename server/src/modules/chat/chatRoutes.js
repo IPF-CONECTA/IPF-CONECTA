@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { createChatCtrl, getChatsByProfileIdCtrl } from "./chatController.js";
+import {
+  createChatCtrl,
+  getChatsByProfileIdCtrl,
+  getChatByUserCtrl,
+} from "./chatController.js";
 import { isToken } from "../../middlewares/jwt/isVerifiedAccount.js";
 
-const chatRouter = Router();
+const chatRoutes = Router();
 
-chatRouter.post("/create/:username", isToken, createChatCtrl);
-chatRouter.get("/get-chats", isToken, getChatsByProfileIdCtrl);
+chatRoutes.get("/get-chats", isToken, getChatsByProfileIdCtrl);
+chatRoutes.get("/get-chat/:username", isToken, getChatByUserCtrl);
 
-export default chatRouter;
+export default chatRoutes;

@@ -65,8 +65,7 @@ export const getProfileIdByUsername = async (username) => {
       where: { username },
       include: { model: Profile },
     });
-    console.log({ ACATUSER: user });
-    return user.profile.id;
+    return user?.profile?.id;
   } catch (error) {
     throw error;
   }

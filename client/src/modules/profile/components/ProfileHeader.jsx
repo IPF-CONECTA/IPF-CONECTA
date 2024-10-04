@@ -1,12 +1,8 @@
 import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../feed/services/feedServices";
 import { Link } from "react-router-dom";
-import { chatService } from "../../chat/services/chatService";
-import { useContext } from "react";
-import { authContext } from "../../../context/auth/Context.js";
 export const Header = ({ profileData, setProfileData }) => {
-  const { authState } = useContext(authContext);
-  console.log(authState);
+  // console.log(authState);
 
   const handleFollow = async () => {
     const { statusCode } = await followOrUnfollow(profileData?.profile.id);
