@@ -11,30 +11,54 @@ import {
 } from "../../../recruiter/job/services/jobServices";
 import { useNoti } from "../../../../hooks/useNoti";
 import { createExperience } from "../services/experienceServices";
+import { SkillSearch } from "../../skills/components/FindSkills";
 
 export const CreateExperienceModal = ({
   openExperienceModal,
   setOpenExperienceModal,
+  onExperienceSubmit,
+  username,
+  experience,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      title: experience?.title || "",
+      description: experience?.description || "",
+      contractType: experience?.contractTypeId || "",
+      company: experience?.company || "",
+      location: experience?.location || "",
+      modality: experience?.modality || "",
+      startDateMonth: experience?.startDateMonth || "",
+      endDateMonth: experience?.endDate?.slice(9, 10) || "",
+      startDateYear: experience?.startDateYear || "",
+      endDateYear: experience?.endDateYear || "",
+    },
+  });
   const noti = useNoti();
   const [companySearch, setCompanySearch] = useState("");
   const [ubicationSearch, setUbicationSearch] = useState("");
   const [ubications, setUbications] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const [company, setCompany] = useState(null);
-  const [ubication, setUbication] = useState(null);
   const [actualWork, setActualWork] = useState(false);
   const [contractTypes, setContractTypes] = useState([]);
   const [modalities, setModalities] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const handleSkillSelect = (selectedOption) => {
+    const skills = Array.isArray(selectedOption)
+      ? selectedOption
+      : [selectedOption];
+    setSelectedSkills(skills.map((skill) => skill.value));
+  };
 
+  // Obtener modalidades y tipos de contrato
   useEffect(() => {
     const fetchContractTypes = async () => {
       const res = await getContractTypes();
@@ -134,9 +158,31 @@ export const CreateExperienceModal = ({
     };
   }, [ubicationSearch]);
 
+  useEffect(() => {
+    if (actualWork) {
+      setValue("endDateMonth", "null");
+      setValue("endDateYear", "null");
+    }
+  }, [actualWork, setValue]);
+
   const submitExperience = async (data) => {
-    console.log(data);
-    // createExperience(data);
+    try {
+      const res = await createExperience(data, selectedSkills, username);
+      if (res.status !== 201) {
+        return noti(
+          "Hubo un error al registrar la experiencia, contacte con el administrador",
+          "error"
+        );
+      }
+      noti("Experiencia agregada correctamente", "success");
+      setOpenExperienceModal(false);
+      onExperienceSubmit();
+    } catch (error) {
+      noti(
+        "Hubo un error al registrar la experiencia, contacte con el administrador",
+        "error"
+      );
+    }
   };
   return (
     <Dialog
@@ -155,7 +201,7 @@ export const CreateExperienceModal = ({
             className="shadow-none border-0 p-0 pt-2 d-flex flex-column"
             onSubmit={handleSubmit(submitExperience)}
           >
-            <div className={`mb-2`}>
+            <div className="mb-2 title">
               <label htmlFor="title">
                 Título <span className="text-danger">*</span>
               </label>
@@ -164,8 +210,8 @@ export const CreateExperienceModal = ({
                 {...register("title", {
                   required: "El título es obligatorio",
                   maxLength: {
-                    value: 32,
-                    message: "El título no puede tener más de 32 caracteres",
+                    value: 80,
+                    message: "El título no puede tener más de 80 caracteres",
                   },
                 })}
                 className="form-control w-100"
@@ -176,7 +222,7 @@ export const CreateExperienceModal = ({
                 <span className="text-danger">{errors.title.message}</span>
               )}
             </div>
-            <div className="mb-2">
+            <div className="mb-2 description">
               <label htmlFor="description">Descripción del puesto</label>
               <input
                 {...register("description")}
@@ -185,7 +231,7 @@ export const CreateExperienceModal = ({
                 placeholder="Cuentanos que haces/hiciste en esta experiencia"
               />
             </div>
-            <div className={`mb-2`}>
+            <div className="mb-2 contractType">
               <label htmlFor="contractType">
                 Tipo de contrato <span className="text-danger">*</span>
               </label>
@@ -209,7 +255,7 @@ export const CreateExperienceModal = ({
                 </span>
               )}
             </div>
-            <div className={`mb-2`}>
+            <div className="mb-2 company">
               <label htmlFor="company">Empresa</label>
               <div>
                 <Controller
@@ -244,7 +290,7 @@ export const CreateExperienceModal = ({
                 />
               </div>
             </div>
-            <div className={`mb-2`}>
+            <div className="mb-2 ubication">
               <label htmlFor="location">Ubicación</label>
 
               <Controller
@@ -258,13 +304,13 @@ export const CreateExperienceModal = ({
                     onInputChange={(inputValue) =>
                       setUbicationSearch(inputValue)
                     }
-                    placeholder="Seleccionar ubicación..."
+                    placeholder="Buscar ubicación..."
                   />
                 )}
               />
               {errors.location && <span>{errors.location.message}</span>}
             </div>
-            <div className="mb-2">
+            <div className="mb-2 modality">
               <label htmlFor="modalities">Modalidad</label>
               <Controller
                 name="modality"
@@ -283,7 +329,7 @@ export const CreateExperienceModal = ({
                 <span className="text-danger">{errors.modality.message}</span>
               )}
             </div>
-            <div className="form-check mb-2">
+            <div className="form-check mb-2 actualWork">
               <input
                 className="form-check-input"
                 type="checkbox"
@@ -293,7 +339,7 @@ export const CreateExperienceModal = ({
                 Actualmente estoy trabajando en este puesto
               </label>
             </div>
-            <div className={`mb-2`}>
+            <div className="mb-2 startDate">
               <label htmlFor="startDate">Fecha de inicio</label>
               <div className="d-flex gap-3">
                 <select
@@ -323,9 +369,9 @@ export const CreateExperienceModal = ({
                   {...register("startDateYear")}
                   name="startDateYear"
                   className="form-select w-100"
-                  defaultValue={""}
+                  defaultValue={"null"}
                 >
-                  <option value="" disabled>
+                  <option value="null" disabled>
                     Año
                   </option>
                   {Array.from(
@@ -342,7 +388,7 @@ export const CreateExperienceModal = ({
                 </select>
               </div>
             </div>
-            <div className={`mb-2`}>
+            <div className="mb-2 endDate">
               <label htmlFor="endDate">Fecha de fin</label>
 
               <div className="d-flex gap-3 mb-2">
@@ -369,15 +415,15 @@ export const CreateExperienceModal = ({
                   <option value="10">Octubre</option>
                   <option value="11">Noviembre</option>
                   <option value="12">Diciembre</option>
-                  <option value=""></option>
                 </select>
                 <select
+                  disabled={actualWork}
                   {...register("endDateYear")}
                   name="endDateYear"
                   className="form-select w-100"
-                  defaultValue={""}
+                  defaultValue={"null"}
                 >
-                  <option value="" disabled>
+                  <option value="null" disabled>
                     Año
                   </option>
                   {Array.from(
@@ -393,6 +439,13 @@ export const CreateExperienceModal = ({
                   )}
                 </select>
               </div>
+            </div>
+
+            <div className="mb-2 skills">
+              <label htmlFor="skillSearch">
+                Selecciona las habilidades usadas para esta experiencia
+              </label>
+              <SkillSearch onSkillSelect={handleSkillSelect} />
             </div>
             <div className="w-100 d-flex justify-content-end">
               <button className="btn btn-dark" type="submit">

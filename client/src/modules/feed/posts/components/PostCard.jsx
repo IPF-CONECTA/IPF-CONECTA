@@ -96,7 +96,7 @@ export const PostCard = ({ post }) => {
     }, 10);
   };
 
-  const handleShowProfile = (boolean, id) => {
+  const handleShowProfile = (boolean, username) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -110,7 +110,7 @@ export const PostCard = ({ post }) => {
 
     timeoutRef.current = setTimeout(async () => {
       setShowProfile(true);
-      const { data, statusCode } = await getProfileInfo(id);
+      const { data, statusCode } = await getProfileInfo(username);
       if (statusCode !== 200) {
         return;
       }
@@ -150,8 +150,12 @@ export const PostCard = ({ post }) => {
                     e.stopPropagation();
                     navigate(`/perfil/${post.profile.user.username}`);
                   }}
-                  onMouseEnter={() => handleShowProfile(true, post.profile.id)}
-                  onMouseLeave={() => handleShowProfile(false, post.profile.id)}
+                  onMouseEnter={() =>
+                    handleShowProfile(true, post.profile.user.username)
+                  }
+                  onMouseLeave={() =>
+                    handleShowProfile(false, post.profile.user.username)
+                  }
                   src={post.profile.profilePic}
                   alt={post.profile.names}
                 />
@@ -183,7 +187,11 @@ export const PostCard = ({ post }) => {
             )}
           </header>
           <div className="py-3">
-            <p className="text-break">{post.content}</p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: post.content.replace(/\n/g, "<br />"),
+              }}
+            ></div>
             {post.attatchment &&
               (post.attatchment.type === "image" ? (
                 <img src={post.attatchment.url} alt={post.attatchment.alt} />

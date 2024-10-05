@@ -5,13 +5,10 @@ import {
   getJobsSvc,
 } from "./jobServices.js";
 import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js";
-import jwt from "jsonwebtoken";
 
 export const createNewJobCtrl = async (req, res) => {
   const { id } = req.user.profile;
   const { jobOffer, skills } = req.body;
-
-  console.log(jobOffer);
 
   try {
     const newJob = await createNewJobSvc(jobOffer, id);
@@ -51,7 +48,6 @@ export const getJobByIdCtrl = async (req, res) => {
     if (!id) throw new Error("No se selecciono ninguna oferta");
 
     const job = await getJobByIdSvc(id, profileId);
-    console.log(job.Company);
 
     if (!job)
       return res
@@ -60,7 +56,7 @@ export const getJobByIdCtrl = async (req, res) => {
 
     res.status(200).json(job);
   } catch (error) {
-    console.log({ errorputo: error });
+    console.log(error);
     res.status(400).json(error.message);
   }
 };

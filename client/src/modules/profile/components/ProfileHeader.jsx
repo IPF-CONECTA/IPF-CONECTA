@@ -14,17 +14,20 @@ export const Header = ({ profileData, setProfileData }) => {
   return (
     <header className={`w-100 ${styles.header}`}>
       <div className="bg-dark w-100 h-100 p-3 rounded-top d-flex">
-        <div className={`d-flex flex-column align-items-center me-3`}>
+        <div
+          className={`d-flex flex-column align-items-center ${
+            profileData?.profile.user.role.name == "student" &&
+            "justify-content-center"
+          } me-3`}
+        >
           <span className={`${styles.smallText}  text-light mb-1`}>
-            {profileData?.profile.user.role.name === "student"
-              ? "ESTUDIANTE"
-              : "RECLUTADOR"}
+            {profileData?.profile.user.role.name === "recruiter" && "MENTOR"}
           </span>
           <img
             src={profileData?.profile.profilePic}
             height={75}
             alt="profile pic"
-            className="rounded-circle bg-light mb-1"
+            className="rounded-circle bg-light"
           />
         </div>
         <div className="h-100 d-flex  justify-content-between w-100">
@@ -35,6 +38,11 @@ export const Header = ({ profileData, setProfileData }) => {
             <span className="text-light">
               @{profileData?.profile.user.username}
             </span>
+            {profileData?.profile.title && (
+              <span className="text-white fst-italic">
+                {profileData.profile.title}
+              </span>
+            )}
           </div>
           <div className="d-flex seguidores">
             <div className="d-flex flex-column align-items-center">

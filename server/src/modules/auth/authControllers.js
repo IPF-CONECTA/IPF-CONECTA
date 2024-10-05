@@ -7,7 +7,6 @@ import { BASIC_ROLES } from "../../constant/roles.js";
 
 export const authSignUpCtrl = async (req, res) => {
     const { user } = req.body;
-    console.log(user)
     try {
         if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 

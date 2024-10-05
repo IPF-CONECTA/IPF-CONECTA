@@ -63,9 +63,6 @@ export const PostList = () => {
           onFocus={() => {
             setFocused(true);
           }}
-          onBlur={() => {
-            setFocused(false);
-          }}
         >
           <textarea
             name=""
@@ -74,7 +71,10 @@ export const PostList = () => {
             }`}
             placeholder="Que estas pensando..."
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setContent(e.target.value);
+            }}
           ></textarea>
 
           <div className=" w-100 d-flex justify-content-between  pt-2">

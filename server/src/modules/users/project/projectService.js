@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Project } from "./projectModel.js";
 
 export const createProjectSvc = async (projectData, profileId) => {
@@ -12,12 +13,14 @@ export const createProjectSvc = async (projectData, profileId) => {
   }
 };
 
-export const getProjectsSvc = async (id) => {
+export const getProjectsSvc = async (id, reqId) => {
   try {
     const projects = await Project.findAll({
       where: {
         profileId: id,
-      }
+        [Op.or]: reqId === id ? [{ private: false }, { private: true }] : [{ private: false }],
+      },
+      attributes: ["id", "name", "smallDescription", "startDate", "endDate", "projectLink", "projectLogo", "private"],
     });
     return projects;
   } catch (error) {

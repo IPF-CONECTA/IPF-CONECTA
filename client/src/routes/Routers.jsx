@@ -26,6 +26,7 @@ import {
   Ideas,
   CreateIdeas,
   DetailsIdeas,
+  ProfileExperiencesPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -58,6 +59,10 @@ export const Routers = () => {
         <Route
           path="/perfil/:username/habilidades"
           element={<AllSkillsPage />}
+        />
+        <Route
+          path="/perfil/:username/experiencias"
+          element={<ProfileExperiencesPage />}
         />
         <Route path="/guardados" element={<ProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />

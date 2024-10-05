@@ -24,7 +24,30 @@ moment.updateLocale('es', {
 export const getTime = (date) => {
     return moment(date).fromNow();
 }
-export const getDate = (dt) => {
+export const getDateWithHour = (dt) => {
     let date = DateTime.fromISO(dt);
     return date.toFormat('dd LLL yyyy, HH:mm')
+}
+export const getDate = (dt) => {
+    let date = DateTime.fromISO(dt);
+    return date.toFormat('LLL yyyy').charAt(0) + date.toFormat('LLL yyyy').slice(1)
+}
+
+export const getTimeQuantity = (startDate, endDate) => {
+    let start = DateTime.fromISO(startDate);
+    endDate = endDate ? endDate : DateTime.now().toISODate();
+    let end = DateTime.fromISO(endDate);
+    let diff = end.diff(start, ['years', 'months', 'days']);
+    let years = diff.years;
+    let months = diff.months;
+    let days = diff.days;
+    let result = '';
+    if (years > 0) {
+        result += years + ' años';
+    }
+    if (months > 0) {
+        result += ' y ' + months + ' meses';
+    }
+
+    return result;
 }

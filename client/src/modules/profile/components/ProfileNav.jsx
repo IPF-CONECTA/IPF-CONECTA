@@ -17,6 +17,12 @@ export const Nav = () => {
         Educación
       </Link>
       <Link to={"#"} className="btn fw-semibold text-decoration-none text-dark">
+        Proyectos
+      </Link>
+      <Link to={"#"} className="btn fw-semibold text-decoration-none text-dark">
+        Habilidades
+      </Link>
+      <Link to={"#"} className="btn fw-semibold text-decoration-none text-dark">
         Idiomas
       </Link>
     </nav>

@@ -16,29 +16,15 @@ export const createProjectSchema = [
   body("project.smallDescription")
     .notEmpty()
     .withMessage("Ingrese la descripcion corta del proyecto")
-    .isLength({ min: 5, max: 30 })
+    .isLength({ min: 5, max: 50 })
     .withMessage(
-      "La descripcion corta del proyecto debe tener entre 5 y 30 caracteres"
-    ),
-  body("project.status")
-    .notEmpty()
-    .withMessage("Ingrese un estado del proyecto")
-    .isIn(["Comenzando", "Pendiente", "En progreso", "Finalizado"])
-    .withMessage(
-      "Estado del proyecto no valido, las opciones son: Comenzando, Pendiente, En progreso, Finalizado"
+      "La descripcion corta del proyecto debe tener entre 5 y 50 caracteres"
     ),
   body("project.projectLink")
     .notEmpty()
     .withMessage("Ingrese el link del proyecto")
     .isURL()
     .withMessage("Ingrese un link valido."),
-  body("project.privacity")
-    .notEmpty()
-    .withMessage("Ingrese la privacidad del proyecto")
-    .isIn(["publico", "privado"])
-    .withMessage(
-      "Privacidad del proyecto no valida, las opciones son: publico, privado"
-    ),
 ];
 
 export const updateProjectSchema = [

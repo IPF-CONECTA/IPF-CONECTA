@@ -7,11 +7,10 @@ export const addVote = async (id, ideaId) => {
       profileId: id,
       ideaId,
     });
-    console.log('New vote created:', newVote);
 
     return newVote;
   } catch (error) {
-    console.error('Error adding vote:', error);
+    console.error(error);
     throw error;
   }
 };
@@ -26,7 +25,7 @@ export const deleteVote = async (id, ideaId) => {
 
     return deletedVote;
   } catch (error) {
-    console.error('Error deleting vote:', error);
+    console.error(error);
     throw error;
   }
 };

@@ -16,14 +16,14 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <img
-              src={`${BASE_URL}/logoUrl/${job.company.logoUrl}`}
+              src={`${BASE_URL}/logoUrl/${job.company?.logoUrl}`}
               crossOrigin="anonymous"
               className={`me-2 rounded-circle ${styles.roundedImage}`}
               height={25}
               width={25}
               alt=""
             />
-            <span className={`${styles.smallText}`}>{job.company.name}</span>
+            <span className={`${styles.smallText}`}>{job.company?.name}</span>
           </div>
           <button className={`${styles.bookmark} btn p-0`}>
             <span className={`material-symbols-outlined ${styles.icon}`}>
@@ -34,7 +34,7 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
         <span className="">{job.title}</span>
         <div className="d-flex justify-content-between mt-2">
           <span className={`text-secondary ${styles.smallText}`}>
-            {job.modality.name}
+            {job.modality?.name}
           </span>
           <span className={`me-1 text-secondary ${styles.smallText}`}>
             {getTime(job.createdAt)}

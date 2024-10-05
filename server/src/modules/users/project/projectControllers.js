@@ -13,6 +13,7 @@ export const createProjectCtrl = async (req, res) => {
     const { id } = req.user.profile;
     const { project } = req.body;
     console.log(project)
+    if (!project) return res.status(400).json({ message: "Faltan datos por completar" });
     const newProject = await createProjectSvc(project, id);
     res.status(201).json(newProject);
   } catch (error) {
@@ -23,11 +24,13 @@ export const createProjectCtrl = async (req, res) => {
 
 export const getProjectsCtrl = async (req, res) => {
   const { username } = req.params;
+  const reqId = req.user.profile.id
   try {
     const profileId = await getProfileIdByUsername(username)
-    const allProjects = await getProjectsSvc(profileId);
+    const allProjects = await getProjectsSvc(profileId, reqId);
     res.status(200).json(allProjects);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: error.message });
   }
 };
@@ -51,7 +54,6 @@ export const updateProjectCtrl = async (req, res) => {
     const { id } = req.params;
     const { project } = req.body;
 
-    console.log({ project, profileId, id });
     const updatedProject = await updateProjectSvc(id, project, profileId);
     if (!updatedProject)
       return res.status(404).json({ message: "Project not found" });

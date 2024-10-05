@@ -20,7 +20,6 @@ export const toggleSkill = async (req, res) => {
         }
 
         const existingSkillProfile = await getSkillProfile(id, skillId)
-        console.log(existingSkillProfile)
         if (existingSkillProfile) {
             await deleteSkillProfile(id, skillId)
             return res.status(200).json()

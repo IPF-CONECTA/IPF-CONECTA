@@ -29,11 +29,11 @@ export const WorkExperience = sequelize.define('workExperience', {
         allowNull: false
     },
     ubicationType: {
-        type: DataTypes.ENUM("city", "state", "country"),
+        type: DataTypes.ENUM("City", "State", "Country"),
         allowNull: false
     },
     modalityId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     startDate: {
@@ -45,7 +45,7 @@ export const WorkExperience = sequelize.define('workExperience', {
         allowNull: true
     },
     description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     profileId: {

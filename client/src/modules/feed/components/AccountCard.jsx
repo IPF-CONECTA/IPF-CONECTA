@@ -15,7 +15,7 @@ export const AccountCard = ({ account }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const { profileInfo, handleFollowOrUnfollow } = useFollow(account);
   const navigate = useNavigate();
-  const handleShowProfile = (boolean, id) => {
+  const handleShowProfile = (boolean, username) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -29,7 +29,7 @@ export const AccountCard = ({ account }) => {
 
     timeoutRef.current = setTimeout(async () => {
       setShowProfile(true);
-      const { data, statusCode } = await getProfileInfo(id);
+      const { data, statusCode } = await getProfileInfo(username);
       if (statusCode !== 200) {
         return;
       }
@@ -70,8 +70,8 @@ export const AccountCard = ({ account }) => {
             e.stopPropagation();
             navigate(`/perfil/${account.username}`);
           }}
-          onMouseEnter={() => handleShowProfile(true, account.profile.id)}
-          onMouseLeave={() => handleShowProfile(false, account.profile.id)}
+          onMouseEnter={() => handleShowProfile(true, account.username)}
+          onMouseLeave={() => handleShowProfile(false, account.username)}
         />
         {profile && (
           <ProfileHover

@@ -60,7 +60,6 @@ export const getRecomendedUsersSvc = async (profileId) => {
 export const getProfileIdByUsername = async (username) => {
   try {
     const user = await User.findOne({ where: { username }, include: { model: Profile } })
-    console.log(user)
     return user.profile.id
   } catch (error) {
     throw error

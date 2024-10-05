@@ -275,11 +275,44 @@ export const createRelations = async () => {
     WorkExperience.hasMany(ExperienceSkill, {
       foreignKey: "experienceId",
     });
+    Company.hasMany(WorkExperience, {
+      foreignKey: "companyId"
+    })
+
+    WorkExperience.belongsTo(Company, {
+      foreignKey: "companyId"
+    })
     Skill.hasMany(ExperienceSkill, {
       foreignKey: "skillId",
     });
+    ExperienceSkill.belongsTo(Skill, {
+      foreignKey: "skillId",
+    });
+    Modality.hasMany(WorkExperience, {
+      foreignKey: "modalityId"
+    })
+    WorkExperience.belongsTo(Modality, {
+      foreignKey: "modalityId"
+    })
     Profile.hasMany(WorkExperience, {
       foreignKey: "profileId",
+    });
+    WorkExperience.belongsTo(State, {
+      foreignKey: 'ubicationId',
+      constraints: false,
+      as: 'state'
+    });
+
+    WorkExperience.belongsTo(Country, {
+      foreignKey: 'ubicationId',
+      constraints: false,
+      as: 'country'
+    });
+
+    WorkExperience.belongsTo(City, {
+      foreignKey: 'ubicationId',
+      constraints: false,
+      as: 'city'
     });
     Idea.belongsTo(Profile, {
       foreignKey: "profileId",

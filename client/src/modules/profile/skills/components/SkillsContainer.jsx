@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SkillCard } from "./SkillCard";
 import { AddSkillForm } from "./AddSkillForm";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
   const [skills, setSkills] = useState([]);
@@ -12,8 +12,8 @@ export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
     setSkills(skillsData);
   }, [skillsData]);
   return (
-    <section className="bg-body-tertiary">
-      <div className="d-flex flex-column">
+    <div className="bg-body-tertiary">
+      <div className="d-flex flex-column p-4">
         <div className="d-flex justify-content-between mb-2">
           <span className="fs-5 fw-bold">Habilidades</span>
           {own && (
@@ -43,23 +43,13 @@ export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
             </div>
           )}
         </div>
-        {skills && skills.length >= 1 ? (
+        {skills && skills?.length >= 1 ? (
           <>
             <ul className="p-0 m-0 border border-bottom-0 border-end-0 border-start-0">
               {displayedSkills.map((skill) => (
                 <SkillCard key={skill.skillId} skill={skill} />
               ))}
             </ul>
-            {skills.length > 2 && !own && (
-              <div className="d-flex justify-content-center">
-                <button
-                  onClick={() => navigate(`habilidades`)}
-                  className="btn btn-outline-dark mt-3"
-                >
-                  Mostrar más
-                </button>
-              </div>
-            )}
           </>
         ) : (
           <ul className="p-0 m-0 list-group ">
@@ -69,6 +59,19 @@ export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
           </ul>
         )}
       </div>
-    </section>
+      {skills?.length > 2 && (
+        <>
+          <hr className="text-body-tertiary m-0" />
+          <div className="d-flex justify-content-center w-100 py-2">
+            <Link
+              to={"habilidades"}
+              className="fw-semibold text-body-tertiary text-decoration-none"
+            >
+              Ver todas las habilidades ({skills.length})
+            </Link>
+          </div>
+        </>
+      )}
+    </div>
   );
 };

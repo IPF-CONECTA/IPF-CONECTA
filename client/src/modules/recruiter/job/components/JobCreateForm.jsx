@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import axios from "axios";
@@ -13,18 +13,11 @@ import {
   getContractTypes,
   getModalities,
 } from "../services/jobServices";
+import Editor from "../../../ui/components/Editor";
 
 export const CreateJobForm = () => {
   const navigate = useNavigate();
   const noti = useNoti();
-  const modules = {
-    toolbar: [
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ header: [1, 2, 3, false] }],
-      [{ align: [] }],
-    ],
-  };
   const [companies, setCompanies] = useState([]);
   const [skills, setSkills] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
@@ -32,22 +25,26 @@ export const CreateJobForm = () => {
   const [contractTypes, setContractTypes] = useState([]);
   const [search, setSearch] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const quillRef = useRef(null);
   const [formData, setFormData] = useState({
     title: "",
     description: `
-    <p><strong>El candidato ideal</strong> será responsable de desarrollar aplicaciones de alta calidad. También será responsable de diseñar e implementar código escalable y testeable.</p>
-    <strong>Responsabilidades:</strong>
-    <ul>
-      <li>Desarrollar software y aplicaciones web de calidad</li>
-      <li>Analizar y mantener aplicaciones de software existentes</li>
-      <li>Diseñar código altamente escalable y testeable</li>
-    </ul>
-    <strong>Calificaciones:</strong>
-    <ul>
-      <li>Licenciatura o experiencia equivalente en Ciencias de la Computación o campo relacionado</li>
-      <li>Experiencia en desarrollo con lenguajes de programación</li>
-      <li>Habilidades en bases de datos SQL o relacionales</li>
-    </ul>
+      <h1>Descripción del trabajo</h1>
+      <p>En esta sección debes describir las responsabilidades y tareas que tendrá el candidato que ocupe este puesto.</p>
+      <h2>Requisitos</h2>
+      <ul>
+        <li>Requisito 1</li>
+        <li>Requisito 2</li>
+
+      </ul>
+      <h2>Beneficios</h2>
+      <ul>
+
+        <li>Beneficio 1</li>
+        <li>Beneficio 2</li>
+
+      </ul>
+
     `,
     companyId: "",
     modalityId: "",
@@ -122,8 +119,11 @@ export const CreateJobForm = () => {
 
     const fetchModalities = async () => {
       try {
-        const data = await getModalities();
-        setModalities(data);
+        const res = await getModalities();
+        if (res.status !== 200) {
+          return;
+        }
+        setModalities(res.data);
       } catch (error) {
         console.error("Error fetching modalities:", error);
       }
@@ -131,8 +131,11 @@ export const CreateJobForm = () => {
 
     const fetchContractTypes = async () => {
       try {
-        const data = await getContractTypes();
-        setContractTypes(data);
+        const res = await getContractTypes();
+        if (res.status !== 200) {
+          return;
+        }
+        setContractTypes(res.data);
       } catch (error) {
         console.error("Error fetching contract types:", error);
       }
@@ -203,28 +206,27 @@ export const CreateJobForm = () => {
   return (
     <div className="w-100 d-flex justify-content-center">
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className="mb-2">
-          <label htmlFor="title">Título</label>
+        <div className="mb-3">
+          <label htmlFor="title">Cargo</label>
           <input
             type="text"
+            placeholder="Desarrollador Fullstack"
             name="title"
             className={`m-0 p-2`}
             value={formData.title}
             onChange={handleInputChange}
           />
         </div>
-        <div className="mb-2">
+        <div className="mb-3">
           <label htmlFor="description">Descripción</label>
-          <ReactQuill
-            name="description"
-            value={formData.description}
+          <Editor
+            ref={quillRef}
+            placeholder="Describe las responsabilidades del puesto, tareas, requisitos, beneficios, etc."
             onChange={handleDescriptionChange}
-            modules={modules}
-            theme="snow"
           />
         </div>
         {companies.length > 1 && (
-          <div className="mb-2">
+          <div className="mb-3">
             <label>Empresa</label>
             <select
               name="companyId"
@@ -257,7 +259,7 @@ export const CreateJobForm = () => {
             filterOption={customFilter}
           />
         </div>
-        <div className="mb-2">
+        <div className="mb-3">
           <label>Modalidad</label>
           <select
             name="modalityId"
@@ -266,14 +268,14 @@ export const CreateJobForm = () => {
             onChange={handleSelectChange}
           >
             <option value="">Selecciona la modalidad</option>
-            {modalities.map((modality) => (
+            {modalities?.map((modality) => (
               <option key={modality.id} value={modality.id}>
                 {modality.name}
               </option>
             ))}
           </select>
         </div>
-        <div className="mb-2">
+        <div className="mb-3">
           <label>Tipo de contrato</label>
           <select
             name="contractTypeId"

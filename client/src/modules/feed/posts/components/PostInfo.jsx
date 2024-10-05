@@ -79,8 +79,7 @@ export const PostInfo = () => {
             onSubmit={handleSubmit}
             className={`w-75 border  d-flex flex-column align-items-end p-3 ${styles.form}`}
           >
-            <input
-              type="text"
+            <textarea
               ref={inputRef}
               className={`p-0  border border-0 rounded  w-100 ${styles.formInput}`}
               placeholder="Escriba su comentario"
@@ -90,7 +89,7 @@ export const PostInfo = () => {
                 setWrite(false);
               }}
               onChange={(e) => setContent(e.target.value)}
-            ></input>
+            ></textarea>
             <div className="d-flex justify-content-between align-items-center w-100">
               <div className=" w-100 d-flex justify-content-between  pt-2">
                 <div className="d-flex">

@@ -45,12 +45,12 @@ export const AboutCard = ({ own, aboutData, username }) => {
       <div>
         <button
           type="button"
-          className="btn btn-dark me-2"
+          className="btn btn-outline-dark me-2"
           onClick={() => setEditDescription(false)}
         >
           Cancelar
         </button>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-dark">
           Guardar
         </button>
       </div>
@@ -58,9 +58,9 @@ export const AboutCard = ({ own, aboutData, username }) => {
   );
 
   return (
-    <section className="w-100 border d-flex flex-column">
+    <div className="w-100 border d-flex flex-column p-4">
       <div className="d-flex justify-content-between mb-2">
-        <span className="fw-bold fs-5">Acerca de mi</span>
+        <span className="fw-bold fs-5">Acerca de</span>
         {own && !editDescription && (
           <button
             type="button"
@@ -74,6 +74,6 @@ export const AboutCard = ({ own, aboutData, username }) => {
         )}
       </div>
       {editDescription ? renderForm() : <div>{about || "Sin descripción"}</div>}
-    </section>
+    </div>
   );
 };
