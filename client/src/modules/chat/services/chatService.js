@@ -2,12 +2,10 @@ import axios from "axios";
 import { authService } from "../../auth/services/authService";
 
 export const chatService = {
-  sendMessage: async (message, username) => {
-    console.log({ ACATATUSER2: username });
-    console.log({ ACATATMSG: message });
+  sendMessage: async (receptor, message) => {
     try {
       const res = await axios.post(
-        `http://localhost:4000/message/send/${username}`,
+        `http://localhost:4000/message/send/${receptor}`,
         {
           message,
         },
@@ -16,36 +14,57 @@ export const chatService = {
       return { data: res.data, status: res.status };
     } catch (error) {
       console.error(error);
-      return { status: error.status, message: error.message };
+
+      const status = error.response ? error.response.status : 500;
+      const message = error.response
+        ? error.response.data.message
+        : "Error desconocido";
+
+      return { status, message };
     }
   },
 
-  getChatsByProfileId: async () => {
-    try {
-      const res = await axios.get("http://localhost:4000/chat/get-chats", {
-        headers: {
-          Authorization: `Bearer ${authService.getToken()}`,
-        },
-      });
-      return res.data;
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  getChatByUser: async (username) => {
+  getReceiver: async (username) => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/chat/get-chat/${username}`,
+        `http://localhost:4000/user/get-user-info/${username}`,
         {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
+          headers: { Authorization: `Bearer ${authService.getToken()}` },
         }
       );
       return { data: res.data, status: res.status };
     } catch (error) {
-      return { status: error.status, message: error.message };
+      console.error(error);
+
+      const status = error.response ? error.response.status : 500;
+      const message = error.response
+        ? error.response.data.message
+        : "Error desconocido";
+
+      return { status, message };
+    }
+  },
+
+  getChatId: async (profile1Id, profile2Id) => {
+    try {
+      const res = await axios.get(
+        "http://localhost:4000/get-chat",
+        { profile1Id, profile2Id },
+        {
+          headers: { Authorization: `Bearer ${authService.getToken()}` },
+        }
+      );
+
+      return { data: res.data, status: res.status };
+    } catch (error) {
+      console.error(error);
+
+      const status = error.response ? error.response.status : 500;
+      const message = error.response
+        ? error.response.data.message
+        : "Error desconocido";
+
+      return { status, message };
     }
   },
 };

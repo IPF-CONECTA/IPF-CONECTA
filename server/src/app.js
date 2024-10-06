@@ -13,7 +13,9 @@ import { routes } from "./export.routes.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import { verifyToken } from "./helpers/verifyToken.js";
+
 import { sendMessage } from "./modules/chat/message/messageServices.js";
+import { getChatIdSvc } from "./modules/chat/chatService.js";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -40,20 +42,55 @@ io.on("connection", async (socket) => {
   let token = socket.handshake.headers["authorization"];
   token = token.split(" ")[1];
 
-  // const {
-  //   profile: { id },
-  // } = await verifyToken(token);
-  // console.log("Usuario conectado:", id);
-  let id = 1;
-  socket.on("chat message", (msg, receptorId) => {
-    console.log("Mensaje recibido:", msg);
-    // sendMessage(receptorId, msg);
-    io.emit("chat message", msg);
-  });
+  try {
+    const {
+      profile: { id: senderId },
+    } = await verifyToken(token);
+    console.log("Cliente conectado:", senderId);
 
-  socket.on("disconnect", () => {
-    console.log("Cliente desconectado:", socket.id);
-  });
+    socket.on("getChatId", async (data) => {
+      const { profile1Id, profile2Id } = data;
+
+      console.log("profile1Id:", profile1Id);
+      console.log("profile2Id:", profile2Id);
+
+      if (!profile1Id || !profile2Id) {
+        socket.emit("error", "Los IDs de perfil no pueden ser undefined");
+        return;
+      }
+
+      try {
+        const chatId = await getChatIdSvc(profile1Id, profile2Id);
+        socket.emit("chatId", chatId);
+      } catch (error) {
+        console.error(error);
+        socket.emit("error", "Error interno en el servidor");
+      }
+
+      socket.on("chat message", async (data) => {
+        const { message } = data;
+
+        if (!message) {
+          socket.emit(
+            "error",
+            "El mensaje o el chatId no pueden ser undefined"
+          );
+          return;
+        }
+
+        try {
+          const newMessage = await sendMessage(senderId, chatId, message);
+          socket.to(chatId).emit("chat message", newMessage);
+        } catch (error) {
+          console.error(error);
+          socket.emit("error", "Error interno en el servidor");
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error al verificar el token", error);
+    socket.disconnect();
+  }
 });
 
 httpServer.listen(process.env.PORT, () => {

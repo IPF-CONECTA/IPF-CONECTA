@@ -4,99 +4,107 @@ import { useParams } from "react-router-dom";
 
 import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
+import { getProfileIdByUsername } from "../../profile/services/services";
 
 export const Chat = () => {
+  const { authState } = useContext(authContext);
+  const { username } = useParams();
+
+  const [chatId, setChatId] = useState("");
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [receiver, setReceiver] = useState({});
+
   const socket = io("http://localhost:4000", {
     extraHeaders: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
 
-  const { authState } = useContext(authContext);
+  useEffect(() => {
+    const getReceiver = async () => {
+      const { data } = await getProfileIdByUsername(username);
+      setReceiver(data.profile);
+    };
 
-  const { username } = useParams();
+    getReceiver(username);
+  }, []);
 
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const getChatId = async () => {
+      const { data } = await chatService.getChatId(
+        authState.user.profile.id,
+        receiver.id
+      );
+    };
 
-  const [receiver, setReceiver] = useState({
-    username: "",
-    names: "",
-    surnames: "",
-    profilePic: "",
+    getChatId();
   });
 
-  useEffect(() => {
-    const getChat = async () => {
-      const res = await chatService.sendMessage(message, username);
-      console.log(res.data);
-
-      if (res.status !== "201") {
-        console.log({ todomal: res.message });
-      }
-      console.log(res.data);
-      if (!res.data.chat) {
-        return;
-      }
-      if (res.data.chat.profile1.user.username === authState.user.username) {
-        setReceiver({
-          username: res.data.chat.profile2.user.username,
-          names: res.data.chat.profile2.names,
-          surname: res.data.chat.profile2.surnames,
-          profilePic: res.data.chat.profile2.profilePic,
-        });
-      }
-
-      setReceiver({
-        username: res.data.chat.profile1.user.username,
-        names: res.data.chat.profile1.names,
-        surname: res.data.chat.profile1.surnames,
-        profilePic: res.data.chat.profile1.profilePic,
-      });
-    };
-
-    getChat();
-  }, [username]);
-
-  console.log("receiver", receiver);
+  console.log("My id" + authState.user.profile.id);
+  console.log("Receiver Id" + receiver.id);
 
   useEffect(() => {
-    socket.on("chat message", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
-    });
+    socket.emit("getChatId", {});
+    socket.emit("ChatId", { chatId });
+    socket.on("chatId", (id) => setChatId(id));
 
     return () => {
-      socket.off("chat message");
+      socket.disconnect();
     };
-  }, [message]);
+  }, []);
 
   const sendMessage = () => {
-    if (message === " ") {
-      socket.emit("chat message", message.message, receiver.id);
+    if (message.trim()) {
+      chatService.sendMessage(username, message);
+      socket.emit("chat message", message);
 
-      setMessage(message);
-      console.log(message);
+      console.log("Mensaje enviado" + message);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { message, sender: "Yo" },
+      ]);
+      setMessage("");
     }
   };
 
-  console.log({ receptor: receiver });
   return (
-    <div>
-      <div>
-        <h2>Chat con {receiver.names} </h2>
-
-        <div>
-          {message &&
-            message.length > 0 &&
-            messages.map((msg, index) => <p key={index}>{msg}</p>)}
+    <div className=" d-flex justify-content-end container mt-4 pt-5">
+      <div className="card">
+        <img
+          src={`${receiver.profilePic}`}
+          alt={receiver.id + "_icon"}
+          width={25}
+        />
+        <div className="card-header bg-primary text-white">
+          Chat con {receiver.id}
+        </div>
+        <div
+          className="card-body"
+          style={{ height: "400px", overflowY: "scroll" }}
+        >
+          {messages.map((msg, index) => (
+            <div key={index} className="mb-2">
+              <strong>{msg.sender}:</strong> {msg.message}
+            </div>
+          ))}
+        </div>
+        <div className="card-footer">
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Escribe un mensaje..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button className="btn btn-outline-dark" onClick={sendMessage}>
+              Enviar
+            </button>
+          </div>
         </div>
       </div>
-      <input
-        type="text"
-        value={message.message}
-        onChange={(e) => setMessage({ ...message, message: e.target.value })}
-      />
-      <button onClick={sendMessage}>Send</button>
     </div>
   );
 };

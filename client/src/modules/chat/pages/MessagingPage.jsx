@@ -1,7 +1,10 @@
+import { HomeNav } from "../../ui/components";
 import { Messaging } from "../components/Messaging";
+import { ChatPage } from "./ChatPage";
 export const MessagingPage = () => {
   return (
-    <div>
+    <div className="d-flex justify-content-around">
+      <HomeNav />
       <Messaging />
     </div>
   );
