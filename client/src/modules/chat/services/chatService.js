@@ -45,11 +45,10 @@ export const chatService = {
     }
   },
 
-  getChatId: async (profile1Id, profile2Id) => {
+  getChatId: async (username) => {
     try {
       const res = await axios.get(
-        "http://localhost:4000/get-chat",
-        { profile1Id, profile2Id },
+        `http://localhost:4000/get-chat/${username}`,
         {
           headers: { Authorization: `Bearer ${authService.getToken()}` },
         }

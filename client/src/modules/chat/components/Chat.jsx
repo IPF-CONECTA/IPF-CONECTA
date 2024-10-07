@@ -5,8 +5,10 @@ import { useParams } from "react-router-dom";
 import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
+import { useNoti } from "../../../hooks/useNoti";
 
 export const Chat = () => {
+  const noti = useNoti();
   const { authState } = useContext(authContext);
   const { username } = useParams();
 
@@ -31,39 +33,53 @@ export const Chat = () => {
   }, []);
 
   useEffect(() => {
+    /*
     const getChatId = async () => {
-      const { data } = await chatService.getChatId(
-        authState.user.profile.id,
-        receiver.id
-      );
+      const res = await chatService.getChatId(username);
+      if (res.status !== 200) {
+        return noti("ERRRRRRRRRRRRRRRRROR", "error");
+      }
+      setChatId(res.data.chatId);
     };
-
-    getChatId();
+    */
+    // getChatId();
   });
 
-  console.log("My id" + authState.user.profile.id);
-  console.log("Receiver Id" + receiver.id);
-
+  console.log({ chatId });
+  console.log({ receiver });
   useEffect(() => {
-    socket.emit("getChatId", {});
-    socket.emit("ChatId", { chatId });
+    // socket.join(chatId);
+    console.log("Getting chatId");
+    socket.emit("getChatId", { profile2Id: receiver.id });
+    // socket.emit("chatId", { chatId });
     socket.on("chatId", (id) => setChatId(id));
+    socket.on("chat message", (msg) => {
+      console.log("Mensaje recibido", msg);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { message: msg.message, sender: receiver },
+      ]);
+    });
+    socket.emit("getAllMessages", { chatId });
+    socket.on("all messages", (msgs) => {
+      setMessages(msgs);
+    });
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [chatId, receiver]);
 
   const sendMessage = () => {
     if (message.trim()) {
-      chatService.sendMessage(username, message);
-      socket.emit("chat message", message);
+      // chatService.sendMessage(username, message);
+      socket.emit("chat message", { message, receptorId: receiver.id, chatId });
 
       console.log("Mensaje enviado" + message);
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { message, sender: "Yo" },
+        { message, sender: { user: { username: authState.user.username } } },
       ]);
       setMessage("");
     }
@@ -78,7 +94,7 @@ export const Chat = () => {
           width={25}
         />
         <div className="card-header bg-primary text-white">
-          Chat con {receiver.id}
+          Chat con ${receiver.user?.username} ({chatId})
         </div>
         <div
           className="card-body"
@@ -86,7 +102,13 @@ export const Chat = () => {
         >
           {messages.map((msg, index) => (
             <div key={index} className="mb-2">
-              <strong>{msg.sender}:</strong> {msg.message}
+              <strong>
+                {msg.sender.user.username == authState.user?.username
+                  ? "Yo"
+                  : msg.sender.user.username}
+                :
+              </strong>{" "}
+              {msg.message}
             </div>
           ))}
         </div>

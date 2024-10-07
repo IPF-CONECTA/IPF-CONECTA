@@ -156,6 +156,10 @@ export const createRelations = async () => {
     Message.belongsTo(Chat, {
       foreignKey: "chatId",
     });
+    Message.belongsTo(Profile, {
+      foreignKey: "senderId",
+      as: "sender",
+    });
 
     //----------
 

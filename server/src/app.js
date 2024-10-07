@@ -14,7 +14,10 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import { verifyToken } from "./helpers/verifyToken.js";
 
-import { sendMessage } from "./modules/chat/message/messageServices.js";
+import {
+  getMessagesChat,
+  sendMessage,
+} from "./modules/chat/message/messageServices.js";
 import { getChatIdSvc } from "./modules/chat/chatService.js";
 
 const httpServer = createServer(app);
@@ -49,43 +52,62 @@ io.on("connection", async (socket) => {
     console.log("Cliente conectado:", senderId);
 
     socket.on("getChatId", async (data) => {
-      const { profile1Id, profile2Id } = data;
+      const { profile2Id } = data;
+      console.log("====== Gettting chatId ========");
+      console.log({ profile2Id });
 
-      console.log("profile1Id:", profile1Id);
+      console.log("profile1Id:", senderId);
       console.log("profile2Id:", profile2Id);
-
-      if (!profile1Id || !profile2Id) {
+      if (!senderId || !profile2Id) {
         socket.emit("error", "Los IDs de perfil no pueden ser undefined");
         return;
       }
 
       try {
-        const chatId = await getChatIdSvc(profile1Id, profile2Id);
+        const chatId = await getChatIdSvc(senderId, profile2Id);
         socket.emit("chatId", chatId);
+        socket.join(chatId);
       } catch (error) {
         console.error(error);
         socket.emit("error", "Error interno en el servidor");
       }
+    });
 
-      socket.on("chat message", async (data) => {
-        const { message } = data;
+    socket.join(senderId);
 
-        if (!message) {
-          socket.emit(
-            "error",
-            "El mensaje o el chatId no pueden ser undefined"
-          );
-          return;
-        }
+    socket.on("send chat message", async (data) => {
+      const { message, receptorId, chatId } = data;
 
-        try {
-          const newMessage = await sendMessage(senderId, chatId, message);
-          socket.to(chatId).emit("chat message", newMessage);
-        } catch (error) {
-          console.error(error);
-          socket.emit("error", "Error interno en el servidor");
-        }
-      });
+      if (!message) {
+        socket.emit("error", "El mensaje o el chatId no pueden ser undefined");
+        return;
+      }
+
+      try {
+        const newMessage = await sendMessage(senderId, receptorId, message);
+        socket.to(chatId).emit("chat message", newMessage);
+        console.log("Enviando mensaje a sala", chatId);
+      } catch (error) {
+        console.error(error);
+        socket.emit("error", "Error interno en el servidor");
+      }
+    });
+
+    socket.on("getAllMessages", async (data) => {
+      const { chatId } = data;
+
+      if (!chatId) {
+        socket.emit("error", "El chatId no puede ser undefined");
+        return;
+      }
+
+      try {
+        const messages = await getMessagesChat(chatId);
+        socket.emit("all messages", messages);
+      } catch (error) {
+        console.error(error);
+        socket.emit("error", "Error interno en el servidor");
+      }
     });
   } catch (error) {
     console.error("Error al verificar el token", error);

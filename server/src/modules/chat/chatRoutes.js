@@ -4,6 +4,6 @@ import { getChatIdCtrl } from "./chatControllers.js";
 
 const chatRoutes = Router();
 
-chatRoutes.get("/get-chat", getChatIdCtrl);
+chatRoutes.get("/get-chat/:username", isToken, getChatIdCtrl);
 
 export default chatRoutes;
