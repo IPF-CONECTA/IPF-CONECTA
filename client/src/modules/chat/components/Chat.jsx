@@ -33,25 +33,15 @@ export const Chat = () => {
   }, []);
 
   useEffect(() => {
-    /*
-    const getChatId = async () => {
-      const res = await chatService.getChatId(username);
-      if (res.status !== 200) {
-        return noti("ERRRRRRRRRRRRRRRRROR", "error");
-      }
-      setChatId(res.data.chatId);
-    };
-    */
-    // getChatId();
-  });
-
-  console.log({ chatId });
-  console.log({ receiver });
-  useEffect(() => {
-    // socket.join(chatId);
     console.log("Getting chatId");
+    socket.emit("getAllMessages", { chatId });
+    socket.on("all messages", (msgs) => {
+      setMessages(msgs);
+    });
+  }, [chatId]);
+
+  useEffect(() => {
     socket.emit("getChatId", { profile2Id: receiver.id });
-    // socket.emit("chatId", { chatId });
     socket.on("chatId", (id) => setChatId(id));
     socket.on("chat message", (msg) => {
       console.log("Mensaje recibido", msg);
@@ -60,33 +50,33 @@ export const Chat = () => {
         { message: msg.message, sender: receiver },
       ]);
     });
-    socket.emit("getAllMessages", { chatId });
-    socket.on("all messages", (msgs) => {
-      setMessages(msgs);
-    });
 
     return () => {
       socket.disconnect();
     };
-  }, [chatId, receiver]);
+  }, [receiver]);
 
   const sendMessage = () => {
     if (message.trim()) {
-      // chatService.sendMessage(username, message);
-      socket.emit("chat message", { message, receptorId: receiver.id, chatId });
+      socket.emit("send chat message", {
+        message,
+        receptorId: receiver.id,
+        chatId,
+      });
 
-      console.log("Mensaje enviado" + message);
+      console.log("Mensaje enviado: " + message);
 
       setMessages((prevMessages) => [
         ...prevMessages,
         { message, sender: { user: { username: authState.user.username } } },
       ]);
+
       setMessage("");
     }
   };
 
   return (
-    <div className=" d-flex justify-content-end container mt-4 pt-5">
+    <div className="d-flex justify-content-end container mt-4 pt-5">
       <div className="card">
         <img
           src={`${receiver.profilePic}`}
@@ -94,16 +84,23 @@ export const Chat = () => {
           width={25}
         />
         <div className="card-header bg-primary text-white">
-          Chat con ${receiver.user?.username} ({chatId})
+          Chat con {receiver.user?.username} ({chatId})
         </div>
         <div
           className="card-body"
           style={{ height: "400px", overflowY: "scroll" }}
         >
           {messages.map((msg, index) => (
-            <div key={index} className="mb-2">
+            <div
+              key={index}
+              className={`mb-3 ${
+                msg.sender.user.username === authState.user?.username
+                  ? "text-end bg-primary text-white rounded"
+                  : "text-start bg-secondary text-white rounded"
+              }`}
+            >
               <strong>
-                {msg.sender.user.username == authState.user?.username
+                {msg.sender.user.username === authState.user?.username
                   ? "Yo"
                   : msg.sender.user.username}
                 :

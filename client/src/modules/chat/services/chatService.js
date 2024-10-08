@@ -66,4 +66,22 @@ export const chatService = {
       return { status, message };
     }
   },
+
+  getChatsbyProfile: async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/get-profile-chats", {
+        headers: { Authorization: `Bearer ${authService.getToken()}` },
+      });
+      return { data: res.data, status: res.status };
+    } catch (error) {
+      console.error(error);
+
+      const status = error.response ? error.response.status : 500;
+      const message = error.response
+        ? error.response.data.message
+        : "Error desconocido";
+
+      return { status, message };
+    }
+  },
 };

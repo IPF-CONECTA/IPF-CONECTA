@@ -2,6 +2,8 @@ import { Op } from "sequelize";
 import { Chat } from "./chatModel.js";
 import { Profile } from "../profile/profileModel.js";
 import { sequelize } from "../../config/db.js";
+import { Message } from "./message/messageModel.js";
+import { User } from "../users/userModel.js";
 
 export const existChat = async (profile1Id, profile2Id) => {
   if (!profile1Id || !profile2Id) {
@@ -78,5 +80,33 @@ export const getChatIdSvc = async (profile1Id, profile2Id) => {
   } catch {
     await t.rollback();
     throw error;
+  }
+};
+
+export const getProfileChatsSvc = async (profileId) => {
+  try {
+    const t = await sequelize.transaction();
+
+    const chats = await Chat.findAll({
+      where: {
+        [Op.or]: [{ profile1Id: profileId }, { profile2Id: profileId }],
+      },
+      include: [
+        { model: Profile, as: "profile1" },
+        { model: Profile, as: "profile2" },
+        {
+          model: Message,
+          as: "messages",
+          include: [{ model: Profile, as: "sender" }],
+        },
+      ],
+      transaction: t,
+    });
+
+    await t.commit();
+
+    return chats;
+  } catch (error) {
+    throw new Error(error);
   }
 };
