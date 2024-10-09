@@ -92,8 +92,16 @@ export const getProfileChatsSvc = async (profileId) => {
         [Op.or]: [{ profile1Id: profileId }, { profile2Id: profileId }],
       },
       include: [
-        { model: Profile, as: "profile1" },
-        { model: Profile, as: "profile2" },
+        {
+          model: Profile,
+          as: "profile1",
+          include: [{ model: User, attributes: ["username"] }],
+        },
+        {
+          model: Profile,
+          as: "profile2",
+          include: [{ model: User, attributes: ["username"] }],
+        },
         {
           model: Message,
           as: "messages",

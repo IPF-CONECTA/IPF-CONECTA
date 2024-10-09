@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 
-import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
 import { useNoti } from "../../../hooks/useNoti";
@@ -75,16 +74,18 @@ export const Chat = () => {
     }
   };
 
+  console.log({ receiver });
+
   return (
-    <div className="d-flex justify-content-end container mt-4 pt-5">
+    <div className="d-flex justify-content-end mt-4 pt-5 container w-10">
       <div className="card">
-        <img
-          src={`${receiver.profilePic}`}
-          alt={receiver.id + "_icon"}
-          width={25}
-        />
-        <div className="card-header bg-primary text-white">
-          Chat con {receiver.user?.username} ({chatId})
+        <div className="d-flex card-header bg-primary text-white p-2">
+          <img
+            src={`${receiver.profilePic}`}
+            alt={receiver.id + "_icon"}
+            width={25}
+          />
+          {receiver.user?.username} ({receiver.names})
         </div>
         <div
           className="card-body"
@@ -95,15 +96,14 @@ export const Chat = () => {
               key={index}
               className={`mb-3 ${
                 msg.sender.user.username === authState.user?.username
-                  ? "text-end bg-primary text-white rounded"
-                  : "text-start bg-secondary text-white rounded"
+                  ? "text-end bg-primary text-white rounded p-2"
+                  : "text-start bg-secondary text-white rounded p-2"
               }`}
             >
               <strong>
                 {msg.sender.user.username === authState.user?.username
-                  ? "Yo"
-                  : msg.sender.user.username}
-                :
+                  ? ""
+                  : msg.sender.user.username + ": "}
               </strong>{" "}
               {msg.message}
             </div>

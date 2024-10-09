@@ -3,7 +3,7 @@ import { Messaging } from "../components/Messaging";
 import { ChatPage } from "./ChatPage";
 export const MessagingPage = () => {
   return (
-    <div className="d-flex justify-content-around">
+    <div className="d-flex  ">
       <HomeNav />
       <Messaging />
     </div>
