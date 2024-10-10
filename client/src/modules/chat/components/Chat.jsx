@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { io } from "socket.io-client";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
@@ -32,7 +32,7 @@ export const Chat = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Getting chatId");
+    // console.log("Getting chatId");
     socket.emit("getAllMessages", { chatId });
     socket.on("all messages", (msgs) => {
       setMessages(msgs);
@@ -74,36 +74,40 @@ export const Chat = () => {
     }
   };
 
-  console.log({ receiver });
+  // console.log({ receiver });
 
   return (
-    <div className="d-flex justify-content-end mt-4 pt-5 container w-10">
-      <div className="card">
-        <div className="d-flex card-header bg-primary text-white p-2">
-          <img
-            src={`${receiver.profilePic}`}
-            alt={receiver.id + "_icon"}
-            width={25}
-          />
-          {receiver.user?.username} ({receiver.names})
+    <div className="d-flex justify-content-center mt-5 w-75">
+      <div className="card w-100">
+        <div className="card-header w-100">
+          <Link to={`/perfil/${receiver.user?.username}`}>
+            <img
+              src={`${receiver.profilePic}`}
+              className="rounded-circle mt-2 mb-2"
+              alt={receiver.id + "_icon"}
+              width={50}
+            />
+          </Link>
+          <strong className="p-1 ms-2">{receiver.user?.username}</strong>
+          <strong>({receiver.surnames + " " + receiver.names})</strong>
         </div>
         <div
-          className="card-body"
-          style={{ height: "400px", overflowY: "scroll" }}
+          className="card-body w-100"
+          style={{ height: "350px", overflowY: "scroll" }}
         >
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`mb-3 ${
                 msg.sender.user.username === authState.user?.username
-                  ? "text-end bg-primary text-white rounded p-2"
+                  ? "text-end bg-info text-white rounded p-2"
                   : "text-start bg-secondary text-white rounded p-2"
               }`}
             >
               <strong>
                 {msg.sender.user.username === authState.user?.username
-                  ? ""
-                  : msg.sender.user.username + ": "}
+                  ? " "
+                  : " "}
               </strong>{" "}
               {msg.message}
             </div>
