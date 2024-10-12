@@ -1,6 +1,4 @@
-import { Op } from "sequelize";
 import { sequelize } from "../../../config/db.js";
-import { Chat } from "../chatModel.js";
 import { Message } from "./messageModel.js";
 import { Profile } from "../../profile/profileModel.js";
 import { User } from "../../users/userModel.js";

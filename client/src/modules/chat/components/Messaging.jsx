@@ -20,28 +20,27 @@ export const Messaging = () => {
       const res = await chatService.getChatsbyProfile();
       setChats(res.data);
     };
-
     getChats();
   }, []);
 
-  chats.map((chat) => {
-    const receptorId =
-      chat.profile2 === profileId
-        ? chat.profile1
-        : chat.profile2 || chat.profile1;
+  // chats.map((chat) => {
+  //   const receptorId =
+  //     chat.profile2 === profileId
+  //       ? chat.profile1
+  //       : chat.profile2 || chat.profile1;
 
-    // const receptorId =
-    //   chat.profile2 === profileId
-    //     ? chat.profile1
-    //     : chat.profile2 || chat.profile1;
-    // console.log({ receptorId });
-  });
+  //   // const receptorId =
+  //   //   chat.profile2 === profileId
+  //   //     ? chat.profile1
+  //   //     : chat.profile2 || chat.profile1;
+  //   // console.log({ receptorId });
+  // });
 
   return (
     <>
       <div className="container justify-content-center w-50">
-        <h1 className="text-center">Tus Chats</h1>
         <div className="list-group">
+          <h5 className="text-center mt-5">Tus Chats</h5>
           {chats.map((chat) => {
             const receptorId =
               chat.profile1.id === profileId ? chat.profile2 : chat.profile1;
@@ -59,6 +58,10 @@ export const Messaging = () => {
                     <p className="mb-1 fw-bold">{receptorId.user.username}</p>
                     <div>
                       <p className="text-start">
+                        {receptorId.user.username !== authState.user.username
+                          ? "Tú" + ": "
+                          : receptorId.user.username}
+
                         {chat.messages[chat.messages.length - 1].message}
                       </p>
                       <p className="text-end">

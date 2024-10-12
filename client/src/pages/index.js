@@ -47,7 +47,6 @@ export { Ideas } from "../modules/ideas/pages/Ideas";
 export { DetailsIdeas } from "../modules/ideas/pages/IdeaDetailsPage";
 export { CreateIdeas } from "../modules/ideas/pages/CreateIdeaPage";
 
-// CHAT
-
+// ChatPages
 export { ChatPage } from "../modules/chat/pages/ChatPage";
 export { MessagingPage } from "../modules/chat/pages/MessagingPage";

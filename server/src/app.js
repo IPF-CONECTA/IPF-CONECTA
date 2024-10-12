@@ -53,11 +53,7 @@ io.on("connection", async (socket) => {
 
     socket.on("getChatId", async (data) => {
       const { profile2Id } = data;
-      console.log("====== Gettting chatId ========");
-      console.log({ profile2Id });
 
-      console.log("profile1Id:", senderId);
-      console.log("profile2Id:", profile2Id);
       if (!senderId || !profile2Id) {
         socket.emit("error", "Los IDs de perfil no pueden ser undefined");
         return;

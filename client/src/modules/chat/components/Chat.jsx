@@ -5,9 +5,9 @@ import { useParams, Link } from "react-router-dom";
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
 import { useNoti } from "../../../hooks/useNoti";
+import { getTime } from "../../../helpers/getTime";
 
 export const Chat = () => {
-  const noti = useNoti();
   const { authState } = useContext(authContext);
   const { username } = useParams();
 
@@ -27,12 +27,10 @@ export const Chat = () => {
       const { data } = await getProfileIdByUsername(username);
       setReceiver(data.profile);
     };
-
     getReceiver(username);
   }, []);
 
   useEffect(() => {
-    // console.log("Getting chatId");
     socket.emit("getAllMessages", { chatId });
     socket.on("all messages", (msgs) => {
       setMessages(msgs);
@@ -63,8 +61,6 @@ export const Chat = () => {
         chatId,
       });
 
-      console.log("Mensaje enviado: " + message);
-
       setMessages((prevMessages) => [
         ...prevMessages,
         { message, sender: { user: { username: authState.user.username } } },
@@ -74,11 +70,9 @@ export const Chat = () => {
     }
   };
 
-  // console.log({ receiver });
-
   return (
-    <div className="d-flex justify-content-center mt-5 w-75">
-      <div className="card w-100">
+    <div className="d-flex justify-content-end">
+      <div className="card w-75 m-md-5">
         <div className="card-header w-100">
           <Link to={`/perfil/${receiver.user?.username}`}>
             <img
@@ -104,12 +98,8 @@ export const Chat = () => {
                   : "text-start bg-secondary text-white rounded p-2"
               }`}
             >
-              <strong>
-                {msg.sender.user.username === authState.user?.username
-                  ? " "
-                  : " "}
-              </strong>{" "}
-              {msg.message}
+              <p className="fs-5">{msg.message}</p>{" "}
+              <p className="fs-6">{getTime(msg.createdAt)}</p>
             </div>
           ))}
         </div>
