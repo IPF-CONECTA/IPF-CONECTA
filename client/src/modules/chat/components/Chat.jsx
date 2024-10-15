@@ -1,10 +1,9 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { io } from "socket.io-client";
 import { useParams, Link } from "react-router-dom";
 
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
-import { useNoti } from "../../../hooks/useNoti";
 import { getTime } from "../../../helpers/getTime";
 
 export const Chat = () => {
@@ -15,6 +14,9 @@ export const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState({});
+
+  const messagesEndRef = useRef(null);
+  const conteinerRef = useRef(null);
 
   const socket = io("http://localhost:4000", {
     extraHeaders: {
@@ -42,16 +44,40 @@ export const Chat = () => {
     socket.on("chatId", (id) => setChatId(id));
     socket.on("chat message", (msg) => {
       console.log("Mensaje recibido", msg);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { message: msg.message, sender: receiver },
-      ]);
+      console.log({ yo: authState.user.profile.id });
+      if (msg.senderId !== authState.user.profile.id) {
+        if (
+          conteinerRef.current.scrollHeight -
+            Math.round(conteinerRef.current.scrollTop) <
+          conteinerRef.current.clientHeight
+        ) {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { message: msg.message, sender: receiver },
+        ]);
+      }
     });
 
     return () => {
       socket.disconnect();
     };
   }, [receiver]);
+
+  useEffect(() => {
+    if (messages.at(-1)?.sender.user.username === authState.user.username) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    if (
+      conteinerRef.current.scrollHeight -
+        Math.round(conteinerRef.current.scrollTop) <
+      conteinerRef.current.clientHeight
+    ) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const sendMessage = () => {
     if (message.trim()) {
@@ -65,15 +91,14 @@ export const Chat = () => {
         ...prevMessages,
         { message, sender: { user: { username: authState.user.username } } },
       ]);
-
-      setMessage("");
     }
+    setMessage("");
   };
 
   return (
     <div className="d-flex justify-content-end">
-      <div className="card w-75 m-md-5">
-        <div className="card-header w-100">
+      <div className="card w-75 m-md-5 bg-body-secondary">
+        <div className="card-header w-100 bg-body-secondary border-5">
           <Link to={`/perfil/${receiver.user?.username}`}>
             <img
               src={`${receiver.profilePic}`}
@@ -86,27 +111,28 @@ export const Chat = () => {
           <strong>({receiver.surnames + " " + receiver.names})</strong>
         </div>
         <div
-          className="card-body w-100"
-          style={{ height: "350px", overflowY: "scroll" }}
+          ref={conteinerRef}
+          className="card-body w-100 bg-dark-subtle"
+          style={{ height: "400px", overflowY: "scroll" }}
         >
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`mb-3 ${
                 msg.sender.user.username === authState.user?.username
-                  ? "text-end bg-info text-white rounded p-2"
-                  : "text-start bg-secondary text-white rounded p-2"
+                  ? "text-end bg-dark text-white rounded p-2  "
+                  : "text-start bg-body-secondary text-black rounded p-2"
               }`}
             >
               <p className="fs-5">{msg.message}</p>{" "}
               <p className="fs-6">{getTime(msg.createdAt)}</p>
             </div>
           ))}
+          <div style={{ scrollMarginBottom: "100px" }} ref={messagesEndRef} />
         </div>
         <div className="card-footer">
           <div className="input-group">
             <input
-              type="text"
               className="form-control"
               placeholder="Escribe un mensaje..."
               value={message}

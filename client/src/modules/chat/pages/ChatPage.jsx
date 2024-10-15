@@ -4,8 +4,8 @@ import { Chat } from "../components/Chat";
 export const ChatPage = () => {
   return (
     <div>
-      <HomeNav />
       <Chat />
+      <HomeNav />
     </div>
   );
 };

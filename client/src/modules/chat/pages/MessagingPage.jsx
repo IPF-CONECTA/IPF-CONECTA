@@ -4,8 +4,8 @@ import { ChatPage } from "./ChatPage";
 export const MessagingPage = () => {
   return (
     <div>
-      <HomeNav />
       <Messaging />
+      <HomeNav />
     </div>
   );
 };
