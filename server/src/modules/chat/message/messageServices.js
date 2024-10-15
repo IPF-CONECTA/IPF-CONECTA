@@ -47,6 +47,7 @@ export const getMessagesChat = async (chatId) => {
           ],
         },
       ],
+      order: [["createdAt", "ASC"]],
     });
 
     return messages;
