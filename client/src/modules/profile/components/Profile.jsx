@@ -12,6 +12,7 @@ import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
+import { LanguajeCardPage } from "../languaje/pages/LanguajeCardPage";
 
 export const Profile = () => {
   const noti = useNoti();
@@ -102,6 +103,14 @@ export const Profile = () => {
                   skillsData={skills}
                   own={profileData.own}
                   onSkillSubmit={fetchSkills}
+                  username={username}
+                />
+              )}
+              {(profileData.own ||
+                profileData.profile.languages?.length > 0) && (
+                <LanguajeCardPage
+                  languagesData={profileData.profile.languages}
+                  own={profileData.own}
                   username={username}
                 />
               )}

@@ -24,6 +24,7 @@ export { PostPage } from "../modules/feed/posts/pages/PostPage";
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
+export { LanguajeCardPage } from "../modules/profile/languaje/pages/LanguajeCardPage";
 
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
@@ -44,6 +45,6 @@ export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";
 export { JobDetailsPage } from "../modules/recruiter/job/pages/JobsDetailsPage";
 
 // Projects ideas
-export { Ideas } from "../modules/ideas/pages/Ideas"
-export { DetailsIdeas } from "../modules/ideas/pages/IdeaDetailsPage"
-export { CreateIdeas } from "../modules/ideas/pages/CreateIdeaPage"
+export { Ideas } from "../modules/ideas/pages/Ideas";
+export { DetailsIdeas } from "../modules/ideas/pages/IdeaDetailsPage";
+export { CreateIdeas } from "../modules/ideas/pages/CreateIdeaPage";

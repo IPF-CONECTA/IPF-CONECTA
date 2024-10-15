@@ -27,6 +27,7 @@ import {
   CreateIdeas,
   DetailsIdeas,
   ProfileExperiencesPage,
+  LanguajeCardPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -64,6 +65,7 @@ export const Routers = () => {
           path="/perfil/:username/experiencias"
           element={<ProfileExperiencesPage />}
         />
+        <Route path="/perfil/:username/idioma" element={<LanguajeCardPage />} />
         <Route path="/guardados" element={<ProfilePage />} />
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
