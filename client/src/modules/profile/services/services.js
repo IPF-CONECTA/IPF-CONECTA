@@ -33,3 +33,19 @@ export const deleteAbout = async (username) => {
     return { status: error.status };
   }
 };
+
+export const getProfileIdByUsername = async (username) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:4000/get-user-profile/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      }
+    );
+    return { data: res.data, status: res.status };
+  } catch (error) {
+    console.log(error);
+  }
+};

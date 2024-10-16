@@ -5,6 +5,7 @@ import styles from "../../../../public/css/homeNav.module.css";
 import { authContext } from "../../../context/auth/Context";
 
 export const HomeNav = () => {
+  const [selectedPage, setSelectedPage] = useState("inicio");
   const { authState } = useContext(authContext);
 
   return (
@@ -50,8 +51,12 @@ export const HomeNav = () => {
         </div>
         <div className={`${styles.button}`}>
           <Link
-            to="/mensajes"
-            className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
+            to="/mensajeria"
+            className={
+              selectedPage === "mensajes"
+                ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`
+                : `fs-5 fw-bold text-muted text-decoration-none d-flex align-items-center`
+            }
           >
             <span className="material-symbols-outlined fs-2 pe-3">chat</span>{" "}
             <span className="fs-5 fw-bold">Mensajes</span>
