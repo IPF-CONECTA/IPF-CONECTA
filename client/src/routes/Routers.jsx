@@ -65,7 +65,7 @@ export const Routers = () => {
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/mensajeria" element={<MessagingPage />} />
-        <Route path="/chat/:username" element={<ChatPage />} />
+        <Route path="/mensajeria/:username" element={<MessagingPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/registrate" element={<RegisterPage />} />
         <Route path="/registrar-empresa" element={<CreateCompanyPage />} />

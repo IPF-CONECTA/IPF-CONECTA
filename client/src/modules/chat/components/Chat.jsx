@@ -6,9 +6,8 @@ import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
 import { getTime } from "../../../helpers/getTime";
 
-export const Chat = () => {
+export const Chat = ({ username }) => {
   const { authState } = useContext(authContext);
-  const { username } = useParams();
 
   const [chatId, setChatId] = useState("");
   const [message, setMessage] = useState("");

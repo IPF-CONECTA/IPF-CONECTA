@@ -1,16 +1,18 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
 
 import notChats from "../../../../public/img/notChats.png";
 import { getTime } from "../../../helpers/getTime";
+import { Chat } from "./Chat";
 
 export const Messaging = () => {
   const { authState } = useContext(authContext);
   const [chats, setChats] = useState([]);
   const [profileId, setProfileId] = useState("");
+  const [selectedChat, setSelectedChat] = useState(null);
 
   useEffect(() => {
     setProfileId(authState.user?.profile?.id);
@@ -24,30 +26,22 @@ export const Messaging = () => {
     getChats();
   }, []);
 
-  // chats.map((chat) => {
-  //   const receptorId =
-  //     chat.profile2 === profileId
-  //       ? chat.profile1
-  //       : chat.profile2 || chat.profile1;
-
-  //   // const receptorId =
-  //   //   chat.profile2 === profileId
-  //   //     ? chat.profile1
-  //   //     : chat.profile2 || chat.profile1;
-  //   // console.log({ receptorId });
-  // });
-
   return (
     <>
-      <div className="d-flex justify-content-end w-100 p-5">
-        <div className="list-group w-75">
+      <div className="d-flex justify-content-end w-100">
+        <div className="w-50 p-3">
           <h5 className="text-center mt-5">Tus Chats</h5>{" "}
           {chats.length === 0 ? (
-            <div className="card d-flex  flex-column shadow w-100">
+            <div className="d-flex flex-column shadow">
               <h5 className="text-center mt-5 fw-semibold">
-                No tienes ningun chat, conecta con alguien e inicia una
-                conversación!
+                No tienes ninguna conversación!
               </h5>
+              <p className="text-center">
+                {" "}
+                Actualmente no tienes ningun chat, conecta con alguien e inicia
+                una conversación!, si crees que hay un error, recarga la pagina
+                o reporta tu inconveniente.
+              </p>
               <img
                 className="d-block mx-auto mt-3"
                 src={notChats}
@@ -60,8 +54,13 @@ export const Messaging = () => {
                 chat.profile1.id === profileId ? chat.profile2 : chat.profile1;
 
               return (
-                <Link to={`/chat/${receptorId.user.username}`}>
-                  <div className="d-flex align-items-center w-100 gap-3 list-group-item bg-dark-subtle shadow-lg p-4 mt-3">
+                <div
+                  key={receptorId.id}
+                  onClick={() => {
+                    setSelectedChat(receptorId.user.username);
+                  }}
+                >
+                  <div className="d-flex align-items-center list-group-item bg-dark-subtle shadow-lg p-2 w-50 ">
                     <img
                       src={receptorId.profilePic}
                       alt={receptorId.id + "_icon"}
@@ -73,7 +72,7 @@ export const Messaging = () => {
                       <div>
                         <p className="text-start">
                           {receptorId.user.username !== authState.user.username
-                            ? "Tú" + ": "
+                            ? "Tú: "
                             : receptorId.user.username}
 
                           {chat?.messages[chat.messages.length - 1]?.message}
@@ -87,10 +86,13 @@ export const Messaging = () => {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               );
             })
           )}
+        </div>
+        <div className="w-50">
+          {selectedChat && <Chat username={selectedChat} />}
         </div>
       </div>
     </>

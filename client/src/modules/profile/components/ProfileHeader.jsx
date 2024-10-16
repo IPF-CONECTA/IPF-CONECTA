@@ -68,7 +68,7 @@ export const Header = ({ profileData, setProfileData }) => {
                   >
                     {profileData.isFollowing ? "Siguiendo" : "Seguir"}
                   </button>
-                  <Link to={`/chat/${profileData.profile.user.username}`}>
+                  <Link to={`/mensajeria/${profileData.profile.user.username}`}>
                     {" "}
                     <button className="btn btn-outline-info text-light fw-bold">
                       Enviar mensaje
