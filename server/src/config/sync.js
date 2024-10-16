@@ -45,15 +45,17 @@ import {
   createModalities,
 } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
-import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
+import { Experience } from "../modules/users/Experiences/experiencesModel.js";
 import { Project } from "../modules/users/project/projectModel.js";
 import { Idea } from "../modules/ideas/ideaModel.js";
+import { Attachment } from "../modules/attachment/attachmentModel.js";
+import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
   await createRelations();
   console.log("Relations created successfully");
   await sequelize.sync({ force: false });
-  await Project.sync({ force: true })
+  // await Experience.sync({ force: true })
   console.log("Tables created successfully");
 
 

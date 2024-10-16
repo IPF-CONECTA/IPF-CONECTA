@@ -27,6 +27,7 @@ import {
   CreateIdeas,
   DetailsIdeas,
   ProfileExperiencesPage,
+  EditProfile,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -40,6 +41,8 @@ export const Routers = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/" element={<ProtectedRoutes />}>
+          <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
+
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin/dash" element={<AdminDashboardPage />} />
             <Route
@@ -53,40 +56,47 @@ export const Routers = () => {
           </Route>
           <Route path="/inicio" element={<FeedPage />} />
           <Route path="/post/:postId" element={<PostPage />} />
+          <Route path="/perfil/:username" element={<ProfilePage />} />
+          <Route path="/editar-perfil" element={<EditProfile />} />
+          <Route
+            path="/:username/proyectos"
+            element={<ProfileProjectsPage />}
+          />
+          <Route
+            path="/perfil/:username/habilidades"
+            element={<AllSkillsPage />}
+          />
+          <Route
+            path="/perfil/:username/experiencias"
+            element={<ProfileExperiencesPage />}
+          />
+          <Route path="/guardados" element={<ProfilePage />} />
+          <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
+          <Route
+            path="/crear-sede/:companyId"
+            element={<CreateCompanyUbicationPage />}
+          />
+
+          <Route
+            path="/mis-empresas"
+            element={<WaitingAssociationsApprovalPage />}
+          />
+          <Route
+            path="/solicitud-del-mentor"
+            element={<MessageRecruiterPage />}
+          />
+          <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
+          <Route path="/nuevo-empleo" element={<JobCreatePage />} />
         </Route>
-        <Route path="/perfil/:username" element={<ProfilePage />} />
-        <Route path="/:username/proyectos" element={<ProfileProjectsPage />} />
-        <Route
-          path="/perfil/:username/habilidades"
-          element={<AllSkillsPage />}
-        />
-        <Route
-          path="/perfil/:username/experiencias"
-          element={<ProfileExperiencesPage />}
-        />
-        <Route path="/guardados" element={<ProfilePage />} />
+
         <Route path="/buscar-empleo" element={<JobSearchPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/registrate" element={<RegisterPage />} />
-        <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
-        <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
-        <Route
-          path="/crear-sede/:companyId"
-          element={<CreateCompanyUbicationPage />}
-        />
+
         <Route path="/nuevo-proyecto" element={<CreateProjectPage />} />
-        <Route
-          path="/mis-empresas"
-          element={<WaitingAssociationsApprovalPage />}
-        />
-        <Route
-          path="/solicitud-del-mentor"
-          element={<MessageRecruiterPage />}
-        />
-        <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
         <Route path="/contacto" element={<SupportPage />} />
-        <Route path="/nuevo-empleo" element={<JobCreatePage />} />
+
         <Route path="/ideas-de-proyectos" element={<Ideas />} />
         <Route path="/idea/:ideaId" element={<DetailsIdeas />} />
         <Route path="/crear-idea" element={<CreateIdeas />} />

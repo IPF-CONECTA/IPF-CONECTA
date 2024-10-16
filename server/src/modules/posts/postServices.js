@@ -1,4 +1,4 @@
-import { Attachment } from "./postAttachment/attachmentModel.js"
+import { Attachment } from "../attachment/attachmentModel.js"
 import { Post } from "./postModel.js"
 import { User } from "../users/userModel.js"
 import { Like } from "../posts/likes/likeModel.js"
@@ -24,11 +24,6 @@ export const getPostsSvc = async (page, id) => {
                         model: User,
                         attributes: ['email', 'username']
                     }
-                },
-                {
-                    model: Attachment,
-                    as: 'attachments',
-                    attributes: ['url', 'type']
                 },
                 {
                     model: Like,
@@ -102,11 +97,6 @@ export const getPostByIdSvc = async (postId, profileId) => {
                     }
                 },
                 {
-                    model: Attachment,
-                    as: 'attachments',
-                    attributes: ['url', 'type']
-                },
-                {
                     model: Like,
                     as: 'likes',
                     attributes: ['id', 'profileId'],
@@ -129,11 +119,6 @@ export const getPostByIdSvc = async (postId, profileId) => {
                                 model: User,
                                 attributes: ['email', 'username']
                             }
-                        },
-                        {
-                            model: Attachment,
-                            as: 'attachments',
-                            attributes: ['url', 'type']
                         },
                         {
                             model: Like,
@@ -162,11 +147,6 @@ export const getPostByIdSvc = async (postId, profileId) => {
                             }
                         },
                         {
-                            model: Attachment,
-                            as: 'attachments',
-                            attributes: ['url', 'type']
-                        },
-                        {
                             model: Like,
                             as: 'likes',
                             attributes: ['id', 'profileId'],
@@ -188,11 +168,6 @@ export const getPostByIdSvc = async (postId, profileId) => {
                                         model: User,
                                         attributes: ['email', 'username']
                                     }
-                                },
-                                {
-                                    model: Attachment,
-                                    as: 'attachments',
-                                    attributes: ['url', 'type']
                                 },
                                 {
                                     model: Like,

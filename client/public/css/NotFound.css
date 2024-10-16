@@ -10,8 +10,8 @@
 }
 
 .logo-container {
-  max-width: 300px; 
-  margin-bottom: 20px; 
+  max-width: 300px;
+  margin-bottom: 20px;
 }
 
 .logo {
@@ -26,20 +26,20 @@
 }
 
 .not-found h1 {
-  font-size: 3rem; 
+  font-size: 3rem;
   margin-bottom: 0.5rem;
 }
 
 .not-found p {
-  font-size: 1.2rem; 
-  margin-bottom: 10px; 
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .home-button {
   padding: 10px 20px;
   background-color: #3498db;
   color: #fff;
-  font-size: 1rem; 
+  font-size: 1rem;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -51,22 +51,22 @@
 
 @media (max-width: 768px) {
   .not-found {
-    padding: 20px; 
+    padding: 20px;
   }
 
   .logo-container {
-    max-width: 90%; 
+    max-width: 90%;
   }
 
   .not-found h1 {
-    font-size: 2.5rem; 
+    font-size: 2.5rem;
   }
 
   .not-found p {
-    font-size: 1rem; 
+    font-size: 1rem;
   }
 
   .home-button {
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
   }
 }

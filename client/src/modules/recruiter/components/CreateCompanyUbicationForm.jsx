@@ -82,8 +82,8 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
           companyUbication: {
             companyId: companyId,
             countryId: selectedCountry,
-            stateId: selectedState,
-            cityId: selectedCity,
+            stateId: selectedState !== "" ? selectedState : null,
+            cityId: selectedCity !== "" ? selectedCity : null,
             address: address,
           },
         },
@@ -107,44 +107,39 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
 
   return (
     <>
-      <form
-        className="w-50 mx-auto p-4 border rounded shadow-sm bg-light"
-        onSubmit={handleSubmit}
-      >
-        <div className="text-center mb-4">
-          <span className="material-symbols-outlined d-block mb-2">
-            apartment
-          </span>
-          <h2 className="h4">
-            ¡Perfecto! Has registrado una empresa en el sistema, pero ahora
-            debes registrar al menos una sede.
-          </h2>
-          <span className="material-symbols-outlined d-block mt-3">flag</span>
-        </div>
-
-        <div className="row mb-3">
-          <div className="col-md-12">
-            <label htmlFor="country" className="form-label">
-              País
-            </label>
-            <select
-              className="form-select"
-              id="country"
-              required
-              value={selectedCountry}
-              onChange={handleCountryChange}
-            >
-              <option value="">Seleccione el país</option>
-              {location.countries.map((country) => (
-                <option key={country.id} value={country.id}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
+      <main className="h-100 d-flex align-items-center justify-content-center gap-5">
+        <form
+          className="w-25 p-3 border rounded shadow-sm bg-light"
+          onSubmit={handleSubmit}
+        >
+          <div className="text-center">
+            <span className="fs-2 fw-semibold mb-2">Registrar sede</span>
           </div>
-        </div>
+          <span className="text-secondary">
+            * significa que es un campo obligatorio
+          </span>
+          <div className="row mb-3 mt-2">
+            <div className="col-md-12">
+              <label htmlFor="country" className="form-label">
+                País <span className="text-danger">*</span>
+              </label>
+              <select
+                className="form-select"
+                id="country"
+                required
+                value={selectedCountry}
+                onChange={handleCountryChange}
+              >
+                <option value="">Seleccione el país</option>
+                {location.countries.map((country) => (
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-        {location.states.length > 0 ? (
           <div className="row mb-3">
             <div className="col-md-12">
               <label htmlFor="state" className="form-label">
@@ -153,78 +148,95 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
               <select
                 className="form-select"
                 id="state"
+                disabled={location.states.length === 0}
                 value={selectedState}
                 onChange={handleStateChange}
+                defaultValue={""}
               >
-                <option value="">Seleccione un estado</option>
-                {location.states.map((state) => (
-                  <option key={state.id} value={state.id}>
-                    {state.name}
+                <option disabled value="">
+                  Seleccione un estado
+                </option>
+                {location.states.length > 0 ? (
+                  location.states.map((state) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled className="fw-semibold text-danger">
+                    Seleccione el país para mostrar las opciones
                   </option>
-                ))}
+                )}
               </select>
             </div>
           </div>
-        ) : (
+
           <div className="row mb-3">
             <div className="col-md-12">
-              <p className="text-danger">
-                No hay estados disponibles en este país.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <div className="row mb-3">
-          <div className="col-md-12">
-            <label htmlFor="city" className="form-label">
-              Ciudad
-            </label>
-            {location.cities.length > 0 ? (
+              <label htmlFor="city" className="form-label">
+                Ciudad
+              </label>
               <select
                 className="form-select"
                 id="city"
+                disabled={location.cities.length === 0}
                 value={selectedCity}
                 onChange={handleCityChange}
+                defaultValue={""}
               >
-                <option value="">Seleccione una ciudad</option>
-                {location.cities.map((city) => (
-                  <option key={city.id} value={city.id}>
-                    {city.name}
+                <option disabled value="">
+                  Seleccione una ciudad
+                </option>
+                {location.cities.length > 0 ? (
+                  location.cities.map((city) => (
+                    <option key={city.id} value={city.id}>
+                      {city.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled className="fw-semibold text-danger">
+                    Seleccione el estado para mostrar las opciones
                   </option>
-                ))}
+                )}
               </select>
-            ) : (
-              <p className="text-danger">
-                No hay ciudades disponibles en este estado.
-              </p>
-            )}
+            </div>
           </div>
-        </div>
 
-        <div className="row mb-3">
-          <div className="col-md-12">
-            <label htmlFor="address" className="form-label">
-              Dirección
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="form-control w-100"
-              title="Dirección"
-              placeholder="Ingrese la dirección de la sede"
-              value={address}
-              onChange={handleAddressChange}
-            />
+          <div className="row mb-3">
+            <div className="col-md-12">
+              <label htmlFor="address" className="form-label">
+                Dirección
+              </label>
+              <input
+                type="text"
+                id="address"
+                className="form-control w-100"
+                title="Dirección"
+                placeholder="Ingrese la dirección de la sede"
+                value={address}
+                onChange={handleAddressChange}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="d-grid">
-          <button type="submit" className="btn btn-outline-dark">
-            Crear sede
-          </button>
+          <div className="d-flex justify-content-end">
+            <button
+              disabled={selectedCountry == ""}
+              type="submit"
+              className="btn btn-dark"
+            >
+              Crear sede
+            </button>
+          </div>
+        </form>
+        <div className="w-25 p-3 d-flex flex-column align-items-center">
+          <span className="fs-4 fw-semibold">
+            Registra la sede principal de tu empresa. La utilizaremos para
+            corroborar la veracidad de ésta.
+          </span>
+          <img src="/img/inspector.png" width={300} alt="" />
         </div>
-      </form>
+      </main>
     </>
   );
 };

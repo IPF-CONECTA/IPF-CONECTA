@@ -80,7 +80,7 @@ export const Profile = () => {
                 aboutData={profileData.profile.about}
                 username={username}
               />
-              {(profileData.own || projects?.length > 0) && (
+              {(profileData.own || experiences?.length > 0) && (
                 <ExperienceContainer
                   own={profileData.own}
                   experiencesData={experiences}

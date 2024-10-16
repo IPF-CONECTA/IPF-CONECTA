@@ -146,10 +146,8 @@ export const AdminAssociationsPanel = () => {
               >
                 <div className="d-flex align-items-center">
                   <img
-                    src={
-                      association.profile.profilePic ||
-                      "https://via.placeholder.com/40"
-                    }
+                    crossOrigin="anonymous"
+                    src={`${BASE_URL}/images/${association.profile.profilePic}`}
                     alt="Usuario"
                     className="rounded-circle me-2"
                     style={{ width: "40px", height: "40px" }}
@@ -264,10 +262,8 @@ export const AdminAssociationsPanel = () => {
                   <div>
                     <div className="d-flex mb-2">
                       <img
-                        src={
-                          selectedAssociation.profile.profilePic ||
-                          "https://via.placeholder.com/100"
-                        }
+                        src={`${BASE_URL}/images/${selectedAssociation.profile.profilePic}`}
+                        crossOrigin="anonymous"
                         alt={`${selectedAssociation.profile.names} Logo`}
                         className="rounded-circle me-2"
                         width={40}

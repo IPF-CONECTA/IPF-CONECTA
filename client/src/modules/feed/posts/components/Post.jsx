@@ -6,6 +6,7 @@ import { ProfileHover } from "../../../profile/components/ProfileHover";
 import { getProfileInfo, like, repostSvc } from "../../services/feedServices";
 
 import styles from "../../../../../public/css/postById.module.css";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 
 export const Post = ({ post, setWrite }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -112,7 +113,8 @@ export const Post = ({ post, setWrite }) => {
                     onMouseLeave={() =>
                       handleShowProfile(false, post.profile.id)
                     }
-                    src={post.profile.profilePic}
+                    src={`${BASE_URL}/images/${post.profile.profilePic}`}
+                    crossOrigin="anonymous"
                     alt={post.profile.names}
                   />
                 </div>
@@ -173,7 +175,7 @@ export const Post = ({ post, setWrite }) => {
               </div>
               {profile && (
                 <ProfileHover
-                  profile={profile}
+                  profileData={profile}
                   profileRef={profileRef}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}

@@ -126,7 +126,7 @@ export const PostInfo = () => {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-info text-light px-3 py-1 h-100 fw-bold"
+                  className="btn btn-primary text-light px-3 py-1 h-100 fw-bold"
                 >
                   Responder
                 </button>

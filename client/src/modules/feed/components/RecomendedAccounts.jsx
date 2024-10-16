@@ -32,8 +32,8 @@ export const RecomendedAccounts = () => {
               <span className="text-muted">{error.message}</span>
             </>
           ) : (
-            accounts.map((account) => (
-              <AccountCard account={account} key={account.id} />
+            accounts.map((account, index) => (
+              <AccountCard index={index} account={account} key={account.id} />
             ))
           )}
         </div>

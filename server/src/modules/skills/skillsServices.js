@@ -9,6 +9,7 @@ export const findSkillSvc = async (query) => {
                     [Op.iLike]: `%${query}%`
                 }
             },
+            limit: 50
         })
         return results
     } catch (error) {

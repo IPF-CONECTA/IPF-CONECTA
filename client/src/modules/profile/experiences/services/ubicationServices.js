@@ -5,6 +5,6 @@ export const findUbication = async (query) => {
         const res = await axios.get(`http://localhost:4000/find-ubication?query=${query}`)
         return { data: res.data, status: res.status }
     } catch (error) {
-        return { status: res.status }
+        return { status: error.status }
     }
 }

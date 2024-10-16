@@ -7,12 +7,19 @@ import { authService } from "../../modules/auth/services/authService.js";
 export const AuthProvider = ({ children }) => {
   const token = authService.getToken();
   const noti = useNoti();
+  const initialState = {
+    user: {},
+    isVerified: false,
+    token: token ? token : null,
+    isLogged: false,
+    role: "",
+  };
   const validateToken = async (token) => {
     if (token) {
       const { data, status } = await authService.verifyToken(token);
       if (status != 200) {
         authService.removeToken();
-        return noti("Inicie sesion nuevamente", "error");
+        return noti("Inicie sesión", "error");
       }
       dispatch({
         type: "LOGIN",
@@ -29,14 +36,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     validateToken(token);
   }, [token]);
-
-  const initialState = {
-    user: {},
-    isVerified: false,
-    token: token ? token : "",
-    isLogged: false,
-    role: "",
-  };
 
   const [authState, dispatch] = useReducer(authReducer, initialState);
 

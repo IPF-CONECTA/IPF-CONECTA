@@ -24,7 +24,7 @@ export { PostPage } from "../modules/feed/posts/pages/PostPage";
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
-
+export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";

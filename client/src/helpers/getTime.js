@@ -30,7 +30,7 @@ export const getDateWithHour = (dt) => {
 }
 export const getDate = (dt) => {
     let date = DateTime.fromISO(dt);
-    return date.toFormat('LLL yyyy').charAt(0) + date.toFormat('LLL yyyy').slice(1)
+    return date.toFormat('LLL. yyyy')
 }
 
 export const getTimeQuantity = (startDate, endDate) => {
@@ -40,7 +40,6 @@ export const getTimeQuantity = (startDate, endDate) => {
     let diff = end.diff(start, ['years', 'months', 'days']);
     let years = diff.years;
     let months = diff.months;
-    let days = diff.days;
     let result = '';
     if (years > 0) {
         result += years + ' años';
