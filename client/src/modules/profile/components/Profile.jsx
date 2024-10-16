@@ -10,7 +10,7 @@ import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
 import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
-import { getSkills } from "../project/skills/services";
+import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
 
 export const Profile = () => {
@@ -43,6 +43,8 @@ export const Profile = () => {
     }
     if (res.status === 200) {
       setExperiences(res.data);
+    } else {
+      setExperiences([]);
     }
   };
   const fetchSkills = async () => {
@@ -78,10 +80,14 @@ export const Profile = () => {
                 aboutData={profileData.profile.about}
                 username={username}
               />
-              <ExperienceContainer
-                own={profileData.own}
-                experiencesData={experiences}
-              />
+              {(profileData.own || experiences?.length > 0) && (
+                <ExperienceContainer
+                  own={profileData.own}
+                  experiencesData={experiences}
+                  onExperienceSubmit={fetchExperiences}
+                  username={username}
+                />
+              )}
               {(profileData.own || projects?.length > 0) && (
                 <Projects
                   own={profileData.own}

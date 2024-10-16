@@ -41,7 +41,6 @@ export const updateCompanyStatusCtrl = async (req, res) => {
     const { id, status } = req.params
     const { justification } = req.body
     try {
-        console.log(status)
         if (status !== 'Aprobada' && status !== 'Rechazada') throw new Error('Estado en la solicitud invalido')
         if (!isValidUUID(id)) throw new Error('La empresa seleccionada no es valida')
         if (status == 'Rechazada') {

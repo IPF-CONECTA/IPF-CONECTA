@@ -1,3 +1,7 @@
 .noArrow::after {
   display: none !important;
 }
+
+.loginButton {
+  height: fit-content;
+}

@@ -14,6 +14,10 @@ import { Modality } from "./jobModalities/modalityModel.js";
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js";
 import { Profile } from "../../profile/profileModel.js";
 import { JobPostulation } from "./jobPostulation/jobPostulationModel.js";
+import { CompanyUbication } from "../companies/companyUbication/companyUbicationModel.js";
+import { Country } from "../../ubications/models/countryModel.js";
+import { City } from "../../ubications/models/cityModel.js";
+import { State } from "../../ubications/models/stateModel.js";
 
 export const createNewJobSvc = async (jobOffer, profileId) => {
   try {
@@ -89,8 +93,31 @@ export const getJobByIdSvc = async (id, profileId) => {
               model: CompanyIndustry,
               attributes: ["name"],
             },
-          ],
+            {
+              model: CompanyUbication,
+              include: [{
+                model: Country
+              },
+              {
+                model: State,
+                include: [{
+                  model: Country
+                }]
+              },
+              {
+                model: City,
+                include: [{
+                  model: State,
+                  include: [{
+                    model: Country
+                  }]
+                }
+                ]
+              }
+              ],
+            },]
         },
+
         {
           model: Profile,
           attributes: ["id", "profilePic", "names", "surnames"],
@@ -113,8 +140,8 @@ export const getJobByIdSvc = async (id, profileId) => {
           model: Modality,
           attributes: ["name"],
         }
-      ],
-    });
+      ]
+    })
 
     const postulate = await JobPostulation.findOne({
       where: {

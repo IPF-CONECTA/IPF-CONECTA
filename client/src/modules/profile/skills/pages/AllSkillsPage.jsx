@@ -6,7 +6,7 @@ import { Nav } from "../../../ui/components";
 import styles from "../../../../../public/css/allSkills.module.css";
 import { RecomendedAccounts } from "../../../feed/components/RecomendedAccounts";
 import { AllSkills } from "../components/AllSkills";
-import { getSkills } from "../../project/skills/services";
+import { getSkills } from "../services";
 export const AllSkillsPage = () => {
   const { username } = useParams();
   const [skills, setSkills] = useState([]);
@@ -36,7 +36,7 @@ export const AllSkillsPage = () => {
   return (
     <>
       <Nav />
-      <div className="d-flex justify-content-evenly">
+      <div className="d-flex justify-content-evenly px-5 ">
         <div className={`${styles.profileContainer} border rounded`}>
           <Header profileData={profileData} setProfileData={setProfileData} />
           <AllSkills

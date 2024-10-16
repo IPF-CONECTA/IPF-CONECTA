@@ -1,11 +1,18 @@
-import React, { useContext } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Outlet, Navigate, useNavigate } from "react-router-dom";
 import { authContext } from "../context/auth/Context";
 import { VALID_ROLES } from "../constants/roles";
+import { authService } from "../modules/auth/services/authService";
 
 export const ProtectedRoutes = () => {
+  const navigate = useNavigate();
   const { authState } = useContext(authContext);
-  return authState.isLogged ? <Outlet /> : <Navigate to="/iniciar-sesion" />;
+  useEffect(() => {
+    if (!authService.getToken()) {
+      navigate("/");
+    }
+  }, [authState.token]);
+  return authService.getToken() ? <Outlet /> : <Navigate to="/" />;
 };
 
 export const AdminRoutes = () => {

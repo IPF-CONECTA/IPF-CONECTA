@@ -2,9 +2,8 @@ import React, { useState, useCallback } from "react";
 import Select from "react-select";
 import debounce from "lodash.debounce";
 import { findSkills } from "../../../recruiter/job/services/jobServices";
-export const SkillSearch = ({ onSkillSelect }) => {
+export const SkillSearch = ({ prevSelectedSkills, onSkillSelect }) => {
   const [options, setOptions] = useState([]);
-
   const fetchSkills = async (query) => {
     if (!query) return;
     try {
@@ -31,6 +30,7 @@ export const SkillSearch = ({ onSkillSelect }) => {
       className="w-100"
       onInputChange={handleInputChange}
       options={options}
+      value={prevSelectedSkills}
       onChange={onSkillSelect}
       placeholder="Buscar habilidades..."
     />

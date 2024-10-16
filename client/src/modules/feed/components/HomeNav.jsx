@@ -13,12 +13,7 @@ export const HomeNav = () => {
       <div
         className={`d-flex flex-column justify-content-around align-items-start h-100 ${styles.buttons}`}
       >
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("inicio");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
             to="/inicio"
@@ -27,12 +22,7 @@ export const HomeNav = () => {
             <span>Inicio</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("perfil");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             to={`/perfil/${authState.user.username}`}
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
@@ -41,12 +31,7 @@ export const HomeNav = () => {
             <span className="fs-5 fw-bold">Perfil</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("comunidad");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             to="/comunidad"
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
@@ -55,12 +40,7 @@ export const HomeNav = () => {
             <span className="fs-5 fw-bold">Comunidad</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("empleo");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             to="/buscar-empleo"
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
@@ -69,12 +49,7 @@ export const HomeNav = () => {
             <span className="fs-5 fw-bold">Empleos</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("mensajes");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             to="/mensajeria"
             className={
@@ -87,12 +62,7 @@ export const HomeNav = () => {
             <span className="fs-5 fw-bold">Mensajes</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("soporte");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             to="/soporte"
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
@@ -103,12 +73,7 @@ export const HomeNav = () => {
             <span className="fs-5 fw-bold">Soporte</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("ajustes");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
@@ -118,12 +83,7 @@ export const HomeNav = () => {
             <span className="fs-5 fw-bold">Ajustes</span>
           </Link>
         </div>
-        <div
-          className={`${styles.button}`}
-          onClick={() => {
-            setSelectedPage("guardados");
-          }}
-        >
+        <div className={`${styles.button}`}>
           <Link
             to="/guardados"
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}

@@ -23,7 +23,8 @@ export { PostPage } from "../modules/feed/posts/pages/PostPage";
 
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
-
+export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
+export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";
@@ -46,7 +47,3 @@ export { JobDetailsPage } from "../modules/recruiter/job/pages/JobsDetailsPage";
 export { Ideas } from "../modules/ideas/pages/Ideas";
 export { DetailsIdeas } from "../modules/ideas/pages/IdeaDetailsPage";
 export { CreateIdeas } from "../modules/ideas/pages/CreateIdeaPage";
-
-// ChatPages
-export { ChatPage } from "../modules/chat/pages/ChatPage";
-export { MessagingPage } from "../modules/chat/pages/MessagingPage";

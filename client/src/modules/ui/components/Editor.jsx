@@ -3,7 +3,14 @@ import Quill from "quill";
 
 const Editor = forwardRef(
   (
-    { readOnly, defaultValue, onTextChange, onSelectionChange, onChange },
+    {
+      readOnly,
+      defaultValue,
+      onTextChange,
+      onSelectionChange,
+      onChange,
+      placeholder,
+    },
     ref
   ) => {
     const containerRef = useRef(null);
@@ -27,6 +34,7 @@ const Editor = forwardRef(
       );
       const quill = new Quill(editorContainer, {
         theme: "snow",
+        placeholder: placeholder || "Escribe aquí...",
       });
 
       ref.current = quill;
@@ -48,7 +56,14 @@ const Editor = forwardRef(
         ref.current = null;
         container.innerHTML = "";
       };
-    }, [ref]);
+    }, [ref, placeholder]);
+
+    useEffect(() => {
+      if (defaultValue !== defaultValueRef.current) {
+        ref.current.setContents(defaultValue);
+        defaultValueRef.current = defaultValue;
+      }
+    }, [defaultValue, ref]);
 
     return <div ref={containerRef}></div>;
   }

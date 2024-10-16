@@ -16,7 +16,6 @@ export const getIdeas = async (req, res) => {
     const profileId = req.user?.profile.id;
     try {
         const ideas = await getIdeasSvc(profileId);
-        console.log(ideas)
         if (ideas.length === 0) return res.status(404).json({ message: "No se encontraron ideas" });
         return res.status(200).json(ideas);
     } catch (error) {

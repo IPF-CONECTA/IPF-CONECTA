@@ -1,4 +1,4 @@
-import { DataTypes, sequelize } from "../../../config/db.js";
+import { DataTypes, sequelize } from '../../config/db.js'
 
 export const Attachment = sequelize.define('attachment', {
     id: {
@@ -7,7 +7,11 @@ export const Attachment = sequelize.define('attachment', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    postId: {
+    attachmentType: {
+        type: DataTypes.ENUM('project', 'post', 'experience', 'education', 'company', 'certificate', 'profilePic', 'logo'),
+        allowNull: false
+    },
+    attachmentId: {
         type: DataTypes.UUID,
         allowNull: false,
     },
@@ -15,8 +19,8 @@ export const Attachment = sequelize.define('attachment', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    type: {
-        type: DataTypes.ENUM('video', 'image'), // por ejemplo 'image' o 'video'
+    docType: {
+        type: DataTypes.ENUM('video', 'image', 'document'), // por ejemplo 'image' o 'video'
         allowNull: false
     }
 });

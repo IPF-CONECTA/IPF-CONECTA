@@ -9,9 +9,7 @@ export const CreateCompanyUbicationPage = () => {
   return (
     <>
       <Nav />
-      <br />
       <CreateCompanyUbicationForm companyId={companyId} />
-      <br />
       <Footer />
     </>
   );

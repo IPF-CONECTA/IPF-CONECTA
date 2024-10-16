@@ -17,6 +17,7 @@ import {
 } from "../../services/feedServices";
 
 import styles from "../../../../../public/css/postCard.module.css";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 
 export const PostCard = ({ post }) => {
   const navigate = useNavigate();
@@ -96,7 +97,7 @@ export const PostCard = ({ post }) => {
     }, 10);
   };
 
-  const handleShowProfile = (boolean, id) => {
+  const handleShowProfile = (boolean, username) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -110,7 +111,7 @@ export const PostCard = ({ post }) => {
 
     timeoutRef.current = setTimeout(async () => {
       setShowProfile(true);
-      const { data, statusCode } = await getProfileInfo(id);
+      const { data, statusCode } = await getProfileInfo(username);
       if (statusCode !== 200) {
         return;
       }
@@ -150,9 +151,14 @@ export const PostCard = ({ post }) => {
                     e.stopPropagation();
                     navigate(`/perfil/${post.profile.user.username}`);
                   }}
-                  onMouseEnter={() => handleShowProfile(true, post.profile.id)}
-                  onMouseLeave={() => handleShowProfile(false, post.profile.id)}
-                  src={post.profile.profilePic}
+                  onMouseEnter={() =>
+                    handleShowProfile(true, post.profile.user.username)
+                  }
+                  onMouseLeave={() =>
+                    handleShowProfile(false, post.profile.user.username)
+                  }
+                  src={`${BASE_URL}/images/${post.profile.profilePic}`}
+                  crossOrigin="anonymous"
                   alt={post.profile.names}
                 />
               </div>
@@ -175,7 +181,7 @@ export const PostCard = ({ post }) => {
             </div>
             {profile && (
               <ProfileHover
-                profile={profile}
+                profileData={profile}
                 profileRef={profileRef}
                 handleMouseEnter={handleMouseEnter}
                 handleMouseLeave={handleMouseLeave}
@@ -183,7 +189,11 @@ export const PostCard = ({ post }) => {
             )}
           </header>
           <div className="py-3">
-            <p className="text-break">{post.content}</p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: post.content.replace(/\n/g, "<br />"),
+              }}
+            ></div>
             {post.attatchment &&
               (post.attatchment.type === "image" ? (
                 <img src={post.attatchment.url} alt={post.attatchment.alt} />
@@ -287,7 +297,8 @@ export const PostCard = ({ post }) => {
             <div className="header d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-start w-100">
                 <img
-                  src={post.profile.profilePic}
+                  src={`${BASE_URL}/images/${post.profile.profilePic}`}
+                  crossOrigin="anonymous"
                   width={40}
                   height={40}
                   alt="profile pic"
@@ -323,7 +334,8 @@ export const PostCard = ({ post }) => {
             <div className="d-flex ">
               {authState.user && authState.user.profile.profilePic ? (
                 <img
-                  src={authState.user.profile.profilePic}
+                  src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
+                  crossOrigin="anonymous"
                   alt="your profile picture"
                   width={40}
                   height={40}
@@ -348,7 +360,7 @@ export const PostCard = ({ post }) => {
               ></progress>
             ) : null}
             <button
-              className="btn btn-info fw-bold text-light"
+              className="btn btn-primary fw-bold text-light"
               onClick={handleComment}
             >
               Responder

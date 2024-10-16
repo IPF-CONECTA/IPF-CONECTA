@@ -13,7 +13,6 @@ export const getAllAssociations = async (req, res) => {
     if (!validStatus.includes(status))
       throw new Error("Error en la solicitud, intente de nuevo");
     const associations = await getAssociations(status);
-    console.log(associations);
     if (associations.length == 0)
       return res
         .status(404)
@@ -41,7 +40,6 @@ export const updateAssociationCtrl = async (req, res) => {
   try {
     let { id, status } = req.params;
     let { justification } = req.body;
-    console.log(justification)
     if (!id || !status)
       throw new Error("Error en la solicitud, vuelva a intentarlo");
     const validStatus = ["Aprobada", "Rechazada"];

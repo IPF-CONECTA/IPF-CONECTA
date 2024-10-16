@@ -9,10 +9,12 @@ export const findUbicationCtrl = async (req, res) => {
   let { query } = req.query;
   if (!query) query = ''
   try {
+    console.log(query)
     const results = await findUbicationSvc(query);
     if (results.length < 1) throw new Error("No se encontraron coincidencias");
     res.status(200).json(results);
   } catch (error) {
+    console.log(error)
     res.status(500).json(error.message);
   }
 };

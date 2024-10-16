@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getDate, getTime } from "../../../../helpers/getTime";
+import { getDateWithHour } from "../../../../helpers/getTime";
 import { ProfileHover } from "../../../profile/components/ProfileHover";
 import { getProfileInfo, like, repostSvc } from "../../services/feedServices";
 
 import styles from "../../../../../public/css/postById.module.css";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 
 export const Post = ({ post, setWrite }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -54,7 +55,7 @@ export const Post = ({ post, setWrite }) => {
     }
   };
 
-  const handleShowProfile = (boolean, id) => {
+  const handleShowProfile = (boolean, username) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -68,7 +69,7 @@ export const Post = ({ post, setWrite }) => {
 
     timeoutRef.current = setTimeout(async () => {
       setShowProfile(true);
-      const { data, statusCode } = await getProfileInfo(id);
+      const { data, statusCode } = await getProfileInfo(username);
       if (statusCode !== 200) {
         return;
       }
@@ -103,7 +104,7 @@ export const Post = ({ post, setWrite }) => {
                     width={40}
                     height={40}
                     onMouseEnter={() =>
-                      handleShowProfile(true, post.profile.id)
+                      handleShowProfile(true, post.profile.user.username)
                     }
                     onClick={(e) => {
                       e.stopPropagation();
@@ -112,7 +113,8 @@ export const Post = ({ post, setWrite }) => {
                     onMouseLeave={() =>
                       handleShowProfile(false, post.profile.id)
                     }
-                    src={post.profile.profilePic}
+                    src={`${BASE_URL}/images/${post.profile.profilePic}`}
+                    crossOrigin="anonymous"
                     alt={post.profile.names}
                   />
                 </div>
@@ -157,11 +159,11 @@ export const Post = ({ post, setWrite }) => {
                         </li>
                         <li>
                           <Link
-                            classNname="dropdown-item d-flex p-0 justify-content-between"
+                            className="dropdown-item d-flex p-0 justify-content-between"
                             to="#"
                           >
                             Bloquear a {post.profile.names}
-                            <span classNname="material-symbols-outlined text-danger fw-bold ms-1">
+                            <span className="material-symbols-outlined text-danger fw-bold ms-1">
                               block
                             </span>
                           </Link>
@@ -173,7 +175,7 @@ export const Post = ({ post, setWrite }) => {
               </div>
               {profile && (
                 <ProfileHover
-                  profile={profile}
+                  profileData={profile}
                   profileRef={profileRef}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
@@ -181,7 +183,11 @@ export const Post = ({ post, setWrite }) => {
               )}
             </header>
             <div className="py-3">
-              <p className="text-break">{post.content}</p>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: post.content.replace(/\n/g, "<br />"),
+                }}
+              ></div>{" "}
               {post.attatchment &&
                 (post.attatchment.type === "image" ? (
                   <img src={post.attatchment.url} alt={post.attatchment.alt} />
@@ -189,7 +195,7 @@ export const Post = ({ post, setWrite }) => {
                   <video src={post.attatchment.url} />
                 ))}
               <span className={`text-muted ${styles.smallText}`}>
-                {getDate(post.createdAt)}
+                {getDateWithHour(post.createdAt)}
               </span>
             </div>
             <footer className="d-flex  justify-content-between">

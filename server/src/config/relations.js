@@ -20,9 +20,9 @@ import { SkillsProfile } from "../modules/users/skills_user/skillProfileModel.js
 import { Job } from "../modules/recruiters/job/jobModel.js";
 import { ContractType } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js";
-import { WorkExperience } from "../modules/users/workExperiences/experiencesModel.js";
-import { ExperienceSkill } from "../modules/users/workExperiences/experienceSkillModel.js";
-import { Attachment } from "../modules/posts/postAttachment/attachmentModel.js";
+import { Experience } from "../modules/users/Experiences/experiencesModel.js";
+import { ExperienceSkill } from "../modules/users/Experiences/experienceSkillModel.js";
+import { Attachment } from "../modules/attachment/attachmentModel.js";
 import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
@@ -31,11 +31,23 @@ import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPost
 import { Project } from "../modules/users/project/projectModel.js";
 import { Vote } from "../modules/ideas/votes/voteModel.js";
 import { Idea } from "../modules/ideas/ideaModel.js";
-import { Chat } from "../modules/chat/chatModel.js";
-import { Message } from "../modules/chat/message/messageModel.js";
+import { ProjectSkills } from "../modules/users/project/projectSkillsModel.js";
 
 export const createRelations = async () => {
   try {
+
+    Project.hasMany(ProjectSkills, {
+      foreignKey: "projectId",
+    })
+    ProjectSkills.belongsTo(Project, {
+      foreignKey: "projectId",
+    })
+    ProjectSkills.belongsTo(Skill, {
+      foreignKey: "skillId",
+    })
+    Skill.hasMany(ProjectSkills, {
+      foreignKey: "skillId",
+    })
     User.hasOne(Profile, {
       foreignKey: "userId",
     });
@@ -182,19 +194,12 @@ export const createRelations = async () => {
     Post.hasMany(Report, {
       foreignKey: "postId",
     });
-    Post.hasMany(Attachment, {
-      foreignKey: "postId",
-      as: "attachments",
-    });
     Post.hasMany(Post, {
       foreignKey: "postId",
       as: "comments",
     });
 
-    Attachment.belongsTo(Post, {
-      foreignKey: "postId",
-      as: "post",
-    });
+
     Report.belongsTo(Post, {
       foreignKey: "postId",
     });
@@ -308,14 +313,47 @@ export const createRelations = async () => {
     JobSkills.belongsTo(Skill, {
       foreignKey: "skillId",
     });
-    WorkExperience.hasMany(ExperienceSkill, {
+    Experience.hasMany(ExperienceSkill, {
       foreignKey: "experienceId",
     });
+    Company.hasMany(Experience, {
+      foreignKey: "companyId"
+    })
+
+    Experience.belongsTo(Company, {
+      foreignKey: "companyId"
+    })
     Skill.hasMany(ExperienceSkill, {
       foreignKey: "skillId",
     });
-    Profile.hasMany(WorkExperience, {
+    ExperienceSkill.belongsTo(Skill, {
+      foreignKey: "skillId",
+    });
+    Modality.hasMany(Experience, {
+      foreignKey: "modalityId"
+    })
+    Experience.belongsTo(Modality, {
+      foreignKey: "modalityId"
+    })
+    Profile.hasMany(Experience, {
       foreignKey: "profileId",
+    });
+    Experience.belongsTo(State, {
+      foreignKey: 'ubicationId',
+      constraints: false,
+      as: 'state'
+    });
+
+    Experience.belongsTo(Country, {
+      foreignKey: 'ubicationId',
+      constraints: false,
+      as: 'country'
+    });
+
+    Experience.belongsTo(City, {
+      foreignKey: 'ubicationId',
+      constraints: false,
+      as: 'city'
     });
     Idea.belongsTo(Profile, {
       foreignKey: "profileId",

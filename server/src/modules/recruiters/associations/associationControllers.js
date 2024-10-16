@@ -9,7 +9,6 @@ export const associateCompanyCtrl = async (req, res) => {
 
     if (!association) return res.status(400).json();
 
-    console.log(association);
     res.status(201).json({
       message: "Solicitud enviada correctamente",
     });

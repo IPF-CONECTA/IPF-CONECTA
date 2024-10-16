@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 import styles from "../../../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
 import { useFollow } from "../../../hooks/useFollow";
+import { BASE_URL } from "../../../constants/BASE_URL";
+import { useState } from "react";
 
 export const ProfileHover = ({
-  profile,
+  profileData,
   handleMouseEnter,
   handleMouseLeave,
   profileInfoRef,
 }) => {
+  const [profile, setProfile] = useState(profileData);
   const { profileInfo, handleFollowOrUnfollow } = useFollow(profile);
   const navigate = useNavigate();
   return (
@@ -21,7 +24,8 @@ export const ProfileHover = ({
     >
       <div className="d-flex justify-content-between align-items-center w-100">
         <img
-          src={`${profileInfo.profile.profilePic}`}
+          src={`${BASE_URL}/images/${profileInfo.profile.profilePic}`}
+          crossOrigin="anonymous"
           width={40}
           height={40}
           className="rounded-circle"
@@ -34,18 +38,18 @@ export const ProfileHover = ({
         <div className={`d-flex flex-column ${styles.followButton}`}>
           {profileInfo.isFollowing === false ? (
             <button
-              className={`btn btn-info text-light w-100 p-0 py-1 ${styles.smallText} w-100 fw-bold`}
-              onClick={(event) => {
-                handleFollowOrUnfollow(event, profileInfo.profile.id);
+              className={`btn btn-primary text-light w-100 p-0 py-1 ${styles.smallText} w-100 fw-bold`}
+              onClick={(e) => {
+                handleFollowOrUnfollow(e, profileInfo.profile.id);
               }}
             >
               Seguir
             </button>
           ) : (
             <button
-              className={`btn btn-outline-info w-100 text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
-              onClick={(event) => {
-                handleFollowOrUnfollow(event, profileInfo.profile.id);
+              className={`btn btn-outline-primary w-100 text-muted p-0 py-1 ${styles.smallText} w-100 fw-bold`}
+              onClick={(e) => {
+                handleFollowOrUnfollow(e, profileInfo.profile.id);
               }}
             >
               Siguiendo

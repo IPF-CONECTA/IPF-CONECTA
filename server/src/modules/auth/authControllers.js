@@ -13,12 +13,11 @@ import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 
 export const authSignUpCtrl = async (req, res) => {
-  const { user } = req.body;
-  //console.log(user)
-  try {
-    if (!Object.keys(BASIC_ROLES).includes(user.role)) {
-      throw new Error("Rol no valido");
-    }
+    const { user } = req.body;
+    try {
+        if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
+
+
 
     if (user.role !== "student") {
       user.cuil = null;

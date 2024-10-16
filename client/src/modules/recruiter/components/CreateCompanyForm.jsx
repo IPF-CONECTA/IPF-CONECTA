@@ -45,6 +45,7 @@ export const CreateCompanyForm = () => {
 
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
+    console.log(e.target.files);
     if (file) {
       if (
         file.type !== "image/jpeg" &&
@@ -210,7 +211,7 @@ export const CreateCompanyForm = () => {
           {previewLogo && (
             <img
               src={previewLogo}
-              className={`${styles.roundedImage} mb-2 me-0`}
+              className={`${styles.roundedImage} mb-2 me-0 img-thumbnail rounded-circle`}
             />
           )}
           <div>

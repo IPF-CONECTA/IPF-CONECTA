@@ -22,14 +22,13 @@ export const Project = sequelize.define("projects", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  status: {
-    type: DataTypes.ENUM(
-      "Comenzando",
-      "Pendiente",
-      "En progreso",
-      "Finalizado"
-    ),
+  startDate: {
+    type: DataTypes.DATE,
     allowNull: false,
+  },
+  endDate: {
+    type: DataTypes.DATE,
+    allowNull: true,
   },
   projectLink: {
     type: DataTypes.STRING,
@@ -40,9 +39,9 @@ export const Project = sequelize.define("projects", {
     allowNull: true,
     defaultValue: "https://img.freepik.com/free-vector/quality-work-abstract-concept-vector-illustration-quality-workplace-employee-performance-experienced-worker-speed-production-improvement-effective-management-abstract-metaphor_335657-6296.jpg?t=st=1727185393~exp=1727188993~hmac=41c14b78504a7fd10486a2240db382cc6a31a6d37d42b7d3d9e36fd16daecbbb&w=740",
   },
-  privacity: {
-    type: DataTypes.ENUM("publico", "privado"),
+  private: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: "publico",
+    defaultValue: false,
   },
 });

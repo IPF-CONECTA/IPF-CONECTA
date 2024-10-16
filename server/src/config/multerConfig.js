@@ -1,5 +1,4 @@
 import multer from 'multer';
-import path from 'path';
 
 // Configuración de almacenamiento
 const storage = multer.diskStorage({
@@ -8,6 +7,8 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/logoUrls/'); // Carpeta para logos
     } else if (file.fieldname === 'ProfilePic') {
       cb(null, 'uploads/profilePics/'); // Carpeta para perfiles
+    } else if (file.fieldname === 'images') {
+      cb(null, 'uploads/images/'); // Carpeta para imágenes
     } else {
       cb(new Error('Campo de archivo no válido'), false);
     }
@@ -22,7 +23,7 @@ const storage = multer.diskStorage({
 // Configuración de Multer
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB máximo
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB máximo
 });
 
 export default upload;

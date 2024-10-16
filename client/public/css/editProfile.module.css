@@ -1,0 +1,17 @@
+.pfpContainer {
+  width: 220px;
+  height: fit-content;
+}
+.pfpLabel {
+  cursor: pointer;
+}
+.pfpInput {
+  width: 0;
+  height: 0;
+}
+.pfp {
+  object-fit: cover;
+}
+.phoneSelect {
+  width: 25%;
+}

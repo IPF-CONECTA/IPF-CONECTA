@@ -35,6 +35,10 @@ export const getUserByIdCtrl = async (req, res) => {
 export const getUserInfoCtrl = async (req, res) => {
     const { id } = req.user.profile;
     const { username } = req.params;
+    console.log("====================================");
+    console.log("====================================");
+    console.log("====================================");
+    console.log(username)
     try {
         const profileId = await getProfileIdByUsername(username)
         if (id == profileId) return res.status(400).json()

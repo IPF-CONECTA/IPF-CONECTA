@@ -66,12 +66,12 @@ export const JobSearch = () => {
 
   return (
     <main className="w-100 h-100 d-flex flex-column align-items-center">
-      <div className={`w-100  bg-light`}>
+      <div className={`w-100  `}>
         <nav
-          className={` w-100 bg-light d-flex flex-column justify-content-center pb-2 align-items-center`}
+          className={` w-100  d-flex flex-column justify-content-center pb-2 align-items-center`}
         >
           <form
-            className={`${styles.form} bg-transparent d-flex justify-content-center w-50 p-0`}
+            className={`${styles.form}  d-flex justify-content-center w-50 p-0`}
             onSubmit={handleSubmit}
           >
             <div
@@ -95,7 +95,7 @@ export const JobSearch = () => {
             </div>
           </form>
         </nav>
-        <hr className="w-100 m-0 bg-light" />
+        <hr className="w-100 m-0 " />
       </div>
       <div
         className={`filtersContainer w-100 d-flex flex-column align-items-center mt-3`}

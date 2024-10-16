@@ -12,6 +12,7 @@ export const AboutCard = ({ own, aboutData, username }) => {
   const [about, setAbout] = useState(null);
   const [editDescription, setEditDescription] = useState(false);
   const { register, handleSubmit, reset } = useForm();
+  const [showDescription, setShowDescription] = useState(false);
 
   useEffect(() => {
     setAbout(aboutData);
@@ -39,18 +40,19 @@ export const AboutCard = ({ own, aboutData, username }) => {
       <textarea
         {...register("about")}
         defaultValue={about || ""}
-        className="w-100 border rounded mb-3 p-2"
+        style={{ minHeight: "100px" }}
+        className="w-100 form-control border rounded mb-3 p-2"
         name="about"
       ></textarea>
       <div>
         <button
           type="button"
-          className="btn btn-dark me-2"
+          className="btn btn-outline-dark me-2"
           onClick={() => setEditDescription(false)}
         >
           Cancelar
         </button>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-dark">
           Guardar
         </button>
       </div>
@@ -58,9 +60,9 @@ export const AboutCard = ({ own, aboutData, username }) => {
   );
 
   return (
-    <section className="w-100 border d-flex flex-column">
+    <div className="w-100 border d-flex flex-column p-4">
       <div className="d-flex justify-content-between mb-2">
-        <span className="fw-bold fs-5">Acerca de mi</span>
+        <span className="fw-bold fs-5">Acerca de</span>
         {own && !editDescription && (
           <button
             type="button"
@@ -73,7 +75,42 @@ export const AboutCard = ({ own, aboutData, username }) => {
           </button>
         )}
       </div>
-      {editDescription ? renderForm() : <div>{about || "Sin descripción"}</div>}
-    </section>
+      {editDescription ? (
+        renderForm()
+      ) : (
+        <>
+          <div>
+            {about?.length > 160 ? (
+              showDescription ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: about?.replace(/\n/g, "<br />"),
+                  }}
+                ></div>
+              ) : (
+                <div>
+                  {about.slice(0, 160)}
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowDescription(true)}
+                    className="text-secondary"
+                  >
+                    ...Ver más
+                  </span>
+                </div>
+              )
+            ) : (
+              (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: about?.replace(/\n/g, "<br />"),
+                  }}
+                ></div>
+              ) || "Sin descripción"
+            )}
+          </div>
+        </>
+      )}
+    </div>
   );
 };
