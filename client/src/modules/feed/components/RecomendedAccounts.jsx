@@ -20,7 +20,7 @@ export const RecomendedAccounts = () => {
     fetchAccounts();
   }, []);
   return (
-    <aside className={`border rounded p-2 ${styles.container}`}>
+    <aside className={`border rounded p-2 ${styles.recomendedAccounts}`}>
       <div className=" d-flex flex-column">
         <header className="d-flex justify-content-center">
           <span className="fs-5 fw-semibold pb-2">Cuentas recomendadas</span>

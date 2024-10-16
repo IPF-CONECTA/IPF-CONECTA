@@ -1,0 +1,17 @@
+/* ProfileNav.css */
+.navContainer {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.navLink {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+@media (min-width: 1300) {
+  .navContainer {
+    overflow-x: visible;
+    white-space: normal;
+  }
+}

@@ -84,11 +84,13 @@ export const Header = ({ profileData, setProfileData }) => {
             </div>
           </div>
         </div>
-        <div className="d-flex align-items-center h-100 py-5 me-5">
+        <div
+          className={`d-flex align-items-center h-100 py-5 me-5 ${styles.buttons}`}
+        >
           {!profileData?.own ? (
             <>
               <Link
-                className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-2"
+                className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
               >
                 <span className="material-symbols-outlined fs-3 fw-light">
@@ -98,7 +100,9 @@ export const Header = ({ profileData, setProfileData }) => {
               <button
                 className={`btn my-1 ${styles.followBtn} ${
                   profileData?.isFollowing
-                    ? `btn-outline-primary fw-bold ${styles.unfollowBtn}`
+                    ? `btn-outline-primary fw-bold ${
+                        followHoverText !== "" && styles.unfollowBtn
+                      }`
                     : "btn-primary fw-bold"
                 } `}
                 onMouseEnter={handleMouseEnter}

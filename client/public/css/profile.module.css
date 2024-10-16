@@ -39,3 +39,18 @@
   transition: background-color 0.2s ease-in;
   border-color: rgb(200, 0, 0);
 }
+@media (max-width: 1300px) {
+  .buttons {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mainContainer {
+    width: 100%;
+  }
+  .profileContainer {
+    width: 90%;
+  }
+}
