@@ -56,7 +56,6 @@ export const createTablesAndRelations = async () => {
   await sequelize.sync({ force: false });
   await Project.sync({ force: true })
   console.log("Tables created successfully");
-
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // ===================================================================================

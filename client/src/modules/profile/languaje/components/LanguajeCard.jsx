@@ -10,16 +10,15 @@ export const LanguageSelector = () => {
   const [profileLanguages, setProfileLanguages] = useState([]);
   const [availableLanguages, setAvailableLanguages] = useState([]);
   const [availableLanguageLevels, setAvailableLanguageLevels] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [editingLanguageId, setEditingLanguageId] = useState(null);
 
   const fetchUserLanguages = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/langs/${username}`
-      );
+      const response = await axios.get(`http://localhost:4000/langs/${username}`);
+      console.log("Idiomas del usuario:", response.data); 
       setProfileLanguages(response.data);
     } catch (error) {
       console.error("Error fetching user's languages:", error);
@@ -29,7 +28,12 @@ export const LanguageSelector = () => {
   const fetchAvailableLanguages = async () => {
     try {
       const response = await axios.get("http://localhost:4000/langs");
-      setAvailableLanguages(response.data);
+      const uniqueLanguages = Array.from(
+        new Set(response.data.map((lang) => lang.id))
+      ).map((id) => {
+        return response.data.find((lang) => lang.id === id);
+      });
+      setAvailableLanguages(uniqueLanguages);
     } catch (error) {
       console.error("Error fetching available languages:", error);
     }
@@ -50,60 +54,74 @@ export const LanguageSelector = () => {
     fetchAvailableLanguageLevels();
   }, [username]);
 
-  const handleModalSave = async () => {
-    if (selectedLanguage && selectedLevel) {
-      const langData = {
+  const addLanguage = async () => {
+    if (!selectedLanguage || !selectedLevel) {
+      alert("Por favor, selecciona un idioma y un nivel.");
+      return;
+    }
+    try {
+      const response = await axios.post(`http://localhost:4000/langs/${username}`, {
         langId: selectedLanguage.value,
         langLevelId: selectedLevel,
         username,
+      });
+
+      console.log("Idioma creado:", response.data);
+
+      const newLanguage = {
+        id: response.data.id,
+        langId: selectedLanguage.value,
+        langName: selectedLanguage.label,
+        langLevelName: availableLanguageLevels.find(level => level.id === selectedLevel)?.level || "",
+        levelId: selectedLevel,
       };
+
+      setProfileLanguages((prevLanguages) => [
+        ...prevLanguages,
+        newLanguage, 
+      ]);
+      
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error adding language:", error);
+    }
+  };
+
+  const updateLanguage = async () => {
+    if (!editingLanguageId || !selectedLevel) {
+      alert("Por favor, selecciona un nivel.");
+      return;
+    }
+    try {
+      await axios.put(`http://localhost:4000/langs/${editingLanguageId}`, {
+        langId: selectedLanguage.value,
+        levelId: selectedLevel,
+        
+      });
+      fetchUserLanguages();
+      setShowModal(false);
+      setEditingLanguageId(null);
+    } catch (error) {
+      console.error("Error updating language:", error);
+    }
+  };
+
+  const deleteLanguage = async (languageId) => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar este idioma?")) {
       try {
-        if (editingIndex !== null) {
-          await axios.put(
-            `http://localhost:4000/langs/${profileLanguages[editingIndex].id}`,
-            langData
-          );
-        } else {
-          await axios.post(`http://localhost:4000/langs/${username}`, langData);
-        }
+        await axios.delete(`http://localhost:4000/langs/${languageId}`);
         fetchUserLanguages();
       } catch (error) {
-        console.error("Error saving language:", error);
+        console.error("Error deleting language:", error);
       }
     }
-
-    setSelectedLanguage(null);
-    setSelectedLevel("");
-    setEditingIndex(null);
-    setShowModal(false);
   };
 
-  const addLanguage = () => {
-    setSelectedLanguage(null);
-    setSelectedLevel("");
-    setEditingIndex(null);
+  const handleEdit = (language) => {
+    setSelectedLanguage({ value: language.langId, label: language.langName });
+    setSelectedLevel(language.levelId);
+    setEditingLanguageId(language.id);
     setShowModal(true);
-  };
-
-  const editLanguage = (index) => {
-    setSelectedLanguage({
-      value: profileLanguages[index].langId,
-      label: profileLanguages[index].langName,
-    });
-    setSelectedLevel(profileLanguages[index].langLevelId);
-    setEditingIndex(index);
-    setShowModal(true);
-  };
-
-  const deleteLanguage = async (index) => {
-    try {
-      await axios.delete(
-        `http://localhost:4000/langs/${profileLanguages[index].id}`
-      );
-      fetchUserLanguages();
-    } catch (error) {
-      console.error("Error deleting language:", error);
-    }
   };
 
   const languageOptions = availableLanguages.map((language) => ({
@@ -119,7 +137,12 @@ export const LanguageSelector = () => {
           <div className="d-flex justify-content-end">
             <button
               type="button"
-              onClick={addLanguage}
+              onClick={() => {
+                setSelectedLanguage(null);
+                setSelectedLevel("");
+                setEditingLanguageId(null);
+                setShowModal(true);
+              }}
               className="btn d-flex align-items-center"
             >
               <span className="material-symbols-outlined">add</span>
@@ -128,26 +151,26 @@ export const LanguageSelector = () => {
         </div>
 
         <ul className="list-group w-100">
-          {profileLanguages.map((language, index) => (
+          {profileLanguages.map((language) => (
             <li
-              key={index}
+              key={language.id}
               className="list-group-item d-flex justify-content-between align-items-center"
             >
               <span>
                 {language.langName} - {language.langLevelName}
               </span>
-              <div className="d-flex">
+              <div>
                 <button
-                  onClick={() => editLanguage(index)}
-                  className="btn btn-warning me-2"
+                  className="btn btn-warning btn-sm"
+                  onClick={() => handleEdit(language)}
                 >
-                  <span className="material-symbols-outlined">edit</span>
+                  Editar
                 </button>
                 <button
-                  onClick={() => deleteLanguage(index)}
-                  className="btn btn-danger"
+                  className="btn btn-danger btn-sm ms-2"
+                  onClick={() => deleteLanguage(language.id)}
                 >
-                  <span className="material-symbols-outlined">delete</span>
+                  Eliminar
                 </button>
               </div>
             </li>
@@ -157,7 +180,7 @@ export const LanguageSelector = () => {
         <Modal show={showModal} onHide={() => setShowModal(false)} centered>
           <Modal.Header closeButton>
             <Modal.Title>
-              {editingIndex !== null ? "Editar Idioma" : "Agregar Idioma"}
+              {editingLanguageId ? "Actualizar Idioma" : "Agregar Idioma"}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -192,8 +215,11 @@ export const LanguageSelector = () => {
             <Button variant="secondary" onClick={() => setShowModal(false)}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={handleModalSave}>
-              Guardar
+            <Button
+              variant="primary"
+              onClick={editingLanguageId ? updateLanguage : addLanguage}
+            >
+              {editingLanguageId ? "Actualizar" : "Guardar"}
             </Button>
           </Modal.Footer>
         </Modal>
