@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import styles from "../../../../../public/css/experiencesContainer.module.css";
-import { getDate, getTimeQuantity } from "../../../../helpers/getTime";
+import { getDateMonth, getTimeQuantity } from "../../../../helpers/getTime";
 import { Dialog } from "@mui/material";
 import { CreateExperienceModal } from "./CreateExperienceModal";
 
@@ -73,9 +73,11 @@ export const ExperienceCard = ({
             {experience.modality.name}
           </span>
           <span className={`text-secondary ${styles.smallText}`}>
-            {getDate(experience.startDate)}
+            {getDateMonth(experience.startDate)}
             {" - "}
-            {experience.endDate ? getDate(experience.endDate) : "Actualidad"}
+            {experience.endDate
+              ? getDateMonth(experience.endDate)
+              : "Actualidad"}
             {" · "}
             {getTimeQuantity(experience.startDate, experience.endDate)}
           </span>

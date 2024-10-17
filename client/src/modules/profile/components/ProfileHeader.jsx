@@ -92,6 +92,7 @@ export const Header = ({ profileData, setProfileData }) => {
               <Link
                 className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
+                to={`/chat/${profileData?.profile.user.username}`}
               >
                 <span className="material-symbols-outlined fs-3 fw-light">
                   chat

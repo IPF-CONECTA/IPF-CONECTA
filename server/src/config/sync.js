@@ -52,9 +52,10 @@ import { Attachment } from "../modules/attachment/attachmentModel.js";
 import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
+
   await createRelations();
   console.log("Relations created successfully");
-  // await sequelize.sync({ force: false });
+  await sequelize.sync({ force: false });
   // await WorkExperience.sync({ force: true })
   console.log("Tables created successfully");
 

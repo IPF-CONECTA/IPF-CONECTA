@@ -28,9 +28,19 @@ export const getDateWithHour = (dt) => {
     let date = DateTime.fromISO(dt);
     return date.toFormat('dd LLL yyyy, HH:mm')
 }
-export const getDate = (dt) => {
+
+export const getHour = (dt) => {
+    let date = DateTime.fromISO(dt);
+    return date.toFormat('HH:mm');
+}
+export const getDateMonth = (dt) => {
     let date = DateTime.fromISO(dt);
     return date.toFormat('LLL. yyyy')
+}
+
+export const getFullDate = (dt) => {
+    let date = DateTime.fromISO(dt);
+    return date.toFormat('dd LLL yyyy')
 }
 
 export const getTimeQuantity = (startDate, endDate) => {

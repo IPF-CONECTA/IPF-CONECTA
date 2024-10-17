@@ -29,6 +29,10 @@ export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";
 
+// Chat pages:
+export { ChatPage } from "../modules/chat/pages/ChatPage";
+export { MessagingPage } from "../modules/chat/pages/MessagingPage";
+
 //Recruiter pages:
 
 export { CompanyConfirmedPage } from "../modules/recruiter/pages/CompanyConfirmedPage";

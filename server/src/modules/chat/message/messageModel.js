@@ -16,7 +16,7 @@ export const Message = sequelize.define("messages", {
     allowNull: false,
   },
   message: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
 });

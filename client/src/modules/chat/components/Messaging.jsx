@@ -6,6 +6,7 @@ import { authContext } from "../../../context/auth/Context";
 
 import notChats from "../../../../public/img/notChats.png";
 import { getTime } from "../../../helpers/getTime";
+import { BASE_URL } from "../../../constants/BASE_URL";
 
 export const Messaging = () => {
   const { authState } = useContext(authContext);
@@ -19,30 +20,28 @@ export const Messaging = () => {
   useEffect(() => {
     const getChats = async () => {
       const res = await chatService.getChatsbyProfile();
+      console.log(res.data);
       setChats(res.data);
     };
     getChats();
   }, []);
-
-  // chats.map((chat) => {
-  //   const receptorId =
-  //     chat.profile2 === profileId
-  //       ? chat.profile1
-  //       : chat.profile2 || chat.profile1;
-
-  //   // const receptorId =
-  //   //   chat.profile2 === profileId
-  //   //     ? chat.profile1
-  //   //     : chat.profile2 || chat.profile1;
-  //   // console.log({ receptorId });
-  // });
+  console.log(authState);
+  chats.map((chat) => {
+    const receptorId =
+      chat.profile1.id === profileId ? chat.profile2 : chat.profile1;
+    console.log("RECEPTORID", receptorId);
+    console.log(
+      chat?.messages[chat.messages.length - 1].senderId !==
+        authState.user.profile?.id
+    );
+  });
 
   return (
     <>
       <div className="d-flex justify-content-end w-100 p-5">
         <div className="list-group w-75">
           <h5 className="text-center mt-5">Tus Chats</h5>{" "}
-          {chats.length === 0 ? (
+          {chats?.length === 0 ? (
             <div className="card d-flex  flex-column shadow w-100">
               <h5 className="text-center mt-5 fw-semibold">
                 No tienes ningun chat, conecta con alguien e inicia una
@@ -60,10 +59,15 @@ export const Messaging = () => {
                 chat.profile1.id === profileId ? chat.profile2 : chat.profile1;
 
               return (
-                <Link to={`/chat/${receptorId.user.username}`}>
-                  <div className="d-flex align-items-center w-100 gap-3 list-group-item bg-dark-subtle shadow-lg p-4 mt-3">
+                <Link
+                  key={chat.id}
+                  to={`/chat/${receptorId.user.username}`}
+                  className="text-decoration-none border rounded"
+                >
+                  <div className="d-flex align-items-center w-100 gap-3 list-group-item bg-dark-subtle p-3">
                     <img
-                      src={receptorId.profilePic}
+                      src={`${BASE_URL}/images/${receptorId?.profilePic}`}
+                      crossOrigin="anonymous"
                       alt={receptorId.id + "_icon"}
                       className="rounded-circle"
                       width={50}
@@ -72,10 +76,8 @@ export const Messaging = () => {
                       <p className="mb-1 fw-bold">{receptorId.user.username}</p>
                       <div>
                         <p className="text-start">
-                          {receptorId.user.username !== authState.user.username
-                            ? "Tú" + ": "
-                            : receptorId.user.username}
-
+                          {chat?.messages[chat.messages.length - 1].senderId ==
+                            authState.user.profile?.id && "Tú" + ": "}
                           {chat?.messages[chat.messages.length - 1]?.message}
                         </p>
                         <p>

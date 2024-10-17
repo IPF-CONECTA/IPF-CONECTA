@@ -6,9 +6,6 @@ export const changePfp = async (file) => {
     try {
         const formData = new FormData();
         formData.append("images", file);
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
 
         const res = await axios.post(
             "http://localhost:4000/update-profile-pic",

@@ -5,7 +5,7 @@ import { projectsService } from "../services/projectsServices";
 import { useNoti } from "../../../../hooks/useNoti";
 import { Dialog } from "@mui/material";
 import DOMPurify from "dompurify";
-import { getDate } from "../../../../helpers/getTime";
+import { getDateMonth } from "../../../../helpers/getTime";
 import { SkillsList } from "../../components/SkillsList";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 
@@ -41,9 +41,9 @@ const ProjectCard = ({ project }) => {
             <div>
               <span className=" fs-6 fw-semibold">{project.name}</span>
               <div className={`text-secondary ${styles.smallText}`}>
-                <span>{getDate(project.startDate)}</span>
+                <span>{getDateMonth(project.startDate)}</span>
                 {project.endDate ? (
-                  <span> - {getDate(project.endDate)}</span>
+                  <span> - {getDateMonth(project.endDate)}</span>
                 ) : (
                   <span> - Actualidad</span>
                 )}

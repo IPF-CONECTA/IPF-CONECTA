@@ -51,7 +51,7 @@ export const HomeNav = () => {
         </div>
         <div className={`${styles.button}`}>
           <Link
-            to="/mensajeria"
+            to="/mensajes"
             className={
               selectedPage === "mensajes"
                 ? `fs-5 fw-bold text-dark text-decoration-none d-flex align-items-center`

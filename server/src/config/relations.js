@@ -22,7 +22,6 @@ import { ContractType } from "../modules/recruiters/job/contractTypes/contractTy
 import { JobSkills } from "../modules/recruiters/job/jobSkills/jobSkillsModel.js";
 import { Experience } from "../modules/users/Experiences/experiencesModel.js";
 import { ExperienceSkill } from "../modules/users/Experiences/experienceSkillModel.js";
-import { Attachment } from "../modules/attachment/attachmentModel.js";
 import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { CompanyUbication } from "../modules/recruiters/companies/companyUbication/companyUbicationModel.js";
 import { Repost } from "../modules/posts/reposts/repostModel.js";
@@ -32,7 +31,8 @@ import { Project } from "../modules/users/project/projectModel.js";
 import { Vote } from "../modules/ideas/votes/voteModel.js";
 import { Idea } from "../modules/ideas/ideaModel.js";
 import { ProjectSkills } from "../modules/users/project/projectSkillsModel.js";
-
+import { Chat } from "../modules/chat/chatModel.js";
+import { Message } from "../modules/chat/message/messageModel.js";
 export const createRelations = async () => {
   try {
 

@@ -4,7 +4,9 @@ import { useParams, Link } from "react-router-dom";
 
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
-import { getTime } from "../../../helpers/getTime";
+import { getFullDate, getHour } from "../../../helpers/getTime";
+import { BASE_URL } from "../../../constants/BASE_URL";
+import styles from "../../../../public/css/chat.module.css";
 
 export const Chat = () => {
   const { authState } = useContext(authContext);
@@ -14,7 +16,7 @@ export const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState({});
-
+  console.log(receiver);
   const messagesEndRef = useRef(null);
   const conteinerRef = useRef(null);
 
@@ -35,7 +37,7 @@ export const Chat = () => {
   useEffect(() => {
     socket.emit("getAllMessages", { chatId });
     socket.on("all messages", (msgs) => {
-      setMessages(msgs);
+      setMessages(groupMessagesByDate(msgs));
     });
   }, [chatId]);
 
@@ -43,8 +45,6 @@ export const Chat = () => {
     socket.emit("getChatId", { profile2Id: receiver.id });
     socket.on("chatId", (id) => setChatId(id));
     socket.on("chat message", (msg) => {
-      console.log("Mensaje recibido", msg);
-      console.log({ yo: authState.user.profile.id });
       if (msg.senderId !== authState.user.profile.id) {
         if (
           conteinerRef.current.scrollHeight -
@@ -55,7 +55,7 @@ export const Chat = () => {
         }
         setMessages((prevMessages) => [
           ...prevMessages,
-          { message: msg.message, sender: receiver },
+          { message: msg.message, sender: receiver, createdAt: msg.createdAt },
         ]);
       }
     });
@@ -67,7 +67,7 @@ export const Chat = () => {
 
   useEffect(() => {
     if (messages.at(-1)?.sender.user.username === authState.user.username) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
       return;
     }
     if (
@@ -75,11 +75,12 @@ export const Chat = () => {
         Math.round(conteinerRef.current.scrollTop) <
       conteinerRef.current.clientHeight
     ) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
     }
   }, [messages]);
 
-  const sendMessage = () => {
+  const sendMessage = (e) => {
+    e.preventDefault();
     if (message.trim()) {
       socket.emit("send chat message", {
         message,
@@ -94,55 +95,152 @@ export const Chat = () => {
     }
     setMessage("");
   };
+  const groupMessagesByDate = (messages) => {
+    const groupedMessages = [];
+    let lastDate = null;
+
+    messages.forEach((msg) => {
+      const messageDate = getFullDate(msg.createdAt);
+      if (messageDate !== lastDate) {
+        groupedMessages.push({ type: "date", date: messageDate });
+        lastDate = messageDate;
+      }
+      groupedMessages.push(msg);
+    });
+
+    return groupedMessages;
+  };
 
   return (
     <div className="d-flex justify-content-end">
-      <div className="card w-75 m-md-5 bg-body-secondary">
-        <div className="card-header w-100 bg-body-secondary border-5">
+      <div className="rounded border w-25 m-md-5 bg-body-secondary">
+        <div className="px-3 py-2 w-100 bg-body-secondary d-flex align-items-center">
           <Link to={`/perfil/${receiver.user?.username}`}>
             <img
-              src={`${receiver.profilePic}`}
-              className="rounded-circle mt-2 mb-2"
+              src={`${BASE_URL}/images/${receiver.profilePic}`}
+              crossOrigin="anonymous"
+              className="rounded-circle border border-2 border-black my-2 me-2"
               alt={receiver.id + "_icon"}
-              width={50}
+              width={40}
             />
           </Link>
-          <strong className="p-1 ms-2">{receiver.user?.username}</strong>
-          <strong>({receiver.surnames + " " + receiver.names})</strong>
+          <span className="fw-semibold fs-5">
+            {receiver.names + " " + receiver.surnames}
+          </span>
         </div>
         <div
           ref={conteinerRef}
-          className="card-body w-100 bg-dark-subtle"
-          style={{ height: "400px", overflowY: "scroll" }}
+          className="w-100 bg-dark-subtle p-3"
+          style={{ height: "400px", overflowY: "scroll", overflowX: "hidden" }}
         >
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`mb-3 ${
-                msg.sender.user.username === authState.user?.username
-                  ? "text-end bg-dark text-white rounded p-2  "
-                  : "text-start bg-body-secondary text-black rounded p-2"
-              }`}
-            >
-              <p className="fs-5">{msg.message}</p>{" "}
-              <p className="fs-6">{getTime(msg.createdAt)}</p>
+          {messages?.length > 0 ? (
+            messages.map((msg, index) =>
+              msg.type === "date" ? (
+                <div key={index} className="text-center my-3">
+                  <span className="badge bg-secondary">
+                    {msg.date == "Invalid DateTime" ? "Nuevo" : msg.date}
+                  </span>
+                </div>
+              ) : (
+                <div
+                  key={index}
+                  className={`mb-3 d-flex align-items-end ${
+                    msg.sender.user.username === authState.user?.username
+                      ? "justify-content-end"
+                      : "justify-content-start"
+                  }`}
+                >
+                  {msg.sender.user.username !== authState.user?.username && (
+                    <img
+                      src={`${BASE_URL}/images/${receiver.profilePic}`}
+                      alt="foto de perfil"
+                      className="rounded-circle me-2"
+                      crossOrigin="anonymous"
+                      width={40}
+                      height={40}
+                    />
+                  )}
+                  <div
+                    style={{
+                      width: "fit-content",
+                      minWidth: "10%",
+                      maxWidth: "80%",
+                    }}
+                    className={`${
+                      msg.sender.user.username === authState.user?.username
+                        ? "text-end bg-body-secondary text-black rounded p-2  "
+                        : "text-start bg-body-secondary text-black rounded p-2"
+                    }`}
+                  >
+                    <span className="fs-6 text-break">{msg.message}</span>{" "}
+                    <span className={`text-secondary ${styles.smallText}`}>
+                      {getHour(
+                        msg.createdAt || new Date().toLocaleTimeString()
+                      )}
+                    </span>
+                  </div>
+                  {msg.sender.user.username === authState.user?.username && (
+                    <img
+                      src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
+                      alt="foto de perfil"
+                      className="rounded-circle ms-2"
+                      crossOrigin="anonymous"
+                      width={40}
+                      height={40}
+                    />
+                  )}
+                </div>
+              )
+            )
+          ) : (
+            <div className="my-2 d-flex h-100 justify-content-center align-items-center">
+              <div className="d-flex flex-column justify-content-center align-items-center gap-2">
+                <img
+                  src={`${BASE_URL}/images/${receiver.profilePic}`}
+                  width={70}
+                  crossOrigin="anonymous"
+                  className="rounded-circle"
+                  alt={`Foto de perfil de ${receiver.names}`}
+                />
+                <div className="d-flex flex-column align-items-center">
+                  <span className="fw-semibold fs-5">
+                    {receiver.names + " " + receiver.surnames}
+                  </span>
+                  <span className="fs-6 text-secondary">
+                    {receiver.user?.username}
+                  </span>
+                </div>
+                <Link
+                  to={`/perfil/${receiver.user?.username}`}
+                  className="btn btn-light shadow-sm"
+                >
+                  Ver perfil
+                </Link>
+              </div>
             </div>
-          ))}
+          )}
           <div style={{ scrollMarginBottom: "100px" }} ref={messagesEndRef} />
         </div>
-        <div className="card-footer">
-          <div className="input-group">
-            <input
-              className="form-control"
-              placeholder="Escribe un mensaje..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button className="btn btn-outline-dark" onClick={sendMessage}>
-              Enviar
-            </button>
-          </div>
-        </div>
+        <form
+          onSubmit={(e) => {
+            sendMessage(e);
+          }}
+          style={{ maxWidth: "none" }}
+          className="p-0 d-flex shadow-none border-0"
+        >
+          <input
+            className="w-100 border-0 rounded-bottom border-0"
+            placeholder="Escribe un mensaje..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button
+            className="btn border-none btn-dark  rounded-0 rounded-end text-white fw-semibold h-100"
+            type="submit"
+          >
+            Enviar
+          </button>
+        </form>
       </div>
     </div>
   );

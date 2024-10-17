@@ -28,6 +28,8 @@ import {
   DetailsIdeas,
   ProfileExperiencesPage,
   EditProfile,
+  MessagingPage,
+  ChatPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -54,6 +56,9 @@ export const Routers = () => {
               element={<AdminAssociationsPanelPage />}
             />
           </Route>
+          <Route path="mensajes" element={<MessagingPage />} />
+          <Route path="chat/:username" element={<ChatPage />} />
+
           <Route path="/inicio" element={<FeedPage />} />
           <Route path="/post/:postId" element={<PostPage />} />
           <Route path="/perfil/:username" element={<ProfilePage />} />
