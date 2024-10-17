@@ -1,5 +1,6 @@
 import {
   createNewJobSvc,
+  findJobsByRecruiterIdSvc,
   findJobsSvc,
   getJobByIdSvc,
   getJobsSvc,
@@ -83,6 +84,16 @@ export const findJobsCtrl = async (req, res) => {
       totalPages: Math.ceil(jobs.count / 6),
       total: jobs.count,
     });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+export const findJobsByRecruiterIdCtrl = async (req, res) => {
+  try {
+    const { id } = req.user.profile;
+    const jobs = await findJobsByRecruiterIdSvc(id);
+    return res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json(error.message);
   }

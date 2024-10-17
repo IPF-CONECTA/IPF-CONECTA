@@ -12,14 +12,18 @@ import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
+import { JobOffers } from "../../jobs/components/JobOffers";
+import { jobsServices } from "../../jobs/services/jobsServices";
 
 export const Profile = () => {
   const noti = useNoti();
   const { username } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [jobOffers, setJobOffers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [role, setRole] = useState("");
 
   const fetchProfile = async () => {
     const res = await getProfile(username);
@@ -28,13 +32,19 @@ export const Profile = () => {
     }
     setProfileData(res.data);
   };
-
   const fetchProjects = async () => {
     const res = await projectsService.getProjects(username);
     if (res.status !== 200 && res.status !== 404) {
       return noti("error?", "error");
     }
     setProjects(res.data);
+  };
+  const fetchJobOffers = async () => {
+    const res = await jobsServices.getMyJobs();
+    if (res.status !== 200) {
+      return noti("error?", "error");
+    }
+    setJobOffers(res.data);
   };
   const fetchExperiences = async () => {
     const res = await getExperiences(username);
@@ -60,8 +70,15 @@ export const Profile = () => {
     fetchProfile();
     fetchExperiences();
     fetchProjects();
+    fetchJobOffers();
     fetchSkills();
   }, [username]);
+
+  useEffect(() => {
+    if (profileData) {
+      setRole(profileData?.profile.user.role.name);
+    }
+  });
 
   return (
     <>
@@ -88,15 +105,17 @@ export const Profile = () => {
                   username={username}
                 />
               )}
-              {(profileData.own || projects?.length > 0) && (
-                <Projects
-                  own={profileData.own}
-                  username={profileData.profile.user.username}
-                  names={profileData.profile.names}
-                  projectsData={projects}
-                  onProjectSubmit={fetchProjects}
-                />
-              )}
+              {role === "student" &&
+                (profileData.own || projects?.length > 0) && (
+                  <Projects
+                    own={profileData.own}
+                    username={profileData.profile.user.username}
+                    names={profileData.profile.names}
+                    projectsData={projects}
+                    onProjectSubmit={fetchProjects}
+                  />
+                )}
+              {role === "recruiter" && <JobOffers />}
               {(profileData.own || skills?.length > 0) && (
                 <SkillsContainer
                   skillsData={skills}

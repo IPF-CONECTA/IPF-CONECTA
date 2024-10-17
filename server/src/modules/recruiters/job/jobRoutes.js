@@ -8,6 +8,7 @@ import {
   findJobsCtrl,
   getJobByIdCtrl,
   getJobsCtrl,
+  findJobsByRecruiterIdCtrl,
 } from "./jobControllers.js";
 import { jobSchema } from "./jobSchema.js";
 import { validateSchema } from "../../../middlewares/expressValidator.js";
@@ -40,5 +41,7 @@ jobRoutes.get("/get-jobs", getJobsCtrl);
 jobRoutes.get("/get-job/:id", isToken, getJobByIdCtrl);
 
 jobRoutes.get("/job/search", findJobsCtrl);
+
+jobRoutes.get("/get-my-jobs", isToken, isRecruiter, findJobsByRecruiterIdCtrl);
 
 export default jobRoutes;

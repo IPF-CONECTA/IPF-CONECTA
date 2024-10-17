@@ -95,27 +95,34 @@ export const getJobByIdSvc = async (id, profileId) => {
             },
             {
               model: CompanyUbication,
-              include: [{
-                model: Country
-              },
-              {
-                model: State,
-                include: [{
-                  model: Country
-                }]
-              },
-              {
-                model: City,
-                include: [{
+              include: [
+                {
+                  model: Country,
+                },
+                {
                   model: State,
-                  include: [{
-                    model: Country
-                  }]
-                }
-                ]
-              }
+                  include: [
+                    {
+                      model: Country,
+                    },
+                  ],
+                },
+                {
+                  model: City,
+                  include: [
+                    {
+                      model: State,
+                      include: [
+                        {
+                          model: Country,
+                        },
+                      ],
+                    },
+                  ],
+                },
               ],
-            },]
+            },
+          ],
         },
 
         {
@@ -139,9 +146,9 @@ export const getJobByIdSvc = async (id, profileId) => {
         {
           model: Modality,
           attributes: ["name"],
-        }
-      ]
-    })
+        },
+      ],
+    });
 
     const postulate = await JobPostulation.findOne({
       where: {
@@ -194,6 +201,18 @@ export const findJobsSvc = async (query, page) => {
     return { data: jobs, count: jobs.count };
   } catch (error) {
     console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+export const findJobsByRecruiterIdSvc = async (profileId) => {
+  try {
+    const jobs = await Job.findAll({
+      where: { profileId },
+      // include: { all: true },
+    });
+    return jobs;
+  } catch (error) {
     throw new Error(error.message);
   }
 };
