@@ -125,7 +125,7 @@ export const Post = ({ post, setWrite }) => {
                         {post.profile.names} {post.profile.surnames}
                       </span>
                       <span className={`text-muted ${styles.smallText}`}>
-                        @{post.profile.user.username}
+                        @{post.profile.user?.username}
                       </span>
                     </div>
                     <div className="nav-item dropdown">
