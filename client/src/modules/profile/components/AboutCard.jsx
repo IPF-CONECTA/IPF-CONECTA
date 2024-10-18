@@ -12,6 +12,7 @@ export const AboutCard = ({ own, aboutData, username }) => {
   const [about, setAbout] = useState(null);
   const [editDescription, setEditDescription] = useState(false);
   const { register, handleSubmit, reset } = useForm();
+  const [showDescription, setShowDescription] = useState(false);
 
   useEffect(() => {
     setAbout(aboutData);
@@ -39,7 +40,8 @@ export const AboutCard = ({ own, aboutData, username }) => {
       <textarea
         {...register("about")}
         defaultValue={about || ""}
-        className="w-100 border rounded mb-3 p-2"
+        style={{ minHeight: "100px" }}
+        className="w-100 form-control border rounded mb-3 p-2"
         name="about"
       ></textarea>
       <div>
@@ -73,7 +75,42 @@ export const AboutCard = ({ own, aboutData, username }) => {
           </button>
         )}
       </div>
-      {editDescription ? renderForm() : <div>{about || "Sin descripción"}</div>}
+      {editDescription ? (
+        renderForm()
+      ) : (
+        <>
+          <div>
+            {about?.length > 160 ? (
+              showDescription ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: about?.replace(/\n/g, "<br />"),
+                  }}
+                ></div>
+              ) : (
+                <div>
+                  {about.slice(0, 160)}
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowDescription(true)}
+                    className="text-secondary"
+                  >
+                    ...Ver más
+                  </span>
+                </div>
+              )
+            ) : (
+              (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: about?.replace(/\n/g, "<br />"),
+                  }}
+                ></div>
+              ) || "Sin descripción"
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

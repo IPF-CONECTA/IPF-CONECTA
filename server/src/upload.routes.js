@@ -7,5 +7,6 @@ import path from "path";
 const uploadRoutes = Router()
 uploadRoutes.use('/logoUrl', express.static(path.join(__dirname, '../../uploads/logoUrls')));
 uploadRoutes.use('/perfil', express.static(path.join(__dirname, '../../uploads/profiles')));
+uploadRoutes.use('/images', express.static(path.join(__dirname, '../../uploads/images')));
 
-export default  uploadRoutes;
+export default uploadRoutes;

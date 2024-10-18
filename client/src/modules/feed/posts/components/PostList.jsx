@@ -58,7 +58,7 @@ export const PostList = () => {
         <form
           onSubmit={handleSubmit}
           className={` h-100 w-75 d-flex flex-column align-items-end border ${
-            posts.length > 0 ? "border-bottom-0" : ""
+            posts?.length > 0 ? "border-bottom-0" : ""
           } p-2 ${styles.postForm}`}
           onFocus={() => {
             setFocused(true);
@@ -110,7 +110,7 @@ export const PostList = () => {
             </div>
             <button
               type="submit"
-              className="btn btn-info text-light px-3 py-0 h-100 fw-bold"
+              className="btn btn-primary text-light px-3 py-0 h-100 fw-bold"
             >
               Post
             </button>
@@ -123,7 +123,7 @@ export const PostList = () => {
         ) : null}
       </div>
       <div className="w-100 d-flex flex-column flex-grow-1 align-items-center">
-        {posts.length > 0 && (
+        {posts?.length > 0 && (
           <div className="w-75 border border-bottom-0 border-end-0 border-start-0">
             {posts.map((post) => (
               <PostCard key={post.id} post={post} />

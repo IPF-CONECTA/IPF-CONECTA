@@ -60,7 +60,8 @@ export const AdminDashboard = () => {
                 Usuario: {assoc.profile.names} {assoc.profile.surnames}
               </p>
               <img
-                src={assoc.profile.profilePic}
+                src={`${BASE_URL}/images/${assoc.profile.profilePic}`}
+                crossOrigin="anonymous"
                 alt="Profile"
                 className={styles.profilePic}
               />

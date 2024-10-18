@@ -27,9 +27,14 @@ export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/Pro
 export { LanguajeCardPage } from "../modules/profile/languaje/pages/LanguajeCardPage";
 export { LanguajeEditPage } from "../modules/profile/languaje/pages/LanguajeEditPage";
 
+export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";
+
+// Chat pages:
+export { ChatPage } from "../modules/chat/pages/ChatPage";
+export { MessagingPage } from "../modules/chat/pages/MessagingPage";
 
 //Recruiter pages:
 

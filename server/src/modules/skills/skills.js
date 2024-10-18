@@ -5226,6 +5226,9 @@ export const skillData = [
     name: "Borland C++",
   },
   {
+    name: "C++",
+  },
+  {
     name: "Borland C++ Builder",
   },
   {
@@ -52164,9 +52167,6 @@ export const skillData = [
   },
   {
     name: "Arts Administration",
-  },
-  {
-    name: "Artificial Intelligence",
   },
   {
     name: "Public Art",

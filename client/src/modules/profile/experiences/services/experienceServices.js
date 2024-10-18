@@ -2,33 +2,48 @@ import axios from "axios"
 import { authService } from "../../../auth/services/authService"
 
 export const createExperience = async (experience, skills, username) => {
-    const formattedExperience = {
-        title: experience.title,
-        description: experience.description,
-        companyId: experience.company.value,
-        contractTypeId: experience.contractType.value,
-        modalityId: experience.modality.value,
-        ubicationId: experience.location.value,
-        ubicationType: experience.location.type,
-        startDate: `01/${experience.startDateMonth}/${experience.startDateYear}`,
-        endDate: experience.endDateMonth !== "null" ? `01/${experience.endDateMonth}/${experience.endDateYear}` : null,
-        skills: skills
-    }
+    console.log(experience)
+    try {
 
-    if (formattedExperience.endDate !== null) {
-        if (Date.parse(formattedExperience.endDate) < Date.parse(formattedExperience.startDate)) {
-            throw new Error("La fecha de fin no puede ser anterior a la fecha de inicio")
-        }
-    }
-    const res = await axios.post(`http://localhost:4000/experience/${username}`, {
-        experience: formattedExperience
-    }, {
-        headers: {
-            Authorization: `Bearer ${authService.getToken()}`
-        }
-    })
+        const formData = new FormData()
+        formData.append("title", experience.title)
+        formData.append("description", experience.description)
+        formData.append("companyId", experience.company.value)
+        formData.append("contractTypeId", experience.contractType.value)
+        formData.append("modalityId", experience.modality.value)
+        formData.append("ubicationId", experience.location.value)
+        formData.append("ubicationType", experience.location.type)
+        formData.append("startDate", `${experience.startDateMonth}/01/${experience.startDateYear}`)
+        formData.append("endDate", experience.endDateMonth !== "null" ? `${experience.endDateMonth}/01/${experience.endDateYear}` : null)
 
-    return res
+        if (experience.images.length > 0) {
+            experience.images.forEach((image) => {
+                formData.append("images", image);
+            });
+        }
+
+        if (skills.length > 0) {
+            skills.forEach((skill) => {
+                formData.append("skills", skill);
+            });
+        }
+        if (formData.endDate !== null) {
+            if (Date.parse(formData.endDate) < Date.parse(formData.startDate)) {
+                throw new Error("La fecha de fin no puede ser anterior a la fecha de inicio")
+            }
+        }
+        const res = await axios.post(`http://localhost:4000/experience/${username}`,
+            formData
+            , {
+                headers: {
+                    Authorization: `Bearer ${authService.getToken()}`
+                }
+            })
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const updateExperience = async (experience, skills, username, experienceId) => {

@@ -1,38 +1,29 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { authContext } from "../../../context/auth/Context";
 import styles from "../../../../public/css/login.module.css";
-import { useNoti } from "../../../hooks/useNoti";
 
 export const LoginForm = () => {
   const { login, authState } = useContext(authContext);
+  const [watchPassword, setWatchPassword] = useState(false);
   const navigate = useNavigate();
-  const noti = useNoti();
   const { register, handleSubmit } = useForm();
-
-  function showPass() {
-    var x = document.getElementById("myInput");
-    if (x.type === "password") {
-      x.type = "text";
-    } else {
-      x.type = "password";
-    }
-  }
 
   useEffect(() => {
     if (authState.isLogged) {
-      setTimeout(() => {
-        navigate("/");
-      }, 500);
+      navigate("/");
     }
-  }, [authState.isLogged, navigate]);
+  }, [authState.isLogged]);
 
   async function onSubmit(data) {
     const response = await login(data);
+    console.log(response);
     if (response && response.role == "recruiter") {
-      if (response.associations.length == 0) {
+      if (response.associations.length === 0) {
+        console.log(response.associations.length === 0);
+        console.log("no tiene asociaciones");
         navigate("/seleccionar-empresa");
       } else {
         const isApproved = response.associations.find(
@@ -95,11 +86,21 @@ export const LoginForm = () => {
           <div className="form-floating mb-3">
             <input
               {...register("password")}
-              type="password"
+              type={watchPassword ? "text" : "password"}
               className="form-control w-100"
               id="floatingPassword"
               placeholder="Contraseña"
             />
+            <button
+              type="button"
+              onClick={() => setWatchPassword(!watchPassword)}
+              className="btn p-0 me-2 position-absolute d-flex align-items-center"
+              style={{ right: 0, top: "30%" }}
+            >
+              <span className="material-symbols-outlined text-secondary">
+                visibility
+              </span>
+            </button>
             <label htmlFor="floatingPassword" className="bg-transparent">
               Contraseña
             </label>

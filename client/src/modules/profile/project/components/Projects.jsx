@@ -41,15 +41,16 @@ export const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
           onProjectSubmit={onProjectSubmit}
         />
         <div>
-          <div className="row mb-3">
+          <div className="row">
             {projects && projects.length >= 1 ? (
-              projects.slice(0, 3).map((project) => {
+              projects.slice(0, 3).map((project, index) => {
                 return (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    username={username}
-                  />
+                  <React.Fragment key={project.id}>
+                    <ProjectCard project={project} username={username} />
+                    {index !== projects.length - 1 && (
+                      <hr className="my-3 text-secondary" />
+                    )}
+                  </React.Fragment>
                 );
               })
             ) : (

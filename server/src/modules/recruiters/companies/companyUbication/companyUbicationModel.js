@@ -17,7 +17,7 @@ export const CompanyUbication = sequelize.define("companyUbication", {
   },
   stateId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   cityId: {
     type: DataTypes.INTEGER,

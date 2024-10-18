@@ -28,7 +28,9 @@ export const getRecomendedUsersSvc = async (profileId) => {
       },
       attributes: ["followingId"],
     });
-    const followedProfilesIds = following.map((follower) => follower.followingId);
+    const followedProfilesIds = following.map(
+      (follower) => follower.followingId
+    );
     const users = await User.findAll({
       where: {
         [Op.or]: [
@@ -62,9 +64,9 @@ export const getProfileIdByUsername = async (username) => {
     const user = await User.findOne({ where: { username }, include: { model: Profile } })
     return user.profile.id
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 export const getUserById = async (userId) => {
   try {
     const user = await User.findByPk(userId, {

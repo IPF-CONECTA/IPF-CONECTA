@@ -6,8 +6,9 @@ import { getProfileInfo } from "../services/feedServices";
 import { useFollow } from "../../../hooks/useFollow";
 
 import styles from "../../../../public/css/accountCard.module.css";
+import { BASE_URL } from "../../../constants/BASE_URL";
 
-export const AccountCard = ({ account }) => {
+export const AccountCard = ({ index, account }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
@@ -56,7 +57,9 @@ export const AccountCard = ({ account }) => {
 
   return (
     <div
-      className="avatar w-100 d-flex justify-content-between align-items-center  mb-2"
+      className={`avatar w-100 d-flex justify-content-between align-items-center ${
+        index !== 4 && "mb-2"
+      }`}
       key={account.id}
     >
       <div className="d-flex position-relative">
@@ -64,7 +67,8 @@ export const AccountCard = ({ account }) => {
           width={35}
           height={35}
           className="rounded-circle me-2"
-          src={account.profile.profilePic}
+          src={`${BASE_URL}/images/${account.profile.profilePic}`}
+          crossOrigin="anonymous"
           alt={account.profile.names}
           onClick={(e) => {
             e.stopPropagation();
@@ -75,7 +79,7 @@ export const AccountCard = ({ account }) => {
         />
         {profile && (
           <ProfileHover
-            profile={profile}
+            profileData={profile}
             profileRef={profileRef}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
@@ -104,8 +108,8 @@ export const AccountCard = ({ account }) => {
         <button
           className={`${styles.buttonFollow} ms-2 ${styles.smallText} ${
             isFollowing
-              ? "btn btn-outline-info text-muted fw-bold p-1"
-              : "btn btn-info text-light fw-bold p-1"
+              ? "btn btn-outline-primary text-muted fw-bold p-1"
+              : "btn btn-primary text-light fw-bold p-1"
           }`}
           onClick={handleFollowClick}
         >

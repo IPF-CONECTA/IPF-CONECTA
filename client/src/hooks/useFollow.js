@@ -15,6 +15,7 @@ export const useFollow = (initialProfile) => {
     setProfile((prevProfile) => ({
       ...prevProfile,
       isFollowing: !prevProfile.isFollowing,
+      cantFollowers: prevProfile.isFollowing ? prevProfile.cantFollowers - 1 : prevProfile.cantFollowers + 1
     }));
   };
 

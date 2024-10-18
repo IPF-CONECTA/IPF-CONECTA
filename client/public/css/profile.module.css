@@ -1,7 +1,10 @@
 .mainContainer {
   width: 65%;
 }
-
+.contenedor::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 50%;
+}
 .asideContainer {
   height: fit-content;
   width: fit-content;
@@ -10,7 +13,7 @@
   right: 0;
 }
 .header {
-  height: fit-content;
+  height: auto;
 }
 
 .profileContainer {
@@ -25,4 +28,29 @@
 }
 .smallText {
   font-size: 12px;
+}
+
+.followBtn {
+  width: 140px;
+}
+
+.unfollowBtn:hover {
+  background-color: rgb(226, 43, 43);
+  transition: background-color 0.2s ease-in;
+  border-color: rgb(200, 0, 0);
+}
+@media (max-width: 1300px) {
+  .buttons {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mainContainer {
+    width: 100%;
+  }
+  .profileContainer {
+    width: 90%;
+  }
 }

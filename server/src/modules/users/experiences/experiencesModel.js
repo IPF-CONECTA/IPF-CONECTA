@@ -1,8 +1,7 @@
-import { ENUM } from "sequelize";
 import { DataTypes, sequelize } from "../../../config/db.js";
 
 
-export const WorkExperience = sequelize.define('workExperience', {
+export const Experience = sequelize.define('experience', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,

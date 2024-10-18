@@ -1,6 +1,5 @@
 import axios from "axios";
 import { authService } from "../../../auth/services/authService";
-import { end } from "@cloudinary/url-gen/qualifiers/textAlignment";
 
 export const projectsService = {
 
@@ -32,23 +31,40 @@ export const projectsService = {
     }
   },
   createProject: async (projectData) => {
+    const formData = new FormData();
+
+    formData.append("project[name]", projectData.name);
+    formData.append("project[smallDescription]", projectData.smallDescription);
+    formData.append("project[description]", projectData.description);
+    formData.append("project[projectLogo]", projectData.projectLogo);
+    formData.append("project[projectLink]", projectData.projectLink);
+    formData.append("project[startDate]", `${projectData.startDateMonth}/01/${projectData.startDateYear}`);
+    formData.append("project[private]", projectData.private);
+    if (projectData.skills.length > 0) {
+      projectData.skills.forEach((skill) => {
+        formData.append("project[skills]", skill);
+      }
+      )
+    }
+    if (projectData.endDateMonth !== "null") {
+      formData.append("project[endDate]", `${projectData.endDateMonth}/01/${projectData.endDateYear}`);
+    }
+    if (projectData.images) {
+      projectData.images.forEach((image) => {
+        formData.append("images", image);
+      });
+    }
+
+    // Añadir el logo del proyecto si está presente
+    if (projectData.projectLogo) {
+      formData.append("project[projectLogo]", projectData.projectLogo);
+    }
     console.log({ "data que ingresa al servicio": projectData })
-    const project = {
-      name: projectData.name,
-      smallDescription: projectData.smallDescription,
-      description: projectData.description,
-      projectLogo: projectData.projectLogo,
-      projectLink: projectData.projectLink,
-      startDate: `01/${projectData.startDateMonth}/${projectData.startDateYear}`,
-      endDate: projectData.endDateMonth !== "null" ? (`01/${projectData.endDateMonth}/${projectData.endDateYear}`) : null,
-      private: projectData.private,
-    };
-    console.log({ "data que se envia al back": project })
     try {
 
       const response = await axios.post(
         "http://localhost:4000/project",
-        { project },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,

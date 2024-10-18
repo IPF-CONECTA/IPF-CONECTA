@@ -17,15 +17,17 @@ import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoute
 import companyUbicationRoutes from "./modules/recruiters/companies/companyUbication/companyUbicationRoutes.js";
 import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
-import experienceRoutes from "./modules/users/workExperiences/experienceRoutes.js";
+import experienceRoutes from "./modules/users/Experiences/experienceRoutes.js";
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
 import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/users/project/projectRoutes.js";
 import ideaRoutes from "./modules/ideas/ideaRoutes.js";
 import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
 import SkillProfileRoutes from "./modules/users/skills_user/skillProfileRoutes.js";
-import langRoutes from "./modules/langs/lang.routes.js";
-import langUserRoutes from "./modules/users/langs_user/langUserRoutes.js";
+import messageRoutes from "./modules/chat/message/messageRoutes.js";
+import chatRoutes from "./modules/chat/chatRoutes.js";
+
+import profilePicRoutes from "./modules/profile/profilePic/profilePicRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -45,6 +47,7 @@ export const routes = (app) => {
   app.use(modalityRoutes);
   app.use(companyUbicationRoutes);
   app.use(profileRoutes);
+  app.use(profilePicRoutes)
   app.use(experienceRoutes);
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
@@ -53,6 +56,6 @@ export const routes = (app) => {
   app.use(ideaRoutes);
   app.use(voteRoutes);
   app.use(SkillProfileRoutes);
-  app.use(langRoutes);
-  app.use(langUserRoutes);
+  app.use("/message", messageRoutes);
+  app.use(chatRoutes);
 };

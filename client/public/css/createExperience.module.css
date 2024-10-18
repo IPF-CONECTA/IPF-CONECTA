@@ -1,0 +1,8 @@
+.formContainer {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(225, 225, 225) white;
+}
+
+.descriptionInput {
+  height: 100px;
+}

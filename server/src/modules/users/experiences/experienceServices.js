@@ -1,4 +1,5 @@
 import { sequelize } from "../../../config/db.js";
+import { getAttachmentsSvc } from "../../attachment/attachmentServices.js";
 import { Company } from "../../recruiters/companies/companyModel.js";
 import { Modality } from "../../recruiters/job/jobModalities/modalityModel.js";
 import { Skill } from "../../skills/skillsModel.js";
@@ -6,11 +7,11 @@ import { City } from "../../ubications/models/cityModel.js";
 import { Country } from "../../ubications/models/countryModel.js";
 import { State } from "../../ubications/models/stateModel.js";
 import { ExperienceSkill } from "./experienceSkillModel.js";
-import { WorkExperience } from "./experiencesModel.js";
+import { Experience } from "./experiencesModel.js";
 
 export const getExperiencesSvc = async (profileId) => {
   try {
-    const experiences = await WorkExperience.findAll({
+    let experiences = await Experience.findAll({
       where: {
         profileId,
       },
@@ -29,7 +30,7 @@ export const getExperiencesSvc = async (profileId) => {
         },
         {
           model: Company,
-          attributes: ["logoUrl", "name"],
+          attributes: ["id", "logoUrl", "name"],
         },
         {
           model: State,
@@ -55,6 +56,11 @@ export const getExperiencesSvc = async (profileId) => {
       ]
     });
 
+    experiences = await Promise.all(experiences.map(async (experience) => {
+      const attachments = await getAttachmentsSvc(experience.id);
+      experience.dataValues.attachments = attachments;
+      return experience;
+    }));
 
     const formattedExperiences = experiences.map(exp => {
       let ubication = '';
@@ -80,10 +86,11 @@ export const getExperiencesSvc = async (profileId) => {
 
 
 export const createExperienceSvc = async (experience, profileId) => {
+  console.log(experience)
   const t = await sequelize.transaction()
   try {
 
-    const newExperience = await WorkExperience.create({
+    const newExperience = await Experience.create({
       title: experience.title,
       contractTypeId: experience.contractTypeId,
       companyId: experience.companyId,
@@ -91,18 +98,19 @@ export const createExperienceSvc = async (experience, profileId) => {
       ubicationType: experience.ubicationType,
       modalityId: experience.modalityId,
       startDate: experience.startDate,
-      endDate: experience.endDate,
+      endDate: experience.endDate !== "null" ? experience.endDate : null,
       description: experience.description,
       profileId,
     }, { transaction: t })
 
-    await Promise.all(experience.skills.map(async skill => (
+    experience.skills && (await Promise.all(experience.skills.map(async skill => (
       await ExperienceSkill.create({
         experienceId: newExperience.id,
         skillId: skill
       }, { transaction: t })
-    )))
+    ))))
     await t.commit()
+    return newExperience;
   } catch (error) {
     await t.rollback()
     throw new Error(error.message)

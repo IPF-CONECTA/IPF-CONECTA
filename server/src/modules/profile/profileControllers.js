@@ -13,4 +13,3 @@ export const getProfileByIdCtrl = async (req, res) => {
     }
 
 }
-
