@@ -67,9 +67,11 @@ export const updateLanguage = async (
 
 export const deleteLanguage = async (languageId) => {
   try {
-    await axios.delete(`${API_URL}/langs/${languageId}`);
+    const response = await axios.delete(`${API_URL}/langs/${languageId}`);
+    return response; 
   } catch (error) {
-    console.error("Error deleting language:", error);
-    throw error;
+    console.error("Error deleting language:", error.response ? error.response.data : error.message);
+    throw error; 
   }
 };
+

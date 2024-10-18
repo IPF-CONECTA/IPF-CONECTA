@@ -107,17 +107,27 @@ export const LanguageSelector = () => {
         </div>
 
         <ul className="list-group w-100">
-          {profileLanguages.map((language) => (
-            <li
-              key={language.id}
-              className="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <span>
-                Idioma: {language.langId} - Nivel del Idioma:{" "}
-                {language.langLevelId}
-              </span>
-            </li>
-          ))}
+          {profileLanguages.map((language) => {
+            const langDetails = availableLanguages.find(
+              (lang) => lang.id === language.langId
+            );
+            const levelDetails = availableLanguageLevels.find(
+              (level) => level.id === language.langLevelId
+            );
+
+            return (
+              <li
+                key={language.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span>
+                  Idioma: {langDetails ? langDetails.name : "Desconocido"} -
+                  Nivel del Idioma:{" "}
+                  {levelDetails ? levelDetails.level : "Desconocido"}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
