@@ -12,8 +12,9 @@ import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
-import { JobOffers } from "../../jobs/components/JobOffers";
-import { jobsServices } from "../../jobs/services/jobsServices";
+
+import { JobOffers } from "../jobs/components/JobOffers";
+import { jobsServices } from "../jobs/services/jobsServices";
 
 export const Profile = () => {
   const noti = useNoti();
@@ -70,9 +71,12 @@ export const Profile = () => {
     fetchProfile();
     fetchExperiences();
     fetchProjects();
-    fetchJobOffers();
     fetchSkills();
-  }, [username]);
+
+    if (role === "recruiter") {
+      fetchJobOffers();
+    }
+  }, [username, role]);
 
   useEffect(() => {
     if (profileData) {
@@ -115,7 +119,8 @@ export const Profile = () => {
                     onProjectSubmit={fetchProjects}
                   />
                 )}
-              {role === "recruiter" && <JobOffers />}
+              {role === "recruiter" && <JobOffers jobOffersData={jobOffers} />}
+
               {(profileData.own || skills?.length > 0) && (
                 <SkillsContainer
                   skillsData={skills}

@@ -1,6 +1,5 @@
 import axios from "axios";
-import { authService } from "../../auth/services/authService";
-
+import { authService } from "../../../auth/services/authService";
 export const jobsServices = {
   getMyJobs: async () => {
     try {

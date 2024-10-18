@@ -209,7 +209,7 @@ export const findJobsByRecruiterIdSvc = async (profileId) => {
   try {
     const jobs = await Job.findAll({
       where: { profileId },
-      // include: { all: true },
+      include: { model: Company, attributes: ["name", "logoUrl"] },
     });
     return jobs;
   } catch (error) {
