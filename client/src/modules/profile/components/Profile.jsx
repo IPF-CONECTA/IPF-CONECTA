@@ -40,8 +40,8 @@ export const Profile = () => {
     }
     setProjects(res.data);
   };
-  const fetchJobOffers = async () => {
-    const res = await jobsServices.getMyJobs();
+  const fetchJobOffers = async (username) => {
+    const res = await jobsServices.getJobsByUsername(username);
     if (res.status !== 200) {
       return noti("error?", "error");
     }
@@ -74,7 +74,7 @@ export const Profile = () => {
     fetchSkills();
 
     if (role === "recruiter") {
-      fetchJobOffers();
+      fetchJobOffers(username);
     }
   }, [username, role]);
 
@@ -119,7 +119,13 @@ export const Profile = () => {
                     onProjectSubmit={fetchProjects}
                   />
                 )}
-              {role === "recruiter" && <JobOffers jobOffersData={jobOffers} />}
+              {role === "recruiter" && (
+                <JobOffers
+                  own={profileData.own}
+                  jobOffersData={jobOffers}
+                  username={profileData.profile.user.username}
+                />
+              )}
 
               {(profileData.own || skills?.length > 0) && (
                 <SkillsContainer

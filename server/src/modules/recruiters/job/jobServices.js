@@ -205,14 +205,33 @@ export const findJobsSvc = async (query, page) => {
   }
 };
 
-export const findJobsByRecruiterIdSvc = async (profileId) => {
+export const findJobsByUsernameSvc = async (username) => {
   try {
+    const recruiter = await User.findOne({
+      where: { username },
+    });
+
+    const profile = await Profile.findOne({
+      where: { userId: recruiter.id },
+    });
+
     const jobs = await Job.findAll({
-      where: { profileId },
+      where: { profileId: profile.id },
       include: { model: Company, attributes: ["name", "logoUrl"] },
     });
+
     return jobs;
   } catch (error) {
     throw new Error(error.message);
+  }
+};
+
+export const deleteJobSvc = async (id) => {
+  try {
+    await Job.destroy({
+      where: { id },
+    });
+  } catch (error) {
+    throw new Error(error);
   }
 };
