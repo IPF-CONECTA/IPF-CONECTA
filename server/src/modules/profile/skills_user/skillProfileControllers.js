@@ -19,7 +19,7 @@ export const toggleSkill = async (req, res) => {
             return res.status(404).json({ message: 'La habilidad no existe.' });
         }
 
-        const existingSkillProfile = await getSkillableById(id)
+        const existingSkillProfile = await getSkillableById(id, skillId)
         if (existingSkillProfile) {
             await deleteSkillable(skillId, id)
             return res.status(200).json()

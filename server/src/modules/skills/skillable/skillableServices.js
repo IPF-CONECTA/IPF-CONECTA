@@ -15,9 +15,9 @@ export const getSkillables = async (skillableId) => {
         throw error
     }
 }
-export const getSkillableById = async (skillableId) => {
+export const getSkillableById = async (skillableId, skillId) => {
     try {
-        return await Skillable.findOne({ where: { skillableId } })
+        return await Skillable.findOne({ where: { skillableId, skillId } })
     } catch (error) {
         throw error
     }

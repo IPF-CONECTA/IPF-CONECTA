@@ -61,7 +61,7 @@ export const SkillsContainer = ({ skillsData = [], own, onSkillSubmit }) => {
           </ul>
         )}
       </div>
-      {skills?.length > 2 && (
+      {skills.length > 2 && (
         <>
           <hr className="text-body-tertiary m-0" />
           <div className="d-flex justify-content-center w-100 py-2">
