@@ -5,7 +5,6 @@ export { AdminCompaniesPanelPage } from "../modules/admin/pages/AdminCompaniesPa
 export { AdminDashboardPage } from "../modules/admin/pages/AdminDashboardPage";
 
 //App pages:
-
 export { HomePage } from "../modules/app/pages/HomePage";
 export { NotFoundPage } from "../modules/app/pages/NotFoundPage";
 export { SupportPage } from "../modules/app/pages/SupportPage";
@@ -25,6 +24,7 @@ export { PostPage } from "../modules/feed/posts/pages/PostPage";
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
 export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
+
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";
@@ -34,14 +34,13 @@ export { ChatPage } from "../modules/chat/pages/ChatPage";
 export { MessagingPage } from "../modules/chat/pages/MessagingPage";
 
 //Recruiter pages:
-
 export { CompanyConfirmedPage } from "../modules/recruiter/pages/CompanyConfirmedPage";
 export { CreateCompanyPage } from "../modules/recruiter/pages/CreateCompanyPage";
 export { CreateCompanyLocationPage } from "../modules/recruiter/pages/CreateCompanyLocationPage";
 export { MessageRecruiterPage } from "../modules/recruiter/pages/MessageRecruiterPage";
 export { SelectCompanyPage } from "../modules/recruiter/pages/SelectCompanyPage";
 export { WaitingAssociationsApprovalPage } from "../modules/recruiter/pages/WaitingAssociationsApprovedPage";
-
+export { RecruiterJobOffersPage } from "../modules/profile/jobs/pages/RecruiterJobOffersPage";
 //Job Pages:
 export { JobCreatePage } from "../modules/recruiter/job/pages/CreateJobsFormPage";
 export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";

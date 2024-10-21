@@ -1,5 +1,7 @@
 import {
   createNewJobSvc,
+  deleteJobSvc,
+  findJobsByUsernameSvc,
   findJobsSvc,
   getJobByIdSvc,
   getJobsSvc,
@@ -84,6 +86,27 @@ export const findJobsCtrl = async (req, res) => {
       total: jobs.count,
     });
   } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+export const findJobsByUsernameCtrl = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const jobs = await findJobsByUsernameSvc(username);
+    return res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+export const deleteJobCtrl = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteJobSvc(id);
+    return res.status(200).json("Oferta eliminada");
+  } catch (error) {
+    console.log(error);
     res.status(500).json(error.message);
   }
 };

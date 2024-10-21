@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill";
 import axios from "axios";
 import Select from "react-select";
-import "react-quill/dist/quill.snow.css";
-
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/CreateJobsForm.module.css";
 import {
@@ -12,10 +9,12 @@ import {
   getCompaniesByUser,
   getContractTypes,
   getModalities,
-} from "../services/jobServices";
+} from "../../../recruiter/job/services/jobServices";
 import Editor from "../../../ui/components/Editor";
+import { Dialog } from "@mui/material";
+import { SkillSearch } from "../../skills/components/FindSkills";
 
-export const CreateJobForm = () => {
+export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   const navigate = useNavigate();
   const noti = useNoti();
   const [companies, setCompanies] = useState([]);
@@ -71,8 +70,9 @@ export const CreateJobForm = () => {
         }
       )
       .then(() => {
-        noti("Job created successfully", "success");
-        navigate("/");
+        noti("Empleo creado", "success");
+        setOpenModal(false);
+        onJobSubmit();
       })
       .catch((error) => {
         console.log("Error:", error.response.data);
@@ -204,97 +204,92 @@ export const CreateJobForm = () => {
   };
 
   return (
-    <div className="w-100 d-flex justify-content-center">
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className="mb-3">
-          <label htmlFor="title">Cargo</label>
-          <input
-            type="text"
-            placeholder="Desarrollador Fullstack"
-            name="title"
-            className={`m-0 p-2`}
-            value={formData.title}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="description">Descripción</label>
-          <Editor
-            ref={quillRef}
-            placeholder="Describe las responsabilidades del puesto, tareas, requisitos, beneficios, etc."
-            onChange={handleDescriptionChange}
-          />
-        </div>
-        {companies.length > 1 && (
+    <Dialog
+      open={Boolean(openModal)}
+      onClose={() => setOpenModal(false)}
+      maxWidth="sm"
+      fullWidth
+    >
+      <div className="w-100 d-flex justify-content-center">
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className="mb-3">
-            <label>Empresa</label>
-            <select
-              name="companyId"
-              className={`form-select ${styles.formSelect}`}
-              value={formData.companyId}
+            <label htmlFor="title">Cargo</label>
+            <input
+              type="text"
+              placeholder="Desarrollador Fullstack"
+              name="title"
+              className={`m-0 p-2`}
+              value={formData.title}
               onChange={handleInputChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="description">Descripción</label>
+            <Editor
+              ref={quillRef}
+              placeholder="Describe las responsabilidades del puesto, tareas, requisitos, beneficios, etc."
+              onChange={handleDescriptionChange}
+            />
+          </div>
+          {companies.length > 1 && (
+            <div className="mb-3">
+              <label>Empresa</label>
+              <select
+                name="companyId"
+                className={`form-select ${styles.formSelect}`}
+                value={formData.companyId}
+                onChange={handleInputChange}
+              >
+                <option value="">Selecciona la empresa</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div className="mb-3">
+            <label>Habilidades</label>
+            <SkillSearch onSkillSelect={handleSkillChange} />
+          </div>
+          <div className="mb-3">
+            <label>Modalidad</label>
+            <select
+              name="modalityId"
+              className={`form-select`}
+              value={formData.modalityId}
+              onChange={handleSelectChange}
             >
-              <option value="">Selecciona la empresa</option>
-              {companies.map((company) => (
-                <option key={company.id} value={company.id}>
-                  {company.name}
+              <option value="">Selecciona la modalidad</option>
+              {modalities?.map((modality) => (
+                <option key={modality.id} value={modality.id}>
+                  {modality.name}
                 </option>
               ))}
             </select>
           </div>
-        )}
-        <div className="mb-3">
-          <label>Habilidades</label>
-          <Select
-            isMulti
-            options={skills.slice(0, 8).map((skill) => ({
-              value: skill.id,
-              label: skill.name,
-            }))}
-            value={selectedSkills}
-            onChange={handleSkillChange}
-            placeholder="Busca y selecciona las habilidades necesarias"
-            noOptionsMessage={() => "No hay habilidades disponibles"}
-            onInputChange={handleSearchChange}
-            filterOption={customFilter}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Modalidad</label>
-          <select
-            name="modalityId"
-            className={`form-select`}
-            value={formData.modalityId}
-            onChange={handleSelectChange}
-          >
-            <option value="">Selecciona la modalidad</option>
-            {modalities?.map((modality) => (
-              <option key={modality.id} value={modality.id}>
-                {modality.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="mb-3">
-          <label>Tipo de contrato</label>
-          <select
-            name="contractTypeId"
-            className={`form-select`}
-            value={formData.contractTypeId}
-            onChange={handleSelectChange}
-          >
-            <option value="">Selecciona el tipo de contrato</option>
-            {contractTypes.map((type) => (
-              <option key={type.id} value={type.id}>
-                {type.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button type="submit" className={styles.submitButton}>
-          Crear oferta
-        </button>
-      </form>
-    </div>
+          <div className="mb-3">
+            <label>Tipo de contrato</label>
+            <select
+              name="contractTypeId"
+              className={`form-select`}
+              value={formData.contractTypeId}
+              onChange={handleSelectChange}
+            >
+              <option value="">Selecciona el tipo de contrato</option>
+              {contractTypes.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button type="submit" className={styles.submitButton}>
+            Crear oferta
+          </button>
+        </form>
+      </div>
+    </Dialog>
   );
 };

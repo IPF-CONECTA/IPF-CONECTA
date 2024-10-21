@@ -56,7 +56,7 @@ export const getJobsSvc = async () => {
         "contractTypeId",
         "companyId",
         "createdAt",
-        "aplicationLink",
+        "applicationLink",
       ],
       include: [
         {
@@ -108,39 +108,54 @@ export const getJobByIdSvc = async (id, profileId) => {
                 model: City,
                 include: [{
                   model: State,
-                  include: [{
-                    model: Country
-                  }]
-                }
-                ]
-              }
+                  include: [
+                    {
+                      model: Country,
+                    },
+                  ],
+                },
+                {
+                  model: City,
+                  include: [
+                    {
+                      model: State,
+                      include: [
+                        {
+                          model: Country,
+                        },
+                      ],
+                    },
+                  ],
+                },
+                ],
+              },
               ],
-            },]
-        },
+            },
 
-        {
-          model: Profile,
-          attributes: ["id", "profilePic", "names", "surnames"],
-        },
-        {
-          model: JobSkills,
-          attributes: ["skillId"],
-          include: [
             {
-              model: Skill,
+              model: Profile,
+              attributes: ["id", "profilePic", "names", "surnames"],
+            },
+            {
+              model: JobSkills,
+              attributes: ["skillId"],
+              include: [
+                {
+                  model: Skill,
+                  attributes: ["name"],
+                },
+              ],
+            },
+            {
+              model: ContractType,
               attributes: ["name"],
             },
-          ],
-        },
-        {
-          model: ContractType,
-          attributes: ["name"],
-        },
-        {
-          model: Modality,
-          attributes: ["name"],
-        }
-      ]
+            {
+              model: Modality,
+              attributes: ["name"],
+            },
+          ]
+        }],
     })
 
     const postulate = await JobPostulation.findOne({
@@ -195,5 +210,36 @@ export const findJobsSvc = async (query, page) => {
   } catch (error) {
     console.log(error);
     throw new Error(error.message);
+  }
+};
+
+export const findJobsByUsernameSvc = async (username) => {
+  try {
+    const recruiter = await User.findOne({
+      where: { username },
+    });
+
+    const profile = await Profile.findOne({
+      where: { userId: recruiter.id },
+    });
+
+    const jobs = await Job.findAll({
+      where: { profileId: profile.id },
+      include: { model: Company, attributes: ["name", "logoUrl"] },
+    });
+
+    return jobs;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const deleteJobSvc = async (id) => {
+  try {
+    await Job.destroy({
+      where: { id },
+    });
+  } catch (error) {
+    throw new Error(error);
   }
 };
