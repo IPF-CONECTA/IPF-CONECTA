@@ -1,15 +1,15 @@
 import { useParams } from "react-router-dom";
 
-import { CreateCompanyUbicationForm } from "../components/CreateCompanyUbicationForm";
+import { CreateCompanyLocationForm } from "../components/CreateCompanyLocationForm";
 import { Footer, Nav } from "../../ui/components";
 
-export const CreateCompanyUbicationPage = () => {
+export const CreateCompanyLocationPage = () => {
   const { companyId } = useParams();
 
   return (
     <>
       <Nav />
-      <CreateCompanyUbicationForm companyId={companyId} />
+      <CreateCompanyLocationForm companyId={companyId} />
       <Footer />
     </>
   );

@@ -63,7 +63,18 @@ export const getProfileById = async (id) => {
 export const updatePfpSvc = async (url, id) => {
     try {
         const updatedPfp = await Profile.update({ profilePic: url }, { where: { id } })
-        return updatedPfp
+        const profile = await Profile.findByPk(id)
+        return profile.profilePic
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
+export const updateBannerSvc = async (url, id) => {
+    try {
+        const updatedBanner = await Profile.update({ bannerPic: url }, { where: { id } })
+        return updatedBanner
     } catch (error) {
         console.log(error)
         throw error

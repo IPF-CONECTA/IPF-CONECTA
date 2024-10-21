@@ -169,7 +169,7 @@ export const PostCard = ({ post }) => {
                       {post.profile.names} {post.profile.surnames}
                     </span>
                     <span className={`text-muted ${styles.smallText}`}>
-                      @{post.profile.user.username}
+                      @{post.profile.user?.username}
                     </span>
                   </div>
 

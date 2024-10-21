@@ -7,20 +7,20 @@ export const Attachment = sequelize.define('attachment', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    attachmentType: {
-        type: DataTypes.ENUM('project', 'post', 'experience', 'education', 'company', 'certificate', 'profilePic', 'logo'),
-        allowNull: false
-    },
-    attachmentId: {
+    attachmentableId: {
         type: DataTypes.UUID,
         allowNull: false,
+    },
+    attachmentableType: {
+        type: DataTypes.ENUM('project', 'post', 'experience', 'education', 'company', 'certificate', 'profilePic', 'logo'),
+        allowNull: false
     },
     url: {
         type: DataTypes.STRING,
         allowNull: false
     },
     docType: {
-        type: DataTypes.ENUM('video', 'image', 'document'), // por ejemplo 'image' o 'video'
+        type: DataTypes.STRING, // por ejemplo 'image' o 'video'
         allowNull: false
     }
 });

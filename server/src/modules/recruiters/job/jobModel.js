@@ -16,7 +16,7 @@ export const Job = sequelize.define('job', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    ubicationId: {
+    locationId: {
         type: DataTypes.UUID,
         allowNull: true
     },

@@ -1,8 +1,8 @@
 import { Association } from "./associationModel.js";
 import { createCompany } from "../companies/companyServices.js";
 import { Company } from "../companies/companyModel.js";
-import { Country } from "../../ubications/models/countryModel.js";
-import { State } from "../../ubications/models/stateModel.js";
+import { Country } from "../../locations/models/countryModel.js";
+import { State } from "../../locations/models/stateModel.js";
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js";
 
 export const createAssociation = async (profileId, companyId, message) => {

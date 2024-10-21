@@ -36,7 +36,7 @@ export { MessagingPage } from "../modules/chat/pages/MessagingPage";
 //Recruiter pages:
 export { CompanyConfirmedPage } from "../modules/recruiter/pages/CompanyConfirmedPage";
 export { CreateCompanyPage } from "../modules/recruiter/pages/CreateCompanyPage";
-export { CreateCompanyUbicationPage } from "../modules/recruiter/pages/CreateCompanyUbicationPage";
+export { CreateCompanyLocationPage } from "../modules/recruiter/pages/CreateCompanyLocationPage";
 export { MessageRecruiterPage } from "../modules/recruiter/pages/MessageRecruiterPage";
 export { SelectCompanyPage } from "../modules/recruiter/pages/SelectCompanyPage";
 export { WaitingAssociationsApprovalPage } from "../modules/recruiter/pages/WaitingAssociationsApprovedPage";

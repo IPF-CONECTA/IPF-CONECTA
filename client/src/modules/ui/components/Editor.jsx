@@ -1,5 +1,6 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from "react";
 import Quill from "quill";
+import "quill/dist/quill.snow.css";
 
 const Editor = forwardRef(
   (

@@ -68,13 +68,13 @@ export const ProfileHover = ({
           @{profileInfo.profile.user.username}
         </span>
         <div className="d-flex">
-          <div className="pe-3">
-            <span className="fw-bold">{profileInfo.cantFollowers}</span>
-            <span className="text-muted"> Seguidores</span>
+          <div className="me-3 text-secondary">
+            <span>{profileInfo.cantFollowers}</span>
+            <span> Seguidores</span>
           </div>
-          <div>
-            <span className="fw-bold">{profileInfo.cantFollowing}</span>
-            <span className="text-muted"> Siguiendo</span>
+          <div className="text-secondary">
+            <span>{profileInfo.cantFollowing}</span>
+            <span> Siguiendo</span>
           </div>
         </div>
       </div>

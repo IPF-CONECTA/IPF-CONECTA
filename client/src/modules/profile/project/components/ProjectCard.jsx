@@ -95,7 +95,7 @@ const ProjectCard = ({ project }) => {
             </div>
 
             <SkillsList
-              skillsData={project.projectSkills}
+              skillsData={project?.skills}
               name={project.name}
               type="Proyecto"
             />

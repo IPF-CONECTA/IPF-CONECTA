@@ -6,7 +6,7 @@ import { authService } from "../../../auth/services/authService";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import { changePfp } from "../services/pfpServices";
 
-export const EditHeader = ({ profileData, setProfileData }) => {
+export const EditPfp = ({ profileData, setProfileData }) => {
   const noti = useNoti();
   const [profilePicPreview, setProfilePicPreview] = useState([
     profileData?.profile?.profilePic,
@@ -31,7 +31,7 @@ export const EditHeader = ({ profileData, setProfileData }) => {
     const res = await changePfp(file);
     if (res.status !== 201)
       return noti("Hubo un error al actualizar tu foto de perfil", "warning");
-
+    setProfileData({ ...profileData, profile: res.data });
     noti("Foto actualizada", "success");
   };
 

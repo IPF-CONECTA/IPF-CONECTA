@@ -1,6 +1,6 @@
 import { DataTypes, sequelize } from "../../../../config/db.js";
 
-export const CompanyUbication = sequelize.define("companyUbication", {
+export const CompanyLocation = sequelize.define("companyLocation", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,

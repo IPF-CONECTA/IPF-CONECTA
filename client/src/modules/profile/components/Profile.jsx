@@ -35,22 +35,23 @@ export const Profile = () => {
   };
   const fetchProjects = async () => {
     const res = await projectsService.getProjects(username);
+    console.log(res.data);
     if (res.status !== 200 && res.status !== 404) {
-      return noti("error?", "error");
+      return noti("Hubo un error al obtener los proyectos", "error");
     }
     setProjects(res.data);
   };
-  const fetchJobOffers = async (username) => {
+  const fetchJobOffers = async () => {
     const res = await jobsServices.getJobsByUsername(username);
     if (res.status !== 200) {
-      return noti("error?", "error");
+      return noti("Hubo un error al obtener los empleos", "error");
     }
     setJobOffers(res.data);
   };
   const fetchExperiences = async () => {
     const res = await getExperiences(username);
     if (res.status !== 200 && res.status !== 404) {
-      return noti("error", "error");
+      return noti("Hubo un error al obtener las experiencias", "error");
     }
     if (res.status === 200) {
       setExperiences(res.data);
@@ -60,10 +61,13 @@ export const Profile = () => {
   };
   const fetchSkills = async () => {
     const res = await getSkills(username);
+    console.log(res);
     if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error la obtener las habilidades");
     }
-
+    if (res.status == 404) {
+      return;
+    }
     setSkills(res.data);
   };
 
@@ -74,7 +78,7 @@ export const Profile = () => {
     fetchSkills();
 
     if (role === "recruiter") {
-      fetchJobOffers(username);
+      fetchJobOffers();
     }
   }, [username, role]);
 
@@ -91,7 +95,7 @@ export const Profile = () => {
           className={`w-100 d-flex justify-content-evenly px-5 pt-4 ${styles.mainContainer}`}
         >
           <div
-            className={`profile d-flex flex-column align-items-center border rounded-top mb-4 ${styles.profileContainer}`}
+            className={`profile d-flex flex-column align-items-center border rounded-top-4 mb-4 ${styles.profileContainer}`}
           >
             <Header profileData={profileData} setProfileData={setProfileData} />
             <Nav role={role} />
@@ -123,7 +127,7 @@ export const Profile = () => {
                 <JobOffers
                   own={profileData.own}
                   jobOffersData={jobOffers}
-                  username={profileData.profile.user.username}
+                  onJobSubmit={fetchJobOffers}
                 />
               )}
 

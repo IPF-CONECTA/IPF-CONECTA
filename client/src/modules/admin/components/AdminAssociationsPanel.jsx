@@ -251,7 +251,7 @@ export const AdminAssociationsPanel = () => {
                 <p>
                   <span className="fw-semibold">Sede principal: </span>
                   <span>
-                    {selectedAssociation.company.companyUbications[0].address}
+                    {selectedAssociation.company.companyLocations[0].address}
                   </span>
                 </p>
               </div>

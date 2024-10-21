@@ -31,7 +31,7 @@ export const SkillSearch = ({ prevSelectedSkills, onSkillSelect }) => {
       onInputChange={handleInputChange}
       options={options}
       value={prevSelectedSkills}
-      onChange={onSkillSelect}
+      onChange={(selected) => onSkillSelect(selected)}
       placeholder="Buscar habilidades..."
     />
   );

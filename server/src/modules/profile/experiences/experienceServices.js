@@ -1,5 +1,5 @@
 import { sequelize } from "../../../config/db.js";
-import { getAttachmentsSvc } from "../../attachment/attachmentServices.js";
+import { createAttachmentsSvc, getAttachmentsSvc } from "../../attachment/attachmentServices.js";
 import { Company } from "../../recruiters/companies/companyModel.js";
 import { Modality } from "../../recruiters/job/jobModalities/modalityModel.js";
 import { createSkillables, getSkillables } from "../../skills/skillable/skillableServices.js";
@@ -48,10 +48,10 @@ export const getExperiencesSvc = async (profileId) => {
     });
 
     experiences = await Promise.all(experiences.map(async (experience) => {
-      const skills = await getSkillables(experience.id, "experience")
+      const skills = await getSkillables(experience.id)
       const attachments = await getAttachmentsSvc(experience.id);
       experience.dataValues.attachments = attachments;
-      experience.dataValues.skill = skills
+      experience.dataValues.skills = skills
       return experience;
     }));
 
@@ -78,7 +78,7 @@ export const getExperiencesSvc = async (profileId) => {
 };
 
 
-export const createExperienceSvc = async (experience, profileId) => {
+export const createExperienceSvc = async (experience, profileId, files) => {
   const t = await sequelize.transaction()
   try {
 
@@ -94,7 +94,7 @@ export const createExperienceSvc = async (experience, profileId) => {
       description: experience.description,
       profileId,
     }, { transaction: t })
-
+    await createAttachmentsSvc(newExperience.id, files, "experience", t)
     await createSkillables(newExperience.id, experience.skills, "experience", t)
 
     await t.commit()

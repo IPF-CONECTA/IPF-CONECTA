@@ -33,6 +33,7 @@
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.1",
+    "react-image-crop": "^11.0.7",
     "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",

@@ -1,8 +1,8 @@
 // Controlador para vincular o desvincular una habilidad a un usuario
-import { getProfileById } from '../../profile/profileServices.js';
+import { getProfileById } from '../profileServices.js';
+import { createSkillable, deleteSkillable, getSkillableById, getSkillables } from '../../skills/skillable/skillableServices.js';
 import { getSkillByPk } from '../../skills/skillsServices.js';
-import { getProfileIdByUsername } from '../userServices.js';
-import { createSkillProfile, deleteSkillProfile, getSkillProfile, getSkillsProfile } from './skillProfileServices.js';
+import { getProfileIdByUsername } from '../../users/userServices.js';
 
 export const toggleSkill = async (req, res) => {
     const { skillId } = req.params;
@@ -19,13 +19,13 @@ export const toggleSkill = async (req, res) => {
             return res.status(404).json({ message: 'La habilidad no existe.' });
         }
 
-        const existingSkillProfile = await getSkillProfile(id, skillId)
+        const existingSkillProfile = await getSkillableById(id)
         if (existingSkillProfile) {
-            await deleteSkillProfile(id, skillId)
+            await deleteSkillable(skillId, id)
             return res.status(200).json()
         }
 
-        await createSkillProfile(id, skillId)
+        await createSkillable(skillId, id, "profile")
         res.status(201).json();
     } catch (error) {
         res.status(500).json({ message: 'Error al vincular habilidad', error: error.message });
@@ -39,8 +39,8 @@ export const getProfileSkills = async (req, res) => {
 
     try {
         const profileId = await getProfileIdByUsername(username)
-        const skillsProfile = await getSkillsProfile(profileId)
-        if (!skillsProfile || skillsProfile.length === 0) {
+        const skillsProfile = await getSkillables(profileId)
+        if (skillsProfile.length === 0) {
             return res.status(404).json();
         }
         res.status(200).json(skillsProfile);

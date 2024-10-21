@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import { BASE_URL } from "../../../../constants/BASE_URL";
-import { getFullDate } from "../../../../helpers/getTime";
+import { getFullDate, getTime } from "../../../../helpers/getTime";
 import { jobsServices } from "../services/jobsServices";
 import {
   Dialog,
@@ -11,8 +11,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNoti } from "../../../../hooks/useNoti";
+import styles from "../../../../../public/css/jobProfileCard.module.css";
 
-export const JobOfferCard = ({ jobOffer, description, own }) => {
+export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
   const noti = useNoti();
   const [open, setOpen] = useState(false);
 
@@ -41,61 +42,76 @@ export const JobOfferCard = ({ jobOffer, description, own }) => {
   };
 
   return (
-    <div>
-      <div className="p-5">
-        <div className="card">
-          <div className="card-header d-flex justify-content-between w-100">
-            <div>
-              <h5>{jobOffer.company.name}</h5>
+    <div className="d-flex justify-content-between w-100 py-2">
+      <div className="d-flex">
+        <img
+          src={`${BASE_URL}/logoUrl/${jobOffer.company.logoUrl}`}
+          crossOrigin="anonymous"
+          height={45}
+          className="me-2"
+        />
+        <div className="d-flex flex-column">
+          <div className="d-flex gap-3">
+            <span className="fw-semibold">{jobOffer.title}</span>
+            <span
+              className={`d-flex align-items-center text-secondary ${styles.smallText}`}
+            >
+              {getFullDate(jobOffer.createdAt)}
+            </span>
+          </div>
 
-              <img
-                src={`${BASE_URL}/logoUrl/${jobOffer.company.logoUrl}`}
-                crossOrigin="anonymous"
-                height={50}
-              />
-            </div>
-            {own && (
-              <>
-                <button className="btn" onClick={handleClickOpen}>
-                  <span className="material-symbols-outlined fs-3">delete</span>
-                </button>
-                <Dialog
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Eliminar oferta"}
-                  </DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      ¿Estás seguro de que deseas eliminar esta oferta?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <button onClick={handleClose} color="primary">
-                      Cancelar
-                    </button>
-                    <button onClick={handleDelete} color="primary" autoFocus>
-                      Eliminar
-                    </button>
-                  </DialogActions>
-                </Dialog>
-              </>
-            )}
-          </div>
-          <div className="card-body">
-            <h5 className="card-title">{jobOffer.title}</h5>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(shortdescription),
-              }}
-            ></div>
-            <p className="card-text">{getFullDate(jobOffer.createdAt)}</p>
-          </div>
+          <span className={`${styles.smallText} text-secondary`}>
+            {jobOffer.company.name}
+          </span>
+          <div
+            className={` ${styles.smallText}`}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(shortdescription),
+            }}
+          ></div>
         </div>
       </div>
+      {own && edit && (
+        <>
+          <button className="btn" onClick={handleClickOpen}>
+            <span className="material-symbols-outlined text-dark-emphasis">
+              edit
+            </span>
+          </button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Eliminar oferta"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                ¿Estás seguro de que deseas eliminar esta oferta?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <button
+                className="btn btn-outline-warning"
+                onClick={handleClose}
+                color="primary"
+              >
+                Cancelar
+              </button>
+              <button
+                className="btn btn-outline-danger"
+                onClick={handleDelete}
+                color="primary"
+                autoFocus
+              >
+                Eliminar
+              </button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 };

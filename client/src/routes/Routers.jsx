@@ -7,7 +7,7 @@ import {
   AdminDashboardPage,
   CompanyConfirmedPage,
   CreateCompanyPage,
-  CreateCompanyUbicationPage,
+  CreateCompanyLocationPage,
   CreateProjectPage,
   FeedPage,
   HomePage,
@@ -85,7 +85,7 @@ export const Routers = () => {
           <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
           <Route
             path="/crear-sede/:companyId"
-            element={<CreateCompanyUbicationPage />}
+            element={<CreateCompanyLocationPage />}
           />
 
           <Route

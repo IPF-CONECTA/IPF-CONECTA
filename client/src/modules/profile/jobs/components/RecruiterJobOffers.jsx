@@ -32,12 +32,10 @@ export default function RecruiterJobOffers({ username, own }) {
 
   return (
     <div>
-      <h3 className="text-center fw-semibold p-5">
-        {profileData?.own ? "Tus ofertas publicadas" : `Ofertas de ${username}`}
-      </h3>
+      <span className=" fs-5 fw-bold">Empleos</span>
       <div className="row">
         {jobOffers?.map((jobOffer) => (
-          <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={jobOffer.id}>
+          <div className="col-lg-4 col-md-6 col-sm-12 mb-2" key={jobOffer.id}>
             <JobOfferCard
               jobOffer={jobOffer}
               description={jobOffer.description}

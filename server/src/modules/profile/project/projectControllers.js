@@ -1,9 +1,7 @@
-import { addAttachmentSvc } from "../../attachment/attachmentServices.js";
-import { getProfileIdByUsername } from "../userServices.js";
+import { getProfileIdByUsername } from "../../users/userServices.js";
 import {
   createProjectSvc,
   getProjectByIdSvc,
-  getProjectsByProfileIdSvc,
   updateProjectSvc,
   deleteProjectSvc,
   getProjectsSvc,
@@ -14,18 +12,7 @@ export const createProjectCtrl = async (req, res) => {
     const { id } = req.user.profile;
     const { project } = req.body;
     if (!project) return res.status(400).json({ message: "Faltan datos por completar" });
-    const newProject = await createProjectSvc(project, id);
-    if (req.files && req.files.length > 0) {
-      const attachments = req.files.map(file => ({
-        attachmentId: newProject.id,
-        url: file.filename,
-        docType: 'image'
-      }))
-
-      for (const attachment of attachments) {
-        await addAttachmentSvc(attachment, 'project')
-      }
-    }
+    const newProject = await createProjectSvc(project, id, req.files && req.files.length > 0 && req.files);
     res.status(201).json(newProject);
   } catch (error) {
     console.log(error)

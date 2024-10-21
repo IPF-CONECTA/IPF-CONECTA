@@ -1,46 +1,70 @@
 import { Link, useNavigate } from "react-router-dom";
 import { JobOfferCard } from "./JobOfferCard";
+import { useEffect, useState } from "react";
+import { CreateJobForm } from "./CreateJobForm";
 
-export const JobOffers = ({ jobOffersData, own, username }) => {
+export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
+  const [jobs, setJobs] = useState([]);
+  useEffect(() => {
+    setJobs(jobOffersData?.slice(0, 3));
+  }, jobOffersData);
   const navigate = useNavigate();
-
+  const [openModal, setOpenModal] = useState(false);
   return (
-    <div className="p-4">
-      <div className="d-flex justify-content-between w-100 mb-2">
-        <span className="fs-5 fw-bold">
-          {own ? "Tus ofertas de trabajo" : `Ofertas de ${username}`}
-        </span>
-        {own && (
-          <button
-            onClick={() => navigate("/nuevo-empleo")}
-            className="btn d-flex p-0 align-items-center me-3 "
-          >
-            <span className="text-end material-symbols-outlined text-dark-emphasis">
-              add
-            </span>
-          </button>
-        )}
-      </div>
-      <div className="d-flex flex-column">
-        {jobOffersData?.slice(0, 3).map((jobOfferdata) => {
-          return (
-            <JobOfferCard
-              key={jobOfferdata.id}
-              jobOffer={jobOfferdata}
-              description={jobOfferdata.description}
-              own={own}
-            />
-          );
-        })}
+    <div className="border-bottom">
+      <div className="p-4">
+        <div className="d-flex justify-content-between w-100 mb-2">
+          <span className="fw-bold fs-5">Empleos</span>
+          {own && (
+            <div className="d-flex">
+              <button
+                onClick={() => setOpenModal(true)}
+                className="btn d-flex p-0 align-items-center me-3 "
+              >
+                <span className="text-end material-symbols-outlined text-dark-emphasis">
+                  add
+                </span>
+              </button>
+              <CreateJobForm
+                onJobSubmit={onJobSubmit}
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+              />
+              <button
+                className="btn d-flex p-0 align-items-center"
+                onClick={() => navigate("empleos")}
+              >
+                <span className="material-symbols-outlined text-dark-emphasis">
+                  edit
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="d-flex flex-column">
+          {jobOffersData.slice(0, 3).map((job, index) => {
+            return (
+              <div key={index}>
+                <JobOfferCard
+                  jobOffer={job}
+                  description={job.description}
+                  own={own}
+                />
+                {index !== jobOffersData.slice(0, 3).length - 1 && (
+                  <hr className="text-secondary" />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
       {jobOffersData?.length > 3 && (
-        <div className="d-flex justify-content-center p-2">
-          <Link to={`/perfil/${username}/empleos`}>
-            <span className="btn btn-outline-dark">
-              {own
-                ? "Ver todas tus ofertas publicadas"
-                : `ver todas las ofertas de ${username}`}
-            </span>
+        <div className="d-flex justify-content-center py-2 border-top">
+          <Link
+            className="fw-semibold text-body-tertiary text-decoration-none"
+            to={`empleos`}
+          >
+            <span>Ver todos los empleos ({jobOffersData.length})</span>
           </Link>
         </div>
       )}

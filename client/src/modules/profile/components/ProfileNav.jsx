@@ -81,5 +81,3 @@ export const Nav = ({ role }) => {
     </div>
   );
 };
-
-export default Nav;
