@@ -244,11 +244,8 @@ export const CreateProjectForm = ({
         <div className="mb-2">
           {images.length > 0 &&
             images.map((image, index) => (
-              <React.Fragment>
-                <div
-                  key={index}
-                  className="d-flex align-items-start justify-content-between align-items-center me-2"
-                >
+              <React.Fragment key={index}>
+                <div className="d-flex align-items-start justify-content-between align-items-center me-2">
                   <div>
                     <img
                       height={60}

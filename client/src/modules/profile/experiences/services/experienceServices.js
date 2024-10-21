@@ -2,21 +2,21 @@ import axios from "axios"
 import { authService } from "../../../auth/services/authService"
 
 export const createExperience = async (experience, skills, username) => {
-    console.log(experience)
+    console.log(experience.company)
     try {
 
         const formData = new FormData()
         formData.append("title", experience.title)
         formData.append("description", experience.description)
-        formData.append("companyId", experience.company.value)
+        formData.append("companyId", experience.company)
         formData.append("contractTypeId", experience.contractType.value)
         formData.append("modalityId", experience.modality.value)
-        formData.append("ubicationId", experience.location.value)
-        formData.append("ubicationType", experience.location.type)
+        formData.append("locationId", experience.location.value)
+        formData.append("locationType", experience.location.type)
         formData.append("startDate", `${experience.startDateMonth}/01/${experience.startDateYear}`)
         formData.append("endDate", experience.endDateMonth !== "null" ? `${experience.endDateMonth}/01/${experience.endDateYear}` : null)
 
-        if (experience.images.length > 0) {
+        if (experience.images?.length > 0) {
             experience.images.forEach((image) => {
                 formData.append("images", image);
             });
@@ -53,8 +53,8 @@ export const updateExperience = async (experience, skills, username, experienceI
         companyId: experience.company.value,
         contractTypeId: experience.contractType.value,
         modalityId: experience.modality.value,
-        ubicationId: experience.location.value,
-        ubicationType: experience.location.type,
+        locationId: experience.location.value,
+        locationType: experience.location.type,
         startDate: `01/${experience.startDateMonth}/${experience.startDateYear}`,
         endDate: experience.endDateMonth !== "null" ? `01/${experience.endDateMonth}/${experience.endDateYear}` : null,
         skills: skills,

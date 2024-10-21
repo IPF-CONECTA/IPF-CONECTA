@@ -21,19 +21,22 @@ export const AddSkillForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await Promise.all(
-        selectedSkills.map((skillId) =>
-          axios.post(
-            `http://localhost:4000/skillProfile/${skillId}`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${authService.getToken()}`,
-              },
-            }
+      console.log(
+        await Promise.all(
+          selectedSkills.map((skillId) =>
+            axios.post(
+              `http://localhost:4000/skillProfile/${skillId}`,
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${authService.getToken()}`,
+                },
+              }
+            )
           )
         )
       );
+
       if (selectedSkills.length > 1) {
         noti("Habilidades agregadas exitosamente", "success");
       } else {

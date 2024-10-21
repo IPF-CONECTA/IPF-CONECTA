@@ -1,5 +1,5 @@
-import { addAttachmentSvc } from "../../attachment/attachmentServices.js";
-import { getProfileIdByUsername } from "../userServices.js";
+import { createAttachmentsSvc } from "../../attachment/attachmentServices.js";
+import { getProfileIdByUsername } from "../../users/userServices.js";
 import { createExperienceSvc, getExperiencesSvc } from "./experienceServices.js";
 
 export const getExperiencesByProfile = async (req, res) => {
@@ -23,31 +23,17 @@ export const createExperience = async (req, res) => {
     const { id } = req.user.profile;
     const { username } = req.params;
     try {
-        console.log(req.body)
-        console.log(req.files)
         const reqProfileId = await getProfileIdByUsername(username)
         if (!id && !reqProfileId) {
             return res.status(400).json()
         } else if (id !== reqProfileId) {
             return res.status(401).json()
         }
-
-        const newExperience = await createExperienceSvc(req.body, id);
-        if (req.files && req.files.length > 0) {
-            const attachments = req.files.map(file => ({
-                attachmentId: newExperience.id,
-                url: file.filename,
-                docType: 'image'
-            }))
-
-            for (const attachment of attachments) {
-                await addAttachmentSvc(attachment, 'experience')
-            }
-        }
+        const newExperience = await createExperienceSvc(req.body, id, req.files);
+        if (!newExperience) return res.status(400).json()
 
         res.status(201).json()
     } catch (error) {
-        console.log(error)
         res.status(500).json()
     }
 }

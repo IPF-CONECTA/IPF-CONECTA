@@ -1,25 +1,25 @@
 import { Dialog } from "@mui/material";
 import React, { useState } from "react";
 export const SkillsList = ({ skillsData, name, type }) => {
-  const [skills, setSkills] = useState(skillsData.slice(0, 3));
+  const [skills, setSkills] = useState(skillsData?.slice(0, 3));
   const [showAllSkills, setShowAllSkills] = useState(false);
   return (
     <div className="d-flex align-items-center">
       <span className="material-symbols-outlined fw-lighter">grade</span>
       <ul style={{ fontSize: "0.8rem" }} className={`fw-semibold p-0 m-0`}>
-        {skills.map((skill, index) => (
+        {skills?.map((skill, index) => (
           <li key={skill.skillId} className="d-inline me-2">
             <span>{skill.skill.name}</span>
             {index !== skills.length - 1 && ","}
           </li>
         ))}
-        {skillsData.length > 3 && (
+        {skillsData?.length > 3 && (
           <li
             className="d-inline me-2 fw-semibold"
             style={{ cursor: "pointer" }}
             onClick={() => setShowAllSkills(true)}
           >
-            y {skillsData.length - 3} más...
+            y {skillsData?.length - 3} más...
           </li>
         )}
         <Dialog

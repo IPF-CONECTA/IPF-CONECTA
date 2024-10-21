@@ -14,10 +14,10 @@ import { Modality } from "./jobModalities/modalityModel.js";
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js";
 import { Profile } from "../../profile/profileModel.js";
 import { JobPostulation } from "./jobPostulation/jobPostulationModel.js";
-import { CompanyUbication } from "../companies/companyUbication/companyUbicationModel.js";
-import { Country } from "../../ubications/models/countryModel.js";
-import { City } from "../../ubications/models/cityModel.js";
-import { State } from "../../ubications/models/stateModel.js";
+import { CompanyLocation } from "../companies/companyLocation/companyLocationModel.js";
+import { Country } from "../../locations/models/countryModel.js";
+import { City } from "../../locations/models/cityModel.js";
+import { State } from "../../locations/models/stateModel.js";
 
 export const createNewJobSvc = async (jobOffer, profileId) => {
   try {
@@ -73,8 +73,8 @@ export const getJobsSvc = async () => {
         },
       ],
     });
-    const jobsWithUbication = await getAllLocations(jobs);
-    return jobsWithUbication;
+    const jobsWithLocation = await getAllLocations(jobs);
+    return jobsWithLocation;
   } catch (error) {
     throw new Error(error);
   }
@@ -94,7 +94,7 @@ export const getJobByIdSvc = async (id, profileId) => {
               attributes: ["name"],
             },
             {
-              model: CompanyUbication,
+              model: CompanyLocation,
               include: [{
                 model: Country
               },

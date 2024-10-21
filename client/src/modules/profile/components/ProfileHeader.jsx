@@ -36,11 +36,11 @@ export const Header = ({ profileData, setProfileData }) => {
   };
   return (
     <header className={`w-100 position-relative ${styles.header}`}>
-      <div className="w-100 h-100 rounded-top position-relative d-flex flex-column justify-content-between align-items-end">
+      <div className="w-100 h-100 rounded-top-4 position-relative d-flex flex-column justify-content-between align-items-end">
         <img
           src="/img/banner.jpg"
           alt="foto de banner"
-          className="w-100 rounded-top"
+          className="w-100 rounded-top-4"
         />
         <div
           className={`me-3 d-flex align-items-start px-5 justify-content-between position-absolute`}

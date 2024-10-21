@@ -168,8 +168,8 @@ export const Chat = () => {
                     }}
                     className={`${
                       msg.sender.user.username === authState.user?.username
-                        ? "text-end bg-body-secondary text-black rounded p-2  "
-                        : "text-start bg-body-secondary text-black rounded p-2"
+                        ? "bg-body-secondary text-black rounded p-2  "
+                        : "bg-body-secondary text-black rounded p-2"
                     }`}
                   >
                     <span className="fs-6 text-break">{msg.message}</span>{" "}

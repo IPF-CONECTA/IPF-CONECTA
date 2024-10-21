@@ -2,9 +2,9 @@ import React from "react";
 import styles from "../../../../../public/css/editProfile.module.css";
 export const PersonalDetails = () => {
   return (
-    <main>
-      <h1>Editar información básica</h1>
-      <form className="d-flex">
+    <main className="w-75 mt-5">
+      <h1 className="mt-2">Editar información básica</h1>
+      <form className="d-flex" style={{ maxWidth: "none" }}>
         <div>
           <div>
             <label htmlFor="name">Nombre</label>

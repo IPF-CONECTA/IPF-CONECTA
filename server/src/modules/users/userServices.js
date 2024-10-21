@@ -10,7 +10,7 @@ import { Role } from "../roles/roleModel.js";
 import { Association } from "../recruiters/associations/associationModel.js";
 import { Company } from "../recruiters/companies/companyModel.js";
 import { CompanyIndustry } from "../recruiters/companies/companyIndustry/companyIndustryModel.js";
-import { LangsUser } from "./langs_user/langsUserModel.js";
+import { LangsUser } from "../profile/langs_user/langsUserModel.js";
 import { Lang } from "../langs/langModel.js";
 import { LangLevel } from "../langs/langLevelsModel.js";
 import { Post } from "../posts/postModel.js";

@@ -3,7 +3,7 @@ import { Profile } from "../../../profile/profileModel.js"
 import { Association } from "../../../recruiters/associations/associationModel.js"
 import { CompanyIndustry } from "../../../recruiters/companies/companyIndustry/companyIndustryModel.js"
 import { Company } from "../../../recruiters/companies/companyModel.js"
-import { Country } from "../../../ubications/models/countryModel.js"
+import { Country } from "../../../locations/models/countryModel.js"
 import { User } from "../../../users/userModel.js"
 
 

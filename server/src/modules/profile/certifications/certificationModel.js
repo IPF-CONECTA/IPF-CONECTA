@@ -1,4 +1,4 @@
-import { sequelize, DataTypes } from "../../../config/db";
+import { sequelize, DataTypes } from "../../../config/db.js";
 
 export const Certification = sequelize.define('certification', {
     id: {

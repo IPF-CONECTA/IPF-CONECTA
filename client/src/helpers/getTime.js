@@ -51,12 +51,19 @@ export const getTimeQuantity = (startDate, endDate) => {
     let years = diff.years;
     let months = diff.months;
     let result = '';
-    if (years > 0) {
-        result += years + ' años';
-    }
-    if (months > 0) {
-        result += ' y ' + months + ' meses';
-    }
 
+    switch (true) {
+        case years > 0 && months > 0:
+            result = years + ' años y ' + months + ' meses';
+            break;
+        case years > 0:
+            result = years + ' años';
+            break;
+        case months > 0:
+            result = months + ' meses';
+            break;
+        default:
+            result = 'menos de un mes';
+    }
     return result;
-}
+}   

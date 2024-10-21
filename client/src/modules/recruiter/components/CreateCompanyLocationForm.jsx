@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 
-export const CreateCompanyUbicationForm = ({ companyId }) => {
+export const CreateCompanyLocationForm = ({ companyId }) => {
   const navigate = useNavigate();
   const noti = useNoti();
 
@@ -77,9 +77,9 @@ export const CreateCompanyUbicationForm = ({ companyId }) => {
 
     axios
       .post(
-        "http://localhost:4000/create-company-ubication",
+        "http://localhost:4000/create-company-location",
         {
-          companyUbication: {
+          companyLocation: {
             companyId: companyId,
             countryId: selectedCountry,
             stateId: selectedState !== "" ? selectedState : null,

@@ -99,14 +99,14 @@ export const AboutCard = ({ own, aboutData, username }) => {
                   </span>
                 </div>
               )
+            ) : about !== null ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: about?.replace(/\n/g, "<br />"),
+                }}
+              ></div>
             ) : (
-              (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: about?.replace(/\n/g, "<br />"),
-                  }}
-                ></div>
-              ) || "Sin descripción"
+              <span className="text-secondary">Sin descripción</span>
             )}
           </div>
         </>

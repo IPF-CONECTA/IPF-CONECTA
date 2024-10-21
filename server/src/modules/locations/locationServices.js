@@ -3,7 +3,7 @@ import { City } from "./models/cityModel.js";
 import { State } from "./models/stateModel.js";
 import { Country } from "./models/countryModel.js";
 
-export const findUbicationSvc = async (query) => {
+export const findLocationSvc = async (query) => {
   try {
     const countries = await Country.findAll({
       where: {

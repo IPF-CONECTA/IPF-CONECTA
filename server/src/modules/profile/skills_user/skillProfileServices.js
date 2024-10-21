@@ -1,11 +1,9 @@
-import { Profile } from "../../profile/profileModel.js"
+import { Skillable } from "../../skills/skillable/skillableModel.js"
 import { Skill } from "../../skills/skillsModel.js"
-import { User } from "../userModel.js"
-import { SkillsProfile } from "./skillProfileModel.js"
 
 export const getSkillProfile = async (profileId, skillId) => {
     try {
-        return await SkillsProfile.findOne({ where: { profileId, skillId } })
+        return await Skillable.findOne({ where: { skillableId: profileId, skillId, skillableType: "profile" } })
     } catch (error) {
         throw error
     }
@@ -13,8 +11,8 @@ export const getSkillProfile = async (profileId, skillId) => {
 
 export const getSkillsProfile = async (profileId) => {
     try {
-        return await SkillsProfile.findAll({
-            where: { profileId },
+        return await Skillable.findAll({
+            where: { skillableId: profileId, skillableType: "profile" },
             include: [
                 {
                     model: Skill,
@@ -29,7 +27,7 @@ export const getSkillsProfile = async (profileId) => {
 
 export const createSkillProfile = async (profileId, skillId) => {
     try {
-        return await SkillsProfile.create({ profileId, skillId })
+        return await Skillable.create({ skillableId: profileId, skillId, skillableType: "profile" })
     } catch (error) {
         throw error
     }
@@ -37,7 +35,7 @@ export const createSkillProfile = async (profileId, skillId) => {
 
 export const deleteSkillProfile = async (profileId, skillId) => {
     try {
-        return await SkillsProfile.destroy({ where: { profileId, skillId } })
+        return await Skillable.destroy({ where: { skillableId: profileId, skillId, skillableType: "profile" } })
     } catch (error) {
         throw error
     }

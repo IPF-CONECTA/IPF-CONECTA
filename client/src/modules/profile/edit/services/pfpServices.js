@@ -13,7 +13,7 @@ export const changePfp = async (file) => {
             { headers: { Authorization: `Bearer ${authService.getToken()}` } }
         );
         console.log(res)
-        return { status: res.status }
+        return { data: res.data, status: res.status }
     } catch (error) {
         console.log(error)
         return { status: error.status }

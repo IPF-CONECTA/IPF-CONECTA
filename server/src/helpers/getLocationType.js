@@ -1,6 +1,6 @@
-import { City } from "../modules/ubications/models/cityModel.js"
-import { Country } from "../modules/ubications/models/countryModel.js"
-import { State } from "../modules/ubications/models/stateModel.js"
+import { City } from "../modules/locations/models/cityModel.js"
+import { Country } from "../modules/locations/models/countryModel.js"
+import { State } from "../modules/locations/models/stateModel.js"
 
 export const getLocationType = async (id, name) => {
     try {
