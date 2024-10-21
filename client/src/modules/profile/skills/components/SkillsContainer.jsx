@@ -12,7 +12,7 @@ export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
     setSkills(skillsData);
   }, [skillsData]);
   return (
-    <div className="bg-body-tertiary">
+    <div className="bg-body-tertiary" id="habilidades">
       <div className="d-flex flex-column p-4">
         <div className="d-flex justify-content-between mb-2">
           <span className="fs-5 fw-bold">Habilidades</span>
