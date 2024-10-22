@@ -12,7 +12,6 @@ export const ExperienceCard = ({
   onExperienceSubmit,
   username,
 }) => {
-  console.log(experience);
   const [showDescription, setShowDescription] = useState(false);
   const [skills, setSkills] = useState([]);
   const [showAllSkills, setShowAllSkills] = useState(false);
@@ -25,13 +24,9 @@ export const ExperienceCard = ({
     setOpenImage([true, index]);
   };
   const handleEditClick = (experience) => {
-    console.log(experience);
     setExperienceToEdit(experience);
     setIsModalOpen(true);
   };
-  useEffect(() => {
-    console.log(skills);
-  }, [skills]);
 
   useEffect(() => {
     const skills = experience.skills?.slice(0, 3);

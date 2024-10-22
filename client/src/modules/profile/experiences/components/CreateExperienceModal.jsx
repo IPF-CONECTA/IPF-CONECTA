@@ -83,7 +83,6 @@ export const CreateExperienceModal = ({
   };
 
   useEffect(() => {
-    console.log(experience);
     const setData = async () => {
       if (experience) {
         const companyData = await findCompanies(experience.company?.name);

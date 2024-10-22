@@ -2,7 +2,6 @@ import axios from "axios"
 import { authService } from "../../../auth/services/authService"
 
 export const createExperience = async (experience, skills, username) => {
-    console.log(experience.company)
     try {
 
         const formData = new FormData()

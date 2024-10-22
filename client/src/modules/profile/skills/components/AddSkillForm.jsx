@@ -21,18 +21,16 @@ export const AddSkillForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(
-        await Promise.all(
-          selectedSkills.map((skillId) =>
-            axios.post(
-              `http://localhost:4000/skillProfile/${skillId}`,
-              {},
-              {
-                headers: {
-                  Authorization: `Bearer ${authService.getToken()}`,
-                },
-              }
-            )
+      await Promise.all(
+        selectedSkills.map((skillId) =>
+          axios.post(
+            `http://localhost:4000/skillProfile/${skillId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${authService.getToken()}`,
+              },
+            }
           )
         )
       );
