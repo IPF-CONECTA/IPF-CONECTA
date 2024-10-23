@@ -18,7 +18,7 @@ export const ExperienceContainer = ({
 
   return (
     <>
-      <div className="about bg-body-tertiary w-100">
+      <div className="about bg-body-tertiary w-100" id="experiencias">
         <div className="p-4">
           <div className="d-flex justify-content-between mb-2">
             <span className="fw-bold fs-5">Experiencias</span>
