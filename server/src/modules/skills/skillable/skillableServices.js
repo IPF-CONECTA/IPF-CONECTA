@@ -1,20 +1,56 @@
+import { Op } from "sequelize"
 import { Skill } from "../skillsModel.js"
 import { Skillable } from "./skillableModel.js"
+import { getExperienceInfoByIdSvc } from "../../profile/experiences/experienceServices.js"
+import { getProjectInfoByIdSvc } from "../../profile/project/projectService.js"
 
 export const getSkillables = async (skillableId) => {
     try {
-        const skills = await Skillable.findAll({
+        let skills = await Skillable.findAll({
             where: { skillableId }, attributes: ["skillId"], include: [{
                 model: Skill,
                 attributes: ["name"],
                 as: "skill"
+
             }],
         })
-        return skills
+        return skills.map(skill => {
+            return { id: skill.skillId, name: skill.skill.name }
+        })
     } catch (error) {
         throw error
     }
 }
+export const getSkillablesByIds = async (ids) => {
+    try {
+        const skills = await Skillable.findAll({
+            where: { skillableId: { [Op.in]: ids } }, include: [{
+                model: Skill,
+                attributes: ["name"],
+                as: "skill"
+
+            }],
+        })
+        const coso = {};
+        for (const skill of skills) {
+            if (!coso[skill.skill.name]) {
+                coso[skill.skill.name] = { id: skill.skillId, items: [] };
+            }
+            const data = skill.skillableType === "experience"
+                ? await getExperienceInfoByIdSvc(skill.skillableId)
+                : skill.skillableType === "project"
+                    ? await getProjectInfoByIdSvc(skill.skillableId)
+                    : null;
+            coso[skill.skill.name].items.push({ id: skill.skillableId, type: skill.skillableType, data });
+        }
+
+        return Object.entries(coso).map(([skillName, skillData]) => [skillName, skillData.items, skillData.id]);
+
+    } catch (error) {
+        throw error
+    }
+}
+
 export const getSkillableById = async (skillableId, skillId) => {
     try {
         return await Skillable.findOne({ where: { skillableId, skillId } })
@@ -23,14 +59,11 @@ export const getSkillableById = async (skillableId, skillId) => {
     }
 }
 export const createSkillables = async (skillableId, skills, skillableType, t) => {
-    console.log(skills)
     try {
         if (!Array.isArray(skills)) {
-            console.log('retorna aca')
             return Skillable.create({ skillId: skills, skillableId, skillableType }, { transaction: t })
         }
         if (skills.length > 0) {
-            console.log('retorna aca 2')
             await Promise.all(skills.map(skill =>
                 Skillable.create({ skillId: skill, skillableId, skillableType }, { transaction: t })
             ));
@@ -48,7 +81,7 @@ export const createSkillable = async (skillId, skillableId, skillableType) => {
     }
 }
 
-export const deleteSkillable = async (skillId, skillableId) => {
+export const deleteSkillable = async (skillableId, skillId) => {
     try {
         return Skillable.destroy({ where: { skillId, skillableId } })
     } catch (error) {

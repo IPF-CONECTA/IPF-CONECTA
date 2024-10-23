@@ -3,6 +3,7 @@ import { getProfileById } from '../profileServices.js';
 import { createSkillable, deleteSkillable, getSkillableById, getSkillables } from '../../skills/skillable/skillableServices.js';
 import { getSkillByPk } from '../../skills/skillsServices.js';
 import { getProfileIdByUsername } from '../../users/userServices.js';
+import { getSkillsProfile } from './skillProfileServices.js';
 
 export const toggleSkill = async (req, res) => {
     const { skillId } = req.params;
@@ -28,6 +29,7 @@ export const toggleSkill = async (req, res) => {
         await createSkillable(skillId, id, "profile")
         res.status(201).json();
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Error al vincular habilidad', error: error.message });
     }
 };
@@ -39,7 +41,7 @@ export const getProfileSkills = async (req, res) => {
 
     try {
         const profileId = await getProfileIdByUsername(username)
-        const skillsProfile = await getSkillables(profileId)
+        const skillsProfile = await getSkillsProfile(profileId)
         if (skillsProfile.length === 0) {
             return res.status(404).json();
         }

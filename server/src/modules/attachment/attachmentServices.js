@@ -2,11 +2,9 @@ import { Attachment } from "./attachmentModel.js";
 
 
 export const createAttachmentsSvc = async (attachmentableId, attachments, attachmentableType, t) => {
-    console.log(attachments)
     try {
         if (attachments.length > 0) {
             await Promise.all(attachments.map(attachment => {
-                console.log('createAttachmentsSvc', { attachmentableId, attachmentableType, attachment })
                 return Attachment.create({ attachmentableId, attachmentableType, url: attachment.filename, docType: attachment.mimetype }, { transaction: t })
             }));
         }

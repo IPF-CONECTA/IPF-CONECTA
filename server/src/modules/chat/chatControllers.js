@@ -6,7 +6,6 @@ export const getChatIdCtrl = async (req, res) => {
     const { id: profile1Id } = req.user.profile;
 
     const { username } = req.params;
-    console.log(username);
     const profile2Id = await getProfileIdByUsername(username);
 
     const chatId = await getChatIdSvc(profile1Id, profile2Id);

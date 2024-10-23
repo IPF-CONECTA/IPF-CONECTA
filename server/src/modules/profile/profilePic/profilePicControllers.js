@@ -4,7 +4,6 @@ import { updateBannerSvc, updatePfpSvc } from "../profileServices.js";
 export const updateProfilePicCtrl = async (req, res) => {
     const { id } = req.user.profile
     try {
-        console.log(req.file)
         if (!req.file) return res.status(404).json()
         const image = await resizeImage(req.file.filename, "images", 200, 200)
         const updatedPfp = await updatePfpSvc(image, id)

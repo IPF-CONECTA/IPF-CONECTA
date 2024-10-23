@@ -13,7 +13,7 @@ export const createExperience = async (experience, skills, username) => {
         formData.append("locationId", experience.location.value)
         formData.append("locationType", experience.location.type)
         formData.append("startDate", `${experience.startDateMonth}/01/${experience.startDateYear}`)
-        formData.append("endDate", experience.endDateMonth !== "null" ? `${experience.endDateMonth}/01/${experience.endDateYear}` : null)
+        formData.append("endDate", experience.endDateMonth !== "" ? `${experience.endDateMonth}/01/${experience.endDateYear}` : null)
 
         if (experience.images?.length > 0) {
             experience.images.forEach((image) => {

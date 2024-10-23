@@ -9,7 +9,6 @@ export const findLocationCtrl = async (req, res) => {
   let { query } = req.query;
   if (!query) query = ''
   try {
-    console.log(query)
     const results = await findLocationSvc(query);
     if (results.length < 1) throw new Error("No se encontraron coincidencias");
     res.status(200).json(results);

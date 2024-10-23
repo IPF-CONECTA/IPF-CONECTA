@@ -7,7 +7,7 @@ export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
   const [jobs, setJobs] = useState([]);
   useEffect(() => {
     setJobs(jobOffersData?.slice(0, 3));
-  }, jobOffersData);
+  }, [jobOffersData]);
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   return (

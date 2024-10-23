@@ -52,7 +52,6 @@ export const associateNewCompanyCtrl = async (req, res) => {
       return res.status(400).json({ message: "Faltan datos requeridos" });
     }
     const logoUrl = req.file ? await resizeImage(req.file.filename, "logoUrls", 200, 200) : null;
-    console.log(logoUrl)
     const association = await associateNewCompanySvc(message, id, {
       ...company,
       logoUrl,

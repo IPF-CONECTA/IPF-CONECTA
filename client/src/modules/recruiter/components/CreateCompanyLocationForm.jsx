@@ -116,7 +116,8 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
             <span className="fs-2 fw-semibold mb-2">Registrar sede</span>
           </div>
           <span className="text-secondary">
-            * significa que es un campo obligatorio
+            <span className="text-danger">*</span> significa que es un campo
+            obligatorio
           </span>
           <div className="row mb-3 mt-2">
             <div className="col-md-12">
@@ -221,7 +222,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
 
           <div className="d-flex justify-content-end">
             <button
-              disabled={selectedCountry == ""}
+              disabled={selectedCountry == "" || selectedState == ""}
               type="submit"
               className="btn btn-dark"
             >

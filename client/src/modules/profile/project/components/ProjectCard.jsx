@@ -25,7 +25,6 @@ const ProjectCard = ({ project }) => {
   const [showDescription, setShowDescription] = useState(false);
   const showProject = async (id) => {
     const res = await projectsService.getProject(id);
-    console.log(res.data);
     if (res.status !== 200) {
       return noti("Hubo un error al obtener el proyecto", "error");
     }

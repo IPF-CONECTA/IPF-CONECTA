@@ -28,6 +28,7 @@ import messageRoutes from "./modules/chat/message/messageRoutes.js";
 import chatRoutes from "./modules/chat/chatRoutes.js";
 
 import profilePicRoutes from "./modules/profile/profilePic/profilePicRoutes.js";
+import skillableRoutes from "./modules/skills/skillable/skillableRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -58,4 +59,5 @@ export const routes = (app) => {
   app.use(SkillProfileRoutes);
   app.use("/message", messageRoutes);
   app.use(chatRoutes);
+  app.use(skillableRoutes)
 };

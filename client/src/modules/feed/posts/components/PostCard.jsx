@@ -138,7 +138,7 @@ export const PostCard = ({ post }) => {
           onClick={() => {
             navigate(`/post/${post.id}`);
           }}
-          className={`d-flex flex-column w-100 border border-top-0  p-3 `}
+          className={`d-flex flex-column w-100  p-3 `}
         >
           <header className="position-relative">
             <div className="avatar d-flex align-items-center">

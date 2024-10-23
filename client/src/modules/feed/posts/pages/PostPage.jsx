@@ -1,6 +1,6 @@
 import { HomeNav } from "../../../ui/components";
 
-import { RecomendedAccounts } from "../../components/RecomendedAccounts";
+import { RecommendedAccounts } from "../../components/RecommendedAccounts";
 import { PostInfo } from "../components/PostInfo";
 
 import styles from "../../../../../public/css/feed.module.css";
@@ -11,7 +11,7 @@ export const PostPage = () => {
         <HomeNav />
         <PostInfo />
         <div className={`${styles.asideContainer}`}>
-          <RecomendedAccounts />
+          <RecommendedAccounts />
         </div>
       </main>
     </>

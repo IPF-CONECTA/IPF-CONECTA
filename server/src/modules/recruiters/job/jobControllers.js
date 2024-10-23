@@ -21,7 +21,6 @@ export const createNewJobCtrl = async (req, res) => {
         await addJobSkillSvc(jobId, skills[i]);
       }
     } else {
-      console.log("No skills provided or skills is not an array");
     }
 
     res.status(201).json(newJob);
@@ -47,14 +46,14 @@ export const getJobByIdCtrl = async (req, res) => {
   const { id } = req.params;
   const { id: profileId } = req.user.profile;
   try {
-    if (!id) throw new Error("No se selecciono ninguna oferta");
+    if (!id) throw new Error("No se seleccionó ninguna oferta");
 
     const job = await getJobByIdSvc(id, profileId);
 
     if (!job)
       return res
         .status(404)
-        .json({ message: "No se encontro la oferta seleccionada" });
+        .json({ message: "No se encontró la oferta seleccionada" });
 
     res.status(200).json(job);
   } catch (error) {

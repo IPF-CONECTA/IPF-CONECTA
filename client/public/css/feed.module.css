@@ -6,9 +6,6 @@
   border: none;
 }
 
-.formcontainer {
-  height: 5px;
-}
 .formInput {
   text-align: start;
   height: 100%;
@@ -32,4 +29,8 @@
   position: fixed;
   top: 20%;
   right: 5%;
+}
+
+.smallText {
+  font-size: 0.7rem;
 }

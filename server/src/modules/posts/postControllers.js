@@ -36,7 +36,6 @@ export const createPostCtrl = async (req, res) => {
     const { id } = req.user.profile;
     try {
         const { post } = req.body;
-        console.log(post)
         const result = await createPostSvc(post, id);
         if (!result) return res.status(400).json({ message: "Hubo un error al postear" });
         res.status(201).json(result);

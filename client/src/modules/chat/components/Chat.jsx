@@ -16,7 +16,6 @@ export const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState({});
-  console.log(receiver);
   const messagesEndRef = useRef(null);
   const conteinerRef = useRef(null);
 

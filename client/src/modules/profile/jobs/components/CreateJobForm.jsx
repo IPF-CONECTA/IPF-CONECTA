@@ -13,6 +13,9 @@ import {
 import Editor from "../../../ui/components/Editor";
 import { Dialog } from "@mui/material";
 import { SkillSearch } from "../../skills/components/FindSkills";
+import { Controller, useForm } from "react-hook-form";
+import { findLocation } from "../../experiences/services/locationServices";
+import { SlideDown } from "../../../ui/transitions/SlideDown";
 
 export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   const navigate = useNavigate();
@@ -25,6 +28,10 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   const [search, setSearch] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const quillRef = useRef(null);
+  const { register, reset, handleSubmit, control, watch } = useForm();
+  const [locationSearch, setLocationSearch] = useState("");
+  const [locations, setLocations] = useState([]);
+
   const [formData, setFormData] = useState({
     title: "",
     description: `
@@ -51,7 +58,7 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
     skills: [],
     applicationLink: "",
   });
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
 
     if (formData.description.length < 10) {
@@ -80,6 +87,18 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
       });
   };
   useEffect(() => {
+    const fetchSkills = async (query) => {
+      try {
+        const response = await findSkills(query);
+        if (response.status !== 200) {
+          return;
+        }
+        setSkills(response.data);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      }
+    };
+
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
@@ -146,6 +165,38 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
     fetchContractTypes();
   }, []);
 
+  useEffect(() => {
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+
+    if (locationSearch.length >= 1) {
+      const timeout = setTimeout(async () => {
+        const res = await findLocation(locationSearch);
+        if (res.status !== 200) {
+          return;
+        }
+        setLocations(
+          res.data.map((location) => ({
+            value: location.id,
+            type: location.type,
+            label: location.name,
+          }))
+        );
+      }, 500);
+
+      setDebounceTimeout(timeout);
+    } else {
+      setLocations([]);
+    }
+
+    return () => {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+    };
+  }, [locationSearch]);
+
   function handleInputChange(e) {
     if (!e.target) return;
     const { name, value } = e.target;
@@ -153,10 +204,6 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
       ...prevFormData,
       [name]: value,
     }));
-  }
-
-  function handleSearchChange(value) {
-    setSearch(value);
   }
 
   const handleDescriptionChange = (value) => {
@@ -184,112 +231,129 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
     }));
   };
 
-  const fetchSkills = async (query) => {
-    try {
-      const response = await findSkills(query);
-      if (response.status !== 200) {
-        return;
-      }
-      setSkills(response.data);
-    } catch (error) {
-      console.error("Error fetching skills:", error);
-    }
-  };
-
-  const customFilter = (candidate, input) => {
-    if (input) {
-      return candidate.label.toLowerCase().includes(input.toLowerCase());
-    }
-    return true;
-  };
-
   return (
     <Dialog
       open={Boolean(openModal)}
       onClose={() => setOpenModal(false)}
       maxWidth="sm"
       fullWidth
+      TransitionComponent={SlideDown}
     >
-      <div className="w-100 d-flex justify-content-center">
-        <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className="p-3">
+        <span className="fs-4 fw-semibold">Publicar nuevo trabajo</span>
+        <div className="mb-3 title">
+          <label htmlFor="title">Cargo</label>
+          <input
+            type="text"
+            {...register("title", {
+              required: "El título es obligatorio",
+              maxLength: {
+                value: 80,
+                message: "El título no puede tener más de 80 caracteres",
+              },
+            })}
+            placeholder="Desarrollador Fullstack"
+            name="title"
+            className={`m-0 p-2`}
+          />
+        </div>
+        <div className="mb-3 description">
+          <label htmlFor="description">Descripción</label>
+          <Editor
+            ref={quillRef}
+            value={watch("description") || ""}
+            onChange={(value) => setValue("description", value)}
+            placeholder="Describe las responsabilidades del puesto, tareas, requisitos, beneficios, etc."
+          />
+        </div>
+        {companies.length > 1 && (
           <div className="mb-3">
-            <label htmlFor="title">Cargo</label>
-            <input
-              type="text"
-              placeholder="Desarrollador Fullstack"
-              name="title"
-              className={`m-0 p-2`}
-              value={formData.title}
-              onChange={handleInputChange}
+            <label>Empresa</label>
+            <Controller
+              name="companyId"
+              control={control}
+              rules={{ required: "Este campo es requerido" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  options={companies}
+                  placeholder="Seleccione la empresa a la que pertenece el trabajo"
+                />
+              )}
             />
           </div>
-          <div className="mb-3">
-            <label htmlFor="description">Descripción</label>
-            <Editor
-              ref={quillRef}
-              placeholder="Describe las responsabilidades del puesto, tareas, requisitos, beneficios, etc."
-              onChange={handleDescriptionChange}
-            />
-          </div>
-          {companies.length > 1 && (
-            <div className="mb-3">
-              <label>Empresa</label>
-              <select
-                name="companyId"
-                className={`form-select ${styles.formSelect}`}
-                value={formData.companyId}
-                onChange={handleInputChange}
-              >
-                <option value="">Selecciona la empresa</option>
-                {companies.map((company) => (
-                  <option key={company.id} value={company.id}>
-                    {company.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-          <div className="mb-3">
-            <label>Habilidades</label>
-            <SkillSearch onSkillSelect={handleSkillChange} />
-          </div>
-          <div className="mb-3">
-            <label>Modalidad</label>
-            <select
-              name="modalityId"
-              className={`form-select`}
-              value={formData.modalityId}
-              onChange={handleSelectChange}
-            >
-              <option value="">Selecciona la modalidad</option>
-              {modalities?.map((modality) => (
-                <option key={modality.id} value={modality.id}>
-                  {modality.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-3">
-            <label>Tipo de contrato</label>
-            <select
-              name="contractTypeId"
-              className={`form-select`}
-              value={formData.contractTypeId}
-              onChange={handleSelectChange}
-            >
-              <option value="">Selecciona el tipo de contrato</option>
-              {contractTypes.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button type="submit" className={styles.submitButton}>
+        )}
+        <div className="mb-3 skills">
+          <label>Habilidades</label>
+          <SkillSearch onSkillSelect={handleSkillChange} />
+        </div>
+        <div className="mb-3 location">
+          <label htmlFor="location">
+            Ubicación <span className="text-danger">*</span>
+          </label>
+
+          <Controller
+            name="location"
+            control={control}
+            rules={{ required: "Este campo es requerido" }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                options={locations}
+                value={locations.find((e) => e.value === field.value)}
+                onInputChange={(inputValue) => setLocationSearch(inputValue)}
+                placeholder="Buscar ubicación..."
+              />
+            )}
+          />
+        </div>
+        <div className="mb-3 modality">
+          <label>Modalidad</label>
+          <select
+            name="modalityId"
+            className={`form-select`}
+            value={formData.modalityId}
+            onChange={handleSelectChange}
+            defaultValue={""}
+          >
+            <option value="" disabled>
+              Selecciona la modalidad
+            </option>
+            {modalities?.map((modality) => (
+              <option key={modality.id} value={modality.id}>
+                {modality.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3 contractType">
+          <label>Tipo de contrato</label>
+          <select
+            name="contractTypeId"
+            className={`form-select`}
+            value={formData.contractTypeId}
+            onChange={handleSelectChange}
+            defaultValue={""}
+          >
+            <option value="" disabled>
+              Selecciona el tipo de contrato
+            </option>
+            {contractTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="buttons d-flex justify-content-between">
+          <button type="submit" className="btn btn-outline-dark fw-semibold">
+            Cancelar
+          </button>
+          <button type="submit" className="btn btn-dark fw-semibold">
             Crear oferta
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </Dialog>
   );
 };

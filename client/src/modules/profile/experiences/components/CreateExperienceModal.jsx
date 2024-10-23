@@ -59,6 +59,7 @@ export const CreateExperienceModal = ({
   const [actualWork, setActualWork] = useState(
     experience ? (experience?.endDate !== null ? false : true) : false
   );
+  const [addSkills, setAddSkills] = useState(false);
   const [contractTypes, setContractTypes] = useState([]);
   const [modalities, setModalities] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
@@ -641,6 +642,17 @@ export const CreateExperienceModal = ({
                     {index + 1 !== newImages.length && <hr className="my-2" />}
                   </React.Fragment>
                 ))}
+            </div>
+            <div className="mb-1 addSkillsToProfile">
+              <input
+                className="form-check-input me-2"
+                type="checkbox"
+                checked={addSkills}
+                onChange={() => setAddSkills(!addSkills)}
+              />
+              <label className="form-check-label" htmlFor="flexCheckDefault">
+                Vincular habilidades a tu perfil
+              </label>
             </div>
             <div className="mb-3 skills">
               <label htmlFor="skillSearch">

@@ -20,21 +20,10 @@ export const Messaging = () => {
   useEffect(() => {
     const getChats = async () => {
       const res = await chatService.getChatsbyProfile();
-      console.log(res.data);
       setChats(res.data);
     };
     getChats();
   }, []);
-  console.log(authState);
-  chats.map((chat) => {
-    const receptorId =
-      chat.profile1.id === profileId ? chat.profile2 : chat.profile1;
-    console.log("RECEPTORID", receptorId);
-    console.log(
-      chat?.messages[chat.messages.length - 1].senderId !==
-        authState.user.profile?.id
-    );
-  });
 
   return (
     <>
