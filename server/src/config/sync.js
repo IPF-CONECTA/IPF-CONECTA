@@ -21,13 +21,13 @@ export const createTablesAndRelations = async () => {
 
   await createRelations();
   console.log("Relations created successfully");
-  // await sequelize.sync({ force: true });
-  // await Attachment.sync({ force: true })
+  await sequelize.sync({ force: false });
   console.log("Tables created successfully");
 
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
-  // ===================================================================================
+  // // ===================================================================================
+  // await Attachment.sync({ force: true });
   // await createRoles();
   // await createUserStates();
   // await createLangLevels();

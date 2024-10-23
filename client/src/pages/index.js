@@ -40,7 +40,7 @@ export { CreateCompanyLocationPage } from "../modules/recruiter/pages/CreateComp
 export { MessageRecruiterPage } from "../modules/recruiter/pages/MessageRecruiterPage";
 export { SelectCompanyPage } from "../modules/recruiter/pages/SelectCompanyPage";
 export { WaitingAssociationsApprovalPage } from "../modules/recruiter/pages/WaitingAssociationsApprovedPage";
-export { RecruiterJobOffersPage } from "../modules/profile/jobs/pages/RecruiterJobOffersPage";
+export { RecruiterJobOffersPage } from "../modules/profile/jobs/pages/ProfileJobOffersPage";
 //Job Pages:
 export { JobCreatePage } from "../modules/recruiter/job/pages/CreateJobsFormPage";
 export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";

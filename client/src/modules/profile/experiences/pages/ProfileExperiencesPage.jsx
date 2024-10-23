@@ -8,7 +8,7 @@ import {
 } from "../../../feed/services/feedServices";
 import { Nav } from "../../../ui/components";
 import styles from "../../../../../public/css/allSkills.module.css";
-import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
+import { RecomendedAccounts } from "../../../feed/components/RecomendedAccounts";
 export const ProfileExperiencesPage = () => {
   const { username } = useParams();
   const [profileData, setProfileData] = useState(null);
@@ -48,7 +48,7 @@ export const ProfileExperiencesPage = () => {
             username={username}
           />
         </div>
-        <RecommendedAccounts />
+        <RecomendedAccounts />
       </div>
     </>
   );

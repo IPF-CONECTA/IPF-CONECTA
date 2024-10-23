@@ -13,16 +13,40 @@ import { useState } from "react";
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/jobProfileCard.module.css";
 
+import { JobDetails } from "../../../recruiter/job/components/JobDetails";
+import { CreateJobForm } from "../../../profile/jobs/components/CreateJobForm"; // Asegúrate de tener este componente para la edición
+
 export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
   const noti = useNoti();
   const [open, setOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (type) => {
+    setModalType(type);
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
+    setModalType("");
+  };
+  const handleEditClick = () => {
+    handleClickOpen("edit");
+  };
+  const handleDeleteClick = () => {
+    handleClickOpen("delete");
+  };
+  const handleJobClick = () => {
+    handleClickOpen("details");
+  };
+  const handleDelete = async () => {
+    try {
+      await jobsServices.deleteJob(jobOffer.id); // Asegúrate de que esta función esté bien definida
+      handleClose();
+      noti.success("Oferta eliminada con éxito");
+    } catch (error) {
+      console.log(error);
+      noti.error("Error al eliminar la oferta");
+    }
   };
 
   const shortdescription =
@@ -30,88 +54,89 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
       ? `${description.substring(0, 40)}...`
       : description;
 
-  const handleDelete = async () => {
-    try {
-      jobsServices.deleteJob(jobOffer.id);
-      handleClose();
-      noti("Oferta eliminada", "success");
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
-    <div className="d-flex justify-content-between w-100 py-2">
-      <div className="d-flex">
-        <img
-          src={`${BASE_URL}/logoUrl/${jobOffer.company.logoUrl}`}
-          crossOrigin="anonymous"
-          height={45}
-          className="me-2"
-        />
-        <div className="d-flex flex-column">
-          <div className="d-flex gap-3">
-            <span className="fw-semibold">{jobOffer.title}</span>
-            <span
-              className={`d-flex align-items-center text-secondary ${styles.smallText}`}
-            >
-              {getFullDate(jobOffer.createdAt)}
-            </span>
-          </div>
+    <div className="d-flex justify-content-between w-100 bg-body-tertiary">
+      <li className=" py-2 d-flex w-100">
+        <div
+          className="d-flex"
+          onClick={handleJobClick}
+          style={{ cursor: "pointer" }}
+        >
+          <img
+            src={`${BASE_URL}/logoUrl/${jobOffer.company.logoUrl}`}
+            crossOrigin="anonymous"
+            height={45}
+            className="me-2"
+          />
+          <div className="d-flex flex-column">
+            <div className="d-flex gap-3">
+              <span className="fw-semibold">{jobOffer.title}</span>
+              <span
+                className={`d-flex align-items-center text-secondary ${styles.smallText}`}
+              >
+                {getFullDate(jobOffer.createdAt)}
+              </span>
+            </div>
 
-          <span className={`${styles.smallText} text-secondary`}>
-            {jobOffer.company.name}
-          </span>
-          <div
-            className={` ${styles.smallText}`}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(shortdescription),
-            }}
-          ></div>
+            <span className={`${styles.smallText} text-secondary`}>
+              {jobOffer.company.name}
+            </span>
+            <div
+              className={` ${styles.smallText}`}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(shortdescription),
+              }}
+            ></div>
+          </div>
         </div>
-      </div>
-      {own && edit && (
-        <>
-          <button className="btn" onClick={handleClickOpen}>
+      </li>
+
+      {own && (
+        <div className="d-flex align-items-center">
+          <button className="btn" onClick={handleEditClick}>
             <span className="material-symbols-outlined text-dark-emphasis">
               edit
             </span>
           </button>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Eliminar oferta"}
-            </DialogTitle>
+        </div>
+      )}
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+        fullWidth
+        maxWidth="md"
+      >
+        {modalType === "details" && (
+          <>
+            <DialogTitle id="dialog-title">Detalles de la oferta</DialogTitle>
             <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                ¿Estás seguro de que deseas eliminar esta oferta?
-              </DialogContentText>
+              <JobDetails jobId={jobOffer.id} />
             </DialogContent>
             <DialogActions>
-              <button
-                className="btn btn-outline-warning"
-                onClick={handleClose}
-                color="primary"
-              >
-                Cancelar
-              </button>
-              <button
-                className="btn btn-outline-danger"
-                onClick={handleDelete}
-                color="primary"
-                autoFocus
-              >
-                Eliminar
+              <button className="btn btn-primary" onClick={handleClose}>
+                Cerrar
               </button>
             </DialogActions>
-          </Dialog>
-        </>
-      )}
+          </>
+        )}
+
+        {modalType === "edit" && (
+          <>
+            <DialogTitle id="dialog-title">Editar oferta</DialogTitle>
+            <DialogContent>
+              <CreateJobForm jobOffer={jobOffer} />{" "}
+            </DialogContent>
+            <DialogActions>
+              <button className="btn btn-primary" onClick={handleClose}>
+                Cerrar
+              </button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
     </div>
   );
 };
