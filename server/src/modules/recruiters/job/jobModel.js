@@ -21,7 +21,7 @@ export const Job = sequelize.define('job', {
         allowNull: false
     },
     locationableType: {
-        type: DataTypes.ENUM("country", "state", "city"),
+        type: DataTypes.ENUM("Country", "State", "City"),
         allowNull: false
     },
     profileId: {

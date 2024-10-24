@@ -34,6 +34,7 @@ export const createExperience = async (req, res) => {
 
         res.status(201).json()
     } catch (error) {
+        console.log(error)
         res.status(500).json()
     }
 }

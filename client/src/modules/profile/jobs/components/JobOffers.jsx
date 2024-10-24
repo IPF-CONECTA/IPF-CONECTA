@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CreateJobForm } from "./CreateJobForm";
 
 export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
+  console.log(jobOffersData);
   const [jobs, setJobs] = useState([]);
   useEffect(() => {
     setJobs(jobOffersData?.slice(0, 3));

@@ -4,11 +4,6 @@ import { User } from "../../users/userModel.js";
 import { Company } from "../companies/companyModel.js";
 import { Job } from "./jobModel.js";
 import { JobSkills } from "./jobSkills/jobSkillsModel.js";
-import {
-  getAllLocations,
-  getLocation,
-  getLocationType,
-} from "../../../helpers/getLocationType.js";
 import { ContractType } from "./contractTypes/contractTypeModel.js";
 import { Modality } from "./jobModalities/modalityModel.js";
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js";
@@ -18,27 +13,39 @@ import { CompanyLocation } from "../companies/companyLocation/companyLocationMod
 import { Country } from "../../locations/models/countryModel.js";
 import { City } from "../../locations/models/cityModel.js";
 import { State } from "../../locations/models/stateModel.js";
+import { createSkillables, getSkillables } from "../../skills/skillable/skillableServices.js";
+import { sequelize } from "../../../config/db.js";
+import { getLocationByIdSvc } from "../../locations/locationServices.js";
 
-export const createNewJobSvc = async (jobOffer, profileId) => {
+export const createNewJobSvc = async (jobData, profileId) => {
+  const t = await sequelize.transaction()
   try {
-    const isCompany = await Company.findByPk(jobOffer.companyId);
-
+    const isCompany = await Company.findByPk(jobData.companyId);
     if (!isCompany) throw new Error("La empresa seleccionada no existe");
     const newJob = await Job.create(
       {
-        companyId: jobOffer.companyId,
+        locationableId: jobData.location.value,
+        locationableType: jobData.location.type,
+        companyId: jobData.companyId,
         profileId: profileId,
-        title: jobOffer.title,
-        modalityId: jobOffer.modalityId,
-        description: jobOffer.description,
-        contractTypeId: jobOffer.contractTypeId,
-        applicationLink: jobOffer.applicationLink,
+        title: jobData.title,
+        modalityId: jobData.modalityId,
+        description: jobData.description,
+        contractTypeId: jobData.contractTypeId,
+        applicationLink: jobData.applicationLink,
       },
-      { returning: true }
+      { returning: true, transaction: t }
     );
     if (!newJob) throw new Error("Hubo un error al publicar el trabajo");
+
+    if (jobData.skills.length > 0) {
+      await createSkillables(newJob.id, jobData.skills, "job", t);
+    }
+    console.log(newJob)
+    await t.commit()
     return newJob;
   } catch (error) {
+    await t.rollback()
     throw new Error(error.message);
   }
 };
@@ -73,8 +80,8 @@ export const getJobsSvc = async () => {
         },
       ],
     });
-    const jobsWithLocation = await getAllLocations(jobs);
-    return jobsWithLocation;
+
+    return jobs;
   } catch (error) {
     throw new Error(error);
   }
@@ -83,7 +90,7 @@ export const getJobsSvc = async () => {
 export const getJobByIdSvc = async (id, profileId) => {
   try {
     const job = await Job.findByPk(id, {
-      attributes: { exclude: ["active", "companyId", "userId", "updatedAt"] },
+      attributes: { exclude: ["active", "companyId", "profileId", "updatedAt"] },
       include: [
         {
           model: Company,
@@ -93,71 +100,28 @@ export const getJobByIdSvc = async (id, profileId) => {
               model: CompanyIndustry,
               attributes: ["name"],
             },
-            {
-              model: CompanyLocation,
-              include: [{
-                model: Country
-              },
-              {
-                model: State,
-                include: [{
-                  model: Country
-                }]
-              },
-              {
-                model: City,
-                include: [{
-                  model: State,
-                  include: [
-                    {
-                      model: Country,
-                    },
-                  ],
-                },
-                {
-                  model: City,
-                  include: [
-                    {
-                      model: State,
-                      include: [
-                        {
-                          model: Country,
-                        },
-                      ],
-                    },
-                  ],
-                },
-                ],
-              },
-              ],
-            },
-
-            {
-              model: Profile,
-              attributes: ["id", "profilePic", "names", "surnames"],
-            },
-            {
-              model: JobSkills,
-              attributes: ["skillId"],
-              include: [
-                {
-                  model: Skill,
-                  attributes: ["name"],
-                },
-              ],
-            },
-            {
-              model: ContractType,
-              attributes: ["name"],
-            },
-            {
-              model: Modality,
-              attributes: ["name"],
-            },
           ]
-        }],
-    })
+        },
+        {
+          model: Profile,
+          attributes: ["id", "profilePic", "names", "surnames"],
+          include: [{
+            model: User,
+            attributes: ["username"]
+          }]
+        },
 
+        {
+          model: ContractType,
+          attributes: ["name"],
+        },
+        {
+          model: Modality,
+          attributes: ["name"],
+        },],
+    })
+    job.dataValues.location = await getLocationByIdSvc(job.locationableId, job.locationableType)
+    job.dataValues.skills = await getSkillables(job.id)
     const postulate = await JobPostulation.findOne({
       where: {
         profileId,
@@ -213,7 +177,7 @@ export const findJobsSvc = async (query, page) => {
   }
 };
 
-export const findJobsByUsernameSvc = async (username) => {
+export const getJobsByUsernameSvc = async (username) => {
   try {
     const recruiter = await User.findOne({
       where: { username },
@@ -228,8 +192,14 @@ export const findJobsByUsernameSvc = async (username) => {
       include: { model: Company, attributes: ["name", "logoUrl"] },
     });
 
+    await Promise.all(jobs.map(async job => {
+      job.dataValues.location = await getLocationByIdSvc(job.locationableId, job.locationableType)
+      job.dataValues.skills = await getSkillables(job.id)
+    }))
+    console.log(jobs)
     return jobs;
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 };

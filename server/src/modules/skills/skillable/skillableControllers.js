@@ -4,21 +4,6 @@ import { createSkillable, deleteSkillable, getSkillableById } from "./skillableS
 
 export const toggleSkill = async (req, res) => {
     const { skillId, skillableId } = req.params;
-    console.log("skillId")
-    console.log("skillId")
-    console.log("skillId")
-    console.log("skillId")
-    console.log("skillId")
-    console.log("skillId")
-    console.log("skillId")
-    console.log(skillId)
-    console.log("skillableId")
-    console.log("skillableId")
-    console.log("skillableId")
-    console.log("skillableId")
-    console.log("skillableId")
-    console.log("skillableId")
-    console.log(skillableId)
     const { id } = req.user.profile;
 
     try {

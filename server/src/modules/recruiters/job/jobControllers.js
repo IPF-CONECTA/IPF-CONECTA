@@ -1,7 +1,7 @@
 import {
   createNewJobSvc,
   deleteJobSvc,
-  findJobsByUsernameSvc,
+  getJobsByUsernameSvc,
   findJobsSvc,
   getJobByIdSvc,
   getJobsSvc,
@@ -10,21 +10,15 @@ import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js";
 
 export const createNewJobCtrl = async (req, res) => {
   const { id } = req.user.profile;
-  const { jobOffer, skills } = req.body;
 
   try {
-    const newJob = await createNewJobSvc(jobOffer, id);
-    const jobId = newJob.id;
+    const newJob = await createNewJobSvc(req.body.jobData, id);
 
-    if (Array.isArray(skills) && skills.length > 0) {
-      for (let i = 0; i < skills.length; i++) {
-        await addJobSkillSvc(jobId, skills[i]);
-      }
-    } else {
-    }
+    console.log(newJob)
 
-    res.status(201).json(newJob);
+    res.status(201).json();
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: error.message });
   }
 };
@@ -89,10 +83,10 @@ export const findJobsCtrl = async (req, res) => {
   }
 };
 
-export const findJobsByUsernameCtrl = async (req, res) => {
+export const getJobsByUsernameCtrl = async (req, res) => {
   try {
     const { username } = req.params;
-    const jobs = await findJobsByUsernameSvc(username);
+    const jobs = await getJobsByUsernameSvc(username);
     return res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json(error.message);

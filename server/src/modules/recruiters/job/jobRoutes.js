@@ -8,7 +8,7 @@ import {
   findJobsCtrl,
   getJobByIdCtrl,
   getJobsCtrl,
-  findJobsByUsernameCtrl,
+  getJobsByUsernameCtrl,
   deleteJobCtrl,
 } from "./jobControllers.js";
 import { jobSchema } from "./jobSchema.js";
@@ -43,7 +43,7 @@ jobRoutes.get("/get-job/:id", isToken, getJobByIdCtrl);
 
 jobRoutes.get("/job/search", findJobsCtrl);
 
-jobRoutes.get("/get-jobs/:username", isToken, findJobsByUsernameCtrl);
+jobRoutes.get("/get-jobs/:username", isToken, getJobsByUsernameCtrl);
 
 jobRoutes.delete("/delete-job/:id", isToken, isRecruiter, deleteJobCtrl);
 

@@ -100,3 +100,38 @@ export const findCitiesByStateIdSvc = async (stateId) => {
     throw new Error(error.message);
   }
 };
+
+export const getLocationByIdSvc = async (id, type) => {
+  try {
+    let location;
+    if (type === "Country") {
+      location = await Country.findByPk(id);
+    } else if (type === "State") {
+      location = await State.findByPk(id, {
+        include: [
+          {
+            model: Country,
+          },
+        ],
+      });
+    } else if (type === "City") {
+      location = await City.findByPk(id, {
+        include: [
+          {
+            model: State,
+            include: [
+              {
+                model: Country,
+              },
+            ],
+          },
+        ],
+      });
+    }
+    return type === "Country" ? location.name :
+      type === "State" ? `${location.name}, ${location.country.name}` :
+        `${location.name}, ${location.state.name}, ${location.state.country.name}`
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}

@@ -16,6 +16,7 @@ import { sequelize } from "./db.js";
 import { createRelations } from "./relations.js";
 import { Attachment } from "../modules/attachment/attachmentModel.js";
 import { Job } from "../modules/recruiters/job/jobModel.js";
+import { Experience } from "../modules/profile/experiences/experiencesModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");

@@ -16,6 +16,7 @@ import { SkillSearch } from "../../skills/components/FindSkills";
 import { Controller, useForm } from "react-hook-form";
 import { findLocation } from "../../experiences/services/locationServices";
 import { SlideDown } from "../../../ui/transitions/SlideDown";
+import { jobsServices } from "../services/jobsServices";
 
 export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   const navigate = useNavigate();
@@ -28,63 +29,33 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   const [search, setSearch] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const quillRef = useRef(null);
-  const { register, reset, handleSubmit, control, watch } = useForm();
+  const { register, reset, handleSubmit, control, watch, setValue } = useForm();
   const [locationSearch, setLocationSearch] = useState("");
   const [locations, setLocations] = useState([]);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: `
-      <h1>Descripción del trabajo</h1>
-      <p>En esta sección debes describir las responsabilidades y tareas que tendrá el candidato que ocupe este puesto.</p>
-      <h2>Requisitos</h2>
-      <ul>
-        <li>Requisito 1</li>
-        <li>Requisito 2</li>
-
-      </ul>
-      <h2>Beneficios</h2>
-      <ul>
-
-        <li>Beneficio 1</li>
-        <li>Beneficio 2</li>
-
-      </ul>
-
-    `,
-    companyId: "",
-    modalityId: "",
-    contractTypeId: "",
-    skills: [],
-    applicationLink: "",
-  });
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    if (formData.description.length < 10) {
-      noti("La descripción debe tener al menos 10 caracteres", "danger");
-      return;
-    }
-
-    axios
-      .post(
-        "http://localhost:4000/create-job",
-        { jobOffer: { ...formData }, skills: formData.skills },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+  const onSubmit = async (data) => {
+    data.skills = selectedSkills;
+    try {
+      const res = await jobsServices.createJob(data);
+      if (res.status !== 201) {
+        if (res.status === 400) {
+          return res.messages.forEach((message) => {
+            noti(message.msg, "danger");
+          });
         }
-      )
-      .then(() => {
-        noti("Empleo creado", "success");
-        setOpenModal(false);
-        onJobSubmit();
-      })
-      .catch((error) => {
-        console.log("Error:", error.response.data);
-        noti("Error creating job", "danger");
-      });
+        noti(
+          "Hubo un error al crear el trabajo, contacte con administración",
+          "danger"
+        );
+        return;
+      }
+      noti("Empleo creado", "success");
+      setOpenModal(false);
+      onJobSubmit();
+    } catch (error) {
+      console.log("Error:", error.response.data);
+      noti("Error creating job", "danger");
+    }
   };
   useEffect(() => {
     const fetchSkills = async (query) => {
@@ -123,14 +94,26 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const data = await getCompaniesByUser();
-        if (data.length <= 1) {
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            companyId: data[0].company.id,
-          }));
+        const res = await getCompaniesByUser();
+        if (res.status !== 200) {
+          noti(
+            "Hubo un error al cargar el formulario, contacte con administración",
+            "danger"
+          );
+          setOpenModal(false);
+          return;
+        } else if (res.status === 404) {
+          noti(
+            "Tu vinculación con la empresa o la creación de esta todavía no fue aprobada. No puedes hacer esto.",
+            "danger"
+          );
+          setOpenModal(false);
+          return;
         }
-        setCompanies(data);
+        if (res.data.length === 1) {
+          setValue("companyId", res.data[0].companyId);
+        }
+        setCompanies(res.data);
       } catch (error) {
         console.error("Error fetching companies:", error);
       }
@@ -197,38 +180,11 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
     };
   }, [locationSearch]);
 
-  function handleInputChange(e) {
-    if (!e.target) return;
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  }
-
-  const handleDescriptionChange = (value) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      description: value,
-    }));
-  };
-
-  const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const handleSkillChange = (selectedOptions) => {
-    setSelectedSkills(selectedOptions);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      skills: selectedOptions
-        ? selectedOptions.map((option) => option.value)
-        : [],
-    }));
+  const handleSkillChange = (selectedOption) => {
+    const skills = Array.isArray(selectedOption)
+      ? selectedOption
+      : [selectedOption];
+    setSelectedSkills(skills.map((skill) => skill.value));
   };
 
   return (
@@ -239,7 +195,7 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
       fullWidth
       TransitionComponent={SlideDown}
     >
-      <form onSubmit={handleSubmit} className="p-3">
+      <form onSubmit={handleSubmit(onSubmit)} className="p-3">
         <span className="fs-4 fw-semibold">Publicar nuevo trabajo</span>
         <div className="mb-3 title">
           <label htmlFor="title">Cargo</label>
@@ -312,8 +268,7 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
           <select
             name="modalityId"
             className={`form-select`}
-            value={formData.modalityId}
-            onChange={handleSelectChange}
+            {...register("modalityId")}
             defaultValue={""}
           >
             <option value="" disabled>
@@ -330,9 +285,8 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
           <label>Tipo de contrato</label>
           <select
             name="contractTypeId"
+            {...register("contractTypeId")}
             className={`form-select`}
-            value={formData.contractTypeId}
-            onChange={handleSelectChange}
             defaultValue={""}
           >
             <option value="" disabled>

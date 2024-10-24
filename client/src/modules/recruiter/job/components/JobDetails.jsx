@@ -26,6 +26,7 @@ export const JobDetails = ({ jobId }) => {
               },
             }
           );
+          console.log(res.data.job);
           setSelectedJob(res.data.job);
           setPostulate(res.data.postulated);
         } catch (error) {
@@ -156,8 +157,8 @@ export const JobDetails = ({ jobId }) => {
           <footer className="d-flex flex-column align-items-start">
             <span className="fs-5 fw-semibold">Habilidades necesarias:</span>
             <ul>
-              {selectedJob.jobSkills?.map((jobSkill) => (
-                <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>
+              {selectedJob.skills?.map((jobSkill) => (
+                <li key={jobSkill.id}>{jobSkill.name}</li>
               ))}
             </ul>
           </footer>
