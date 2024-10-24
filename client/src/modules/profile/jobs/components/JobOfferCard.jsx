@@ -51,7 +51,7 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
 
   const shortdescription =
     description?.length > 40
-      ? `${description.substring(0, 40)}...`
+      ? `${description.substring(0, 100)}...`
       : description;
 
   return (

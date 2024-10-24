@@ -50,7 +50,7 @@ export const AllJobOffersContainer = ({ username, own }) => {
 
       <div className="bg-body-tertiary ">
         {jobOffers?.map((jobOffer) => (
-          <div className="d-flex  justify-content-evenly p-4" key={jobOffer.id}>
+          <div className="d-flex justify-content-evenly p-4" key={jobOffer.id}>
             <JobOfferCard
               jobOffer={jobOffer}
               description={jobOffer.description}

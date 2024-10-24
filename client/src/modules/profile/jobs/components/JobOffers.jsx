@@ -4,21 +4,24 @@ import { useEffect, useState } from "react";
 import { CreateJobForm } from "./CreateJobForm";
 
 export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
+  const navigate = useNavigate();
+
   const [jobs, setJobs] = useState([]);
+  const [openJobOfferModal, setOpenJobOfferModal] = useState(false);
+
   useEffect(() => {
     setJobs(jobOffersData?.slice(0, 3));
-  }, jobOffersData);
-  const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
+  }, [jobOffersData]);
+
   return (
     <div className="border-bottom">
       <div className="p-4">
-        <div className="d-flex justify-content-between w-100 mb-2">
+        <div className="d-flex justify-content-between w-100 mb-2 bg-body-tertiary">
           <span className="fw-bold fs-5">Empleos</span>
           {own && (
             <div className="d-flex">
               <button
-                onClick={() => setOpenModal(true)}
+                onClick={() => setOpenJobOfferModal(true)}
                 className="btn d-flex p-0 align-items-center me-3 "
               >
                 <span className="text-end material-symbols-outlined text-dark-emphasis">
@@ -27,8 +30,8 @@ export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
               </button>
               <CreateJobForm
                 onJobSubmit={onJobSubmit}
-                openModal={openModal}
-                setOpenModal={setOpenModal}
+                openModal={openJobOfferModal}
+                setOpenModal={setOpenJobOfferModal}
               />
               <button
                 className="btn d-flex p-0 align-items-center"
