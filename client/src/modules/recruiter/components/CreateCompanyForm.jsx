@@ -45,7 +45,6 @@ export const CreateCompanyForm = () => {
 
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
-    console.log(e.target.files);
     if (file) {
       if (
         file.type !== "image/jpeg" &&

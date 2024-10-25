@@ -157,8 +157,8 @@ export const JobDetails = ({ jobId }) => {
           <footer className="d-flex flex-column align-items-start">
             <span className="fs-5 fw-semibold">Habilidades necesarias:</span>
             <ul>
-              {selectedJob.jobSkills?.map((jobSkill) => (
-                <li key={jobSkill.skillId}>{jobSkill.skill.name}</li>
+              {selectedJob.skills?.map((jobSkill) => (
+                <li key={jobSkill.id}>{jobSkill.name}</li>
               ))}
             </ul>
           </footer>
@@ -167,4 +167,3 @@ export const JobDetails = ({ jobId }) => {
     </aside>
   );
 };
-0;

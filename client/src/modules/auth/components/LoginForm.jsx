@@ -19,11 +19,8 @@ export const LoginForm = () => {
 
   async function onSubmit(data) {
     const response = await login(data);
-    console.log(response);
     if (response && response.role == "recruiter") {
       if (response.associations.length === 0) {
-        console.log(response.associations.length === 0);
-        console.log("no tiene asociaciones");
         navigate("/seleccionar-empresa");
       } else {
         const isApproved = response.associations.find(

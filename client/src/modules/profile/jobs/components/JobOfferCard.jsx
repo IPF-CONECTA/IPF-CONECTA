@@ -2,24 +2,20 @@ import DOMPurify from "dompurify";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import { getFullDate, getTime } from "../../../../helpers/getTime";
 import { jobsServices } from "../services/jobsServices";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+import { Dialog } from "@mui/material";
 import { useState } from "react";
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/jobProfileCard.module.css";
 
 import { JobDetails } from "../../../recruiter/job/components/JobDetails";
-import { CreateJobForm } from "../../../profile/jobs/components/CreateJobForm"; // Asegúrate de tener este componente para la edición
+import { JobForm } from "../components/JobForm";
 
 export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
   const noti = useNoti();
   const [open, setOpen] = useState(false);
   const [modalType, setModalType] = useState("");
+
+  const [openJobOfferModal, setOpenJobOfferModal] = useState(false);
 
   const handleClickOpen = (type) => {
     setModalType(type);
@@ -30,6 +26,7 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
     setModalType("");
   };
   const handleEditClick = () => {
+    setOpenJobOfferModal(true);
     handleClickOpen("edit");
   };
   const handleDeleteClick = () => {
@@ -109,32 +106,14 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
         fullWidth
         maxWidth="md"
       >
-        {modalType === "details" && (
-          <>
-            <DialogTitle id="dialog-title">Detalles de la oferta</DialogTitle>
-            <DialogContent>
-              <JobDetails jobId={jobOffer.id} />
-            </DialogContent>
-            <DialogActions>
-              <button className="btn btn-primary" onClick={handleClose}>
-                Cerrar
-              </button>
-            </DialogActions>
-          </>
-        )}
+        {modalType === "details" && <JobDetails jobId={jobOffer.id} />}
 
         {modalType === "edit" && (
-          <>
-            <DialogTitle id="dialog-title">Editar oferta</DialogTitle>
-            <DialogContent>
-              <CreateJobForm jobOffer={jobOffer} />{" "}
-            </DialogContent>
-            <DialogActions>
-              <button className="btn btn-primary" onClick={handleClose}>
-                Cerrar
-              </button>
-            </DialogActions>
-          </>
+          <JobForm
+            job={jobOffer}
+            openModal={openJobOfferModal}
+            setOpenModal={setOpenJobOfferModal}
+          />
         )}
       </Dialog>
     </div>

@@ -16,9 +16,13 @@ export const Job = sequelize.define('job', {
         type: DataTypes.UUID,
         allowNull: false
     },
-    locationId: {
-        type: DataTypes.UUID,
-        allowNull: true
+    locationableId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    locationableType: {
+        type: DataTypes.ENUM("Country", "State", "City"),
+        allowNull: false
     },
     profileId: {
         type: DataTypes.UUID,
@@ -32,7 +36,7 @@ export const Job = sequelize.define('job', {
         type: DataTypes.TEXT,
         allowNull: false
     },
-    modalityId: { // presencial - remoto - hibrido - flexible
+    modalityId: { // presencial - remoto - híbrido - flexible
         type: DataTypes.INTEGER,
         allowNull: false
     },

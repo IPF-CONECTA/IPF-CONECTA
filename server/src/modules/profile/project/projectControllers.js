@@ -26,7 +26,6 @@ export const getProjectsCtrl = async (req, res) => {
   try {
     const profileId = await getProfileIdByUsername(username)
     const allProjects = await getProjectsSvc(profileId, reqId);
-    console.log(allProjects)
     res.status(200).json(allProjects);
   } catch (error) {
     console.log(error)

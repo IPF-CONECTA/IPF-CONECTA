@@ -8,7 +8,7 @@ import { ExperienceContainer } from "../experiences/components/ExperienceContain
 import { Header } from "./ProfileHeader";
 import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
-import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
+import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
@@ -35,7 +35,6 @@ export const Profile = () => {
   };
   const fetchProjects = async () => {
     const res = await projectsService.getProjects(username);
-    console.log(res.data);
     if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error al obtener los proyectos", "error");
     }
@@ -61,12 +60,11 @@ export const Profile = () => {
   };
   const fetchSkills = async () => {
     const res = await getSkills(username);
-    console.log(res);
     if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error la obtener las habilidades");
     }
     if (res.status == 404) {
-      return;
+      return setSkills([]);
     }
     setSkills(res.data);
   };
@@ -141,7 +139,7 @@ export const Profile = () => {
               )}
             </main>
           </div>
-          <RecomendedAccounts />
+          <RecommendedAccounts />
         </div>
       )}
     </>

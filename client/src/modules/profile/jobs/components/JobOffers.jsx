@@ -1,17 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { JobOfferCard } from "./JobOfferCard";
-import { useEffect, useState } from "react";
-import { CreateJobForm } from "./CreateJobForm";
+import { useState } from "react";
+import { JobForm } from "../components/JobForm";
 
 export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
   const navigate = useNavigate();
-
-  const [jobs, setJobs] = useState([]);
   const [openJobOfferModal, setOpenJobOfferModal] = useState(false);
-
-  useEffect(() => {
-    setJobs(jobOffersData?.slice(0, 3));
-  }, [jobOffersData]);
 
   return (
     <div className="border-bottom">
@@ -28,7 +22,7 @@ export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
                   add
                 </span>
               </button>
-              <CreateJobForm
+              <JobForm
                 onJobSubmit={onJobSubmit}
                 openModal={openJobOfferModal}
                 setOpenModal={setOpenJobOfferModal}

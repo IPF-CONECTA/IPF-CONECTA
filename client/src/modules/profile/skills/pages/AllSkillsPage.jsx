@@ -4,7 +4,7 @@ import { getProfile } from "../../../feed/services/feedServices";
 import { useParams } from "react-router-dom";
 import { Nav } from "../../../ui/components";
 import styles from "../../../../../public/css/allSkills.module.css";
-import { RecomendedAccounts } from "../../../feed/components/RecomendedAccounts";
+import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
 import { AllSkills } from "../components/AllSkills";
 import { getSkills } from "../services";
 export const AllSkillsPage = () => {
@@ -37,7 +37,7 @@ export const AllSkillsPage = () => {
     <>
       <Nav />
       <div className="d-flex justify-content-evenly px-5 ">
-        <div className={`${styles.profileContainer} border rounded`}>
+        <div className={`${styles.profileContainer} border rounded-4 my-3`}>
           <Header profileData={profileData} setProfileData={setProfileData} />
           <AllSkills
             own={profileData?.own}
@@ -46,7 +46,7 @@ export const AllSkillsPage = () => {
             username={username}
           />
         </div>
-        <RecomendedAccounts />
+        <RecommendedAccounts />
       </div>
     </>
   );

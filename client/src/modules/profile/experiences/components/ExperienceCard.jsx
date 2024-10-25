@@ -117,8 +117,8 @@ export const ExperienceCard = ({
               </span>
               <ul className={` ${styles.smallText} fw-semibold p-0`}>
                 {skills.map((skill, index) => (
-                  <li key={skill.skillId} className="d-inline me-2">
-                    <span>{skill.skill.name}</span>
+                  <li key={skill.id} className="d-inline me-2">
+                    <span>{skill.name}</span>
                     {index !== skills.length - 1 && ","}
                   </li>
                 ))}
@@ -151,9 +151,9 @@ export const ExperienceCard = ({
                     </div>
                     <ul className="p-0 m-0">
                       {experience.skills.map((skill, index) => (
-                        <React.Fragment key={skill.skillId}>
-                          <li key={skill.skillId} className="list-unstyled">
-                            {skill.skill.name}
+                        <React.Fragment key={skill.id}>
+                          <li key={skill.id} className="list-unstyled">
+                            {skill.name}
                           </li>
                           {index !== experience.skills.length - 1 && (
                             <hr className="text-body-tertiary" />

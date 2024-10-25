@@ -23,11 +23,11 @@ export const Experience = sequelize.define('experience', {
         type: DataTypes.UUID,
         allowNull: true
     },
-    locationId: {
+    locationableId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    locationType: {
+    locationableType: {
         type: DataTypes.ENUM("City", "State", "Country"),
         allowNull: false
     },

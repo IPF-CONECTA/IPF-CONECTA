@@ -3,13 +3,11 @@ import { SkillCard } from "./SkillCard";
 import { AddSkillForm } from "./AddSkillForm";
 import { Link, useNavigate } from "react-router-dom";
 
-export const SkillsContainer = ({ skillsData = [], own, onSkillSubmit }) => {
-  console.log({ skillsData });
+export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
   const [skills, setSkills] = useState([]);
   const [openSkillModal, setOpenSkillModal] = useState(false);
-  const displayedSkills = skills?.slice(0, 2);
+  const displayedSkills = skillsData.slice(0, 2);
   const navigate = useNavigate();
-  console.log(skills);
   useEffect(() => {
     setSkills(skillsData);
   }, [skillsData]);
@@ -47,9 +45,9 @@ export const SkillsContainer = ({ skillsData = [], own, onSkillSubmit }) => {
         </div>
         {skills && skills?.length >= 1 ? (
           <>
-            <ul className="p-0 m-0 border border-bottom-0 border-end-0 border-start-0">
-              {displayedSkills?.map((skill) => (
-                <SkillCard key={skill.skillId} skill={skill} />
+            <ul className="p-0 m-0 border border-bottom-0">
+              {displayedSkills?.map((skill, index) => (
+                <SkillCard key={index} skill={skill} />
               ))}
             </ul>
           </>

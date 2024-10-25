@@ -1,5 +1,8 @@
 import { Skillable } from "../../skills/skillable/skillableModel.js"
-import { Skill } from "../../skills/skillsModel.js"
+import { getSkillablesByIds } from "../../skills/skillable/skillableServices.js"
+import { Experience } from "../experiences/experiencesModel.js"
+import { Profile } from "../profileModel.js"
+import { Project } from "../project/projectModel.js"
 
 export const getSkillProfile = async (profileId, skillId) => {
     try {
@@ -11,15 +14,25 @@ export const getSkillProfile = async (profileId, skillId) => {
 
 export const getSkillsProfile = async (profileId) => {
     try {
-        return await Skillable.findAll({
-            where: { skillableId: profileId, skillableType: "profile" },
-            include: [
-                {
-                    model: Skill,
-                    attributes: ["name"]
-                }
+
+        const profile = await Profile.findByPk(profileId, {
+            attributes: ["id"],
+            include: [{
+                model: Project, attributes: ["id"]
+            },
+            {
+                model: Experience, attributes: ["id"]
+            }
             ]
         })
+        const ids = [profileId]
+        profile.experiences.map(experience => {
+            ids.push(experience.id)
+        }), profile.projects.map(project => {
+            ids.push(project.id)
+        })
+        const skills = await getSkillablesByIds(ids)
+        return skills
     } catch (error) {
         throw error
     }

@@ -77,17 +77,23 @@ export const getExperiencesSvc = async (profileId) => {
   }
 };
 
+export const getExperienceInfoByIdSvc = async (id) => {
+  try {
+    return await Experience.findByPk(id, { attributes: ["title"], include: [{ model: Company, attributes: ["name", "logoUrl"] }] })
+  } catch (error) {
+
+  }
+}
 
 export const createExperienceSvc = async (experience, profileId, files) => {
   const t = await sequelize.transaction()
   try {
-
     const newExperience = await Experience.create({
       title: experience.title,
       contractTypeId: experience.contractTypeId,
       companyId: experience.companyId,
-      locationId: experience.locationId,
-      locationType: experience.locationType,
+      locationableId: experience.locationId,
+      locationableType: experience.locationType,
       modalityId: experience.modalityId,
       startDate: experience.startDate,
       endDate: experience.endDate !== "null" ? experience.endDate : null,

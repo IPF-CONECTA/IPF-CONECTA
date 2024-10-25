@@ -1,9 +1,9 @@
-.recomendedAccounts {
+.recommendedAccounts {
   height: fit-content;
 }
 
 @media (max-width: 1024px) {
-  .recomendedAccounts {
+  .recommendedAccounts {
     display: none;
   }
 }

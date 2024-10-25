@@ -59,7 +59,6 @@ export const projectsService = {
     if (projectData.projectLogo) {
       formData.append("project[projectLogo]", projectData.projectLogo);
     }
-    console.log({ "data que ingresa al servicio": projectData })
     try {
 
       const response = await axios.post(

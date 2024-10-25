@@ -1,31 +1,24 @@
 import {
   createNewJobSvc,
   deleteJobSvc,
-  findJobsByUsernameSvc,
+  getJobsByUsernameSvc,
   findJobsSvc,
   getJobByIdSvc,
   getJobsSvc,
+  updateJobSvc,
 } from "./jobServices.js";
 import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js";
 
 export const createNewJobCtrl = async (req, res) => {
   const { id } = req.user.profile;
-  const { jobOffer, skills } = req.body;
+  console.log(req.body);
 
   try {
-    const newJob = await createNewJobSvc(jobOffer, id);
-    const jobId = newJob.id;
-
-    if (Array.isArray(skills) && skills.length > 0) {
-      for (let i = 0; i < skills.length; i++) {
-        await addJobSkillSvc(jobId, skills[i]);
-      }
-    } else {
-      console.log("No skills provided or skills is not an array");
-    }
-
+    const newJob = await createNewJobSvc(req.body.jobData, id);
+    //console.log(newJob);
     res.status(201).json(newJob);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -47,14 +40,14 @@ export const getJobByIdCtrl = async (req, res) => {
   const { id } = req.params;
   const { id: profileId } = req.user.profile;
   try {
-    if (!id) throw new Error("No se selecciono ninguna oferta");
+    if (!id) throw new Error("No se seleccionó ninguna oferta");
 
     const job = await getJobByIdSvc(id, profileId);
 
     if (!job)
       return res
         .status(404)
-        .json({ message: "No se encontro la oferta seleccionada" });
+        .json({ message: "No se encontró la oferta seleccionada" });
 
     res.status(200).json(job);
   } catch (error) {
@@ -90,10 +83,10 @@ export const findJobsCtrl = async (req, res) => {
   }
 };
 
-export const findJobsByUsernameCtrl = async (req, res) => {
+export const getJobsByUsernameCtrl = async (req, res) => {
   try {
     const { username } = req.params;
-    const jobs = await findJobsByUsernameSvc(username);
+    const jobs = await getJobsByUsernameSvc(username);
     return res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json(error.message);
@@ -105,6 +98,20 @@ export const deleteJobCtrl = async (req, res) => {
     const { id } = req.params;
     await deleteJobSvc(id);
     return res.status(200).json("Oferta eliminada");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
+
+export const editJobCtrl = async (req, res) => {
+  try {
+    const { id: profileId } = req.user.profile;
+
+    const { id: jobId } = req.params;
+
+    const updatedJob = await updateJobSvc(jobId, req.body.jobData, profileId);
+    res.status(200).json(updatedJob);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);

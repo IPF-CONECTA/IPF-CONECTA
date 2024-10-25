@@ -29,7 +29,6 @@ export const CreateProjectForm = ({
     if (images.length == 10) {
       return noti("Solo puedes subir 10 imagenes", "warning");
     }
-    console.log(images);
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };

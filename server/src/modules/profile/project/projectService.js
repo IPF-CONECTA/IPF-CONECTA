@@ -61,6 +61,16 @@ export const getProjectByIdSvc = async (projectId) => {
     throw new Error(error.message);
   }
 };
+export const getProjectInfoByIdSvc = async (projectId) => {
+  try {
+    const project = await Project.findByPk(projectId, {
+      attributes: ["name"]
+    });
+    return project;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 
 

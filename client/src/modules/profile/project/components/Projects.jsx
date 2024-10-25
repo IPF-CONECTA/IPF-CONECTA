@@ -44,7 +44,7 @@ export const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
           onProjectSubmit={onProjectSubmit}
         />
         <div>
-          <div className="row">
+          <div className="row ms-2">
             {projects && projects.length >= 1 ? (
               projects.slice(0, 3).map((project, index) => {
                 return (

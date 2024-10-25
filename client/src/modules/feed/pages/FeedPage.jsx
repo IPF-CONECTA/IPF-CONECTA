@@ -1,4 +1,4 @@
-import { RecomendedAccounts } from "../components/RecomendedAccounts";
+import { RecommendedAccounts } from "../components/RecommendedAccounts";
 import { PostList } from "../posts/components/PostList";
 
 import { HomeNav } from "../components/HomeNav";
@@ -11,7 +11,7 @@ export const FeedPage = () => {
         <HomeNav />
         <PostList />
         <div className={`${styles.asideContainer}`}>
-          <RecomendedAccounts />
+          <RecommendedAccounts />
         </div>
       </main>
     </>

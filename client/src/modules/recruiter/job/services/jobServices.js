@@ -25,10 +25,10 @@ export const getCompaniesByUser = async () => {
         },
       }
     );
-    return response.data;
+    return { data: response.data, status: response.status };
   } catch (error) {
     console.error("Error fetching companies:", error);
-    return error;
+    return { status: error.status };
   }
 };
 

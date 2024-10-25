@@ -1,12 +1,12 @@
 // import { CreateJobForm } from "../components/JobCreateForm";
-import { CreateJobForm } from "../../../profile/jobs/components/CreateJobForm";
+import { JobForm } from "../../../profile/jobs/components/JobForm";
 import { Nav, Footer } from "../../../ui/components";
 
 export const JobCreatePage = () => {
   return (
     <div>
       <Nav />
-      <CreateJobForm />
+      <JobForm />
       <Footer />
     </div>
   );

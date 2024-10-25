@@ -4,7 +4,7 @@ import { Header } from "../../components/ProfileHeader";
 import { getProfile } from "../../../feed/services/feedServices";
 import { useEffect, useState } from "react";
 import { Nav } from "../../../ui/components";
-import { RecomendedAccounts } from "../../../feed/components/RecomendedAccounts";
+import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
 export const RecruiterJobOffersPage = () => {
   const { username } = useParams();
 
@@ -30,7 +30,7 @@ export const RecruiterJobOffersPage = () => {
           <AllJobOffersContainer username={username} />
         </div>
 
-        <RecomendedAccounts />
+        <RecommendedAccounts />
       </div>
     </>
   );
