@@ -1,9 +1,6 @@
 .jobDetails {
-  position: relative; /* Cambiado de fixed a relative */
-  top: auto; /* Removido */
-  right: auto; /* Removido */
-  width: 100%; /* Ajusta el ancho según sea necesario */
-  height: 95vh;
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
   background-color: #fff;
   z-index: 999;
@@ -12,7 +9,12 @@
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+.asideJobDetails {
+  position: sticky;
+  top: 20px;
+  height: 95vh;
+  background-color: black;
+}
 .noCaret::after {
   display: none !important;
 }
@@ -27,4 +29,12 @@
 
 .roundedImage {
   object-fit: cover;
+}
+
+.smallText {
+  font-size: 0.9rem;
+}
+
+.verPerfil:hover {
+  color: white;
 }

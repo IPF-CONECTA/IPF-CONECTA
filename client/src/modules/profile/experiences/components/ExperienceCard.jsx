@@ -37,7 +37,6 @@ export const ExperienceCard = ({
       <li key={experience.id} className="list-unstyled py-2 d-flex w-100">
         <div className="mx-2">
           <img
-            crossOrigin="anonymous"
             width={45}
             height={45}
             src={`${BASE_URL}/logoUrl/${experience.company.logoUrl}`}
@@ -174,7 +173,6 @@ export const ExperienceCard = ({
                     handleImageClick(index);
                   }}
                   style={{ cursor: "pointer" }}
-                  crossOrigin="anonymous"
                   className="border rounded p-1"
                   height={70}
                   src={`${BASE_URL}/images/${attachment.url}`}
@@ -198,7 +196,6 @@ export const ExperienceCard = ({
                           key={attachment.id}
                         >
                           <img
-                            crossOrigin="anonymous"
                             src={`${BASE_URL}/images/${attachment.url}`}
                             className="d-block w-100"
                             alt="imagen"

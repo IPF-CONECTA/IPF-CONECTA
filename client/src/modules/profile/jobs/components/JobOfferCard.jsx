@@ -13,9 +13,12 @@ import { useState } from "react";
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/jobProfileCard.module.css";
 
-export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
+export const JobOfferCard = ({ jobOffer, own, edit }) => {
+  console.log(jobOffer);
   const noti = useNoti();
   const [open, setOpen] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
+  const [description, setDescription] = useState(jobOffer?.description);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,11 +27,6 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const shortdescription =
-    description?.length > 40
-      ? `${description.substring(0, 40)}...`
-      : description;
 
   const handleDelete = async () => {
     try {
@@ -46,9 +44,8 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
       <div className="d-flex">
         <img
           src={`${BASE_URL}/logoUrl/${jobOffer.company.logoUrl}`}
-          crossOrigin="anonymous"
           height={45}
-          className="me-2"
+          className="mx-2"
         />
         <div className="d-flex flex-column">
           <div className="d-flex gap-3">
@@ -63,12 +60,47 @@ export const JobOfferCard = ({ jobOffer, description, own, edit }) => {
           <span className={`${styles.smallText} text-secondary`}>
             {jobOffer.company.name}
           </span>
-          <div
-            className={` ${styles.smallText}`}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(shortdescription),
-            }}
-          ></div>
+          <div className={styles.smallText}>
+            {description?.length > 160 ? (
+              showDescription ? (
+                <>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: description,
+                    }}
+                  ></p>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowDescription(false)}
+                    className="text-secondary"
+                  >
+                    Leer menos
+                  </span>
+                </>
+              ) : (
+                <div>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: description.slice(0, 160),
+                    }}
+                  ></p>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowDescription(true)}
+                    className="text-secondary"
+                  >
+                    Leer más
+                  </span>
+                </div>
+              )
+            ) : (
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: description,
+                }}
+              ></p>
+            )}
+          </div>
         </div>
       </div>
       {own && edit && (

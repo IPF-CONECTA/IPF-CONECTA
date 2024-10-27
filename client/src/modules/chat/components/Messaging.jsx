@@ -56,7 +56,6 @@ export const Messaging = () => {
                   <div className="d-flex align-items-center w-100 gap-3 list-group-item bg-dark-subtle p-3">
                     <img
                       src={`${BASE_URL}/images/${receptorId?.profilePic}`}
-                      crossOrigin="anonymous"
                       alt={receptorId.id + "_icon"}
                       className="rounded-circle"
                       width={50}

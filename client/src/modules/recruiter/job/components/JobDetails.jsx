@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import { useNoti } from "../../../../hooks/useNoti";
@@ -7,12 +7,16 @@ import { authContext } from "../../../../context/auth/Context";
 import { authService } from "../../../auth/services/authService";
 import styles from "../../../../../public/css/jobDetails.module.css";
 import { BASE_URL } from "../../../../constants/BASE_URL";
+import { Link } from "react-router-dom";
+import { Dialog } from "@mui/material";
+import { getTime } from "../../../../helpers/getTime";
 
 export const JobDetails = ({ jobId }) => {
   const [postulate, setPostulate] = useState(false);
+  const [showAllSkills, setShowAllSkills] = useState(false);
+
   const { authState } = useContext(authContext);
   const noti = useNoti();
-
   const [selectedJob, setSelectedJob] = useState(null);
   useEffect(() => {
     const getJobInfo = async () => {
@@ -60,22 +64,19 @@ export const JobDetails = ({ jobId }) => {
   };
 
   return (
-    <aside
-      className={`${styles.asideJobDetails} d-flex flex-column align-items-center w-100`}
-    >
+    <aside className={`${styles.asideJobDetails}`}>
       {selectedJob && (
         <div className={`${styles.jobDetails} w-100`}>
-          <header className="mb-3 d-flex flex-row align-items-center w-100 justify-content-between">
+          <header className="mb-2 d-flex flex-row align-items-center w-100 justify-content-between">
             <div className="d-flex align-items-center">
               <img
                 src={`${BASE_URL}/logoUrl/${selectedJob.company.logoUrl}`}
                 className={`me-2 rounded-circle ${styles.roundedImage}`}
-                crossOrigin="anonymous"
                 height={40}
                 width={40}
                 alt="logo"
               />
-              <span className="fs-5 text-secondary fw-semibold">
+              <span className="fs-5 fw-semibold">
                 {selectedJob.company?.name}
               </span>
             </div>
@@ -134,33 +135,132 @@ export const JobDetails = ({ jobId }) => {
             </div>
           </header>
           <article>
-            <div className="d-flex justify-content-between align-items-center">
-              <span className="fs-3 fw-semibold text-light-emphasis">
-                {selectedJob.title}
-              </span>
-              <span className="text-secondary">
-                {selectedJob.modality?.name}
-              </span>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="fs-4 fw-semibold ">{selectedJob.title}</span>
+              <div className="d-flex flex-column align-items-end">
+                <span>{selectedJob?.location}</span>
+                <span className={styles.smallText}>
+                  hace {getTime(selectedJob.createdAt)}
+                </span>
+              </div>
             </div>
-            <p className="mb-1">
-              <span className="fw-semibold">Tipo de contrato: </span>
-              {selectedJob.contractType?.name}
-            </p>
+            <div className="mb-3">
+              <p className="mb-1">
+                <span className="fw-semibold d-flex">
+                  <span className="material-symbols-outlined me-2">work</span>
+                  Tipo de contrato:{" "}
+                  <span className="fw-normal ms-2">
+                    {selectedJob.contractType?.name}
+                  </span>
+                </span>
+              </p>
+              <p className="d-flex align-items-center fw-semibold">
+                <span className="material-symbols-outlined me-2">public</span>
+                Modalidad:{" "}
+                <span className="ps-2 fw-normal">
+                  {selectedJob.modality?.name}
+                </span>
+              </p>
+            </div>
+            <div className="mb-3 " style={{ width: "fit-content" }}>
+              <span className="fw-semibold ">Publicado por</span>
+              <div className="d-flex align-items-center mt-2 border rounded p-2">
+                <img
+                  className="me-2 rounded-circle"
+                  src={`${BASE_URL}/images/${selectedJob.profile.profilePic}`}
+                  alt="foto de perfil"
+                  height={50}
+                />
+                <div className="d-flex flex-column me-4">
+                  <span className="fw-semibold fs-5">
+                    {selectedJob.profile?.names} {selectedJob.profile?.surnames}
+                  </span>
+                  <span className={`text-secondary  ${styles.smallText}`}>
+                    @{selectedJob.profile?.user.username}
+                  </span>
+                </div>
+                <Link
+                  to={`/perfil/${selectedJob.profile?.user.username}`}
+                  className={`btn btn-outline-info fw-semibold ${styles.verPerfil}`}
+                >
+                  Ver perfil
+                </Link>
+              </div>
+            </div>
             <div>
               <span className="fw-semibold">Descripción</span>
               <div
                 className="mt-1 p-2"
-                dangerouslySetInnerHTML={{ __html: selectedJob.description }}
+                dangerouslySetInnerHTML={{
+                  __html: selectedJob.description
+                    .replace(/<strong>/g, '<span class="fw-semibold">')
+                    .replace(/<\/strong>/g, "</span>"),
+                }}
               />
             </div>
           </article>
           <footer className="d-flex flex-column align-items-start">
-            <span className="fs-5 fw-semibold">Habilidades necesarias:</span>
-            <ul>
-              {selectedJob.skills?.map((jobSkill) => (
-                <li key={jobSkill.id}>{jobSkill.name}</li>
-              ))}
-            </ul>
+            <div>
+              <span className="fs-5 fw-semibold">
+                Habilidades necesarias:{" "}
+                <span className="text-secondary">
+                  ({selectedJob.skills?.length})
+                </span>
+              </span>
+              <ul className="list-unstyled d-flex gap-2 mt-2">
+                {selectedJob.skills?.slice(0, 3).map((jobSkill) => (
+                  <li
+                    className="bg-body-tertiary px-2  mb-2 d-flex justify-content-center align-items-center text-center rounded border fw-semibold"
+                    key={jobSkill.id}
+                  >
+                    {jobSkill.name}
+                  </li>
+                ))}
+                {selectedJob.skills?.length > 3 && (
+                  <>
+                    <li
+                      className="bg-body-tertiary px-2  mb-2 d-flex justify-content-center align-items-center text-center rounded border fw-semibold"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShowAllSkills(true)}
+                    >
+                      y {selectedJob.skills?.length - 3} más...
+                    </li>
+                    <Dialog
+                      open={showAllSkills}
+                      onClose={() => setShowAllSkills(false)}
+                      fullWidth
+                      maxWidth="xs"
+                    >
+                      <div className="p-3">
+                        <div className="d-flex justify-content-between mb-3">
+                          <span className="fw-bold fs-5 ">
+                            Todas las habilidades
+                          </span>
+                          <button
+                            onClick={() => setShowAllSkills(false)}
+                            className="btn d-flex p-0 align-items-center"
+                          >
+                            <span className="material-symbols-outlined text-dark-emphasis">
+                              close
+                            </span>
+                          </button>
+                        </div>
+                        <ul className="gap-2 list-group list-group-flush">
+                          {selectedJob.skills.map((skill) => (
+                            <li
+                              key={skill.id}
+                              className="list-unstyled list-group-item"
+                            >
+                              {skill.name}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </Dialog>
+                  </>
+                )}
+              </ul>
+            </div>
           </footer>
         </div>
       )}

@@ -42,3 +42,13 @@
 .followButton {
   width: 60%;
 }
+
+.attachment {
+  object-fit: cover;
+}
+.fourImagesContainer {
+  height: 400px;
+}
+
+.contentContainer {
+}

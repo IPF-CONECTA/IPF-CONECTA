@@ -10,13 +10,13 @@ import {
   getContractTypes,
   getModalities,
 } from "../../../recruiter/job/services/jobServices";
-import Editor from "../../../ui/components/Editor";
 import { Dialog } from "@mui/material";
 import { SkillSearch } from "../../skills/components/FindSkills";
 import { Controller, useForm } from "react-hook-form";
 import { findLocation } from "../../experiences/services/locationServices";
 import { SlideDown } from "../../../ui/transitions/SlideDown";
 import { jobsServices } from "../services/jobsServices";
+import Editor from "../../../ui/components/Editor";
 
 export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
   const navigate = useNavigate();
@@ -216,10 +216,8 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
         <div className="mb-3 description">
           <label htmlFor="description">Descripción</label>
           <Editor
-            ref={quillRef}
-            value={watch("description") || ""}
-            onChange={(value) => setValue("description", value)}
-            placeholder="Describe las responsabilidades del puesto, tareas, requisitos, beneficios, etc."
+            initialValue={`<i>EJEMPLO</i><p>El candidato ideal será responsable de contribuir al desarrollo y mantenimiento de aplicaciones de alta calidad. También se espera que participe en el diseño e implementación de código escalable y fácil de probar.</p><strong>Responsabilidades</strong><ul><li>Contribuir al desarrollo de software y aplicaciones web de calidad.</li><li>Analizar y mantener aplicaciones de software existentes.</li><li>Diseñar código escalable y fácil de probar.</li><li>Identificar y solucionar errores de programación.</li></ul><strong>Cualificaciones</strong><ul><li>Título universitario o experiencia equivalente en Ciencias de la Computación o campo relacionado.</li><li>Experiencia en desarrollo con lenguajes de programación.</li><li>Conocimientos en bases de datos SQL o bases de datos relacionales.</li></ul><strong>Beneficios</strong><ul><li>Trabajo remoto con flexibilidad de horarios.</li><li>Oportunidad de crecimiento y desarrollo profesional.</li><li>Integración a un equipo de trabajo colaborativo y profesional.</li></ul>`}
+            onChange={(data) => setValue("description", data)}
           />
         </div>
         {companies.length > 1 && (
@@ -300,12 +298,25 @@ export const CreateJobForm = ({ openModal, setOpenModal, onJobSubmit }) => {
           </select>
         </div>
         <div className="buttons d-flex justify-content-between">
-          <button type="submit" className="btn btn-outline-dark fw-semibold">
-            Cancelar
+          <button
+            type="button"
+            onClick={() => setOpenModal(false)}
+            className="btn btn-outline-dark fw-semibold"
+          >
+            Borrar oferta
           </button>
-          <button type="submit" className="btn btn-dark fw-semibold">
-            Crear oferta
-          </button>
+          <div className="d-flex gap-2">
+            <button
+              type="button"
+              onClick={() => setOpenModal(false)}
+              className="btn btn-outline-dark fw-semibold"
+            >
+              Cancelar
+            </button>
+            <button type="submit" className="btn btn-dark fw-semibold">
+              Crear oferta
+            </button>
+          </div>
         </div>
       </form>
     </Dialog>

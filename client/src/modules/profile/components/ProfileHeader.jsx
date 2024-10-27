@@ -49,7 +49,6 @@ export const Header = ({ profileData, setProfileData }) => {
           <div className="w-100">
             <img
               src={`${BASE_URL}/images/${profileData?.profile.profilePic}`}
-              crossOrigin="anonymous"
               height={200}
               alt="profile pic"
               className="rounded-circle bg-light border border-white border-5 "

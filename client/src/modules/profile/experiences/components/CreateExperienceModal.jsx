@@ -369,7 +369,6 @@ export const CreateExperienceModal = ({
                           {company.image && (
                             <img
                               src={`${BASE_URL}/logoUrl/${company?.image}`}
-                              crossOrigin="anonymous"
                               alt="logo"
                               width={24}
                               height={24}
@@ -577,7 +576,6 @@ export const CreateExperienceModal = ({
                       <div>
                         <img
                           height={60}
-                          crossOrigin="anonymous"
                           className="me-2 border rounded p-1"
                           src={`${BASE_URL}/images/${image.url}`}
                           alt={`Imagen ${index + 1}`}
@@ -643,20 +641,12 @@ export const CreateExperienceModal = ({
                   </React.Fragment>
                 ))}
             </div>
-            <div className="mb-1 addSkillsToProfile">
-              <input
-                className="form-check-input me-2"
-                type="checkbox"
-                checked={addSkills}
-                onChange={() => setAddSkills(!addSkills)}
-              />
-              <label className="form-check-label" htmlFor="flexCheckDefault">
-                Vincular habilidades a tu perfil
-              </label>
-            </div>
             <div className="mb-3 skills">
               <label htmlFor="skillSearch">
-                Selecciona las habilidades usadas para esta experiencia
+                Selecciona las habilidades usadas para esta experiencia{" "}
+                <span className="text-secondary">
+                  (se agregarán automáticamente a tu perfil)
+                </span>
               </label>
               <SkillSearch
                 prevSelectedSkills={prevSelectedSkills}

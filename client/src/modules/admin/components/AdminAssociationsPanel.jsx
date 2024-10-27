@@ -145,7 +145,6 @@ export const AdminAssociationsPanel = () => {
               >
                 <div className="d-flex align-items-center">
                   <img
-                    crossOrigin="anonymous"
                     src={`${BASE_URL}/images/${association.profile.profilePic}`}
                     alt="Usuario"
                     className="rounded-circle me-2"
@@ -169,7 +168,6 @@ export const AdminAssociationsPanel = () => {
                       "https://via.placeholder.com/40"
                     }
                     alt="Empresa"
-                    crossOrigin="anonymous"
                     className="ms-2"
                     style={{ width: "40px", height: "40px" }}
                   />
@@ -195,7 +193,6 @@ export const AdminAssociationsPanel = () => {
                 <div className="d-flex align-items-center justify-content-between mb-3">
                   <div className="d-flex align-items-center">
                     <img
-                      crossOrigin="anonymous"
                       src={
                         `${BASE_URL}/logoUrl/${selectedAssociation.company.logoUrl}` ||
                         "https://via.placeholder.com/100"
@@ -262,7 +259,6 @@ export const AdminAssociationsPanel = () => {
                     <div className="d-flex mb-2">
                       <img
                         src={`${BASE_URL}/images/${selectedAssociation.profile.profilePic}`}
-                        crossOrigin="anonymous"
                         alt={`${selectedAssociation.profile.names} Logo`}
                         className="rounded-circle me-2"
                         width={40}

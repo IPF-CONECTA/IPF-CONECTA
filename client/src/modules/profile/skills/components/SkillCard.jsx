@@ -14,7 +14,6 @@ export const SkillCard = ({
           return (
             <div className="d-flex align-items-center mt-2" key={index}>
               <img
-                crossOrigin="anonymous"
                 height={40}
                 src={`${BASE_URL}/logoUrl/${item.data.company.logoUrl}`}
                 alt="Logo"

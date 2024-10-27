@@ -117,8 +117,7 @@ export const Chat = () => {
           <Link to={`/perfil/${receiver.user?.username}`}>
             <img
               src={`${BASE_URL}/images/${receiver.profilePic}`}
-              crossOrigin="anonymous"
-              className="rounded-circle border border-2 border-black my-2 me-2"
+              className="rounded-circle border border-2 border-white my-2 me-2"
               alt={receiver.id + "_icon"}
               width={40}
             />
@@ -154,7 +153,6 @@ export const Chat = () => {
                       src={`${BASE_URL}/images/${receiver.profilePic}`}
                       alt="foto de perfil"
                       className="rounded-circle me-2"
-                      crossOrigin="anonymous"
                       width={40}
                       height={40}
                     />
@@ -183,7 +181,6 @@ export const Chat = () => {
                       src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
                       alt="foto de perfil"
                       className="rounded-circle ms-2"
-                      crossOrigin="anonymous"
                       width={40}
                       height={40}
                     />
@@ -197,7 +194,6 @@ export const Chat = () => {
                 <img
                   src={`${BASE_URL}/images/${receiver.profilePic}`}
                   width={70}
-                  crossOrigin="anonymous"
                   className="rounded-circle"
                   alt={`Foto de perfil de ${receiver.names}`}
                 />

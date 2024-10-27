@@ -68,7 +68,6 @@ export const AccountCard = ({ index, account }) => {
           height={35}
           className="rounded-circle me-2"
           src={`${BASE_URL}/images/${account.profile.profilePic}`}
-          crossOrigin="anonymous"
           alt={account.profile.names}
           onClick={(e) => {
             e.stopPropagation();

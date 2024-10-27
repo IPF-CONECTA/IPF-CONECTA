@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getPosts, postSvc } from "../../services/feedServices";
 import { useNoti } from "../../../../hooks/useNoti";
 import { PostCard } from "./PostCard";
@@ -11,25 +11,58 @@ export const PostList = () => {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState([]);
-
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const maxLength = 255;
   const charactersLeft = maxLength - content.length;
+  const containerRef = useRef(null);
+
+  const fetchPosts = async (reset = false) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await getPosts(reset ? 1 : page);
+      console.log(res);
+      console.log(page);
+      if (reset) {
+        setPosts(res.data);
+        setPage(2);
+      } else {
+        setPage((prevPage) => prevPage + 1);
+        setPosts((prevPosts) => [...prevPosts, ...res.data]);
+      }
+    } catch (error) {
+      if (error.statusCode !== 200) {
+        return setError(error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const { data, statusCode } = await getPosts();
-      if (statusCode !== 200) {
-        return;
+    fetchPosts(true);
+  }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } =
+          document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 5 && !isLoading) {
+          fetchPosts();
+        }
       }
-      setPosts(data);
     };
-    if (isSubmitting == false) {
-      fetchPosts();
-    }
-  }, [isSubmitting]);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isLoading]);
 
   const handleAttachmentSelect = (e) => {
-    if (images.length > 4) {
+    if (images.length == 4) {
       return noti("Solo puedes adjuntar 4 archivos", "warning");
     }
     const files = Array.from(e.target.files);
@@ -37,20 +70,25 @@ export const PostList = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (content.length == 0 || content.length > 200) return;
+    if (content.length === 0 || content.length > 200) return;
     setIsSubmitting(true);
-    const status = await postSvc(content);
+    const status = await postSvc(content, images);
     if (status !== 201) {
+      setIsSubmitting(false);
       return noti("Hubo un error al publicar el post", "error");
     }
-    setTimeout(() => {
-      setIsSubmitting(false);
-    }, 1000);
+    setPosts([]);
     setContent("");
-    setFocused(false);
+    setImages([]);
+    setIsSubmitting(false);
+    setPage(1);
+    fetchPosts(true);
   };
   return (
-    <div className="w-50 vh-100 d-flex flex-column align-items-center">
+    <div
+      className="w-50 vh-100 d-flex flex-column align-items-center"
+      ref={containerRef}
+    >
       <div className={`w-100 d-flex  align-items-center flex-column mt-4`}>
         <form
           onSubmit={handleSubmit}
@@ -65,7 +103,7 @@ export const PostList = () => {
             className={`m-0 pt-2 ps-1 border border-0 rounded  w-100 ${
               focused ? styles.formInputFocused : styles.formInput
             }`}
-            maxlength="255"
+            maxLength="255"
             placeholder="Que estas pensando..."
             value={content}
             onChange={(e) => {
@@ -137,11 +175,10 @@ export const PostList = () => {
           {images.length > 0 && (
             <div className="w-100 d-flex">
               {images.map((image, index) => (
-                <React.Fragment key={index}>
+                <React.Fragment key={image.id}>
                   <div className={`d-flex align-items-start`}>
                     <img
                       height={60}
-                      crossOrigin="anonymous"
                       className="me-1 border rounded p-1"
                       src={URL.createObjectURL(image)}
                       alt={`Imagen ${index + 1}`}
@@ -150,6 +187,11 @@ export const PostList = () => {
                       }}
                     />
                     <button
+                      onClick={() => {
+                        setImages((prevImages) =>
+                          prevImages.filter((_, i) => i !== index)
+                        );
+                      }}
                       type="button"
                       className="btn p-0 d-flex align-items-center"
                     >
@@ -163,26 +205,21 @@ export const PostList = () => {
         </form>
       </div>
       <div className="w-75 d-flex flex-column flex-grow-1 align-items-center border-end border-start">
-        {posts?.length > 0 ? (
-          <div className="w-100 border-top">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        ) : (
-          <div className="w-100 h-100 d-flex flex-column justify-content-center align-items-center pb-5">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+        {isLoading && (
+          <div className="d-flex justify-content-center my-3">
             <span
-              className="material-symbols-outlined border border-black text-black border-5 rounded"
-              style={{ fontSize: "5rem" }}
-            >
-              manage_search
-            </span>
-            <span className="fs-5 mt-3 fw-semibold">
-              No se encontraron publicaciones
-            </span>
-            <span className="text-secondary">
-              Sigue a otras cuentas para empezar
-            </span>
+              className="spinner-border"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </div>
+        )}
+        {error && (
+          <div className="text-danger text-center my-3">
+            <p>{error}</p>
           </div>
         )}
       </div>

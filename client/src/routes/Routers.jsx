@@ -61,7 +61,7 @@ export const Routers = () => {
           <Route path="chat/:username" element={<ChatPage />} />
 
           <Route path="/inicio" element={<FeedPage />} />
-          <Route path="/post/:postId" element={<PostPage />} />
+          <Route path="/:username/post/:postId" element={<PostPage />} />
           <Route path="/perfil/:username" element={<ProfilePage />} />
           <Route
             path="/perfil/:username/empleos"

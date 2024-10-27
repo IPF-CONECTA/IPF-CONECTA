@@ -14,14 +14,13 @@ export function RecruiterPanel() {
       .get("http://localhost:4000/get-companies")
       .then((response) => {
         setCompanies(response.data);
-        setFilteredCompanies(response.data); // Inicialmente mostrar todos los resultados
+        setFilteredCompanies(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
-  // Función para manejar cambios en el input de búsqueda
   const handleSearchChange = (event) => {
     const value = event.target.value.toLowerCase();
     setSearchTerm(value);

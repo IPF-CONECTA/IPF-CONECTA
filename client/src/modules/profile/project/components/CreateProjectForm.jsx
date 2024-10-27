@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Dialog } from "@mui/material";
-import Editor from "../../../ui/components/Editor";
+import EditorComponent from "../../../ui/components/Editor";
 import { projectsService } from "../services/projectsServices";
 import { useNoti } from "../../../../hooks/useNoti";
 import { SkillSearch } from "../../skills/components/FindSkills";

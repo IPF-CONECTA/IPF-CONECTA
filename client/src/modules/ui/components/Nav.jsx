@@ -67,9 +67,9 @@ export const Nav = () => {
                   <img
                     height={35}
                     width={35}
+                    crossOrigin="anonymous"
                     className="rounded-circle"
                     src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
-                    crossOrigin="anonymous"
                     alt="tu foto de perfil"
                   />
                 </Link>

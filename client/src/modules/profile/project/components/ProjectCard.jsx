@@ -106,7 +106,6 @@ const ProjectCard = ({ project }) => {
                       handleImageClick(index);
                     }}
                     style={{ cursor: "pointer" }}
-                    crossOrigin="anonymous"
                     className="border rounded p-1"
                     height={70}
                     src={`${BASE_URL}/images/${attachment.url}`}
@@ -130,7 +129,6 @@ const ProjectCard = ({ project }) => {
                             key={attachment.id}
                           >
                             <img
-                              crossOrigin="anonymous"
                               src={`${BASE_URL}/images/${attachment.url}`}
                               className="d-block w-100"
                               alt="imagen"

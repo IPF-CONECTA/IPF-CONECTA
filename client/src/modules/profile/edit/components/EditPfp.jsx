@@ -50,7 +50,6 @@ export const EditPfp = ({ profileData, setProfileData }) => {
               ? profilePicPreview[0]
               : `${BASE_URL}/images/${profileData?.profile?.profilePic}`
           }
-          crossOrigin="anonymous"
           alt="tu foto de perfil"
           className={`rounded-circle mb-3 ${styles.pfp}`}
         />
