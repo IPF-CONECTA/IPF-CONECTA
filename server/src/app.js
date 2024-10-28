@@ -25,18 +25,19 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-
   },
 });
 
 app.use((req, res, next) => {
-  next()
-  res.setHeader('cross-origin-resource-policy', 'cross-origin')
+  next();
+  res.setHeader("cross-origin-resource-policy", "cross-origin");
 });
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-}))
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  })
+);
 app.use(express.json());
 app.use(
   helmet({
@@ -89,8 +90,8 @@ io.on("connection", async (socket) => {
 
       try {
         const newMessage = await sendMessage(senderId, receptorId, message);
-        console.log("MENSAJE: =======================")
-        console.log(newMessage)
+        console.log("MENSAJE: =======================");
+        console.log(newMessage);
         socket.to(chatId).emit("chat message", newMessage);
         console.log("Enviando mensaje a sala", chatId);
       } catch (error) {

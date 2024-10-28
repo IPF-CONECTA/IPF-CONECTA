@@ -1,12 +1,16 @@
-import DOMPurify from "dompurify";
-import { BASE_URL } from "../../../../constants/BASE_URL";
-import { getFullDate, getTime } from "../../../../helpers/getTime";
-import { Dialog } from "@mui/material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import DOMPurify from "dompurify";
+import { Dialog } from "@mui/material";
+
 import styles from "../../../../../public/css/jobProfileCard.module.css";
 
+import { BASE_URL } from "../../../../constants/BASE_URL";
+import { getFullDate, getTime } from "../../../../helpers/getTime";
 import { JobDetails } from "../../../recruiter/job/components/JobDetails";
+
 import { JobForm } from "../components/JobForm";
+import { createSlug } from "../../../../helpers/createSlug";
 
 export const JobOfferCard = ({
   jobOffer,
@@ -60,11 +64,16 @@ export const JobOfferCard = ({
 
       {edit && own && (
         <div className="d-flex align-items-center">
-          <button className="btn p-0 d-flex" onClick={() => setOpenModal(true)}>
+          <button className="btn p-4 d-flex" onClick={() => setOpenModal(true)}>
             <span className="material-symbols-outlined text-dark-emphasis">
               edit
             </span>
           </button>
+          <Link to={`/empleo/${jobOffer.id}/postulaciones`}>
+            <button className="btn p-4 d-flex">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+          </Link>
         </div>
       )}
 

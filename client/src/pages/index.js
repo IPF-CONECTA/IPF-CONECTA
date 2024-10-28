@@ -46,6 +46,9 @@ export { JobCreatePage } from "../modules/recruiter/job/pages/CreateJobsFormPage
 export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";
 export { JobDetailsPage } from "../modules/recruiter/job/pages/JobsDetailsPage";
 
+//Job Postulations Pages:
+export { JobPostulationsPage } from "../modules/jobs/postulations/pages/JobPostulationsPage";
+
 // Projects ideas
 export { Ideas } from "../modules/ideas/pages/Ideas";
 export { DetailsIdeas } from "../modules/ideas/pages/IdeaDetailsPage";
