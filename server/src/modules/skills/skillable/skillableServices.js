@@ -88,3 +88,23 @@ export const deleteSkillable = async (skillableId, skillId) => {
         throw error
     }
 }
+export const deleteSkillables = async (skillableId, skills, t) => {
+    try {
+        if (!Array.isArray(skills)) {
+            const skillable = await getSkillableById(skillableId, skills)
+            if (skillable) {
+                return Skillable.destroy({ where: { skillId: skills, skillableId } }, { transaction: t })
+            }
+        }
+        if (skills.length > 0) {
+            await Promise.all(skills.map(async (skill) => {
+                const skillable = await getSkillableById(skillableId, skill);
+                if (skillable) {
+                    await Skillable.destroy({ where: { skillId: skill, skillableId } }, { transaction: t });
+                }
+            }));
+        }
+    } catch (error) {
+        throw error
+    }
+}

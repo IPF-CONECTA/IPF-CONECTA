@@ -13,7 +13,6 @@
   position: sticky;
   top: 20px;
   height: 95vh;
-  background-color: black;
 }
 .noCaret::after {
   display: none !important;

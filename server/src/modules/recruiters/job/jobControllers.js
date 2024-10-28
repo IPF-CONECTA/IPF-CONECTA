@@ -5,20 +5,17 @@ import {
   findJobsSvc,
   getJobByIdSvc,
   getJobsSvc,
+  updateJobSvc,
 } from "./jobServices.js";
-import { addJobSkillSvc } from "./jobSkills/jobSkillServices.js";
 
 export const createNewJobCtrl = async (req, res) => {
   const { id } = req.user.profile;
 
   try {
     const newJob = await createNewJobSvc(req.body.jobData, id);
-
-    console.log(newJob)
-
-    res.status(201).json();
+    res.status(201).json(newJob);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -98,6 +95,20 @@ export const deleteJobCtrl = async (req, res) => {
     const { id } = req.params;
     await deleteJobSvc(id);
     return res.status(200).json("Oferta eliminada");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
+
+export const editJobCtrl = async (req, res) => {
+  try {
+    const { id: profileId } = req.user.profile;
+
+    const { id: jobId } = req.params;
+
+    const updatedJob = await updateJobSvc(jobId, req.body.jobData, profileId);
+    res.status(200).json(updatedJob);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);

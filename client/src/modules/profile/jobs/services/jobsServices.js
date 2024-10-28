@@ -14,7 +14,7 @@ export const jobsServices = {
       );
       return { data: response.data, status: response.status };
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return { status: error.status, messages: error.response.data.errors };
     }
   },
@@ -33,11 +33,26 @@ export const jobsServices = {
       return { status: error.status };
     }
   },
-
   deleteJob: async (jobId) => {
     try {
       const response = await axios.delete(
         `http://localhost:4000/delete-job/${jobId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      return { data: response.data, status: response.status };
+    } catch (error) {
+      return { status: error.status };
+    }
+  },
+  updateJob: async (jobId, jobData) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/update-job/${jobId}`,
+        { jobData },
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,

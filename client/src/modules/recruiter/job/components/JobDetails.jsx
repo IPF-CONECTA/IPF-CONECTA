@@ -267,4 +267,3 @@ export const JobDetails = ({ jobId }) => {
     </aside>
   );
 };
-0;

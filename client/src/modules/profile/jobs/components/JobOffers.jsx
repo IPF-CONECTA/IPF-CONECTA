@@ -1,16 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { JobOfferCard } from "./JobOfferCard";
-import { useEffect, useState } from "react";
-import { CreateJobForm } from "./CreateJobForm";
+import { useState } from "react";
+import { JobForm } from "../components/JobForm";
 
-export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
-  console.log(jobOffersData);
-  const [jobs, setJobs] = useState([]);
-  useEffect(() => {
-    setJobs(jobOffersData?.slice(0, 3));
-  }, [jobOffersData]);
+export const JobOffers = ({ jobOffersData, own, onJobUpdate }) => {
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
+  const [openJobOfferModal, setOpenJobOfferModal] = useState(false);
+
   return (
     <div className="border-bottom">
       <div className="p-4">
@@ -19,17 +15,17 @@ export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
           {own && (
             <div className="d-flex">
               <button
-                onClick={() => setOpenModal(true)}
+                onClick={() => setOpenJobOfferModal(true)}
                 className="btn d-flex p-0 align-items-center me-3 "
               >
                 <span className="text-end material-symbols-outlined text-dark-emphasis">
                   add
                 </span>
               </button>
-              <CreateJobForm
-                onJobSubmit={onJobSubmit}
-                openModal={openModal}
-                setOpenModal={setOpenModal}
+              <JobForm
+                onJobUpdate={onJobUpdate}
+                openModal={openJobOfferModal}
+                setOpenModal={setOpenJobOfferModal}
               />
               <button
                 className="btn d-flex p-0 align-items-center"
@@ -49,6 +45,7 @@ export const JobOffers = ({ jobOffersData, own, onJobSubmit }) => {
                 <JobOfferCard
                   jobOffer={job}
                   description={job.description}
+                  edit={false}
                   own={own}
                 />
                 {index !== jobOffersData.slice(0, 3).length - 1 && (

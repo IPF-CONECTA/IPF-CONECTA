@@ -96,7 +96,7 @@ export const Profile = () => {
             className={`profile d-flex flex-column align-items-center border rounded-top-4 mb-4 ${styles.profileContainer}`}
           >
             <Header profileData={profileData} setProfileData={setProfileData} />
-            <Nav />
+            <Nav role={role} />
             <main className="w-100">
               <AboutCard
                 own={profileData.own}
@@ -125,7 +125,7 @@ export const Profile = () => {
                 <JobOffers
                   own={profileData.own}
                   jobOffersData={jobOffers}
-                  onJobSubmit={fetchJobOffers}
+                  onJobUpdate={fetchJobOffers}
                 />
               )}
 

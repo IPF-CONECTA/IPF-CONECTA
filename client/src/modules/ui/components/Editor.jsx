@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const CKEditorComponent = ({ initialValue, onChange }) => {
+const CKEditorComponent = forwardRef(({ initialValue, onChange }, ref) => {
   const [editorData, setEditorData] = useState(initialValue);
 
   const handleChange = (event, editor) => {
@@ -19,8 +19,9 @@ const CKEditorComponent = ({ initialValue, onChange }) => {
       config={{
         toolbar: ["bold", "italic", "bulletedList", "numberedList"],
       }}
+      ref={ref}
     />
   );
-};
+});
 
 export default CKEditorComponent;
