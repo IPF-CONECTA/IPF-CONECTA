@@ -48,7 +48,7 @@ export const Header = ({ profileData, setProfileData }) => {
         >
           <div className="w-100">
             <img
-              src={`${BASE_URL}/images/${profileData?.profile.profilePic}`}
+              src={`${BASE_URL}/images/${profileData?.profile?.profilePic}`}
               height={200}
               alt="profile pic"
               className="rounded-circle bg-light border border-white border-5 "
@@ -57,15 +57,15 @@ export const Header = ({ profileData, setProfileData }) => {
               <div>
                 <div className="d-flex flex-column justify-content-center">
                   <span className="text-dark fs-4 fw-bold">
-                    {profileData?.profile.names +
+                    {profileData?.profile?.names +
                       " " +
-                      profileData?.profile.surnames}{" "}
+                      profileData?.profile?.surnames}{" "}
                     <span className="text-secondary fw-normal fs-6">
-                      @{profileData?.profile.user.username}
+                      @{profileData?.profile?.user.username}
                     </span>
                   </span>
 
-                  {profileData?.profile.title && (
+                  {profileData?.profile?.title && (
                     <span className="text-dark fst-italic fw-semibold">
                       {profileData.profile.title}
                     </span>
@@ -91,7 +91,7 @@ export const Header = ({ profileData, setProfileData }) => {
               <Link
                 className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
-                to={`/chat/${profileData?.profile.user.username}`}
+                to={`/chat/${profileData?.profile?.user.username}`}
               >
                 <span className="material-symbols-outlined fs-3 fw-light">
                   chat

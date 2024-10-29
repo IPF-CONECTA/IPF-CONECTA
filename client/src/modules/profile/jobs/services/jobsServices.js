@@ -64,4 +64,19 @@ export const jobsServices = {
       return { status: error.status };
     }
   },
+  getJobById: async (jobId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/get-job/${jobId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      return { data: response.data, status: response.status };
+    } catch (error) {
+      return { status: error.status };
+    }
+  },
 };

@@ -1,13 +1,22 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Dialog, DialogContent } from "@mui/material";
 
 import { jobPostulationsServices } from "../services/jobPostulationsServices";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import { Profile } from "../../../profile/components/Profile";
+import { authContext } from "../../../../context/auth/Context";
+import { Header } from "../../../profile/components/ProfileHeader";
+import { getProfile } from "../../../feed/services/feedServices";
+import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
+import { jobsServices } from "../../../profile/jobs/services/jobsServices";
 
 export const JobPostulations = () => {
   const { jobId } = useParams();
+  const { authState } = useContext(authContext);
+  const [profileData, setProfileData] = useState({});
+  const [username, setUsername] = useState("");
+  const [job, setJob] = useState();
 
   const [postulations, setPostulations] = useState([]);
   const [open, setOpen] = useState(false);
@@ -15,10 +24,32 @@ export const JobPostulations = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    setUsername(authState.user?.username);
+  }, [authState.user?.username]);
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      const res = await jobsServices.getJobById(jobId);
+      setJob(res.data.job);
+    };
+    fetchJob();
+  }, [jobId]);
+
+  console.log({ job });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const res = await getProfile(username);
+      setProfileData(res.data);
+      console.log(res);
+    };
+    username && fetchProfile();
+  }, [username]);
 
   useEffect(() => {
     const fetchPostulations = async () => {
@@ -29,55 +60,123 @@ export const JobPostulations = () => {
     fetchPostulations();
   }, [jobId]);
 
-  console.log(postulations);
   return (
-    <div className="d-flex flex-column align-baseline">
-      <h4>Postulaciones del empleo</h4>
-      {postulations.length > 0 ? (
-        <ul class="list-group list-group-flush">
-          {postulations.map((postulation) => (
-            <li class="list-group-item" key={postulation.id}>
-              <div className="d-flex flex-row">
-                <div>
-                  <img
-                    src={`${BASE_URL}/images/${postulation.profile.profilePic}`}
-                    crossOrigin="false"
-                    alt="profile pic"
-                    width={50}
-                    className="p-2"
-                    onClick={handleClickOpen}
-                  />
-                  <Dialog maxWidth="md" open={open} onClose={handleClose}>
-                    <DialogContent>
-                      <Profile data={postulation.profile.user.username} />
-                    </DialogContent>
-                  </Dialog>
-                </div>
-                <div>
-                  <p>
-                    <strong> Usuario</strong>:{" "}
-                    {postulation.profile.user.username}
-                  </p>
-                  <p>
-                    {postulation.profile.names +
-                      " " +
-                      postulation.profile.surnames}
-                  </p>
-                  <p></p>
-                  <p>
-                    <strong>Acerca de: </strong>
-                    {postulation.profile.about
-                      ? postulation.profile.about
-                      : "No hay información"}
-                  </p>
-                </div>
+    <div className="d-flex justify-content-evenly p-5">
+      <div style={{ width: "65%" }}>
+        {profileData && (
+          <Header profileData={profileData} setProfileData={setProfileData} />
+        )}
+        <div className="bg-body-tertiary d-flex flex-column">
+          <div className="d-flex p-4 align-items-center">
+            <Link
+              to={`/perfil/${authState.user?.username}/empleos`}
+              className="btn d-flex align-items-center p-0 "
+            >
+              <span className="material-symbols-outlined">arrow_back_ios</span>
+            </Link>
+            <span className="fs-5 fw-bold">
+              Postulaciones de "{job?.title.split(0, 20)}..."
+            </span>
+          </div>
+
+          {postulations.length > 0 ? (
+            <>
+              <div className="d-flex flex-column mx-5">
+                <ul className="list-group list-group-flush ">
+                  {postulations.map((postulation) => (
+                    <li
+                      className="list-group-item mb-1 border w-100 mx-auto"
+                      key={postulation.id}
+                    >
+                      <div className="column d-flex justify-content-between">
+                        <div className="d-flex">
+                          <img
+                            src={`${BASE_URL}/images/${postulation.profile.profilePic}`}
+                            crossOrigin="false"
+                            alt="profile pic"
+                            width={75}
+                            className="p-2"
+                          />
+                          <div>
+                            <p>
+                              <strong> Usuario</strong>:{" "}
+                              {postulation.profile.user.username}
+                            </p>
+                            <p>
+                              {postulation.profile.names +
+                                " " +
+                                postulation.profile.surnames}
+                            </p>
+                            <p></p>
+                            <p>
+                              <strong>Acerca de: </strong>
+                              {postulation.profile.about
+                                ? postulation.profile.about.slice(0, 50) + "..."
+                                : "No hay información"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="d-flex">
+                          <div className="d-flex align-items-center me-2">
+                            <button
+                              onClick={handleClickOpen}
+                              className="btn btn-outline-dark"
+                              style={{ height: "fit-content" }}
+                            >
+                              Perfil
+                            </button>
+                          </div>
+                          <Dialog
+                            maxWidth="md"
+                            open={open}
+                            onClose={handleClose}
+                          >
+                            <DialogContent>
+                              <Profile
+                                data={postulation.profile.user.username}
+                              />
+                            </DialogContent>
+                          </Dialog>
+                          <div className="ms-auto d-flex column"></div>
+                          <Link
+                            to={`/chat/${postulation.profile.user.username}`}
+                            className="btn d-flex align-items-center p-0 h-100"
+                          >
+                            <span className="material-symbols-outlined fs-2 fw-light">
+                              chat
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <h1>No hay postulaciones :C</h1>
-      )}
+            </>
+          ) : (
+            <div className="p-5">
+              <Link
+                to={`/perfil/${authState.user?.username}/empleos`}
+                className="btn btn-outline-danger"
+              >
+                <span className="material-symbols-outlined fs-3 ">
+                  arrow_back
+                </span>
+              </Link>
+              <h3 className="text-center fs-3 text">
+                No hay postulaciones para este empleo.
+              </h3>
+              <img
+                src="../../../../public/img/noPostulationsFounded.png"
+                width={350}
+                className="mx-auto d-block"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <RecommendedAccounts />
     </div>
   );
 };
