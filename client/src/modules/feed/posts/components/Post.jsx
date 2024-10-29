@@ -21,6 +21,8 @@ import { BASE_URL } from "../../../../constants/BASE_URL";
 
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { useNoti } from "../../../../hooks/useNoti";
+import { ReportModal } from "../../components/ReportModal";
+import { set } from "react-hook-form";
 
 export const Post = ({ postData = null, postId = null, details }) => {
   const [post, setPost] = useState(postData);
@@ -30,6 +32,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
     toggler: false,
     slide: 1,
   });
+  const [openReportModal, setOpenReportModal] = useState(false);
   const { authState } = useContext(authContext);
   const [showProgress, setShowProgress] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -41,6 +44,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
   const [liked, setLiked] = useState(post?.liked);
   const [reposted, setReposted] = useState(post?.reposted);
   const [showAnswerModal, setShowAnswerModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const noti = useNoti();
   useEffect(() => {
     const fetchPost = async () => {
@@ -50,6 +54,8 @@ export const Post = ({ postData = null, postId = null, details }) => {
         return noti(post.message, "error");
       }
       setPost(post);
+      setLiked(post.liked);
+      setReposted(post.reposted);
     };
     postId && fetchPost();
   }, [postId]);
@@ -104,7 +110,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
       }
     }
   };
-  const action = (snackbarId) => (
+  const actionDelete = (snackbarId) => (
     <>
       <button
         className="btn text-warning fw-semibold p-0 px-1"
@@ -125,6 +131,30 @@ export const Post = ({ postData = null, postId = null, details }) => {
       </button>
     </>
   );
+  const actionBlock = (snackbarId) => (
+    <>
+      <button
+        className="btn text-warning fw-semibold p-0 px-1"
+        onClick={() => {
+          closeSnackbar(snackbarId);
+        }}
+      >
+        Cancelar
+      </button>
+      <button
+        className="btn text-danger fw-semibold p-0 px-1"
+        onClick={() => {
+          handleBlock();
+          closeSnackbar(snackbarId);
+        }}
+      >
+        Confirmar
+      </button>
+    </>
+  );
+  const handleBlock = async () => {
+    noti("Usuario bloqueado", "success");
+  };
   const handleDelete = async () => {
     const status = await deletePost(post.id);
     if (status !== 204) {
@@ -136,24 +166,22 @@ export const Post = ({ postData = null, postId = null, details }) => {
   const handleComment = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const status = await postSvc(content, post.id);
+    setIsSubmitting(true);
+    const status = await postSvc(content, null, post.id);
     if (status !== 201) {
       return noti("Hubo un error al publicar el post", "error");
     }
-    setShowProgress(true);
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i > 100) {
-        clearInterval(interval);
-        setShowProgress(false);
-        post.comments.length++;
-        setContent("");
-        setShowAnswerModal(false);
-      } else {
-        setProgress(i);
-        i++;
-      }
-    }, 10);
+
+    setTimeout(() => {
+      noti("Comentario publicado", "success");
+      setContent("");
+      setPost((prevPost) => ({
+        ...prevPost,
+        comments: [...prevPost.comments, {}],
+      }));
+      setIsSubmitting(false);
+      setShowAnswerModal(false);
+    }, 500);
   };
 
   const handleShowProfile = (boolean, username) => {
@@ -412,7 +440,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                             onClick={(e) => {
                               e.stopPropagation();
                               enqueueSnackbar("Eliminar post?", {
-                                action,
+                                action: actionDelete,
                                 autoHideDuration: 5000,
                                 preventDuplicate: true,
                                 anchorOrigin: {
@@ -433,34 +461,57 @@ export const Post = ({ postData = null, postId = null, details }) => {
                       ) : (
                         <>
                           <li>
-                            <Link
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenReportModal(true);
+                              }}
                               className="dropdown-item d-flex p-0 justify-content-between"
-                              to="#"
                             >
                               Reportar
                               <span className="material-symbols-outlined text-danger fw-bold  ms-1">
                                 report
                               </span>
-                            </Link>
+                            </button>
                           </li>
                           <li>
                             <hr className="m-1" />
                           </li>
                           <li>
-                            <Link
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                enqueueSnackbar(
+                                  `Bloquear a ${post?.profile.user.username}?`,
+                                  {
+                                    action: actionBlock,
+                                    autoHideDuration: 5000,
+                                    preventDuplicate: true,
+                                    anchorOrigin: {
+                                      vertical: "bottom",
+                                      horizontal: "center",
+                                    },
+                                  }
+                                );
+                              }}
                               className="dropdown-item d-flex p-0 justify-content-between"
-                              to="#"
                             >
                               Bloquear a {post?.profile.names}
                               <span className="material-symbols-outlined text-danger fw-bold ms-1">
                                 block
                               </span>
-                            </Link>
+                            </button>
                           </li>
                         </>
                       )}
                     </ul>
                   </div>
+                  <ReportModal
+                    openModal={openReportModal}
+                    setOpenModal={setOpenReportModal}
+                    reportableId={post.id}
+                  />
                 </div>
               </div>
             </header>
@@ -564,7 +615,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
           )}
         </>
       )}
-      {showAnswerModal && (
+      {showAnswerModal && !details && (
         <Dialog
           open={Boolean(showAnswerModal)}
           onClose={() => setShowAnswerModal(false)}
@@ -585,7 +636,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                   width={40}
                   height={40}
                   alt="profile pic"
-                  className="me-3"
+                  className="me-3 rounded-circle"
                 />
                 <div className="d-flex flex-column w-100 pe-3">
                   <div className="d-flex w-100 justify-content-between align-items-stretch">
@@ -621,7 +672,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                   alt="your profile picture"
                   width={40}
                   height={40}
-                  className="me-3"
+                  className="me-3 rounded-circle"
                 />
               ) : null}
               <input
@@ -633,19 +684,23 @@ export const Post = ({ postData = null, postId = null, details }) => {
             </div>
           </DialogContent>
           <DialogActions>
-            {showProgress ? (
-              <progress
-                className="w-75"
-                id="file"
-                max="100"
-                value={progress}
-              ></progress>
-            ) : null}
             <button
+              disabled={content.length === 0 || isSubmitting}
               className="btn btn-primary fw-bold text-light"
               onClick={handleComment}
             >
-              Responder
+              {isSubmitting ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span className="sr-only">Cargando...</span>
+                </>
+              ) : (
+                "Registrar"
+              )}
             </button>
           </DialogActions>
         </Dialog>

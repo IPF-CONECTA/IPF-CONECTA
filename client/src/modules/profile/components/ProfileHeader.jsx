@@ -105,9 +105,9 @@ export const Header = ({ profileData, setProfileData }) => {
         >
           {!profileData?.own ? (
             <>
-              {profileData.followsYou && (
+              {profileData?.followsYou && (
                 <span
-                  title={`${profileData.profile.user.username} te sigue`}
+                  title={`${profileData?.profile?.user?.username} te sigue`}
                   className="text-light-emphasis bg-secondary-subtle px-2 py-1 rounded me-4 fw-semibold"
                 >
                   Te sigue

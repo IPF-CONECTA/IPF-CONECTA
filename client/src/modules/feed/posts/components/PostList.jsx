@@ -70,7 +70,7 @@ export const PostList = () => {
   const handleEmojiClick = (emojiObject) => {
     console.log(emojiObject.emoji);
     setContent((prevContent) => prevContent + emojiObject.emoji);
-    setShowEmojiPicker(false); // Oculta el picker después de seleccionar un emoji
+    setShowEmojiPicker(false);
   };
 
   const handleAttachmentSelect = (e) => {
@@ -91,6 +91,7 @@ export const PostList = () => {
     }
     setPosts([]);
     setContent("");
+    setFocused(false);
     setImages([]);
     setIsSubmitting(false);
     setPage(1);

@@ -85,7 +85,7 @@ export const Profile = () => {
     if (profileData) {
       setRole(profileData?.profile.user.role.name);
     }
-  }, []);
+  }, [profileData]);
 
   return (
     <>

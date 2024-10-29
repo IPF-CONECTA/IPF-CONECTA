@@ -12,10 +12,10 @@ export const Comments = ({ postId }) => {
 
   const fetchPost = async () => {
     const post = await getPost(postId);
+    console.log(post);
     if (post.message) {
       return noti(post.message, "error");
     }
-    console.log("se hizo fetch, post:", post);
     setPost(post);
   };
 
@@ -88,7 +88,7 @@ export const Comments = ({ postId }) => {
               </button>
             </div>
             <button
-              disabled={isSubmitting}
+              disabled={content == "" || isSubmitting}
               type="submit"
               className="btn btn-primary text-light px-3 py-1 h-100 fw-bold"
             >
@@ -109,9 +109,6 @@ export const Comments = ({ postId }) => {
         </div>
       </form>
       <div className="d-flex flex-column align-items-center">
-        {post?.comments?.map((post, index) =>
-          console.log("comentarios" + index, post)
-        )}
         {post &&
           (post?.comments?.length > 0 ? (
             post?.comments?.map((post) => (
