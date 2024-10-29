@@ -1,10 +1,7 @@
-import { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import { JobCard } from "./JobCard";
 import { JobDetails } from "./JobDetails";
 
-import { authContext } from "../../../../context/auth/Context";
 import { useNoti } from "../../../../hooks/useNoti";
 import { getJobs } from "../services/jobServices";
 
@@ -100,10 +97,10 @@ export const JobSearch = () => {
       <div
         className={`filtersContainer w-100 d-flex flex-column align-items-center mt-3`}
       >
-        <div className="w-50 gap-2 d-flex">
+        <div className="w-50 gap-2 d-flex ">
           <select name="postDate" className="form-select" id="postDate">
             <option value="" defaultChecked>
-              Fecha de publicacion
+              Fecha de publicación
             </option>
             <option value="">En cualquier momento</option>
             <option value="">Último día</option>

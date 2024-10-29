@@ -383,7 +383,7 @@ export const RegisterForm = () => {
                     Confirmación de correo electrónico
                   </h2>
                   <span className="text-muted d-flex flex-column mb-2">
-                    Ingresa el codigo de confirmación de 6 dígitos que se envió
+                    Ingresa el código de confirmación de 6 dígitos que se envió
                     a tu correo
                     <span className="fw-semibold">{formData.email}</span>
                   </span>

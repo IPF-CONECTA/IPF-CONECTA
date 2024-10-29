@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { HomeNav } from "../../ui/components";
 import { PostList } from "../posts/components/PostList";
-import { RecomendedAccounts } from "../components/RecomendedAccounts";
+import { RecommendedAccounts } from "../components/RecommendedAccounts";
 
 export const BookmarksPage = () => {
   const [accounts, setAccounts] = useState([]);
@@ -23,7 +23,7 @@ export const BookmarksPage = () => {
       <main className="d-flex justify-content-center w-100 ">
         <HomeNav />
         <PostList />
-        <RecomendedAccounts error={error} accounts={accounts} />
+        <RecommendedAccounts error={error} accounts={accounts} />
       </main>
     </>
   );

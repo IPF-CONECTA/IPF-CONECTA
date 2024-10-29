@@ -6,13 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
   const [skills, setSkills] = useState([]);
   const [openSkillModal, setOpenSkillModal] = useState(false);
-  const displayedSkills = skills?.slice(0, 2);
+  const displayedSkills = skillsData.slice(0, 2);
   const navigate = useNavigate();
   useEffect(() => {
     setSkills(skillsData);
   }, [skillsData]);
   return (
-    <div className="bg-body-tertiary">
+    <div className="bg-body-tertiary" id="habilidades">
       <div className="d-flex flex-column p-4">
         <div className="d-flex justify-content-between mb-2">
           <span className="fs-5 fw-bold">Habilidades</span>
@@ -45,9 +45,9 @@ export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
         </div>
         {skills && skills?.length >= 1 ? (
           <>
-            <ul className="p-0 m-0 border border-bottom-0 border-end-0 border-start-0">
-              {displayedSkills.map((skill) => (
-                <SkillCard key={skill.skillId} skill={skill} />
+            <ul className="p-0 m-0 border border-bottom-0">
+              {displayedSkills?.map((skill, index) => (
+                <SkillCard key={index} skill={skill} />
               ))}
             </ul>
           </>
@@ -59,7 +59,7 @@ export const SkillsContainer = ({ skillsData, own, onSkillSubmit }) => {
           </ul>
         )}
       </div>
-      {skills?.length > 2 && (
+      {skills.length > 2 && (
         <>
           <hr className="text-body-tertiary m-0" />
           <div className="d-flex justify-content-center w-100 py-2">

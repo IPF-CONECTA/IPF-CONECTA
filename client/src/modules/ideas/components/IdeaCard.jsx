@@ -28,7 +28,7 @@ export const IdeaCard = ({ idea }) => {
   return (
     <div
       className={`card h-100 shadow-sm border-0 cursor-pointer ${styles.ideaCard}`}
-      onClick={() => navigate(`/idea/${idea.id}`)} // Navegación al detalle de la idea
+      onClick={() => navigate(`/idea/${idea.id}`)}
     >
       <div className="card-body d-flex flex-column">
         <h5 className="card-title fw-bold text-primary">{idea.title}</h5>

@@ -8,39 +8,51 @@ import { ExperienceContainer } from "../experiences/components/ExperienceContain
 import { Header } from "./ProfileHeader";
 import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
-import { RecomendedAccounts } from "../../feed/components/RecomendedAccounts";
+import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
 import { LanguajeCardPage } from "../languaje/pages/LanguajeCardPage";
+
+import { JobOffers } from "../jobs/components/JobOffers";
+import { jobsServices } from "../jobs/services/jobsServices";
 
 export const Profile = () => {
   const noti = useNoti();
   const { username } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [jobOffers, setJobOffers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [role, setRole] = useState("");
 
   const fetchProfile = async () => {
     const res = await getProfile(username);
+    console.log(res.data);
     if (res.status !== 200) {
       return noti(res.message, "error");
     }
     setProfileData(res.data);
   };
-
   const fetchProjects = async () => {
     const res = await projectsService.getProjects(username);
     if (res.status !== 200 && res.status !== 404) {
-      return noti("error?", "error");
+      return noti("Hubo un error al obtener los proyectos", "error");
     }
     setProjects(res.data);
+  };
+  const fetchJobOffers = async () => {
+    const res = await jobsServices.getJobsByUsername(username);
+    if (res.status !== 200) {
+      return noti("Hubo un error al obtener los empleos", "error");
+    }
+    setJobOffers(res.data);
   };
   const fetchExperiences = async () => {
     const res = await getExperiences(username);
     if (res.status !== 200 && res.status !== 404) {
-      return noti("error", "error");
+      return noti("Hubo un error al obtener las experiencias", "error");
     }
     if (res.status === 200) {
       setExperiences(res.data);
@@ -53,7 +65,9 @@ export const Profile = () => {
     if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error la obtener las habilidades");
     }
-
+    if (res.status == 404) {
+      return setSkills([]);
+    }
     setSkills(res.data);
   };
 
@@ -62,7 +76,17 @@ export const Profile = () => {
     fetchExperiences();
     fetchProjects();
     fetchSkills();
-  }, [username]);
+
+    if (role === "recruiter") {
+      fetchJobOffers();
+    }
+  }, [username, role]);
+
+  useEffect(() => {
+    if (profileData) {
+      setRole(profileData?.profile.user.role.name);
+    }
+  }, []);
 
   return (
     <>
@@ -71,10 +95,10 @@ export const Profile = () => {
           className={`w-100 d-flex justify-content-evenly px-5 pt-4 ${styles.mainContainer}`}
         >
           <div
-            className={`profile d-flex flex-column align-items-center border rounded-top mb-4 ${styles.profileContainer}`}
+            className={`profile d-flex flex-column align-items-center border rounded-top-4 mb-4 ${styles.profileContainer}`}
           >
             <Header profileData={profileData} setProfileData={setProfileData} />
-            <Nav />
+            <Nav role={role} />
             <main className="w-100">
               <AboutCard
                 own={profileData.own}
@@ -89,15 +113,24 @@ export const Profile = () => {
                   username={username}
                 />
               )}
-              {(profileData.own || projects?.length > 0) && (
-                <Projects
+              {role === "student" &&
+                (profileData.own || projects?.length > 0) && (
+                  <Projects
+                    own={profileData.own}
+                    username={profileData.profile.user.username}
+                    names={profileData.profile.names}
+                    projectsData={projects}
+                    onProjectSubmit={fetchProjects}
+                  />
+                )}
+              {role === "recruiter" && (
+                <JobOffers
                   own={profileData.own}
-                  username={profileData.profile.user.username}
-                  names={profileData.profile.names}
-                  projectsData={projects}
-                  onProjectSubmit={fetchProjects}
+                  jobOffersData={jobOffers}
+                  onJobUpdate={fetchJobOffers}
                 />
               )}
+
               {(profileData.own || skills?.length > 0) && (
                 <SkillsContainer
                   skillsData={skills}
@@ -116,7 +149,7 @@ export const Profile = () => {
               )}
             </main>
           </div>
-          <RecomendedAccounts />
+          <RecommendedAccounts />
         </div>
       )}
     </>

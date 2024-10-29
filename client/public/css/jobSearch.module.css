@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 30px;
+  position: relative;
 }
 .form {
   max-width: none;

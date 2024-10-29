@@ -13,9 +13,9 @@ import bcrypt from "bcryptjs";
 import { BASIC_ROLES } from "../../constant/roles.js";
 
 export const authSignUpCtrl = async (req, res) => {
-    const { user } = req.body;
-    try {
-        if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
+  const { user } = req.body;
+  try {
+    if (!Object.keys(BASIC_ROLES).includes(user.role)) { throw new Error('Rol no valido') }
 
 
 
@@ -29,7 +29,7 @@ export const authSignUpCtrl = async (req, res) => {
 
     res.status(201).json({
       message:
-        "Por favor, verifique su cuenta con el codigo que se ha enviado a su correo",
+        "Por favor, verifique su cuenta con el código que se ha enviado a su correo",
       token,
     });
   } catch (error) {
@@ -63,11 +63,11 @@ export const authIsUsernameAvailableCtrl = async (req, res) => {
 };
 export const authLogInCtrl = async (req, res) => {
   const { user } = req.body;
-
+  console.log(user)
   try {
     const response = await authLogInSvc(user);
     if (!response.token) {
-      throw new Error("No se pudo iniciar sesion");
+      throw new Error("No se pudo iniciar sesión");
     }
     res.status(200).json({
       message: `¡Bienvenido/a, ${response.existingUser.profile.names}!`,
@@ -84,7 +84,7 @@ export const confirmAccountCtrl = async (req, res) => {
   const { id } = req.user;
   try {
     if (!receivedCode) {
-      throw new Error("Ingrese el codigo de verificacion");
+      throw new Error("Ingrese el código de verificación");
     }
 
     const data = await confirmAccountSvc(id, receivedCode);
@@ -99,13 +99,13 @@ export const sendConfirmAccountCtrl = async (req, res) => {
   token = token.split(" ")[1];
   try {
     if (!token) {
-      throw new Error("Inicie sesion para confirmar el correo");
+      throw new Error("Inicie sesión para confirmar el correo");
     }
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
     await sendConfirmAccountSvc(userId);
     res
       .status(200)
-      .json({ message: "Correo de verificacion enviado correctamente" });
+      .json({ message: "Correo de verificación enviado correctamente" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -115,14 +115,14 @@ export const sendRecoverPasswordCtrl = async (req, res) => {
   const { email } = req.body;
   if (!email) {
     throw new Error({
-      message: "Ingrese un correo electronico para recuperar su contraseña",
+      message: "Ingrese un correo electrónico para recuperar su contraseña",
     });
   }
   try {
     const token = await sendRecoverPasswordSvc(email);
     res.status(200).json({
       message:
-        "El correo fue enviado con exito. Verifique su bandeja de entrada",
+        "El correo fue enviado con éxito. Verifique su bandeja de entrada",
       token,
     });
   } catch (error) {

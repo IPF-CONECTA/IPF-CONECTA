@@ -25,7 +25,6 @@ const ProjectCard = ({ project }) => {
   const [showDescription, setShowDescription] = useState(false);
   const showProject = async (id) => {
     const res = await projectsService.getProject(id);
-    console.log(res.data);
     if (res.status !== 200) {
       return noti("Hubo un error al obtener el proyecto", "error");
     }
@@ -95,7 +94,7 @@ const ProjectCard = ({ project }) => {
             </div>
 
             <SkillsList
-              skillsData={project.projectSkills}
+              skillsData={project?.skills}
               name={project.name}
               type="Proyecto"
             />
@@ -107,7 +106,6 @@ const ProjectCard = ({ project }) => {
                       handleImageClick(index);
                     }}
                     style={{ cursor: "pointer" }}
-                    crossOrigin="anonymous"
                     className="border rounded p-1"
                     height={70}
                     src={`${BASE_URL}/images/${attachment.url}`}
@@ -131,7 +129,6 @@ const ProjectCard = ({ project }) => {
                             key={attachment.id}
                           >
                             <img
-                              crossOrigin="anonymous"
                               src={`${BASE_URL}/images/${attachment.url}`}
                               className="d-block w-100"
                               alt="imagen"

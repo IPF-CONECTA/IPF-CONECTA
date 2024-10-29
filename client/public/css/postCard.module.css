@@ -6,7 +6,7 @@
   font-size: 13px;
 }
 .profileInfo {
-  top: 100%;
+  top: 20%;
   left: 0;
   background-color: white;
   border: 1px solid #ccc;
@@ -41,4 +41,14 @@
 }
 .followButton {
   width: 60%;
+}
+
+.attachment {
+  object-fit: cover;
+}
+.fourImagesContainer {
+  height: 400px;
+}
+
+.contentContainer {
 }

@@ -17,7 +17,6 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
           <div className="d-flex align-items-center">
             <img
               src={`${BASE_URL}/logoUrl/${job.company?.logoUrl}`}
-              crossOrigin="anonymous"
               className={`me-2 rounded-circle ${styles.roundedImage}`}
               height={25}
               width={25}

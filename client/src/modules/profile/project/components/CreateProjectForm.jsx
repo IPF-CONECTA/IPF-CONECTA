@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Dialog } from "@mui/material";
-import Editor from "../../../ui/components/Editor";
+import EditorComponent from "../../../ui/components/Editor";
 import { projectsService } from "../services/projectsServices";
 import { useNoti } from "../../../../hooks/useNoti";
 import { SkillSearch } from "../../skills/components/FindSkills";
@@ -29,7 +29,6 @@ export const CreateProjectForm = ({
     if (images.length == 10) {
       return noti("Solo puedes subir 10 imagenes", "warning");
     }
-    console.log(images);
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
@@ -244,11 +243,8 @@ export const CreateProjectForm = ({
         <div className="mb-2">
           {images.length > 0 &&
             images.map((image, index) => (
-              <React.Fragment>
-                <div
-                  key={index}
-                  className="d-flex align-items-start justify-content-between align-items-center me-2"
-                >
+              <React.Fragment key={index}>
+                <div className="d-flex align-items-start justify-content-between align-items-center me-2">
                   <div>
                     <img
                       height={60}

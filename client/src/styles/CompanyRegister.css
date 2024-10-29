@@ -50,11 +50,11 @@ button {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.ubication-input {
+.location-input {
   position: relative;
 }
 
-.ubication-suggestions {
+.location-suggestions {
   position: absolute;
   background: white;
   border: 1px solid #ccc;

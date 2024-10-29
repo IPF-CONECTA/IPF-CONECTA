@@ -2,7 +2,6 @@ import axios from "axios";
 import { authService } from "../../../auth/services/authService";
 
 export const changePfp = async (file) => {
-    console.log(file)
     try {
         const formData = new FormData();
         formData.append("images", file);
@@ -12,8 +11,7 @@ export const changePfp = async (file) => {
             formData,
             { headers: { Authorization: `Bearer ${authService.getToken()}` } }
         );
-        console.log(res)
-        return { status: res.status }
+        return { data: res.data, status: res.status }
     } catch (error) {
         console.log(error)
         return { status: error.status }

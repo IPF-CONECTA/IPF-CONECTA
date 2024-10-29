@@ -15,6 +15,7 @@ export const PostInfo = () => {
   const navigate = useNavigate();
   const [showProgress, setShowProgress] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef(null);
   useEffect(() => {
     if (write == true) {
@@ -42,27 +43,22 @@ export const PostInfo = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (content.length == 0 || content.length > 200) return;
+    setIsSubmitting(true);
 
     const status = await postSvc(content, postId);
     if (status !== 201) {
       return noti("Hubo un error al publicar el post", "error");
     }
-    setShowProgress(true);
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i > 100) {
-        clearInterval(interval);
-        setShowProgress(false);
-        setContent("");
-      } else {
-        setProgress(i);
-        i++;
-      }
-    }, 10);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setShowProgress(false);
+      setContent("");
+      fetchPost();
+    }, 500);
   };
   return (
     <>
-      <div className="w-50 d-flex align-items-center">
+      <div className="w-50 d-flex align-items-center ">
         <div className="w-100 d-flex flex-column align-items-center">
           <div className="w-75 border d-flex align-items-center">
             <span
@@ -125,20 +121,27 @@ export const PostInfo = () => {
                   </button>
                 </div>
                 <button
+                  disabled={isSubmitting}
                   type="submit"
                   className="btn btn-primary text-light px-3 py-1 h-100 fw-bold"
                 >
-                  Responder
+                  {isSubmitting ? (
+                    <>
+                      <span className="sr-only">Responder</span>
+                      <span
+                        className="spinner-border spinner-border-sm ms-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    </>
+                  ) : (
+                    "Responder"
+                  )}
                 </button>
               </div>
             </div>
-            {showProgress ? (
-              <progress className="w-75" id="file" max="100" value={progress}>
-                70%
-              </progress>
-            ) : null}
           </form>
-          <div className="w-75 d-flex flex-column align-items-center">
+          <div className="w-75 d-flex flex-column align-items-center border-start border-end ">
             {post &&
               (post.comments.length > 0 ? (
                 post.comments.map((post) => (

@@ -61,7 +61,6 @@ export const AdminDashboard = () => {
               </p>
               <img
                 src={`${BASE_URL}/images/${assoc.profile.profilePic}`}
-                crossOrigin="anonymous"
                 alt="Profile"
                 className={styles.profilePic}
               />
@@ -70,7 +69,6 @@ export const AdminDashboard = () => {
               </p>
               <img
                 src={`${BASE_URL}/logoUrl/${assoc.company.logoUrl}`}
-                crossOrigin="anonymous"
                 alt="Company Logo"
                 className={styles.companyLogo}
               />
@@ -97,7 +95,6 @@ export const AdminDashboard = () => {
               <img
                 src={`${BASE_URL}/logoUrl/${company.logoUrl}`}
                 alt="Company Logo"
-                crossOrigin="anonymous"
                 className={styles.companyLogo}
               />
             </div>

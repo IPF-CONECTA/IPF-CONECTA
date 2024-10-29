@@ -23,6 +23,15 @@ export const Post = ({ post, setWrite }) => {
     }
   }, [post]);
 
+  const handleShare = async (e, id) => {
+    e.stopPropagation();
+    const ShareData = {
+      title: "Compartir post",
+      text: "Comparte este post con tus amigos",
+      url: `https://localhost:5173/post/${id}`,
+    };
+    navigator.share(ShareData);
+  };
   const handleLike = async () => {
     const { statusCode } = await like(post.id);
     if (statusCode !== 201 && statusCode !== 204) {
@@ -114,7 +123,6 @@ export const Post = ({ post, setWrite }) => {
                       handleShowProfile(false, post.profile.id)
                     }
                     src={`${BASE_URL}/images/${post.profile.profilePic}`}
-                    crossOrigin="anonymous"
                     alt={post.profile.names}
                   />
                 </div>
@@ -187,12 +195,13 @@ export const Post = ({ post, setWrite }) => {
                 dangerouslySetInnerHTML={{
                   __html: post.content.replace(/\n/g, "<br />"),
                 }}
+                className="text-break"
               ></div>{" "}
-              {post.attatchment &&
-                (post.attatchment.type === "image" ? (
-                  <img src={post.attatchment.url} alt={post.attatchment.alt} />
+              {post.attachment &&
+                (post.attachment.type === "image" ? (
+                  <img src={post.attachment.url} alt={post.attachment.alt} />
                 ) : (
-                  <video src={post.attatchment.url} />
+                  <video src={post.attachment.url} />
                 ))}
               <span className={`text-muted ${styles.smallText}`}>
                 {getDateWithHour(post.createdAt)}
@@ -267,7 +276,12 @@ export const Post = ({ post, setWrite }) => {
                   bookmark
                 </span>
               </button>
-              <button className="btn p-0 d-flex align-items-center ">
+              <button
+                className="btn p-0 d-flex align-items-center"
+                onClick={(e) => {
+                  handleShare(e, post.id);
+                }}
+              >
                 <span
                   className={`material-symbols-outlined ${styles.actionButtons}`}
                 >

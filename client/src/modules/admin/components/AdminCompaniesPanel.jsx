@@ -180,7 +180,6 @@ export const AdminCompaniesPanel = () => {
                       height={40}
                       width={40}
                       className="rounded-circle m-0"
-                      crossOrigin="anonymous"
                       alt={`Logo de ${company.name}`}
                     />
 
@@ -219,7 +218,6 @@ export const AdminCompaniesPanel = () => {
                   <img
                     src={`${BASE_URL}${selectedCompany.logoUrl}`}
                     alt={`Logo de ${selectedCompany.name}`}
-                    crossOrigin="anonymous"
                     className={"m-0 me-3 rounded-pill"}
                     height={60}
                   />

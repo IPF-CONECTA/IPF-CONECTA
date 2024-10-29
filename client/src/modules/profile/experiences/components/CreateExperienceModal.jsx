@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { findCompanies } from "../../../recruiter/services/recruiterServices";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import Select from "react-select";
-import { findUbication } from "../services/ubicationServices";
+import { findLocation } from "../services/locationServices";
 import {
   findSkills,
   getContractTypes,
@@ -33,7 +33,7 @@ export const CreateExperienceModal = ({
   } = useForm({
     defaultValues: {
       companyId: experience?.company?.id || "",
-      ubicationId: experience?.ubicationId || "",
+      locationId: experience?.locationId || "",
       modalityId: experience?.modalityId || "",
       contractTypeId: experience?.contractTypeId || "",
       startDateMonth: experience?.startDate
@@ -54,12 +54,13 @@ export const CreateExperienceModal = ({
   const [images, setImages] = useState([]);
   const [confirmChanges, setConfirmChanges] = useState(false);
   const [companySearch, setCompanySearch] = useState("");
-  const [ubicationSearch, setUbicationSearch] = useState("");
-  const [ubications, setUbications] = useState([]);
+  const [locationSearch, setLocationSearch] = useState("");
+  const [locations, setLocations] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [actualWork, setActualWork] = useState(
-    experience && experience?.endDate ? false : true | false
+    experience ? (experience?.endDate !== null ? false : true) : false
   );
+  const [addSkills, setAddSkills] = useState(false);
   const [contractTypes, setContractTypes] = useState([]);
   const [modalities, setModalities] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
@@ -80,38 +81,39 @@ export const CreateExperienceModal = ({
       ? selectedOption
       : [selectedOption];
     setSelectedSkills(skills.map((skill) => skill.value));
+    setPrevSelectedSkills(skills);
   };
 
   useEffect(() => {
     const setData = async () => {
       if (experience) {
         const companyData = await findCompanies(experience.company?.name);
-        const ubicationData = await findUbication(
-          experience.ubication.split(",")[0]
+        const locationData = await findLocation(
+          experience.location.split(",")[0]
         );
-        const company = companyData.data.map((company) => ({
-          value: company.id,
-          image: company.logoUrl,
-          label: company.name,
-        }));
-        setCompanies(company);
+        setCompanies(
+          companyData.data.map((company) => ({
+            value: company.id,
+            image: company.logoUrl,
+            label: company.name,
+          }))
+        );
 
         experience.attachments.length > 0 &&
           setExistingImages(experience.attachments);
 
-        const ubication = ubicationData.data.map((ubication) => ({
-          value: ubication.id,
-          type: ubication.type,
-          label: ubication.name,
-        }));
-        setUbications(ubication);
+        setLocations(
+          locationData.data.map((location) => ({
+            value: location.id,
+            type: location.type,
+            label: location.name,
+          }))
+        );
 
         const skills = await Promise.all(
           experience.experienceSkills.map(async (prevSkill) => {
-            console.log("prevSkill:", prevSkill);
             const res = await findSkills(prevSkill.skill.name);
             return res.data.map((skillData) => {
-              console.log(skillData);
               if (skillData.id === prevSkill.skillId) {
                 return {
                   value: skillData.id,
@@ -121,19 +123,18 @@ export const CreateExperienceModal = ({
             });
           })
         );
-        console.log(skills);
         setPrevSelectedSkills(skills.flat());
-
+        setSelectedSkills(skills.flat());
         setValue("title", experience.title || "");
         setValue("description", experience.description || "");
         setValue("contractType", experience.contractTypeId || "");
         setValue("company", experience.company?.id || "");
-        setValue("ubication", experience.ubicationId || "");
+        setValue("location", experience.locationId || "");
         setValue("modality", experience.modalityId || "");
-        setValue("startDateMonth", experience.startDate?.slice(5, 7) || "null");
-        setValue("startDateYear", experience.startDate?.slice(0, 4) || "null");
-        setValue("endDateMonth", experience.endDate?.slice(5, 7) || "null");
-        setValue("endDateYear", experience.endDate?.slice(0, 4) || "null");
+        setValue("startDateMonth", experience.startDate?.slice(5, 7) || "");
+        setValue("startDateYear", experience.startDate?.slice(0, 4) || "");
+        setValue("endDateMonth", experience.endDate?.slice(5, 7) || "");
+        setValue("endDateYear", experience.endDate?.slice(0, 4) || "");
       }
     };
 
@@ -165,12 +166,13 @@ export const CreateExperienceModal = ({
           "error"
         );
       }
-      const modalities = res.data.map((modality) => ({
-        value: modality.id,
-        label: modality.name,
-      }));
 
-      setModalities(modalities);
+      setModalities(
+        res.data.map((modality) => ({
+          value: modality.id,
+          label: modality.name,
+        }))
+      );
     };
     fetchModalities();
     fetchContractTypes();
@@ -187,18 +189,18 @@ export const CreateExperienceModal = ({
         if (res.status !== 200) {
           return;
         }
-        const companies = res.data.map((company) => ({
-          value: company.id,
-          image: company.logoUrl,
-          label: company.name,
-        }));
 
-        setCompanies(companies);
+        setCompanies(
+          res.data.map((company) => ({
+            value: company.id,
+            image: company.logoUrl,
+            label: company.name,
+          }))
+        );
       }, 500);
 
       setDebounceTimeout(timeout);
     } else {
-      setCompanies([]);
     }
 
     return () => {
@@ -214,23 +216,24 @@ export const CreateExperienceModal = ({
       clearTimeout(debounceTimeout);
     }
 
-    if (ubicationSearch.length >= 1) {
+    if (locationSearch.length >= 1) {
       const timeout = setTimeout(async () => {
-        const res = await findUbication(ubicationSearch);
+        const res = await findLocation(locationSearch);
         if (res.status !== 200) {
           return;
         }
-        const ubications = res.data.map((ubication) => ({
-          value: ubication.id,
-          type: ubication.type,
-          label: ubication.name,
-        }));
-        setUbications(ubications);
+        setLocations(
+          res.data.map((location) => ({
+            value: location.id,
+            type: location.type,
+            label: location.name,
+          }))
+        );
       }, 500);
 
       setDebounceTimeout(timeout);
     } else {
-      setUbications([]);
+      setLocations([]);
     }
 
     return () => {
@@ -238,17 +241,21 @@ export const CreateExperienceModal = ({
         clearTimeout(debounceTimeout);
       }
     };
-  }, [ubicationSearch]);
+  }, [locationSearch]);
 
   useEffect(() => {
     if (actualWork) {
-      setValue("endDateMonth", "null");
-      setValue("endDateYear", "null");
+      setValue("endDateMonth", "");
+      setValue("endDateYear", "");
     }
   }, [actualWork, setValue]);
 
+  const selectCustomCompany = (companyName) => {
+    setCompanies([{ value: companyName, label: companyName }]);
+    setValue("company", { value: companyName, label: companyName });
+  };
   const submitExperience = async (data) => {
-    data.images = images;
+    data.images = newImages;
     try {
       const res = await createExperience(data, selectedSkills, username);
       if (res.status !== 201) {
@@ -259,6 +266,7 @@ export const CreateExperienceModal = ({
       }
       noti("Experiencia agregada correctamente", "success");
       setOpenExperienceModal(false);
+      reset();
       onExperienceSubmit();
     } catch (error) {
       noti(
@@ -365,7 +373,6 @@ export const CreateExperienceModal = ({
                           {company.image && (
                             <img
                               src={`${BASE_URL}/logoUrl/${company?.image}`}
-                              crossOrigin="anonymous"
                               alt="logo"
                               width={24}
                               height={24}
@@ -381,36 +388,55 @@ export const CreateExperienceModal = ({
                       onInputChange={(inputValue) =>
                         setCompanySearch(inputValue)
                       }
-                      onChange={(selectedOption) =>
-                        field.onChange(selectedOption.value)
-                      }
+                      onChange={(selectedOption) => {
+                        field.onChange(selectedOption.value); // Establece el valor del campo
+                      }}
                       placeholder="Buscar empresas..."
+                      noOptionsMessage={() => (
+                        <div>
+                          <div className="d-flex flex-column">
+                            <span>No encontraste tu empresa?</span>
+                            <span className="text-secondary">
+                              Agrega{" "}
+                              {companySearch !== ""
+                                ? companySearch
+                                : "el nombre de la empresa"}
+                            </span>
+                          </div>
+                          <div style={{ marginTop: "5px" }}>
+                            <button
+                              type="button" // Asegúrate de que el tipo sea botón
+                              className="btn btn-dark"
+                              onClick={() => selectCustomCompany(companySearch)}
+                            >
+                              Agregar
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     />
                   )}
                 />
               </div>
             </div>
-            <div className="mb-3 ubication">
-              <label htmlFor="ubication">
+            <div className="mb-3 location">
+              <label htmlFor="location">
                 Ubicación <span className="text-danger">*</span>
               </label>
 
               <Controller
-                name="ubication"
+                name="location"
                 control={control}
                 rules={{ required: "Este campo es requerido" }}
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={ubications}
+                    options={locations}
+                    value={locations.find((e) => e.value === field.value)}
                     onInputChange={(inputValue) =>
-                      setUbicationSearch(inputValue)
+                      setLocationSearch(inputValue)
                     }
                     placeholder="Buscar ubicación..."
-                    value={ubications.find((e) => e.value === field.value)}
-                    onChange={(selectedOption) =>
-                      field.onChange(selectedOption.value)
-                    }
                   />
                 )}
               />
@@ -454,9 +480,9 @@ export const CreateExperienceModal = ({
                   type="date"
                   name="startDateMonth"
                   className="form-select w-100  "
-                  defaultValue="null"
+                  defaultValue=""
                 >
-                  <option value="null" disabled>
+                  <option value="" disabled>
                     Mes
                   </option>
                   <option value="01">Enero</option>
@@ -476,9 +502,9 @@ export const CreateExperienceModal = ({
                   {...register("startDateYear")}
                   name="startDateYear"
                   className="form-select w-100"
-                  defaultValue={"null"}
+                  defaultValue={""}
                 >
-                  <option value="null" disabled>
+                  <option value="" disabled>
                     Año
                   </option>
                   {Array.from(
@@ -505,9 +531,9 @@ export const CreateExperienceModal = ({
                   type="date"
                   name="endDateMonth"
                   className="form-select w-100  "
-                  defaultValue={"null"}
+                  defaultValue={""}
                 >
-                  <option value="null" disabled>
+                  <option value="" disabled>
                     Mes
                   </option>
                   <option value="01">Enero</option>
@@ -528,9 +554,9 @@ export const CreateExperienceModal = ({
                   {...register("endDateYear")}
                   name="endDateYear"
                   className="form-select w-100"
-                  defaultValue="null"
+                  defaultValue=""
                 >
-                  <option value="null" disabled>
+                  <option value="" disabled>
                     Año
                   </option>
                   {Array.from(
@@ -576,7 +602,6 @@ export const CreateExperienceModal = ({
                       <div>
                         <img
                           height={60}
-                          crossOrigin="anonymous"
                           className="me-2 border rounded p-1"
                           src={`${BASE_URL}/images/${image.url}`}
                           alt={`Imagen ${index + 1}`}
@@ -644,7 +669,10 @@ export const CreateExperienceModal = ({
             </div>
             <div className="mb-3 skills">
               <label htmlFor="skillSearch">
-                Selecciona las habilidades usadas para esta experiencia
+                Selecciona las habilidades usadas para esta experiencia{" "}
+                <span className="text-secondary">
+                  (se agregarán automáticamente a tu perfil)
+                </span>
               </label>
               <SkillSearch
                 prevSelectedSkills={prevSelectedSkills}

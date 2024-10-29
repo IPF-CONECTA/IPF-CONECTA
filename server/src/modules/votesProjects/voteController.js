@@ -2,13 +2,12 @@ import { addVote, deleteVote } from "./voteService.js";
 import { Vote } from './voteModel.js';
 
 export const createVote = async (req, res) => {
-  const { ideaId } = req.body; 
-  const {id} = req.user.profile;
+  const { ideaId } = req.body;
+  const { id } = req.user.profile;
 
   try {
     const existingVote = await Vote.findOne({ where: { id, ideaId } });
     if (existingVote) {
-      console.log('Vote already exists for user:', existingVote);
       return res.status(400).json({ message: 'Ya has votado por esta idea. Retira tu voto si deseas volver a votar.' });
     }
 
@@ -26,7 +25,6 @@ export const removeVote = async (req, res) => {
   const { id } = req.user.profile;
   try {
     const vote = await deleteVote(id, ideaId);
-    console.log('Vote removed successfully:', vote);
     return res.status(200).json(vote);
   } catch (error) {
     console.error('Error removing vote:', error);

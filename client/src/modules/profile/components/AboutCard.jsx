@@ -60,7 +60,10 @@ export const AboutCard = ({ own, aboutData, username }) => {
   );
 
   return (
-    <div className="w-100 border d-flex flex-column p-4">
+    <div
+      className="w-100 border-bottom border-top d-flex flex-column p-4"
+      id="resumen"
+    >
       <div className="d-flex justify-content-between mb-2">
         <span className="fw-bold fs-5">Acerca de</span>
         {own && !editDescription && (
@@ -99,14 +102,14 @@ export const AboutCard = ({ own, aboutData, username }) => {
                   </span>
                 </div>
               )
+            ) : about !== null ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: about?.replace(/\n/g, "<br />"),
+                }}
+              ></div>
             ) : (
-              (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: about?.replace(/\n/g, "<br />"),
-                  }}
-                ></div>
-              ) || "Sin descripción"
+              <span className="text-secondary">Sin descripción</span>
             )}
           </div>
         </>

@@ -49,3 +49,20 @@ export const getProfileIdByUsername = async (username) => {
     console.log(error);
   }
 };
+
+
+export const getConnections = async (username, typeConnection) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:4000/connections/${username}/${typeConnection}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      }
+    );
+    return { data: res.data, status: res.status };
+  } catch (error) {
+    return { status: error.status };
+  }
+}

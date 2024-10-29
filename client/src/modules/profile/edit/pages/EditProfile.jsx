@@ -3,7 +3,7 @@ import { Nav } from "../../../ui/components";
 import { PersonalDetails } from "../components/PersonalDetails";
 import { getProfile } from "../../../feed/services/feedServices";
 import { useParams } from "react-router-dom";
-import { EditHeader } from "../components/EditHeader";
+import { EditPfp } from "../components/EditPfp";
 import { useNoti } from "../../../../hooks/useNoti";
 import { authContext } from "../../../../context/auth/Context";
 
@@ -27,7 +27,7 @@ export const EditProfile = () => {
     <>
       <Nav />
       <div className="d-flex justify-content-center">
-        <EditHeader profileData={profileData} setProfileData={setProfileData} />
+        <EditPfp profileData={profileData} setProfileData={setProfileData} />
         <PersonalDetails />
       </div>
     </>

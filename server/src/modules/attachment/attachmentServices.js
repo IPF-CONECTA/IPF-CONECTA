@@ -1,23 +1,25 @@
 import { Attachment } from "./attachmentModel.js";
 
-export const addAttachmentSvc = async (attachment, type) => {
+
+export const createAttachmentsSvc = async (attachmentableId, attachments, attachmentableType, t) => {
     try {
-        const newAttachment = await Attachment.create({
-            ...attachment,
-            attachmentType: type
-        });
-        return newAttachment;
+        if (attachments.length > 0) {
+            await Promise.all(attachments.map(attachment => {
+                return Attachment.create({ attachmentableId, attachmentableType, url: attachment.filename, docType: attachment.mimetype }, { transaction: t })
+            }));
+        }
     } catch (error) {
+        console.log(error)
         throw new Error(error.message);
     }
 }
 
 
-export const getAttachmentsSvc = async (attachmentId) => {
+export const getAttachmentsSvc = async (attachmentableId) => {
     try {
         const attachments = await Attachment.findAll({
             where: {
-                attachmentId
+                attachmentableId
             }
         });
         return attachments;

@@ -1,13 +1,14 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
 
-export const getPosts = async () => {
+export const getPosts = async (page) => {
   try {
-    const res = await axios.get("http://localhost:4000/feed/posts", {
+    const res = await axios.get(`http://localhost:4000/feed/posts?page=${page}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
+    console.log("pagina ", page, "respuesta ", res)
     const data = res.data.rows;
     const statusCode = res.status;
     return { data, statusCode };
@@ -15,7 +16,7 @@ export const getPosts = async () => {
     return {
       data: [],
       statusCode: error.response?.status,
-      message: error.response?.data?.message,
+      message: error.response?.data?.message || "Hubo un error al obtener las publicaciones",
     };
   }
 };
@@ -84,9 +85,7 @@ export const followOrUnfollow = async (username) => {
         },
       }
     );
-    const data = res.data;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: error.data.message,
@@ -116,16 +115,20 @@ export const like = async (id) => {
   }
 };
 
-export const postSvc = async (post, postId = null) => {
+export const postSvc = async (post, images, postId = null) => {
+
+  const formData = new FormData();
+  formData.append("content", post);
+  if (postId) {
+    formData.append("postId", postId);
+  }
+  images.forEach((image) => {
+    formData.append("images", image);
+  });
   try {
     const res = await axios.post(
       `http://localhost:4000/feed/post`,
-      {
-        post: {
-          content: post,
-          postId: postId,
-        },
-      },
+      formData,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,

@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import { Profile } from "../profile/profileModel.js";
 import { User } from "../users/userModel.js";
 import { Follower } from "./followerModel.js";
@@ -26,3 +27,31 @@ export const followOrUnfollowSvc = async (id, idToFollow) => {
     }
 }
 
+export const getConnectionsSvc = async (id, type, reqId) => {
+    try {
+        const followers = await Follower.findAll({
+            where: { [type === "followers" ? "followingId" : "followerId"]: id },
+            include: [{
+                model: Profile,
+                attributes: ["id", "names", "surnames", "title", "profilePic"],
+                include: [{
+                    model: User,
+                    attributes: ["username"]
+                }],
+                as: type === "followers" ? "followerProfile" : "followingProfile"
+            }],
+        });
+
+        followers.map(follower => {
+            follower.dataValues.followingProfile ? follower.dataValues.followingProfile.dataValues.isFollowing = follower.followerId === reqId :
+                follower.dataValues.followerProfile.dataValues.isFollowing = follower.followingId === reqId;
+            console.log("reqId", reqId)
+            console.log("follower", follower.dataValues)
+
+        });
+        return followers;
+    } catch (error) {
+        console.log(error)
+        throw new Error(error.message);
+    }
+}
