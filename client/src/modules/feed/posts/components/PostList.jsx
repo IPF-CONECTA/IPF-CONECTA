@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getPosts, postSvc } from "../../services/feedServices";
 import { useNoti } from "../../../../hooks/useNoti";
-import { PostCard } from "./PostCard";
+import { Post } from "./Post";
 import styles from "../../../../../public/css/feed.module.css";
 import EmojiPicker from "emoji-picker-react";
 
@@ -225,7 +225,7 @@ export const PostList = () => {
       </div>
       <div className="w-75 d-flex flex-column flex-grow-1 align-items-center border-end border-start">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <Post key={post.id} postData={post} details={false} />
         ))}
         {isLoading && (
           <div className="d-flex justify-content-center my-3">

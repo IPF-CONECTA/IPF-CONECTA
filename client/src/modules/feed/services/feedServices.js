@@ -116,15 +116,18 @@ export const like = async (id) => {
 };
 
 export const postSvc = async (post, images, postId = null) => {
-
+  console.log("postId en servicio", postId)
   const formData = new FormData();
   formData.append("content", post);
   if (postId) {
     formData.append("postId", postId);
   }
-  images.forEach((image) => {
-    formData.append("images", image);
-  });
+  images !== null && images.length > 0 &&
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+
   try {
     const res = await axios.post(
       `http://localhost:4000/feed/post`,
@@ -170,6 +173,19 @@ export const getPost = async (postId) => {
     return res.data;
   } catch (error) {
     return error.status, error.message;
+  }
+};
+
+export const deletePost = async (postId) => {
+  try {
+    const res = await axios.delete(`http://localhost:4000/feed/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
+    });
+    return res.status;
+  } catch (error) {
+    return error.status;
   }
 };
 

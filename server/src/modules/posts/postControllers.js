@@ -1,4 +1,4 @@
-import { createPostSvc, getPostByIdSvc, getPostsSvc } from "./postServices.js";
+import { createPostSvc, deletePostSvc, getPostByIdSvc, getPostsSvc } from "./postServices.js";
 
 export const getPostsCtrl = async (req, res) => {
     const { id } = req.user.profile;
@@ -40,6 +40,18 @@ export const createPostCtrl = async (req, res) => {
         res.status(201).json(result);
     } catch (error) {
         console.error(error)
+        res.status(500).json(error.message);
+    }
+}
+
+export const deletePostCtrl = async (req, res) => {
+    const { id } = req.user.profile;
+    const { postId } = req.params;
+    try {
+        await deletePostSvc(postId, id);
+        res.status(204).json();
+    } catch (error) {
+        console.log(error)
         res.status(500).json(error.message);
     }
 }

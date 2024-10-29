@@ -189,11 +189,13 @@ export const getPostByIdSvc = async (postId, profileId) => {
             ]
         });
 
+
         post.comments.map(post => {
             post.dataValues.own = post.dataValues.profileId === profile.id;
             post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
             post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
         });
+        post.dataValues.own = post.dataValues.profileId === profile.id;
         post.dataValues.attachments = await getAttachmentsSvc(post.id);
         post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
         post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
@@ -204,14 +206,13 @@ export const getPostByIdSvc = async (postId, profileId) => {
     }
 };
 
-export const getAsweredPosts = async (postId) => {
+export const deletePostSvc = async (postId, profileId) => {
     try {
-        const posts = await Post.findByPk(postId, {
-            include: {
-
-            }
-        })
+        const post = await Post.findByPk(postId)
+        if (post.profileId !== profileId) throw new Error("No tienes permisos para eliminar este post")
+        await post.destroy()
+        return { message: "Post eliminado" }
     } catch (error) {
-
+        throw new Error(error.message)
     }
 }

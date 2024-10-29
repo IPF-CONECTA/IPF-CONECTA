@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import styles from "../../../../public/css/postCard.module.css";
+import styles from "../../../../public/css/PostCard.module.css";
 import { useFollow } from "../../../hooks/useFollow";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { useState } from "react";
