@@ -51,6 +51,7 @@ export const getPostsSvc = async (page, id) => {
             ],
         })
         await Promise.all(data.rows.map(async post => {
+            post.dataValues.own = post.dataValues.profileId === profile.id;
             post.dataValues.attachments = await getAttachmentsSvc(post.id)
             post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
             post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
@@ -189,6 +190,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
         });
 
         post.comments.map(post => {
+            post.dataValues.own = post.dataValues.profileId === profile.id;
             post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
             post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
         });

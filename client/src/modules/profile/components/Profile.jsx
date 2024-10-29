@@ -28,6 +28,7 @@ export const Profile = () => {
 
   const fetchProfile = async () => {
     const res = await getProfile(username);
+    console.log(res.data);
     if (res.status !== 200) {
       return noti(res.message, "error");
     }
@@ -84,7 +85,7 @@ export const Profile = () => {
     if (profileData) {
       setRole(profileData?.profile.user.role.name);
     }
-  });
+  }, []);
 
   return (
     <>

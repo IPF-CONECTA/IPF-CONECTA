@@ -1,5 +1,5 @@
 
-import { createUser, getProfileIdByUsername, getProfileInfoSvc, getRecomendedUsersSvc, getUsers } from './userServices.js';
+import { createUser, getProfileIdByUsername, getProfileInfoSvc, getRecommendedProfilesSvc, getUsers } from './userServices.js';
 
 export const getUsersController = async (_req, res) => {
     try {
@@ -69,7 +69,7 @@ export const createUserController = async (req, res) => {
 export const getRecomendedUsersController = async (req, res) => {
     const { id } = req.user.profile
     try {
-        const users = await getRecomendedUsersSvc(id);
+        const users = await getRecommendedProfilesSvc(id);
         if (users.length == 0) {
             return res.status(404).json({ message: 'No se encontraron usuarios' })
         }

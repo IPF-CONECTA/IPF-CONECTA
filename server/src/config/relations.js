@@ -200,6 +200,16 @@ export const createRelations = async () => {
     Profile.hasMany(Follower, {
       foreignKey: "followerId",
     });
+    Follower.belongsTo(Profile, {
+      foreignKey: "followingId",
+      as: "followingProfile",
+    });
+    Follower.belongsTo(Profile, {
+      foreignKey: "followerId",
+      as: "followerProfile",
+    });
+
+
     Company.belongsTo(Country, {
       foreignKey: "countryOriginId",
     });

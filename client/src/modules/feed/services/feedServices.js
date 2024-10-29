@@ -85,9 +85,7 @@ export const followOrUnfollow = async (username) => {
         },
       }
     );
-    const data = res.data;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: error.data.message,

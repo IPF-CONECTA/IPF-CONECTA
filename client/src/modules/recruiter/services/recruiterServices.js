@@ -11,9 +11,9 @@ export const findCompanies = async (search) => {
         },
       }
     );
-    return res;
+    return { status: res.status, data: res.data };
   } catch (error) {
-    return error;
+    return { status: error.response.status, data: [] };
   }
 };
 

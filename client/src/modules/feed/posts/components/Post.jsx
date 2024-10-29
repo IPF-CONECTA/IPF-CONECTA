@@ -195,6 +195,7 @@ export const Post = ({ post, setWrite }) => {
                 dangerouslySetInnerHTML={{
                   __html: post.content.replace(/\n/g, "<br />"),
                 }}
+                className="text-break"
               ></div>{" "}
               {post.attachment &&
                 (post.attachment.type === "image" ? (

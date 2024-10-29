@@ -3,6 +3,7 @@ import { getPosts, postSvc } from "../../services/feedServices";
 import { useNoti } from "../../../../hooks/useNoti";
 import { PostCard } from "./PostCard";
 import styles from "../../../../../public/css/feed.module.css";
+import EmojiPicker from "emoji-picker-react";
 
 export const PostList = () => {
   const noti = useNoti();
@@ -17,6 +18,7 @@ export const PostList = () => {
   const maxLength = 255;
   const charactersLeft = maxLength - content.length;
   const containerRef = useRef(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const fetchPosts = async (reset = false) => {
     setIsLoading(true);
@@ -29,8 +31,12 @@ export const PostList = () => {
         setPosts(res.data);
         setPage(2);
       } else {
-        setPage((prevPage) => prevPage + 1);
-        setPosts((prevPosts) => [...prevPosts, ...res.data]);
+        if (res.data.length > 0) {
+          setPage((prevPage) => prevPage + 1);
+          setPosts((prevPosts) => [...prevPosts, ...res.data]);
+        } else {
+          setError("No hay mas posts para mostrar");
+        }
       }
     } catch (error) {
       if (error.statusCode !== 200) {
@@ -61,6 +67,12 @@ export const PostList = () => {
     };
   }, [isLoading]);
 
+  const handleEmojiClick = (emojiObject) => {
+    console.log(emojiObject.emoji);
+    setContent((prevContent) => prevContent + emojiObject.emoji);
+    setShowEmojiPicker(false); // Oculta el picker después de seleccionar un emoji
+  };
+
   const handleAttachmentSelect = (e) => {
     if (images.length == 4) {
       return noti("Solo puedes adjuntar 4 archivos", "warning");
@@ -89,12 +101,10 @@ export const PostList = () => {
       className="w-50 vh-100 d-flex flex-column align-items-center"
       ref={containerRef}
     >
-      <div className={`w-100 d-flex  align-items-center flex-column mt-4`}>
+      <div className={`w-100 d-flex  align-items-center flex-column mt-2 `}>
         <form
           onSubmit={handleSubmit}
-          className={` h-100 w-75 d-flex flex-column align-items-end border ${
-            posts?.length > 0 ? "border-bottom-0" : "border-bottom"
-          } p-2 ${styles.postForm}`}
+          className={` h-100 w-75 d-flex flex-column align-items-end border border-bottom p-2 ${styles.postForm}`}
           onFocus={() => {
             setFocused(true);
           }}
@@ -149,6 +159,7 @@ export const PostList = () => {
               <button
                 type="button"
                 className="btn d-flex align-items-center h-100 me-1"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
               >
                 <span className="material-symbols-outlined fs-5">mood</span>
               </button>
@@ -172,6 +183,14 @@ export const PostList = () => {
               )}
             </button>
           </div>
+          {showEmojiPicker && (
+            <EmojiPicker
+              emojiStyle="native"
+              className="position-absolute"
+              style={{ zIndex: 1000 }}
+              onEmojiClick={handleEmojiClick}
+            />
+          )}
           {images.length > 0 && (
             <div className="w-100 d-flex">
               {images.map((image, index) => (
@@ -218,7 +237,7 @@ export const PostList = () => {
           </div>
         )}
         {error && (
-          <div className="text-danger text-center my-3">
+          <div className="text-secondary text-center my-3">
             <p>{error}</p>
           </div>
         )}

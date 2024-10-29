@@ -3,9 +3,12 @@ import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../feed/services/feedServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { Link } from "react-router-dom";
+import { ConnectionsModal } from "./ConnectionsModal";
 
 export const Header = ({ profileData, setProfileData }) => {
   const [followHoverText, setFollowHoverText] = useState("");
+  const [openConnections, setOpenConnections] = useState(false);
+  const [typeConnection, setTypeConnection] = useState("");
   const handleMouseEnter = () => {
     if (profileData?.isFollowing) {
       setFollowHoverText("Dejar de seguir");
@@ -17,23 +20,17 @@ export const Header = ({ profileData, setProfileData }) => {
   };
 
   const handleFollow = async () => {
-    const { statusCode } = await followOrUnfollow(profileData?.profile.id);
-    if (statusCode !== 201) return;
+    const res = await followOrUnfollow(profileData?.profile.user.username);
+    if (res.status !== 201) return;
     setProfileData((prevData) => ({
       ...prevData,
       isFollowing: !prevData.isFollowing,
+      cantFollowers: prevData.isFollowing
+        ? prevData.cantFollowers - 1
+        : prevData.cantFollowers + 1,
     }));
   };
 
-  const onFollow = () => {
-    handleFollow(profileData?.profile.id);
-    setProfileData((prevProfileData) => ({
-      ...prevProfileData,
-      cantFollowers: prevProfileData.isFollowing
-        ? prevProfileData.cantFollowers - 1
-        : prevProfileData.cantFollowers + 1,
-    }));
-  };
   return (
     <header className={`w-100 position-relative ${styles.header}`}>
       <div className="w-100 h-100 rounded-top-4 position-relative d-flex flex-column justify-content-between align-items-end">
@@ -72,12 +69,32 @@ export const Header = ({ profileData, setProfileData }) => {
                   )}
                 </div>
                 <div className="d-flex mb-2">
-                  <div className="text-dark-emphasis  me-3 align-items-center">
+                  <div
+                    className="text-dark-emphasis  me-3 align-items-center"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setOpenConnections(true);
+                      setTypeConnection("followers");
+                    }}
+                  >
                     <span>{profileData?.cantFollowers}</span> seguidores
                   </div>
-                  <div className="text-dark-emphasis align-items-center">
+                  <div
+                    className="text-dark-emphasis align-items-center"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setOpenConnections(true);
+                      setTypeConnection("following");
+                    }}
+                  >
                     <span>{profileData?.cantFollowing}</span> siguiendo
                   </div>
+                  <ConnectionsModal
+                    openConnections={openConnections}
+                    setOpenConnections={setOpenConnections}
+                    typeConnection={typeConnection}
+                    username={profileData?.profile.user.username}
+                  />
                 </div>
               </div>
             </div>
@@ -88,6 +105,14 @@ export const Header = ({ profileData, setProfileData }) => {
         >
           {!profileData?.own ? (
             <>
+              {profileData.followsYou && (
+                <span
+                  title={`${profileData.profile.user.username} te sigue`}
+                  className="text-light-emphasis bg-secondary-subtle px-2 py-1 rounded me-4 fw-semibold"
+                >
+                  Te sigue
+                </span>
+              )}
               <Link
                 className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
@@ -107,7 +132,7 @@ export const Header = ({ profileData, setProfileData }) => {
                 } `}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={onFollow}
+                onClick={handleFollow}
               >
                 {profileData?.isFollowing
                   ? followHoverText || "Siguiendo"

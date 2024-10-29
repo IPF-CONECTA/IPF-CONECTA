@@ -60,7 +60,10 @@ export const AboutCard = ({ own, aboutData, username }) => {
   );
 
   return (
-    <div className="w-100 border d-flex flex-column p-4" id="resumen">
+    <div
+      className="w-100 border-bottom border-top d-flex flex-column p-4"
+      id="resumen"
+    >
       <div className="d-flex justify-content-between mb-2">
         <span className="fw-bold fs-5">Acerca de</span>
         {own && !editDescription && (

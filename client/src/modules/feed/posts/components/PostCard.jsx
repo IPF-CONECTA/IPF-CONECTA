@@ -182,6 +182,14 @@ export const PostCard = ({ post }) => {
                     src={`${BASE_URL}/images/${post.profile.profilePic}`}
                     alt={post.profile.names}
                   />
+                  {profile && (
+                    <ProfileHover
+                      profileData={profile}
+                      profileRef={profileRef}
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                    />
+                  )}
                 </div>
                 <div className={`d-flex flex-column w-100 `}>
                   <div className="w-100 d-flex justify-content-between">
@@ -198,9 +206,9 @@ export const PostCard = ({ post }) => {
                       {getTime(post.createdAt)}
                     </span>
                   </div>
-                  <div className={`py-2 ${styles.contentContainer}`}>
+                  <div className={`${styles.contentContainer}`}>
                     <p
-                      className="mb-2"
+                      className="my-2 text-break"
                       dangerouslySetInnerHTML={{
                         __html: post.content.replace(/\n/g, "<br />"),
                       }}
@@ -215,7 +223,7 @@ export const PostCard = ({ post }) => {
                               onClick={(e) => openLightboxOnSlide(0, e)}
                               src={`${BASE_URL}/images/${post.attachments[0].url}`}
                               alt="post attachment"
-                              className="w-100 rounded-4"
+                              className="w-100 rounded-4 border"
                             />
                           )}
                           {post.attachments.length === 2 && (
@@ -338,14 +346,6 @@ export const PostCard = ({ post }) => {
                   </div>
                 </div>
               </div>
-              {profile && (
-                <ProfileHover
-                  profileData={profile}
-                  profileRef={profileRef}
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                />
-              )}
             </header>
 
             <footer className="d-flex justify-content-between">

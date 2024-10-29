@@ -46,7 +46,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
 
   const handleDelete = async () => {
     try {
-      await jobsServices.deleteJob(job.id); // Asegúrate de que esta función esté bien definida
+      await jobsServices.deleteJob(job.id);
       setOpenModal(false);
       onJobUpdate();
       noti("Oferta eliminada con éxito", "success");

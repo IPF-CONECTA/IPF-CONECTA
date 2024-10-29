@@ -3,7 +3,7 @@ import { Role } from "../roles/roleModel.js";
 import { User } from "../users/userModel.js";
 import { Profile } from "./profileModel.js";
 
-export const getProfileByUsername = async (id, username) => {
+export const getProfileByUsername = async (reqId, username) => {
   try {
     const profile = await Profile.findOne({
       attributes: ["id", "names", "surnames", "profilePic", "title", "about"],
@@ -31,18 +31,24 @@ export const getProfileByUsername = async (id, username) => {
     });
     const res = { profile, cantFollowers, cantFollowing, own: true };
 
-    if (id !== profile.id) {
+    if (reqId !== profile.id) {
       res.own = false;
       res.isFollowing = false;
       const following = await Follower.findOne({
         where: {
           followingId: profile.id,
-          followerId: id,
+          followerId: reqId,
         },
       });
-      if (following) {
-        res.isFollowing = true;
-      }
+      const followsYou = await Follower.findOne({
+        where: {
+          followerId: profile.id,
+          followingId: reqId,
+        },
+      });
+
+      res.isFollowing = following ? true : false;
+      res.followsYou = followsYou ? true : false;
     }
     return res;
   } catch (error) {

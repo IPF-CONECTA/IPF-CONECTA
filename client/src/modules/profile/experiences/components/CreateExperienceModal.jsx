@@ -200,7 +200,6 @@ export const CreateExperienceModal = ({
 
       setDebounceTimeout(timeout);
     } else {
-      setCompanies([]);
     }
 
     return () => {
@@ -250,6 +249,10 @@ export const CreateExperienceModal = ({
     }
   }, [actualWork, setValue]);
 
+  const selectCustomCompany = (companyName) => {
+    setCompanies([{ value: companyName, label: companyName }]);
+    setValue("company", { value: companyName, label: companyName });
+  };
   const submitExperience = async (data) => {
     data.images = newImages;
     try {
@@ -384,10 +387,32 @@ export const CreateExperienceModal = ({
                       onInputChange={(inputValue) =>
                         setCompanySearch(inputValue)
                       }
-                      onChange={(selectedOption) =>
-                        field.onChange(selectedOption.value)
-                      }
+                      onChange={(selectedOption) => {
+                        field.onChange(selectedOption.value); // Establece el valor del campo
+                      }}
                       placeholder="Buscar empresas..."
+                      noOptionsMessage={() => (
+                        <div>
+                          <div className="d-flex flex-column">
+                            <span>No encontraste tu empresa?</span>
+                            <span className="text-secondary">
+                              Agrega{" "}
+                              {companySearch !== ""
+                                ? companySearch
+                                : "el nombre de la empresa"}
+                            </span>
+                          </div>
+                          <div style={{ marginTop: "5px" }}>
+                            <button
+                              type="button" // Asegúrate de que el tipo sea botón
+                              className="btn btn-dark"
+                              onClick={() => selectCustomCompany(companySearch)}
+                            >
+                              Agregar
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     />
                   )}
                 />
