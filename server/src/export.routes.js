@@ -64,4 +64,6 @@ export const routes = (app) => {
   app.use(langRouter);
   app.use(langUserRouter);
   app.use(skillableRoutes)
+  app.use(langRouter);
+  app.use(langUserRouter);
 };

@@ -5,7 +5,7 @@ import {
   removeLang,
 } from "./langUserService.js";
 
-import { getProfileIdByUsername } from "../userServices.js";
+import { getProfileIdByUsername } from "../../users/userServices.js";
 
 export const getLangsByProfileId = async (req, res) => {
   try {

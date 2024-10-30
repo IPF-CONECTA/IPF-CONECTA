@@ -12,7 +12,6 @@ import {
 } from "../services/languajeService.js";
 import { Header } from "../../components/ProfileHeader";
 import { Nav } from "../../../ui/components";
-import { RecomendedAccounts } from "../../../feed/components/RecomendedAccounts";
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/allSkills.module.css";
 
