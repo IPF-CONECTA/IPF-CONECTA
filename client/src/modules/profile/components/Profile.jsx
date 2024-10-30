@@ -12,6 +12,7 @@ import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
+import { LanguajeCardPage } from "../languaje/pages/LanguajeCardPage";
 
 import { JobOffers } from "../jobs/components/JobOffers";
 import { jobsServices } from "../jobs/services/jobsServices";
@@ -131,6 +132,14 @@ export const Profile = ({ data }) => {
                   skillsData={skills}
                   own={profileData.own}
                   onSkillSubmit={fetchSkills}
+                  username={username}
+                />
+              )}
+              {(profileData.own ||
+                profileData.profile.languages?.length > 0) && (
+                <LanguajeCardPage
+                  languagesData={profileData.profile.languages}
+                  own={profileData.own}
                   username={username}
                 />
               )}

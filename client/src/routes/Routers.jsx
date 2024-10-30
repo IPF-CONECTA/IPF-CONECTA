@@ -27,6 +27,8 @@ import {
   CreateIdeas,
   DetailsIdeas,
   ProfileExperiencesPage,
+  LanguajeCardPage,
+  LanguajeEditPage,
   EditProfile,
   MessagingPage,
   ChatPage,
@@ -77,6 +79,11 @@ export const Routers = () => {
             path="/perfil/:username/habilidades"
             element={<AllSkillsPage />}
           />
+          <Route
+            path="/perfil/:username/idioma"
+            element={<LanguajeCardPage />}
+          />
+          <Route path="/languages/:username/edit" element={<LanguajeEditPage />} />
           <Route
             path="/perfil/:username/experiencias"
             element={<ProfileExperiencesPage />}

@@ -1,0 +1,52 @@
+.bg-body-tertiary {
+    background-color: #f8f9fa; /* Color de fondo suave */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fs-5 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0073b1; /* Color azul LinkedIn */
+  }
+  
+  .input-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-control {
+    border-radius: 4px;
+  }
+  
+  .btn {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .btn-success {
+    background-color: #28a745; /* Color verde */
+    color: white;
+  }
+  
+  .btn-warning {
+    background-color: #ffc107; /* Color amarillo */
+    color: black;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545; /* Color rojo */
+    color: white;
+  }
+  
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .d-flex {
+    display: flex;
+  }
+  

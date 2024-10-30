@@ -51,6 +51,7 @@ export const CreateExperienceModal = ({
     },
   });
   const noti = useNoti();
+  const [images, setImages] = useState([]);
   const [confirmChanges, setConfirmChanges] = useState(false);
   const [companySearch, setCompanySearch] = useState("");
   const [locationSearch, setLocationSearch] = useState("");

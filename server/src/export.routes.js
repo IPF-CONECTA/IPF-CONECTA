@@ -26,6 +26,8 @@ import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
 import SkillProfileRoutes from "./modules/profile/skills_user/skillProfileRoutes.js";
 import messageRoutes from "./modules/chat/message/messageRoutes.js";
 import chatRoutes from "./modules/chat/chatRoutes.js";
+import langRouter from "./modules/langs/lang.routes.js";
+import langUserRouter from "./modules/profile/langs_user/langUserRoutes.js";
 
 import profilePicRoutes from "./modules/profile/profilePic/profilePicRoutes.js";
 import skillableRoutes from "./modules/skills/skillable/skillableRoutes.js";
@@ -60,4 +62,6 @@ export const routes = (app) => {
   app.use("/message", messageRoutes);
   app.use(chatRoutes);
   app.use(skillableRoutes)
+  app.use(langRouter);
+  app.use(langUserRouter);
 };
