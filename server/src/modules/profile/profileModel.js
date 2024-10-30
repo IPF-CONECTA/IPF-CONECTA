@@ -38,7 +38,11 @@ export const Profile = sequelize.define('profile', {
     profilePic: {
         type: DataTypes.STRING(),
         allowNull: false,
-        //AQUI TENDRIA QUE IR EL DEFAULT PFP CON EL URL DE CLOUDINARY
         defaultValue: 'defaultPfp.jpg'
+    },
+    bannerPic: {
+        type: DataTypes.STRING(),
+        allowNull: false,
+        defaultValue: 'defaultBanner.jpg'
     },
 })

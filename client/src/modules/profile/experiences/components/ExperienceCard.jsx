@@ -24,12 +24,12 @@ export const ExperienceCard = ({
     setOpenImage([true, index]);
   };
   const handleEditClick = (experience) => {
-    console.log(experience);
     setExperienceToEdit(experience);
     setIsModalOpen(true);
   };
+
   useEffect(() => {
-    const skills = experience.experienceSkills.slice(0, 3);
+    const skills = experience.skills?.slice(0, 3);
     setSkills(skills);
   }, [experience]);
   return (
@@ -37,7 +37,6 @@ export const ExperienceCard = ({
       <li key={experience.id} className="list-unstyled py-2 d-flex w-100">
         <div className="mx-2">
           <img
-            crossOrigin="anonymous"
             width={45}
             height={45}
             src={`${BASE_URL}/logoUrl/${experience.company.logoUrl}`}
@@ -79,10 +78,13 @@ export const ExperienceCard = ({
               ? getDateMonth(experience.endDate)
               : "Actualidad"}
             {" · "}
-            {getTimeQuantity(experience.startDate, experience.endDate)}
+            {getTimeQuantity(
+              experience.startDate,
+              experience.endDate ? experience.endDate : new Date().getDate()
+            )}
           </span>
           <span className={`text-secondary ${styles.smallText}`}>
-            {experience.ubication}
+            {experience.location}
           </span>
           {experience.description && (
             <p className={`${styles.smallText} py-2`}>
@@ -107,66 +109,62 @@ export const ExperienceCard = ({
             </p>
           )}
 
-          {experience.experienceSkills &&
-            experience.experienceSkills.length > 0 && (
-              <div className="d-flex align-items-center">
-                <span className="material-symbols-outlined fw-lighter">
-                  grade
-                </span>
-                <ul className={` ${styles.smallText} fw-semibold p-0`}>
-                  {skills.map((skill, index) => (
-                    <li key={skill.skillId} className="d-inline me-2">
-                      <span>{skill.skill.name}</span>
-                      {index !== skills.length - 1 && ","}
-                    </li>
-                  ))}
-                  {experience.experienceSkills.length > 3 && (
-                    <li
-                      className="d-inline me-2 fw-semibold"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setShowAllSkills(true)}
-                    >
-                      y {experience.experienceSkills.length - 3} más...
-                    </li>
-                  )}
-                  <Dialog
-                    open={showAllSkills}
-                    onClose={() => setShowAllSkills(false)}
-                    fullWidth
-                    maxWidth="sm"
+          {experience.skills && experience.skills.length > 0 && (
+            <div className="d-flex align-items-center">
+              <span className="material-symbols-outlined fw-lighter">
+                grade
+              </span>
+              <ul className={` ${styles.smallText} fw-semibold p-0`}>
+                {skills.map((skill, index) => (
+                  <li key={skill.id} className="d-inline me-2">
+                    <span>{skill.name}</span>
+                    {index !== skills.length - 1 && ","}
+                  </li>
+                ))}
+                {experience.skills.length > 3 && (
+                  <li
+                    className="d-inline me-2 fw-semibold"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowAllSkills(true)}
                   >
-                    <div className="p-3">
-                      <div className="d-flex justify-content-between mb-3">
-                        <span className="fw-bold fs-5 ">
-                          {experience.title}
+                    y {experience.skills.length - 3} más...
+                  </li>
+                )}
+                <Dialog
+                  open={showAllSkills}
+                  onClose={() => setShowAllSkills(false)}
+                  fullWidth
+                  maxWidth="sm"
+                >
+                  <div className="p-3">
+                    <div className="d-flex justify-content-between mb-3">
+                      <span className="fw-bold fs-5 ">{experience.title}</span>
+                      <button
+                        onClick={() => setShowAllSkills(false)}
+                        className="btn d-flex p-0 align-items-center"
+                      >
+                        <span className="material-symbols-outlined text-dark-emphasis">
+                          close
                         </span>
-                        <button
-                          onClick={() => setShowAllSkills(false)}
-                          className="btn d-flex p-0 align-items-center"
-                        >
-                          <span className="material-symbols-outlined text-dark-emphasis">
-                            close
-                          </span>
-                        </button>
-                      </div>
-                      <ul className="p-0 m-0">
-                        {experience.experienceSkills.map((skill, index) => (
-                          <React.Fragment key={skill.skillId}>
-                            <li key={skill.skillId} className="list-unstyled">
-                              {skill.skill.name}
-                            </li>
-                            {index !==
-                              experience.experienceSkills.length - 1 && (
-                              <hr className="text-body-tertiary" />
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </ul>
+                      </button>
                     </div>
-                  </Dialog>
-                </ul>
-              </div>
-            )}
+                    <ul className="p-0 m-0">
+                      {experience.skills.map((skill, index) => (
+                        <React.Fragment key={skill.id}>
+                          <li key={skill.id} className="list-unstyled">
+                            {skill.name}
+                          </li>
+                          {index !== experience.skills.length - 1 && (
+                            <hr className="text-body-tertiary" />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </ul>
+                  </div>
+                </Dialog>
+              </ul>
+            </div>
+          )}
           {attachments.length > 0 && (
             <div className="d-flex gap-2 mt-2">
               {attachments.map((attachment, index) => (
@@ -175,7 +173,6 @@ export const ExperienceCard = ({
                     handleImageClick(index);
                   }}
                   style={{ cursor: "pointer" }}
-                  crossOrigin="anonymous"
                   className="border rounded p-1"
                   height={70}
                   src={`${BASE_URL}/images/${attachment.url}`}
@@ -199,7 +196,6 @@ export const ExperienceCard = ({
                           key={attachment.id}
                         >
                           <img
-                            crossOrigin="anonymous"
                             src={`${BASE_URL}/images/${attachment.url}`}
                             className="d-block w-100"
                             alt="imagen"

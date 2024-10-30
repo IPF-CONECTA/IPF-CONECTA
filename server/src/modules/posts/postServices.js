@@ -4,6 +4,8 @@ import { User } from "../users/userModel.js"
 import { Like } from "../posts/likes/likeModel.js"
 import { Repost } from "./reposts/repostModel.js"
 import { Profile } from "../profile/profileModel.js"
+import { createAttachmentsSvc, getAttachmentsSvc } from "../attachment/attachmentServices.js"
+import { sequelize } from "../../config/db.js"
 
 export const getPostsSvc = async (page, id) => {
     const profile = await Profile.findByPk(id)
@@ -48,10 +50,12 @@ export const getPostsSvc = async (page, id) => {
 
             ],
         })
-        data.rows.map(post => {
+        await Promise.all(data.rows.map(async post => {
+            post.dataValues.own = post.dataValues.profileId === profile.id;
+            post.dataValues.attachments = await getAttachmentsSvc(post.id)
             post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
             post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
-        })
+        }))
         return { count: data.count, rows: data.rows }
     } catch (error) {
         console.log(error)
@@ -59,24 +63,22 @@ export const getPostsSvc = async (page, id) => {
     }
 }
 
-export const createPostSvc = async (post, profileId) => {
+export const createPostSvc = async (post, files, profileId) => {
+    const t = await sequelize.transaction()
     try {
         const createdPost = await Post.create({
             profileId: profileId,
             content: post.content,
             forumId: post.forumId ? post.forumId : null,
             postId: post.postId ? post.postId : null,
+        }, {
+            transaction: t
         })
-        if (post.attachments) {
-            for (let i = 0; i < post.attachments.length; i++) {
-                await Attachment.create({
-                    postId: post.id,
-                    url: post.attachments[i]
-                })
-            }
-        }
+        await createAttachmentsSvc(createdPost.id, files, "post", t)
+        await t.commit()
         return createdPost
     } catch (error) {
+        await t.rollback()
         throw new Error(error.message)
     }
 }
@@ -187,10 +189,14 @@ export const getPostByIdSvc = async (postId, profileId) => {
             ]
         });
 
+
         post.comments.map(post => {
+            post.dataValues.own = post.dataValues.profileId === profile.id;
             post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
             post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
         });
+        post.dataValues.own = post.dataValues.profileId === profile.id;
+        post.dataValues.attachments = await getAttachmentsSvc(post.id);
         post.dataValues.liked = post.dataValues.likes.some(like => like.dataValues.profileId === profile.id);
         post.dataValues.reposted = post.dataValues.reposts.some(repost => repost.dataValues.profileId === profile.id);
 
@@ -200,14 +206,13 @@ export const getPostByIdSvc = async (postId, profileId) => {
     }
 };
 
-export const getAsweredPosts = async (postId) => {
+export const deletePostSvc = async (postId, profileId) => {
     try {
-        const posts = await Post.findByPk(postId, {
-            include: {
-
-            }
-        })
+        const post = await Post.findByPk(postId)
+        if (post.profileId !== profileId) throw new Error("No tienes permisos para eliminar este post")
+        await post.destroy()
+        return { message: "Post eliminado" }
     } catch (error) {
-
+        throw new Error(error.message)
     }
 }

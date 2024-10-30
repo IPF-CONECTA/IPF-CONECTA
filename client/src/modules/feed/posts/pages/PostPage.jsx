@@ -1,17 +1,39 @@
 import { HomeNav } from "../../../ui/components";
-
-import { RecomendedAccounts } from "../../components/RecomendedAccounts";
-import { PostInfo } from "../components/PostInfo";
-
+import { RecommendedAccounts } from "../../components/RecommendedAccounts";
 import styles from "../../../../../public/css/feed.module.css";
+import { Post } from "../components/Post";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Comments } from "../components/Comments";
+
 export const PostPage = () => {
+  const { postId } = useParams();
+  const [write, setWrite] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <>
       <main className="d-flex justify-content-center w-100 ">
         <HomeNav />
-        <PostInfo />
+        <div
+          className="d-flex flex-column align-items-center border"
+          style={{ width: "38%", minHeight: "100vh" }}
+        >
+          <div className="w-100 border-bottom d-flex align-items-center">
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(-1)}
+              className="material-symbols-outlined fw-semibold p-3"
+            >
+              arrow_back
+            </span>
+            <span className="fs-4 fw-semibold">Post</span>
+          </div>
+          <Post postId={postId} details={true} setWrite={setWrite} />
+          <Comments postId={postId} write={write} setWrite={setWrite} />
+        </div>
         <div className={`${styles.asideContainer}`}>
-          <RecomendedAccounts />
+          <RecommendedAccounts />
         </div>
       </main>
     </>

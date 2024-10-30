@@ -1,7 +1,6 @@
-// src/components/ProfileHover.jsx
 import { useNavigate } from "react-router-dom";
 
-import styles from "../../../../public/css/postCard.module.css"; // Asegúrate de importar los estilos correctos
+import styles from "../../../../public/css/PostCard.module.css";
 import { useFollow } from "../../../hooks/useFollow";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { useState } from "react";
@@ -25,7 +24,6 @@ export const ProfileHover = ({
       <div className="d-flex justify-content-between align-items-center w-100">
         <img
           src={`${BASE_URL}/images/${profileInfo.profile.profilePic}`}
-          crossOrigin="anonymous"
           width={40}
           height={40}
           className="rounded-circle"
@@ -68,13 +66,13 @@ export const ProfileHover = ({
           @{profileInfo.profile.user.username}
         </span>
         <div className="d-flex">
-          <div className="pe-3">
-            <span className="fw-bold">{profileInfo.cantFollowers}</span>
-            <span className="text-muted"> Seguidores</span>
+          <div className="me-3 text-secondary">
+            <span>{profileInfo.cantFollowers}</span>
+            <span> Seguidores</span>
           </div>
-          <div>
-            <span className="fw-bold">{profileInfo.cantFollowing}</span>
-            <span className="text-muted"> Siguiendo</span>
+          <div className="text-secondary">
+            <span>{profileInfo.cantFollowing}</span>
+            <span> Siguiendo</span>
           </div>
         </div>
       </div>

@@ -2,11 +2,10 @@ import { sequelize } from "../../../config/db.js";
 import { getAttachmentsSvc } from "../../attachment/attachmentServices.js";
 import { Company } from "../../recruiters/companies/companyModel.js";
 import { Modality } from "../../recruiters/job/jobModalities/modalityModel.js";
-import { Skill } from "../../skills/skillsModel.js";
-import { City } from "../../ubications/models/cityModel.js";
-import { Country } from "../../ubications/models/countryModel.js";
-import { State } from "../../ubications/models/stateModel.js";
-import { ExperienceSkill } from "./experienceSkillModel.js";
+import { createSkillables, getSkillables } from "../../skills/skillable/skillableServices.js";
+import { City } from "../../locations/models/cityModel.js";
+import { Country } from "../../locations/models/countryModel.js";
+import { State } from "../../locations/models/stateModel.js";
 import { Experience } from "./experiencesModel.js";
 
 export const getExperiencesSvc = async (profileId) => {
@@ -16,14 +15,6 @@ export const getExperiencesSvc = async (profileId) => {
         profileId,
       },
       include: [
-        {
-          model: ExperienceSkill,
-          attributes: ["skillId"],
-          include: [{
-            model: Skill,
-            attributes: ["name"]
-          }]
-        },
         {
           model: Modality,
           attributes: ["name"]
@@ -57,23 +48,25 @@ export const getExperiencesSvc = async (profileId) => {
     });
 
     experiences = await Promise.all(experiences.map(async (experience) => {
+      const skills = await getSkillables(experience.id, "experience")
       const attachments = await getAttachmentsSvc(experience.id);
       experience.dataValues.attachments = attachments;
+      experience.dataValues.skill = skills
       return experience;
     }));
 
     const formattedExperiences = experiences.map(exp => {
-      let ubication = '';
+      let location = '';
       if (exp.city) {
-        ubication = `${exp.city.name}, ${exp.city.state ? exp.city.state.name + ', ' : ''}${exp.city.state.country.name}`;
+        location = `${exp.city.name}, ${exp.city.state ? exp.city.state.name + ', ' : ''}${exp.city.state.country.name}`;
       } else if (exp.state) {
-        ubication = `${exp.state.name}, ${exp.state.country.name}`;
+        location = `${exp.state.name}, ${exp.state.country.name}`;
       } else if (exp.country) {
-        ubication = `${exp.country.name}`;
+        location = `${exp.country.name}`;
       }
       return {
         ...exp.toJSON(),
-        ubication
+        location
       };
     });
 
@@ -86,7 +79,6 @@ export const getExperiencesSvc = async (profileId) => {
 
 
 export const createExperienceSvc = async (experience, profileId) => {
-  console.log(experience)
   const t = await sequelize.transaction()
   try {
 
@@ -94,8 +86,8 @@ export const createExperienceSvc = async (experience, profileId) => {
       title: experience.title,
       contractTypeId: experience.contractTypeId,
       companyId: experience.companyId,
-      ubicationId: experience.ubicationId,
-      ubicationType: experience.ubicationType,
+      locationId: experience.locationId,
+      locationType: experience.locationType,
       modalityId: experience.modalityId,
       startDate: experience.startDate,
       endDate: experience.endDate !== "null" ? experience.endDate : null,
@@ -103,16 +95,23 @@ export const createExperienceSvc = async (experience, profileId) => {
       profileId,
     }, { transaction: t })
 
-    experience.skills && (await Promise.all(experience.skills.map(async skill => (
-      await ExperienceSkill.create({
-        experienceId: newExperience.id,
-        skillId: skill
-      }, { transaction: t })
-    ))))
+    await createSkillables(newExperience.id, experience.skills, "experience", t)
+
     await t.commit()
     return newExperience;
   } catch (error) {
     await t.rollback()
     throw new Error(error.message)
+  }
+}
+
+
+export const updateExperienceSvc = async (experience, profileId) => {
+  try {
+    const isExistingExperience = await Experience.findByPk(experience.id);
+    if (!isExistingExperience) throw new Error("No se encontró la experiencia a actualizar")
+
+  } catch (error) {
+
   }
 }

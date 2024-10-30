@@ -2,10 +2,10 @@ import { Profile } from "../../../profile/profileModel.js";
 import { Association } from "../../../recruiters/associations/associationModel.js";
 import { CompanyIndustry } from "../../../recruiters/companies/companyIndustry/companyIndustryModel.js";
 import { Company } from "../../../recruiters/companies/companyModel.js";
-import { CompanyUbication } from "../../../recruiters/companies/companyUbication/companyUbicationModel.js";
-import { City } from "../../../ubications/models/cityModel.js";
-import { Country } from "../../../ubications/models/countryModel.js";
-import { State } from "../../../ubications/models/stateModel.js";
+import { CompanyLocation } from "../../../recruiters/companies/companyLocation/companyLocationModel.js";
+import { City } from "../../../locations/models/cityModel.js";
+import { Country } from "../../../locations/models/countryModel.js";
+import { State } from "../../../locations/models/stateModel.js";
 import { User } from "../../../users/userModel.js";
 
 export const getAssociations = async (status) => {
@@ -74,7 +74,7 @@ export const getAssociationById = async (id) => {
               attributes: ["name", "emoji", "id"],
             },
             {
-              model: CompanyUbication,
+              model: CompanyLocation,
               include: [{
                 model: Country,
                 attributes: ["name", "emoji"],

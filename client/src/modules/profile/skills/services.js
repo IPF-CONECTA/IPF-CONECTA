@@ -16,16 +16,16 @@ export const getSkills = async (username) => {
     }
 }
 
-export const deleteSkill = async (id) => {
+export const deleteSkill = async (skillableId, skillId) => {
     try {
-        const res = await axios.post(`http://localhost:4000/skillProfile/${id}`, {}, {
+        const res = await axios.post(`http://localhost:4000/skillable/${skillableId}/${skillId}`, {}, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`
             }
         })
         return { data: res.data, status: res.status }
     } catch (error) {
-        return { status: res.status, message: res.message }
+        return { status: error.status, message: error.message }
     }
 }
 

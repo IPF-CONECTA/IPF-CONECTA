@@ -10,7 +10,7 @@ import { Role } from "../roles/roleModel.js";
 import { Association } from "../recruiters/associations/associationModel.js";
 import { Company } from "../recruiters/companies/companyModel.js";
 import { CompanyIndustry } from "../recruiters/companies/companyIndustry/companyIndustryModel.js";
-import { LangsUser } from "./langs_user/langsUserModel.js";
+import { LangsUser } from "../profile/langs_user/langsUserModel.js";
 import { Lang } from "../langs/langModel.js";
 import { LangLevel } from "../langs/langLevelsModel.js";
 import { Post } from "../posts/postModel.js";
@@ -20,7 +20,7 @@ export const getUsers = async () => {
   return users;
 };
 
-export const getRecomendedUsersSvc = async (profileId) => {
+export const getRecommendedProfilesSvc = async (profileId) => {
   try {
     const following = await Follower.findAll({
       where: {
@@ -31,30 +31,30 @@ export const getRecomendedUsersSvc = async (profileId) => {
     const followedProfilesIds = following.map(
       (follower) => follower.followingId
     );
-    const users = await User.findAll({
+    const profiles = await Profile.findAll({
+      attributes: ["id", "names", "surnames", "profilePic", "title"],
       where: {
-        [Op.or]: [
-          { roleId: BASIC_ROLES.recruiter },
-          { roleId: BASIC_ROLES.student },
-        ],
         id: {
-          [Op.ne]: profileId,
+          [Op.notIn]: [...followedProfilesIds, profileId],
         },
       },
-      attributes: ["id", "email", "username"],
       limit: 5,
       include: {
-        model: Profile,
-        attributes: ["id", "names", "surnames", "profilePic", "title"],
+        model: User,
+        attributes: ["id", "email", "username"],
         where: {
+          [Op.or]: [
+            { roleId: BASIC_ROLES.recruiter },
+            { roleId: BASIC_ROLES.student },
+          ],
           id: {
-            [Op.notIn]: [...followedProfilesIds, profileId],
+            [Op.ne]: profileId,
           },
         },
       },
     });
 
-    return users;
+    return profiles;
   } catch (error) {
     throw error;
   }

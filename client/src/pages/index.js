@@ -5,7 +5,6 @@ export { AdminCompaniesPanelPage } from "../modules/admin/pages/AdminCompaniesPa
 export { AdminDashboardPage } from "../modules/admin/pages/AdminDashboardPage";
 
 //App pages:
-
 export { HomePage } from "../modules/app/pages/HomePage";
 export { NotFoundPage } from "../modules/app/pages/NotFoundPage";
 export { SupportPage } from "../modules/app/pages/SupportPage";
@@ -28,6 +27,7 @@ export { LanguajeCardPage } from "../modules/profile/languaje/pages/LanguajeCard
 export { LanguajeEditPage } from "../modules/profile/languaje/pages/LanguajeEditPage";
 
 export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
+
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";
@@ -37,18 +37,20 @@ export { ChatPage } from "../modules/chat/pages/ChatPage";
 export { MessagingPage } from "../modules/chat/pages/MessagingPage";
 
 //Recruiter pages:
-
 export { CompanyConfirmedPage } from "../modules/recruiter/pages/CompanyConfirmedPage";
 export { CreateCompanyPage } from "../modules/recruiter/pages/CreateCompanyPage";
-export { CreateCompanyUbicationPage } from "../modules/recruiter/pages/CreateCompanyUbicationPage";
+export { CreateCompanyLocationPage } from "../modules/recruiter/pages/CreateCompanyLocationPage";
 export { MessageRecruiterPage } from "../modules/recruiter/pages/MessageRecruiterPage";
 export { SelectCompanyPage } from "../modules/recruiter/pages/SelectCompanyPage";
 export { WaitingAssociationsApprovalPage } from "../modules/recruiter/pages/WaitingAssociationsApprovedPage";
-
+export { RecruiterJobOffersPage } from "../modules/profile/jobs/pages/ProfileJobOffersPage";
 //Job Pages:
 export { JobCreatePage } from "../modules/recruiter/job/pages/CreateJobsFormPage";
 export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";
 export { JobDetailsPage } from "../modules/recruiter/job/pages/JobsDetailsPage";
+
+//Job Postulations Pages:
+export { JobPostulationsPage } from "../modules/jobs/postulations/pages/JobPostulationsPage";
 
 // Projects ideas
 export { Ideas } from "../modules/ideas/pages/Ideas";

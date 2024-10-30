@@ -144,7 +144,6 @@ export const SelectCompany = () => {
                           >
                             <img
                               src={`${BASE_URL}/logoUrl/${company.logoUrl}`}
-                              crossOrigin="anonymous"
                               alt="logo"
                               width={30}
                               className="me-2"

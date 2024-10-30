@@ -8,8 +8,8 @@ export const useFollow = (initialProfile) => {
   const noti = useNoti();
   const handleFollowOrUnfollow = async (event, id) => {
     event.stopPropagation();
-    const { data, statusCode } = await followOrUnfollow(id);
-    if (statusCode !== 201 && statusCode !== 400) {
+    const res = await followOrUnfollow(initialProfile.user.username);
+    if (res.status !== 201 && res.status !== 400) {
       return noti(data, "error");
     }
     setProfile((prevProfile) => ({

@@ -17,8 +17,7 @@ import axios from "axios";
 import { authService } from "../../auth/services/authService";
 import DOMPurify from "dompurify";
 import stripHtml from "../../../helpers/stripHtml";
-
-const BASE_URL = "http://localhost:4000/logoUrl/";
+import { BASE_URL } from "../../../constants/BASE_URL";
 
 export const AdminAssociationsPanel = () => {
   const [selectedAssociation, setSelectedAssociation] = useState(null);
@@ -146,7 +145,6 @@ export const AdminAssociationsPanel = () => {
               >
                 <div className="d-flex align-items-center">
                   <img
-                    crossOrigin="anonymous"
                     src={`${BASE_URL}/images/${association.profile.profilePic}`}
                     alt="Usuario"
                     className="rounded-circle me-2"
@@ -166,11 +164,10 @@ export const AdminAssociationsPanel = () => {
                   <p className="mb-0">{association.company.name}</p>
                   <img
                     src={
-                      `${BASE_URL}${association.company.logoUrl}` ||
+                      `${BASE_URL}/logoUrl/${association.company.logoUrl}` ||
                       "https://via.placeholder.com/40"
                     }
                     alt="Empresa"
-                    crossOrigin="anonymous"
                     className="ms-2"
                     style={{ width: "40px", height: "40px" }}
                   />
@@ -193,12 +190,11 @@ export const AdminAssociationsPanel = () => {
           <DialogContent>
             <div className="d-flex">
               <div className="me-3 w-75 border rounded p-2">
-                <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center justify-content-between mb-3">
                   <div className="d-flex align-items-center">
                     <img
-                      crossOrigin="anonymous"
                       src={
-                        `${BASE_URL}${selectedAssociation.company.logoUrl}` ||
+                        `${BASE_URL}/logoUrl/${selectedAssociation.company.logoUrl}` ||
                         "https://via.placeholder.com/100"
                       }
                       alt={`${selectedAssociation.company.name} Logo`}
@@ -221,7 +217,7 @@ export const AdminAssociationsPanel = () => {
                   <span>
                     {selectedAssociation.company.cantEmployees} empleados
                   </span>
-                  <span className="fw-semibold border rounded-5 px-2 shadow-sm">
+                  <span className="fw-semibold border rounded-5 px-2 py-1 bg-body-tertiary">
                     {selectedAssociation.status.toUpperCase()}
                   </span>
                 </div>
@@ -251,7 +247,7 @@ export const AdminAssociationsPanel = () => {
                 <p>
                   <span className="fw-semibold">Sede principal: </span>
                   <span>
-                    {selectedAssociation.company.companyUbications[0].address}
+                    {selectedAssociation.company.companyLocations[0].address}
                   </span>
                 </p>
               </div>
@@ -263,7 +259,6 @@ export const AdminAssociationsPanel = () => {
                     <div className="d-flex mb-2">
                       <img
                         src={`${BASE_URL}/images/${selectedAssociation.profile.profilePic}`}
-                        crossOrigin="anonymous"
                         alt={`${selectedAssociation.profile.names} Logo`}
                         className="rounded-circle me-2"
                         width={40}

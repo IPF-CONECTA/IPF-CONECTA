@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { isToken } from "../../middlewares/jwt/isVerifiedAccount.js";
-import { getProfileByIdCtrl } from "./profileControllers.js";
+import { getProfileByUsernameCtrl } from "./profileControllers.js";
 
 const profileRoutes = Router()
 
-profileRoutes.get('/get-user-profile/:username', isToken, getProfileByIdCtrl)
+profileRoutes.get('/get-user-profile/:username', isToken, getProfileByUsernameCtrl)
 
 export default profileRoutes

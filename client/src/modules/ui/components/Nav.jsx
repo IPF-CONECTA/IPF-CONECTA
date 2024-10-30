@@ -64,9 +64,14 @@ export const Nav = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <span className="material-symbols-outlined fs-2 fw-light text-muted">
-                    account_circle
-                  </span>
+                  <img
+                    height={35}
+                    width={35}
+                    crossOrigin="anonymous"
+                    className="rounded-circle"
+                    src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
+                    alt="tu foto de perfil"
+                  />
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-end p-0 p-2">
                   {authState.role !== "admin" && (
@@ -77,14 +82,9 @@ export const Nav = () => {
                           to={`/perfil/${authState.user.username}`}
                         >
                           Mi perfil
-                          <img
-                            height={24}
-                            width={24}
-                            className="rounded-circle"
-                            src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
-                            crossOrigin="anonymous"
-                            alt="tu foto de perfil"
-                          />
+                          <span className="material-symbols-outlined fw-light">
+                            account_circle
+                          </span>
                         </Link>
                       </li>
                       <li>

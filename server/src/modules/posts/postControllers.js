@@ -1,4 +1,4 @@
-import { createPostSvc, getPostByIdSvc, getPostsSvc } from "./postServices.js";
+import { createPostSvc, deletePostSvc, getPostByIdSvc, getPostsSvc } from "./postServices.js";
 
 export const getPostsCtrl = async (req, res) => {
     const { id } = req.user.profile;
@@ -35,13 +35,23 @@ export const getPostByIdCtrl = async (req, res) => {
 export const createPostCtrl = async (req, res) => {
     const { id } = req.user.profile;
     try {
-        const { post } = req.body;
-        console.log(post)
-        const result = await createPostSvc(post, id);
+        const result = await createPostSvc(req.body, req.files, id);
         if (!result) return res.status(400).json({ message: "Hubo un error al postear" });
         res.status(201).json(result);
     } catch (error) {
         console.error(error)
+        res.status(500).json(error.message);
+    }
+}
+
+export const deletePostCtrl = async (req, res) => {
+    const { id } = req.user.profile;
+    const { postId } = req.params;
+    try {
+        await deletePostSvc(postId, id);
+        res.status(204).json();
+    } catch (error) {
+        console.log(error)
         res.status(500).json(error.message);
     }
 }

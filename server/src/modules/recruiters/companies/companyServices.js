@@ -1,9 +1,4 @@
 import { Op } from "sequelize";
-import {
-  getAllLocations,
-  getLocation,
-  getLocationType,
-} from "../../../helpers/getLocationType.js";
 import { CompanyIndustry } from "./companyIndustry/companyIndustryModel.js";
 import { Company } from "./companyModel.js";
 import { Profile } from "../../profile/profileModel.js";
@@ -22,8 +17,7 @@ export const getApprovedCompaniesSvc = async () => {
         },
       ],
     });
-    const enrichedCompanies = getAllLocations(companies);
-    return enrichedCompanies;
+    return companies;
   } catch (error) {
     throw new Error(error.message);
   }

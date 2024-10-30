@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Editor from "../../ui/components/Editor";
+import EditorComponent from "../../ui/components/Editor";
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 import styles from "../../../../public/css/createCompany.module.css";
@@ -45,7 +45,6 @@ export const CreateCompanyForm = () => {
 
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
-    console.log(e.target.files);
     if (file) {
       if (
         file.type !== "image/jpeg" &&
@@ -57,10 +56,9 @@ export const CreateCompanyForm = () => {
       }
       setLogo(file);
       setPreviewLogo(URL.createObjectURL(file));
-      setValue("logoUrl", file); // Set the file in the form state
+      setValue("logoUrl", file);
     }
   };
-  // Registrar el campo description manualmente
   useEffect(() => {
     register("description", { required: "La descripción es obligatoria" });
   }, [register]);
@@ -126,9 +124,8 @@ export const CreateCompanyForm = () => {
           </div>
           <div className="mb-2">
             <label htmlFor="description">Descripción</label>
-            <Editor
-              ref={quillRef}
-              value={watch("description") || ""}
+            <EditorComponent
+              initialValue={watch("description") || ""}
               onChange={(value) => setValue("description", value)}
             />
           </div>

@@ -34,6 +34,7 @@ export const AddSkillForm = ({
           )
         )
       );
+
       if (selectedSkills.length > 1) {
         noti("Habilidades agregadas exitosamente", "success");
       } else {

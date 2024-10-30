@@ -2,7 +2,7 @@ import multer from 'multer';
 
 // Configuración de almacenamiento
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, file, cb) => {
     if (file.fieldname === 'logoUrl') {
       cb(null, 'uploads/logoUrls/'); // Carpeta para logos
     } else if (file.fieldname === 'ProfilePic') {
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
       cb(new Error('Campo de archivo no válido'), false);
     }
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     const datetime = new Date().toISOString().replace(/[-T:.Z]/g, '');
     const newFileName = `${datetime}_${file.originalname}`;
     cb(null, newFileName);

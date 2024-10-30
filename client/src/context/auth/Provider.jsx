@@ -39,10 +39,6 @@ export const AuthProvider = ({ children }) => {
 
   const [authState, dispatch] = useReducer(authReducer, initialState);
 
-  useEffect(() => {
-    validateToken(token);
-  }, []);
-
   const login = async (credentials) => {
     const res = await authService.login(credentials);
     if (res.status != 200) {

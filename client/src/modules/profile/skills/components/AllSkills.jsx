@@ -4,14 +4,15 @@ import { AddSkillForm } from "./AddSkillForm";
 import { deleteSkill } from "../services";
 import { useNoti } from "../../../../hooks/useNoti";
 import Dialog from "@mui/material/Dialog";
+import { SkillCard } from "./SkillCard";
 export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
+  console.log(skillsData);
   const [skills, setSkills] = useState([]);
   const [openSkillFormModal, setOpenSkillFormModal] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState(null);
   const noti = useNoti();
   const navigate = useNavigate();
-
   useEffect(() => {
     setSkills(skillsData);
   }, [skillsData]);
@@ -20,8 +21,13 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
     if (!selectedSkill) {
       return;
     }
-    const res = await deleteSkill(selectedSkill.skillId);
-    if (res.status !== 200) return noti(res.message, "error");
+    console.log(selectedSkill);
+    Promise.all(
+      selectedSkill[1].map((ass) => {
+        console.log(ass);
+        return deleteSkill(ass.id, selectedSkill[2]);
+      })
+    );
     noti("Habilidad eliminada", "success");
     onSkillSubmit();
     setOpenConfirmDelete(false);
@@ -32,7 +38,7 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
       <div className="d-flex justify-content-between mb-2">
         <div className="d-flex ">
           <button
-            className="btn p-0 d-flex align-items-center me-2"
+            className="btn p-0 d-flex align-items-center "
             type="button"
             onClick={() => navigate(`/perfil/${username}`)}
           >
@@ -45,9 +51,11 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
             <button
               type="button"
               onClick={() => setOpenSkillFormModal(true)}
-              className="btn p-0 me-2 d-flex align-items-center"
+              className="btn p-0 me-3 d-flex align-items-center"
             >
-              <span className="material-symbols-outlined">add</span>
+              <span className="material-symbols-outlined text-secondary">
+                add
+              </span>
             </button>
             <AddSkillForm
               openSkillModal={openSkillFormModal}
@@ -57,31 +65,17 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
           </>
         )}
       </div>
-      <ul className="p-0 m-0 list-unstyled">
+      <ul className="p-0 m-0 mx-4 list-unstyled border border-bottom-0 rounded">
         {skills && skills.length >= 1 ? (
-          skills.map((skill) => (
-            <li key={skill.skillId}>
-              <div className="d-flex justify-content-between p-2">
-                <span>{skill.skill.name}</span>
-                {own && (
-                  <div>
-                    <button
-                      onClick={() => {
-                        setSelectedSkill(skill);
-                        setOpenConfirmDelete(true);
-                      }}
-                      type="button"
-                      className="btn p-0 d-flex align-items-center"
-                    >
-                      <span className="material-symbols-outlined fw-light">
-                        do_not_disturb_on
-                      </span>
-                    </button>
-                  </div>
-                )}
-              </div>
-              <hr className="m-0 p-0" />
-            </li>
+          skills.map((skill, index) => (
+            <SkillCard
+              edit={true}
+              own={own}
+              setOpenConfirmDelete={setOpenConfirmDelete}
+              setSelectedSkill={setSelectedSkill}
+              skill={skill}
+              key={index}
+            />
           ))
         ) : own ? (
           <li className="list-group-item text-secondary">
@@ -102,8 +96,8 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
           <span className="fs-3 fw-semibold">Confirmar eliminación</span>
           <p className="mb-3">
             ¿Estás seguro de que deseas eliminar
-            <span className="fw-semibold"> {selectedSkill?.skill.name}</span> de
-            tu perfil?
+            <span className="fw-semibold"> {selectedSkill?.[0]}</span> de tu
+            perfil?
           </p>
           <div className="w-100 d-flex justify-content-end">
             <button
