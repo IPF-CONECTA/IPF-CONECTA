@@ -1,6 +1,7 @@
 import { Dialog } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNoti } from "../../../hooks/useNoti";
 
 export const ReportModal = ({ openModal, setOpenModal, reportableId }) => {
   const {
@@ -9,10 +10,12 @@ export const ReportModal = ({ openModal, setOpenModal, reportableId }) => {
     formState: { errors },
     reset,
   } = useForm();
-
+  const noti = useNoti();
   const onSubmit = (data) => {
-    alert(data);
+    console.log(data);
+    noti("Reporte enviado", "info");
     reset();
+    setOpenModal(false);
   };
   return (
     <Dialog
@@ -48,12 +51,13 @@ export const ReportModal = ({ openModal, setOpenModal, reportableId }) => {
           <span className="text-danger">{errors.reason.message}</span>
         )}
         <div className="form-floating mb-2">
-          <textarea
+          <input
+            type="text"
             {...register("description", {
               required: "Este campo es obligatorio",
             })}
             className="form-control"
-          ></textarea>
+          ></input>
           <label for="floatingTextarea2">Describe el problema</label>
         </div>
         {errors.description && (

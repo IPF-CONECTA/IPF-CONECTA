@@ -223,7 +223,6 @@ export const deleteJobSvc = async (id) => {
   }
 };
 
-
 export const updateJobSvc = async (jobId, jobData, profileId) => {
   const t = await sequelize.transaction();
   try {
@@ -239,7 +238,7 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
     if (!isCompany) throw new Error("La empresa seleccionada no existe");
 
     // Actualizar los campos del trabajo
-    console.log(jobData)
+    console.log(jobData);
     const [updated] = await Job.update(
       {
         locationableId: jobData.location.value,
@@ -258,12 +257,16 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
 
     // Actualizar habilidades si existen
     if (jobData.skills && jobData.skills.length > 0) {
-      const skillables = await getSkillables(jobId)
-      const existingSkillIds = skillables.map(skill => skill.id);
-      const newSkillIds = jobData.skills.map(skill => skill);
+      const skillables = await getSkillables(jobId);
+      const existingSkillIds = skillables.map((skill) => skill.id);
+      const newSkillIds = jobData.skills.map((skill) => skill);
 
-      const skillsToDelete = existingSkillIds.filter(id => !newSkillIds.includes(id));
-      const skillsToAdd = newSkillIds.filter(id => !existingSkillIds.includes(id));
+      const skillsToDelete = existingSkillIds.filter(
+        (id) => !newSkillIds.includes(id)
+      );
+      const skillsToAdd = newSkillIds.filter(
+        (id) => !existingSkillIds.includes(id)
+      );
 
       if (skillsToDelete.length > 0) {
         await deleteSkillables(jobId, skillsToDelete, t);

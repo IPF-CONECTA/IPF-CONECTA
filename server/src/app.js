@@ -25,13 +25,12 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-
   },
 });
 
 app.use((req, res, next) => {
-  next()
-  res.setHeader('cross-origin-resource-policy', 'cross-origin')
+  next();
+  res.setHeader("cross-origin-resource-policy", "cross-origin");
 });
 app.use(cors({
   origin: "*",

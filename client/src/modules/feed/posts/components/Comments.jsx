@@ -3,8 +3,7 @@ import { getPost, postSvc } from "../../services/feedServices";
 import styles from "../../../../../public/css/postById.module.css";
 import { Post } from "./Post";
 
-export const Comments = ({ postId }) => {
-  const [write, setWrite] = useState(false);
+export const Comments = ({ postId, write, setWrite }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef(null);
   const [post, setPost] = useState(null);
@@ -18,7 +17,11 @@ export const Comments = ({ postId }) => {
     }
     setPost(post);
   };
-
+  useEffect(() => {
+    if (write) {
+      inputRef.current.focus();
+    }
+  }, [write]);
   useEffect(() => {
     fetchPost();
   }, [postId]);

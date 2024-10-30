@@ -1,12 +1,17 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
-import { BASE_URL } from "../../../../constants/BASE_URL";
-import { getFullDate, getTime } from "../../../../helpers/getTime";
 import { Dialog } from "@mui/material";
-import { useState } from "react";
+
 import styles from "../../../../../public/css/jobProfileCard.module.css";
 
+import { BASE_URL } from "../../../../constants/BASE_URL";
+import { getFullDate, getTime } from "../../../../helpers/getTime";
 import { JobDetails } from "../../../recruiter/job/components/JobDetails";
+
 import { JobForm } from "../components/JobForm";
+import { createSlug } from "../../../../helpers/createSlug";
+import { jobPostulationsServices } from "../../../jobs/postulations/services/jobPostulationsServices";
 
 export const JobOfferCard = ({
   jobOffer,
@@ -16,11 +21,21 @@ export const JobOfferCard = ({
   onJobUpdate,
 }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [jobPostulationsNumber, setJobPostulationsNumber] = useState(0);
   const shortDescription =
     description?.length > 40
       ? `${description.substring(0, 100)}...`
       : description;
 
+  useEffect(() => {
+    jobPostulationsServices.getPostulationsByJobId(jobOffer.id).then((res) => {
+      if (res.status === 200) {
+        setJobPostulationsNumber(res.data.length);
+      }
+    });
+  });
+
+  console.log();
   return (
     <div className="d-flex justify-content-between w-100">
       <div className=" py-2 d-flex w-100">
@@ -60,11 +75,25 @@ export const JobOfferCard = ({
 
       {edit && own && (
         <div className="d-flex align-items-center">
-          <button className="btn p-0 d-flex" onClick={() => setOpenModal(true)}>
+          <button
+            className="btn d-flex p-1 me-2"
+            onClick={() => setOpenModal(true)}
+          >
             <span className="material-symbols-outlined text-dark-emphasis">
               edit
             </span>
           </button>
+          <Link
+            to={`/empleo/${jobOffer.id}/postulaciones`}
+            className="link-offset-1-hover text-decoration-none"
+          >
+            <button className="btn p-1 d-flex">
+              <span className="d-flex align-items-center gap-2">
+                <span className="material-symbols-outlined">group</span>
+              </span>
+            </button>
+          </Link>
+          <p>{jobPostulationsNumber}</p>
         </div>
       )}
 

@@ -23,10 +23,11 @@ import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { useNoti } from "../../../../hooks/useNoti";
 import { ReportModal } from "../../components/ReportModal";
 import { set } from "react-hook-form";
+import { AnswerModal } from "./answerModal";
+import { useFollow } from "../../../../hooks/useFollow";
 
-export const Post = ({ postData = null, postId = null, details }) => {
+export const Post = ({ postData = null, postId = null, details, setWrite }) => {
   const [post, setPost] = useState(postData);
-  console.log("postData", post);
   const navigate = useNavigate();
   const [lightboxController, setLightboxController] = useState({
     toggler: false,
@@ -77,8 +78,8 @@ export const Post = ({ postData = null, postId = null, details }) => {
     };
     navigator.share(ShareData);
   };
-  const handleLike = async (event) => {
-    event.stopPropagation();
+  const handleLike = async (e) => {
+    e.stopPropagation();
     const { statusCode } = await like(post.id);
     if (statusCode !== 201 && statusCode !== 204) {
       return;
@@ -94,8 +95,8 @@ export const Post = ({ postData = null, postId = null, details }) => {
     }
   };
 
-  const handleRepost = async (event) => {
-    event.stopPropagation();
+  const handleRepost = async (e) => {
+    e.stopPropagation();
     const status = await repostSvc(post.id);
     if (status !== 201 && status !== 204) {
       return;
@@ -163,9 +164,9 @@ export const Post = ({ postData = null, postId = null, details }) => {
     noti("Post eliminado", "success");
     details ? navigate("/inicio") : setPost(null);
   };
-  const handleComment = async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleComment = async (e) => {
+    e.preDefault();
+    e.stopPropagation();
     setIsSubmitting(true);
     const status = await postSvc(content, null, post.id);
     if (status !== 201) {
@@ -418,7 +419,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                       )}
                     </div>
                   </div>
-                  <div className="nav-item dropdown">
+                  <div className="nav-item dropdown postActions">
                     <Link
                       onClick={(e) => e.stopPropagation()}
                       className={`nav-link dropdown-toggle ${styles.noArrow}`}
@@ -442,7 +443,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                               enqueueSnackbar("Eliminar post?", {
                                 action: actionDelete,
                                 autoHideDuration: 5000,
-                                preventDuplicate: true,
+                                preDuplicate: true,
                                 anchorOrigin: {
                                   vertical: "bottom",
                                   horizontal: "center",
@@ -462,6 +463,24 @@ export const Post = ({ postData = null, postId = null, details }) => {
                         <>
                           <li>
                             <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleFollow;
+                              }}
+                              className="btn p-0 d-flex justify-content-between w-100"
+                            >
+                              Seguir a {post.profile.user.username}{" "}
+                              <span class="material-symbols-outlined text-primary ms-1">
+                                person_add
+                              </span>
+                            </button>
+                          </li>
+                          <li>
+                            <hr className="m-1" />
+                          </li>
+                          <li>
+                            <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenReportModal(true);
@@ -469,7 +488,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                               className="dropdown-item d-flex p-0 justify-content-between"
                             >
                               Reportar
-                              <span className="material-symbols-outlined text-danger fw-bold  ms-1">
+                              <span className="material-symbols-outlined text-primary   ms-1">
                                 report
                               </span>
                             </button>
@@ -487,7 +506,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                                   {
                                     action: actionBlock,
                                     autoHideDuration: 5000,
-                                    preventDuplicate: true,
+                                    preDuplicate: true,
                                     anchorOrigin: {
                                       vertical: "bottom",
                                       horizontal: "center",
@@ -498,7 +517,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                               className="dropdown-item d-flex p-0 justify-content-between"
                             >
                               Bloquear a {post?.profile.names}
-                              <span className="material-symbols-outlined text-danger fw-bold ms-1">
+                              <span className="material-symbols-outlined text-primary  ms-1">
                                 block
                               </span>
                             </button>
@@ -517,7 +536,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
             </header>
 
             <footer className="d-flex justify-content-between">
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center like">
                 <button
                   onClick={handleLike}
                   className="btn p-0 d-flex align-items-center "
@@ -537,7 +556,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                 </span>
               </div>
 
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center repost">
                 <button
                   className="btn p-0 d-flex align-items-center"
                   onClick={handleRepost}
@@ -558,12 +577,12 @@ export const Post = ({ postData = null, postId = null, details }) => {
                   )}
                 </span>
               </div>
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center comment">
                 <button
                   className="btn p-0 d-flex align-items-center"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setShowAnswerModal(true);
+                    details ? setWrite(true) : setShowAnswerModal(true);
                   }}
                 >
                   <span
@@ -580,7 +599,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                   )}
                 </span>
               </div>
-              <button className="btn p-0 d-flex align-items-center">
+              <button className="btn p-0 d-flex align-items-center save">
                 <span
                   className={`material-symbols-outlined ${styles.actionButtons}`}
                 >
@@ -588,7 +607,7 @@ export const Post = ({ postData = null, postId = null, details }) => {
                 </span>
               </button>
               <button
-                className="btn p-0 d-flex align-items-center"
+                className="btn p-0 d-flex align-items-center share"
                 onClick={(e) => handleShare(e, post.id)}
               >
                 <span
@@ -616,94 +635,12 @@ export const Post = ({ postData = null, postId = null, details }) => {
         </>
       )}
       {showAnswerModal && !details && (
-        <Dialog
-          open={Boolean(showAnswerModal)}
-          onClose={() => setShowAnswerModal(false)}
-          sx={{
-            "& .MuiDialog-container": {
-              "& .MuiPaper-root": {
-                width: "100%",
-                maxWidth: "550px",
-              },
-            },
-          }}
-        >
-          <DialogContent>
-            <div className="header d-flex justify-content-between align-items-center">
-              <div className="d-flex align-items-start w-100">
-                <img
-                  src={`${BASE_URL}/images/${post?.profile.profilePic}`}
-                  width={40}
-                  height={40}
-                  alt="profile pic"
-                  className="me-3 rounded-circle"
-                />
-                <div className="d-flex flex-column w-100 pe-3">
-                  <div className="d-flex w-100 justify-content-between align-items-stretch">
-                    <div className="d-flex flex-column">
-                      <div className="fs-5 fw-semibold">
-                        {post?.profile.names} {post?.profile.surnames}
-                      </div>
-                      <span className={`${styles.email} text-muted`}>
-                        {post?.profile.user.username}
-                      </span>
-                    </div>
-                    <span className={`h-100 `}>{getTime(post?.createdAt)}</span>
-                  </div>
-                  <div className="">
-                    <DialogContentText>{post?.content}</DialogContentText>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    setShowAnswerModal(false);
-                  }}
-                  className="material-symbols-outlined text-muted btn p-0"
-                >
-                  close
-                </button>
-              </div>
-            </div>
-            <hr className="hr" />{" "}
-            <div className="d-flex ">
-              {authState?.user && authState?.user.profile.profilePic ? (
-                <img
-                  src={`${BASE_URL}/images/${authState?.user.profile.profilePic}`}
-                  alt="your profile picture"
-                  width={40}
-                  height={40}
-                  className="me-3 rounded-circle"
-                />
-              ) : null}
-              <input
-                type="text"
-                placeholder="Tu respuesta..."
-                className={`${styles.formInputFocused} border border-0 p-0`}
-                onChange={(e) => setContent(e.target.value)}
-              />
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <button
-              disabled={content.length === 0 || isSubmitting}
-              className="btn btn-primary fw-bold text-light"
-              onClick={handleComment}
-            >
-              {isSubmitting ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  <span className="sr-only">Cargando...</span>
-                </>
-              ) : (
-                "Registrar"
-              )}
-            </button>
-          </DialogActions>
-        </Dialog>
+        <AnswerModal
+          showAnswerModal={showAnswerModal}
+          setShowAnswerModal={setShowAnswerModal}
+          post={post}
+          handleComment={handleComment}
+        />
       )}
     </>
   );

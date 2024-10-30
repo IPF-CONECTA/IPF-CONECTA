@@ -1,6 +1,9 @@
 import { Router } from "express";
 
-import { createJobPostulationCtrl } from "./jobPostulationControllers.js";
+import {
+  createJobPostulationCtrl,
+  getPostulationsCtrl,
+} from "./jobPostulationControllers.js";
 import { isToken } from "../../../../middlewares/jwt/isVerifiedAccount.js";
 import { isStudent } from "../../../../middlewares/jwt/isStudent.js";
 
@@ -12,5 +15,7 @@ jobPostulationRoutes.post(
   isStudent,
   createJobPostulationCtrl
 );
+
+jobPostulationRoutes.get("/postulations/:jobId", getPostulationsCtrl);
 
 export default jobPostulationRoutes;
