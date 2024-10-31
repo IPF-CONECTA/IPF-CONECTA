@@ -113,12 +113,9 @@ export const Comments = ({ postId, write, setWrite }) => {
       </form>
       <div className="d-flex flex-column align-items-center">
         {post &&
-          (post?.comments?.length > 0 ? (
-            post?.comments?.map((post) => (
-              <Post key={post.id} postData={post} details={false} />
-            ))
-          ) : (
-            <div>no hay comentarios...</div>
+          post?.comments?.length > 0 &&
+          post?.comments?.map((post) => (
+            <Post key={post.id} postData={post} details={false} />
           ))}
       </div>
     </div>

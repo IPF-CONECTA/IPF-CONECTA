@@ -23,7 +23,6 @@ export const ConnectionsModal = ({
         setOpenConnections(false);
         return noti("Hubo un error al obtener las conexiones", "error");
       }
-      console.log(res.data);
       setData(res.data);
     };
     if (openConnections) fetchData();

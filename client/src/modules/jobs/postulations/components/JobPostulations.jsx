@@ -40,13 +40,10 @@ export const JobPostulations = () => {
     fetchJob();
   }, [jobId]);
 
-  console.log({ job });
-
   useEffect(() => {
     const fetchProfile = async () => {
       const res = await getProfile(username);
       setProfileData(res.data);
-      console.log(res);
     };
     username && fetchProfile();
   }, [username]);

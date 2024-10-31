@@ -30,7 +30,6 @@ export const JobDetails = ({ jobId }) => {
               },
             }
           );
-          console.log(res.data.job);
           setSelectedJob(res.data.job);
           setPostulate(res.data.postulated);
         } catch (error) {

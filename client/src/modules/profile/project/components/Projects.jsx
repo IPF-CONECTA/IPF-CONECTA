@@ -15,7 +15,7 @@ export const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
   return (
     <>
       <div
-        className="w-100 d-flex flex-column justify-content-between p-4"
+        className="w-100 d-flex flex-column justify-content-between p-4 border-bottom"
         id="proyectos"
       >
         <div className="d-flex justify-content-between w-100 mb-2">
@@ -74,7 +74,6 @@ export const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
           )}
         </div>
       </div>
-      <hr className="m-0" />
     </>
   );
 };

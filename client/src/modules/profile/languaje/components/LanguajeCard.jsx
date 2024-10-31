@@ -82,10 +82,10 @@ export const LanguageSelector = () => {
   }));
 
   return (
-    <div className="bg-body-tertiary w-100">
+    <div className="border-bottom w-100">
       <div className="p-4">
         <div className="d-flex justify-content-between mb-2">
-          <span className="fs-5 fw-bold">Idiomas del perfil</span>
+          <span className="fs-5 fw-bold">Idiomas</span>
           <div className="d-flex justify-content-end">
             <button
               className="btn d-flex p-0 align-items-center me-3"

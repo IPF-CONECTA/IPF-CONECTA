@@ -92,59 +92,56 @@ export const Profile = ({ data }) => {
     <>
       {profileData && (
         <div>
-          <div>
-            <Header profileData={profileData} setProfileData={setProfileData} />
-            <Nav role={role} />
-            <main className="w-100">
-              <AboutCard
+          <Header profileData={profileData} setProfileData={setProfileData} />
+          <Nav role={role} />
+          <main className="w-100">
+            <AboutCard
+              own={profileData.own}
+              aboutData={profileData.profile.about}
+              username={username}
+            />
+            {(profileData.own || experiences?.length > 0) && (
+              <ExperienceContainer
                 own={profileData.own}
-                aboutData={profileData.profile.about}
+                experiencesData={experiences}
+                onExperienceSubmit={fetchExperiences}
                 username={username}
               />
-              {(profileData.own || experiences?.length > 0) && (
-                <ExperienceContainer
+            )}
+            {role === "student" &&
+              (profileData.own || projects?.length > 0) && (
+                <Projects
                   own={profileData.own}
-                  experiencesData={experiences}
-                  onExperienceSubmit={fetchExperiences}
-                  username={username}
+                  username={profileData.profile.user.username}
+                  names={profileData.profile.names}
+                  projectsData={projects}
+                  onProjectSubmit={fetchProjects}
                 />
               )}
-              {role === "student" &&
-                (profileData.own || projects?.length > 0) && (
-                  <Projects
-                    own={profileData.own}
-                    username={profileData.profile.user.username}
-                    names={profileData.profile.names}
-                    projectsData={projects}
-                    onProjectSubmit={fetchProjects}
-                  />
-                )}
-              {role === "recruiter" && (
-                <JobOffers
-                  own={profileData.own}
-                  jobOffersData={jobOffers}
-                  onJobUpdate={fetchJobOffers}
-                />
-              )}
+            {role === "recruiter" && (
+              <JobOffers
+                own={profileData.own}
+                jobOffersData={jobOffers}
+                onJobUpdate={fetchJobOffers}
+              />
+            )}
 
-              {(profileData.own || skills?.length > 0) && (
-                <SkillsContainer
-                  skillsData={skills}
-                  own={profileData.own}
-                  onSkillSubmit={fetchSkills}
-                  username={username}
-                />
-              )}
-              {(profileData.own ||
-                profileData.profile.languages?.length > 0) && (
-                <LanguajeCardPage
-                  languagesData={profileData.profile.languages}
-                  own={profileData.own}
-                  username={username}
-                />
-              )}
-            </main>
-          </div>
+            {(profileData.own || skills?.length > 0) && (
+              <SkillsContainer
+                skillsData={skills}
+                own={profileData.own}
+                onSkillSubmit={fetchSkills}
+                username={username}
+              />
+            )}
+            {(profileData.own || profileData.profile.languages?.length > 0) && (
+              <LanguajeCardPage
+                languagesData={profileData.profile.languages}
+                own={profileData.own}
+                username={username}
+              />
+            )}
+          </main>
         </div>
       )}
     </>

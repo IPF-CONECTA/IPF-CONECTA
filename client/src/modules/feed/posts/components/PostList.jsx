@@ -25,8 +25,6 @@ export const PostList = () => {
     setError(null);
     try {
       const res = await getPosts(reset ? 1 : page);
-      console.log(res);
-      console.log(page);
       if (reset) {
         setPosts(res.data);
         setPage(2);
@@ -68,7 +66,6 @@ export const PostList = () => {
   }, [isLoading]);
 
   const handleEmojiClick = (emojiObject) => {
-    console.log(emojiObject.emoji);
     setContent((prevContent) => prevContent + emojiObject.emoji);
     setShowEmojiPicker(false);
   };

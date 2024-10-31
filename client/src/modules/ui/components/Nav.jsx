@@ -136,7 +136,7 @@ export const Nav = () => {
               </div>
             ) : (
               <Link
-                className={`${styles.loginButton} btn btn-primary py-1 d-flex align-items-center`}
+                className={`${styles.loginButton} py-1 text-decoration-none rounded text-white px-2 d-flex align-items-center`}
                 to={"/iniciar-sesion"}
               >
                 <span className="">Iniciar Sesión</span>

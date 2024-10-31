@@ -35,7 +35,6 @@ export const JobOfferCard = ({
     });
   });
 
-  console.log();
   return (
     <div className="d-flex justify-content-between w-100">
       <div className=" py-2 d-flex w-100">

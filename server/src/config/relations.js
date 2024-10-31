@@ -176,9 +176,8 @@ export const createRelations = async () => {
     Post.hasMany(Post, {
       foreignKey: "postId",
       as: "comments",
+      onDelete: "CASCADE",
     });
-
-
     Report.belongsTo(Post, {
       foreignKey: "postId",
     });

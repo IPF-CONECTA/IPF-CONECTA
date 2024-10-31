@@ -80,7 +80,7 @@ export const LoginForm = () => {
               Email o username
             </label>
           </div>
-          <div className="form-floating mb-3">
+          <div className="form-floating">
             <input
               {...register("password")}
               type={watchPassword ? "text" : "password"}
@@ -101,6 +101,10 @@ export const LoginForm = () => {
             <label htmlFor="floatingPassword" className="bg-transparent">
               Contraseña
             </label>
+          </div>
+          <div className="mb-3 d-flex justify-content-end">
+            Olvidaste tu contraseña?{" "}
+            <Link className="ms-2 text-decoration-none"> Recuperar</Link>
           </div>
           <div className={styles["form-group"]}>
             <button

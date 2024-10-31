@@ -11,7 +11,7 @@ export const ProfilePage = () => {
         className={`w-100 d-flex justify-content-evenly px-5 pt-4 ${styles.mainContainer}`}
       >
         <div
-          className={`profile d-flex flex-column align-items-center border rounded-top-4 mb-4 ${styles.profileContainer}`}
+          className={`profile d-flex flex-column align-items-center border border-bottom-0 rounded-top-4 mb-4 ${styles.profileContainer}`}
         >
           <Profile />
         </div>

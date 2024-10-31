@@ -12,7 +12,6 @@ export const RecruiterJobOffersPage = () => {
   useEffect(() => {
     getProfile(username).then((res) => {
       if (res.status !== 200) {
-        console.log(res.message, "error");
         return;
       }
       setProfileData(res.data);

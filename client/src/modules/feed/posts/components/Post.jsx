@@ -434,7 +434,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                         </span>
                       </button>
                     </Link>
-                    <ul className="dropdown-menu dropdown-menu-end p-0 p-2">
+                    <ul className="dropdown-menu dropdown-menu-end p-2">
                       {post?.own ? (
                         <li>
                           <button
@@ -468,9 +468,9 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                 e.stopPropagation();
                                 handleFollow;
                               }}
-                              className="btn p-0 d-flex justify-content-between w-100"
+                              className="dropdown-item p-0 d-flex justify-content-between "
                             >
-                              Seguir a {post.profile.user.username}{" "}
+                              Seguir a {post.profile.names}{" "}
                               <span class="material-symbols-outlined text-primary ms-1">
                                 person_add
                               </span>

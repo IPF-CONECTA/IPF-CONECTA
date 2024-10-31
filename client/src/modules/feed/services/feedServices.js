@@ -8,7 +8,6 @@ export const getPosts = async (page) => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    console.log("pagina ", page, "respuesta ", res)
     const data = res.data.rows;
     const statusCode = res.status;
     return { data, statusCode };
@@ -116,7 +115,6 @@ export const like = async (id) => {
 };
 
 export const postSvc = async (post, images, postId = null) => {
-  console.log("postId en servicio", postId)
   const formData = new FormData();
   formData.append("content", post);
   if (postId) {

@@ -209,6 +209,12 @@ export const getPostByIdSvc = async (postId, profileId) => {
 export const deletePostSvc = async (postId, profileId) => {
     try {
         const post = await Post.findByPk(postId)
+        const answers = await Post.findAll({
+            where: {
+                postId: post.id
+            }
+        })
+
         if (post.profileId !== profileId) throw new Error("No tienes permisos para eliminar este post")
         await post.destroy()
         return { message: "Post eliminado" }

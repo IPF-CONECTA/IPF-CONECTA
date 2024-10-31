@@ -18,7 +18,10 @@ export const ExperienceContainer = ({
 
   return (
     <>
-      <div className="about bg-body-tertiary w-100" id="experiencias">
+      <div
+        className="about bg-body-tertiary w-100 border-bottom"
+        id="experiencias"
+      >
         <div className="p-4">
           <div className="d-flex justify-content-between mb-2">
             <span className="fw-bold fs-5">Experiencias</span>
@@ -88,7 +91,6 @@ export const ExperienceContainer = ({
           </>
         )}
       </div>
-      <hr className="m-0" />
     </>
   );
 };

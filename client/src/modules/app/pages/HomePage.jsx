@@ -6,7 +6,6 @@ export const HomePage = () => {
     <>
       <Nav />
       <Home />
-      <Footer />
     </>
   );
 };

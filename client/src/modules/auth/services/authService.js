@@ -19,7 +19,6 @@ export const authService = {
     }
   },
   isUsername: async (username) => {
-    console.log(username);
     try {
       const res = await axios.post(
         "http://localhost:4000/auth/is-username-available",
@@ -72,7 +71,7 @@ export const authService = {
   getToken: () => {
     return localStorage.getItem("token");
   },
-      
+
   setToken: (data) => {
     localStorage.setItem("token", data);
   },
