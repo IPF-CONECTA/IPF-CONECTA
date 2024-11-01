@@ -34,6 +34,7 @@ import {
   ChatPage,
   RecruiterJobOffersPage,
   JobPostulationsPage,
+  ProfileEducationsPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -83,10 +84,17 @@ export const Routers = () => {
             path="/perfil/:username/idioma"
             element={<LanguajeCardPage />}
           />
-          <Route path="/languages/:username/edit" element={<LanguajeEditPage />} />
+          <Route
+            path="/languages/:username/edit"
+            element={<LanguajeEditPage />}
+          />
           <Route
             path="/perfil/:username/experiencias"
             element={<ProfileExperiencesPage />}
+          />
+          <Route
+            path="/perfil/:username/formaciones"
+            element={<ProfileEducationsPage />}
           />
 
           <Route path="/guardados" element={<ProfilePage />} />
