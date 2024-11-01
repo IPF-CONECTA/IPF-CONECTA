@@ -1,5 +1,6 @@
 .jobCard {
-  margin-bottom: 5px;
+  margin-top: 5px;
+  width: 99.3%;
 }
 .jobCard:hover {
   background-color: #f5f5f5;
@@ -20,10 +21,10 @@ p {
   height: min-content;
 }
 .selectedCard {
-  margin-bottom: 5px;
+  margin-top: 5px;
+  width: 100%;
   background-color: #f5f5f5;
   transition: transform 0.3s ease-in-out;
-  transform: scale(1.005);
   z-index: 10;
   position: relative;
 }

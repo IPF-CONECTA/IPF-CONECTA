@@ -208,7 +208,8 @@ export const CreateCompanyForm = () => {
           {previewLogo && (
             <img
               src={previewLogo}
-              className={`${styles.roundedImage} mb-2 me-0 img-thumbnail rounded-circle`}
+              alt="logo"
+              className={`${styles.roundedImage} mb-2 me-0 img-thumbnail `}
             />
           )}
           <div>

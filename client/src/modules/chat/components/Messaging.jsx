@@ -72,8 +72,8 @@ export const Messaging = () => {
                         </p>
                         <div>
                           <p className="text-start">
-                            {chat?.messages[chat.messages.length - 1]
-                              .senderId == authState.user.profile?.id &&
+                            {chat?.messages[chat?.messages?.length - 1]
+                              ?.senderId == authState.user.profile?.id &&
                               "Tú" + ": "}
                             {chat?.messages[chat.messages.length - 1]?.message}
                           </p>

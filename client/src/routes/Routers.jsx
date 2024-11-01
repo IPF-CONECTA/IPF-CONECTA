@@ -29,7 +29,6 @@ import {
   ProfileExperiencesPage,
   LanguajeCardPage,
   LanguajeEditPage,
-  EditProfile,
   MessagingPage,
   ChatPage,
   RecruiterJobOffersPage,
@@ -70,7 +69,6 @@ export const Routers = () => {
             path="/perfil/:username/empleos"
             element={<RecruiterJobOffersPage />}
           />
-          <Route path="/editar-perfil" element={<EditProfile />} />
           <Route
             path="/:username/proyectos"
             element={<ProfileProjectsPage />}
@@ -83,7 +81,10 @@ export const Routers = () => {
             path="/perfil/:username/idioma"
             element={<LanguajeCardPage />}
           />
-          <Route path="/languages/:username/edit" element={<LanguajeEditPage />} />
+          <Route
+            path="/languages/:username/edit"
+            element={<LanguajeEditPage />}
+          />
           <Route
             path="/perfil/:username/experiencias"
             element={<ProfileExperiencesPage />}

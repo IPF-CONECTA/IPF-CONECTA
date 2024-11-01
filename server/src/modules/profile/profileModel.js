@@ -22,6 +22,18 @@ export const Profile = sequelize.define('profile', {
         type: DataTypes.STRING(11),
         allowNull: true
     },
+    birthdate: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
+    },
+    phoneareacode: {
+        type: DataTypes.STRING(4),
+        allowNull: true
+    },
+    phonenumber: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
     title: {
         type: DataTypes.STRING(64),
         allowNull: true

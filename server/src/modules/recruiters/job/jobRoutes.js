@@ -40,7 +40,7 @@ jobRoutes.post(
 
 jobRoutes.get("/get-jobs", getJobsCtrl);
 
-jobRoutes.get("/get-job/:id", isToken, getJobByIdCtrl);
+jobRoutes.get("/get-job/:id", getJobByIdCtrl);
 
 jobRoutes.get("/job/search", findJobsCtrl);
 

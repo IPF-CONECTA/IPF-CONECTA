@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import FsLightbox from "fslightbox-react";
 import { getDateWithHour, getTime } from "../../../../helpers/getTime";
 import { ProfileHover } from "../../../profile/components/ProfileHover";
@@ -21,10 +17,8 @@ import { BASE_URL } from "../../../../constants/BASE_URL";
 
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { useNoti } from "../../../../hooks/useNoti";
-import { ReportModal } from "../../components/ReportModal";
-import { set } from "react-hook-form";
+import { ReportModal } from "../../../app/components/ReportModal";
 import { AnswerModal } from "./answerModal";
-import { useFollow } from "../../../../hooks/useFollow";
 
 export const Post = ({ postData = null, postId = null, details, setWrite }) => {
   const [post, setPost] = useState(postData);
@@ -471,7 +465,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                               className="dropdown-item p-0 d-flex justify-content-between "
                             >
                               Seguir a {post.profile.names}{" "}
-                              <span class="material-symbols-outlined text-primary ms-1">
+                              <span className="material-symbols-outlined text-primary ms-1">
                                 person_add
                               </span>
                             </button>
@@ -530,6 +524,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                     openModal={openReportModal}
                     setOpenModal={setOpenReportModal}
                     reportableId={post.id}
+                    reportable={"publicación"}
                   />
                 </div>
               </div>

@@ -1,3 +1,4 @@
+import { verifyToken } from "../../../helpers/verifyToken.js";
 import {
   createNewJobSvc,
   deleteJobSvc,
@@ -35,10 +36,13 @@ export const getJobsCtrl = async (req, res) => {
 
 export const getJobByIdCtrl = async (req, res) => {
   const { id } = req.params;
-  const { id: profileId } = req.user.profile;
   try {
-    if (!id) throw new Error("No se seleccionó ninguna oferta");
 
+    if (!id) throw new Error("No se seleccionó ninguna oferta");
+    let profileId
+    if (req.headers.authorization) {
+      ({ id: profileId } = await verifyToken(req.headers.authorization.split(" ")[1]));
+    }
     const job = await getJobByIdSvc(id, profileId);
 
     if (!job)

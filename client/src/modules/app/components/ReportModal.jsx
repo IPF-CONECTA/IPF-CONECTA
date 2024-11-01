@@ -3,7 +3,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNoti } from "../../../hooks/useNoti";
 
-export const ReportModal = ({ openModal, setOpenModal, reportableId }) => {
+export const ReportModal = ({
+  openModal,
+  setOpenModal,
+  reportableId,
+  reportable,
+}) => {
   const {
     register,
     handleSubmit,
@@ -12,7 +17,6 @@ export const ReportModal = ({ openModal, setOpenModal, reportableId }) => {
   } = useForm();
   const noti = useNoti();
   const onSubmit = (data) => {
-    console.log(data);
     noti("Reporte enviado", "info");
     reset();
     setOpenModal(false);
@@ -27,9 +31,11 @@ export const ReportModal = ({ openModal, setOpenModal, reportableId }) => {
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="d-flex flex-column p-3"
+        className="d-flex flex-column p-3 border-0"
       >
-        <span className="fs-4 mb-2 fw-semibold">Reportar</span>
+        <span className="fs-4 mb-2 fw-semibold">
+          Reportar {reportable || ""}
+        </span>
         <select
           {...register("reason", {
             required: "Este campo es obligatorio",

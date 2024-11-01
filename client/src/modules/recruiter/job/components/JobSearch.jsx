@@ -13,17 +13,24 @@ export const JobSearch = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [jobsLoading, setJobsLoading] = useState(true);
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
   const [cantJobs, setCantJobs] = useState(0);
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await getJobs();
-      setJobs(res.data.jobs);
-      setCantJobs(res.data.total);
+    try {
+      async function fetchData() {
+        const res = await getJobs();
+        setJobs(res.data.jobs);
+        setCantJobs(res.data.total);
+      }
+      fetchData();
+    } catch (error) {
+      noti("Error al cargar los trabajos", "danger");
+    } finally {
+      setJobsLoading(false);
     }
-    fetchData();
   }, []);
   useEffect(() => {
     if (jobs.length > 0) {
@@ -38,9 +45,11 @@ export const JobSearch = () => {
     if (res.status !== 200) {
       setJobs([]);
       setSelectedJob(null);
+      setCantJobs(0);
       noti("No se encontraron trabajos con ese nombre", "info");
       return;
     }
+    setCantJobs(res.data.total);
     setJobs(res.data.jobs);
     setCurrentPage(1);
     setTotalPages(res.data.totalPages);
@@ -62,8 +71,8 @@ export const JobSearch = () => {
   };
 
   return (
-    <main className="w-100 h-100 d-flex flex-column align-items-center">
-      <div className={`w-100  `}>
+    <main className="w-100 h-100 d-flex flex-column align-items-center mb-5">
+      <div className={`w-100`}>
         <nav
           className={` w-100  d-flex flex-column justify-content-center pb-2 align-items-center`}
         >
@@ -120,9 +129,19 @@ export const JobSearch = () => {
             </option>
           </select>
         </div>
-        <section className={`${styles.jobsContainer} w-75`}>
+        <section className={`${styles.jobsContainer} w-75 mt-3`}>
           <aside className="d-flex flex-column">
             <div className="d-flex flex-column align-items-start">
+              {jobsLoading && (
+                <div className={`d-flex w-100 justify-content-center my-3`}>
+                  {" "}
+                  <span
+                    className={`spinner-border`}
+                    role={`status`}
+                    aria-hidden={`true`}
+                  ></span>{" "}
+                </div>
+              )}
               {jobs.count === 0 ? (
                 <h2>No se encontraron trabajos :(</h2>
               ) : (
@@ -151,7 +170,7 @@ export const JobSearch = () => {
                 </>
               )}
             </div>
-            <div className="w-100 d-flex justify-content-center">
+            <div className="w-100 d-flex justify-content-center mt-2">
               {cantJobs > 6 && cantJobs !== jobs.length && (
                 <button
                   count={totalPages}
@@ -174,7 +193,7 @@ export const JobSearch = () => {
             >
               <span className="fs-2 fst-italic">Zzzzz...</span>
               <span className="mb-2 text-secondary">
-                No se encontraron trabajos para tu busqueda
+                No se encontraron trabajos para tu búsqueda
               </span>
               <img
                 src="./img/Man_Sleeping_in_Bed_Cartoon_Vector.png"

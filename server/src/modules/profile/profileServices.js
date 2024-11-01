@@ -1,3 +1,4 @@
+import { sequelize } from "../../config/db.js";
 import { Follower } from "../followers/followerModel.js";
 import { Role } from "../roles/roleModel.js";
 import { User } from "../users/userModel.js";
@@ -6,13 +7,13 @@ import { Profile } from "./profileModel.js";
 export const getProfileByUsername = async (reqId, username) => {
   try {
     const profile = await Profile.findOne({
-      attributes: ["id", "names", "surnames", "profilePic", "title", "about"],
+      attributes: ["id", "names", "surnames", "profilePic", "title", "about", "cuil", "birthdate", "phoneareacode", "phonenumber"],
       include: {
         model: User,
         where: {
           username,
         },
-        attributes: ["id", "username"],
+        attributes: ["id", "username", "email"],
         include: {
           model: Role,
           attributes: ["name"],
@@ -94,11 +95,31 @@ export const updateBannerSvc = async (url, id) => {
 };
 
 export const updateProfileSvc = async (id, data) => {
+  const t = await sequelize.transaction();
   try {
-    const updatedProfile = await Profile.update(data, { where: { id } });
+    const profile = await Profile.findByPk(id, {
+      include: {
+        model: User, include: [{
+          model: Role,
+          attributes: ["name"],
+        }]
+      }
+    })
+    const updatedProfile = await Profile.update({
+      names: data.names,
+      surnames: data.surnames,
+      cuil: !profile.user.role.name === "recruiter" ? data.cuil : null,
+      birthdate: data.birthdate || null,
+      phoneareacode: data.phoneareacode || null,
+      phonenumber: data.phonenumber || null,
+      title: data.title,
+    }, { where: { id: profile.id }, transaction: t });
+    const updatedUser = await User.update({ email: data.email, username: data.username }, { where: { id: profile.userId }, transaction: t });
+    await t.commit();
     return updatedProfile;
   } catch (error) {
     console.log(error);
+    await t.rollback();
     throw error;
   }
 };

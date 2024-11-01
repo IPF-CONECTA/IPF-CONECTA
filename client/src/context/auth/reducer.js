@@ -12,6 +12,17 @@ export const authReducer = (state = {}, action) => {
                 isLogged: false
             };
         }
+        case 'UPDATE_PROFILE_PIC':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    profile: {
+                        ...state.user.profile,
+                        profilePic: action.payload,
+                    },
+                },
+            };
         default:
             return state;
     }

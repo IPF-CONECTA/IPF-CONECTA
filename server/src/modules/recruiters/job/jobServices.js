@@ -14,6 +14,7 @@ import {
 } from "../../skills/skillable/skillableServices.js";
 import { sequelize } from "../../../config/db.js";
 import { getLocationByIdSvc } from "../../locations/locationServices.js";
+import { verifyToken } from "../../../helpers/verifyToken.js";
 
 export const createNewJobSvc = async (jobData, profileId) => {
   const t = await sequelize.transaction();
@@ -86,6 +87,7 @@ export const getJobsSvc = async () => {
 
 export const getJobByIdSvc = async (id, profileId) => {
   try {
+
     const job = await Job.findByPk(id, {
       attributes: {
         exclude: ["active", "companyId", "profileId", "updatedAt"],
@@ -127,6 +129,8 @@ export const getJobByIdSvc = async (id, profileId) => {
       job.locationableType
     );
     job.dataValues.skills = await getSkillables(job.id);
+
+    if (!profileId) return { job, postulated: false };
     const postulate = await JobPostulation.findOne({
       where: {
         profileId,
@@ -139,6 +143,7 @@ export const getJobByIdSvc = async (id, profileId) => {
       postulated: postulate ? true : false,
     };
   } catch (error) {
+    console.log(error)
     throw new Error(error.message);
   }
 };

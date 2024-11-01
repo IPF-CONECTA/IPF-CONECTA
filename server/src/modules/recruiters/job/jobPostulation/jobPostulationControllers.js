@@ -16,6 +16,7 @@ export const createJobPostulationCtrl = async (req, res) => {
 
     res.status(201).json({ message: "Postulación enviada!", jobPostulation });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: error.message });
   }
 };

@@ -14,7 +14,21 @@ export const getJobs = async (query = "", page) => {
     return error;
   }
 };
-
+export const getJobInfo = async (jobId, authenticated) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:4000/get-job/${jobId}`,
+      authenticated && {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      }
+    );
+    return { data: res.data, status: res.status };
+  } catch (error) {
+    return { status: error.status };
+  }
+}
 export const getCompaniesByUser = async () => {
   try {
     const response = await axios.get(

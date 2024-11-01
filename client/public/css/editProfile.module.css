@@ -1,6 +1,14 @@
 .pfpContainer {
   width: fit-content;
-  height: fit-content;
+  height: 50%;
+}
+.bannerContainer {
+  width: 100%;
+}
+.banner {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 .pfpLabel {
   cursor: pointer;
@@ -12,7 +20,17 @@
 }
 .pfp {
   object-fit: cover;
+  width: 200px;
+  height: 200px;
 }
 .phoneSelect {
   width: 25%;
+}
+.codeInput {
+  width: 35% !important;
+  padding: 12px;
+}
+
+.phoneInput {
+  padding: 12px;
 }

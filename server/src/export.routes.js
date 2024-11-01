@@ -31,6 +31,7 @@ import langUserRouter from "./modules/profile/langs_user/langUserRoutes.js";
 
 import profilePicRoutes from "./modules/profile/profilePic/profilePicRoutes.js";
 import skillableRoutes from "./modules/skills/skillable/skillableRoutes.js";
+import contactRoutes from "./modules/profile/contact/contactRoutes.js";
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -64,4 +65,5 @@ export const routes = (app) => {
   app.use(skillableRoutes)
   app.use(langRouter);
   app.use(langUserRouter);
+  app.use(contactRoutes)
 };

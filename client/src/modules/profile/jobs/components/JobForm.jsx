@@ -23,6 +23,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
     control,
     setValue,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
       title: job ? job.title : "",
@@ -77,6 +78,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
     noti("Empleo creado", "success");
     setOpenModal(false);
     onJobUpdate();
+    reset();
   };
   const onEditSubmit = async (data) => {
     data.skills = selectedSkills;
