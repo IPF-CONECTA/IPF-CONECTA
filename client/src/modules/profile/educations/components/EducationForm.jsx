@@ -96,6 +96,14 @@ export const EducationForm = ({
     reset();
   };
 
+  const handleDelete = async (educationId) => {
+    await educationsServices.deleteEducation(educationId);
+    noti("Formación académica eliminada", "success");
+    setOpenEducationModal(false);
+    onEducationSubmit();
+    reset();
+  };
+
   return (
     <Dialog
       open={openEducationModal}
@@ -147,6 +155,7 @@ export const EducationForm = ({
             {...register("disciplineId", { required: true })}
             placeholder="Disciplina"
             options={disciplines}
+            defaultInputValue={education?.discipline?.name}
             getOptionLabel={(option) => option.name}
             getOptionValue={(option) => option.id}
             onChange={(selectedOption) => {
@@ -254,9 +263,30 @@ export const EducationForm = ({
             </select>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary w-100">
-          Guardar
-        </button>
+        <div className="d-flex justify-content-between">
+          <button type="submit" className="btn btn-primary w-50 mt-2">
+            Guardar
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              handleDelete(education.id);
+            }}
+            className="btn btn-danger w-50 mt-2"
+          >
+            Eliminar
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setOpenEducationModal(false);
+              reset();
+            }}
+            className="btn btn-dark w-50 mt-2"
+          >
+            Cancelar
+          </button>
+        </div>
       </form>
     </Dialog>
   );

@@ -49,4 +49,19 @@ export const educationsServices = {
       return { status: error.status };
     }
   },
+  deleteEducation: async (id) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:4000/educations/${id}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      return { data: response.data, status: response.status };
+    } catch (error) {
+      return { status: error.status };
+    }
+  },
 };

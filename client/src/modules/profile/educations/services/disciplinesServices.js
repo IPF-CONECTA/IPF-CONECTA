@@ -14,4 +14,16 @@ export const disciplinesServices = {
       return { status: error.status };
     }
   },
+  getDiscipline: async (id) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/disciplines/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
+      return { data: res.data, status: res.status };
+    } catch (error) {
+      return { status: error.status };
+    }
+  },
 };
