@@ -33,7 +33,7 @@ export const ProfileEducationsPage = () => {
     fetchEducations();
   }, [username]);
 
-  console.log({ profileData, educations });
+  // console.log({ profileData, educations });
   return (
     <>
       <Nav />
@@ -43,7 +43,7 @@ export const ProfileEducationsPage = () => {
           <AllEducationsContainer
             educationsData={educations}
             own={profileData?.own}
-            onEducationsSubmit={fetchEducations}
+            onEducationSubmit={fetchEducations}
             username={username}
           />
         </div>

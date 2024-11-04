@@ -47,7 +47,6 @@ export const updateEducationSvc = async (id, education) => {
   if (!educationFound) return null;
 
   const updatedEducation = await educationFound.update(education);
-  console.log(updatedEducation);
   return updatedEducation;
 };
 
