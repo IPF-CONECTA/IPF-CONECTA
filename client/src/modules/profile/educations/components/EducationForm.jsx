@@ -77,11 +77,13 @@ export const EducationForm = ({
       institution: data.institution,
       description: data.description,
       disciplineId: data.disciplineId,
-      startDate: `${data.startDateYear}-${data.startDateMonth}-01`,
+      startDate: `${data.startDateMonth}-01-${data.startDateYear}`,
       endDate: data.endDateYear
-        ? `${data.endDateYear}-${data.endDateMonth}-01`
+        ? `${data.endDateMonth}-01-${data.endDateYear}`
         : null,
     };
+
+    console.log({ educationData });
 
     if (education) {
       await educationsServices.editEducation(education.id, educationData);
@@ -263,29 +265,32 @@ export const EducationForm = ({
             </select>
           </div>
         </div>
-        <div className="d-flex justify-content-between">
-          <button type="submit" className="btn btn-primary w-50 mt-2">
-            Guardar
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              handleDelete(education.id);
-            }}
-            className="btn btn-danger w-50 mt-2"
-          >
-            Eliminar
-          </button>
+        <div className="buttons d-flex justify-content-between">
           <button
             type="button"
             onClick={() => {
               setOpenEducationModal(false);
               reset();
             }}
-            className="btn btn-dark w-50 mt-2"
+            className="btn btn-outline-dark fw-semibold"
           >
             Cancelar
           </button>
+
+          <div className="d-flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                handleDelete(education?.id);
+              }}
+              className="btn btn-outline-dark fw-semibold"
+            >
+              Borrar formación
+            </button>
+            <button type="submit" className="btn btn-dark fw-semibold">
+              {education ? "Actualizar Formación" : "Agregar Formación"}
+            </button>
+          </div>
         </div>
       </form>
     </Dialog>
