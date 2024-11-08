@@ -16,7 +16,7 @@ export const getAllCompaniesCtrl = async (_req, res) => {
 export const associateExistingCompanyCtrl = async (req, res) => {
     let token = req.headers.authorization
     token = token.split(' ')[1]
-    if (!token) throw new Error('Inicie sesion para asociar la empresa')
+    if (!token) throw new Error('Inicie sesión para asociar la empresa')
     const { userId } = jwt.verify(token, process.env.TOKEN_SECRET_KEY)
     const { companyId } = req.body
 

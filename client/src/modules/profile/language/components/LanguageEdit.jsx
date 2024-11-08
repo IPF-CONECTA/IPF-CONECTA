@@ -9,7 +9,7 @@ import {
   getAvailableLanguages,
   getAvailableLanguageLevels,
   updateLanguage,
-} from "../services/languajeService.js";
+} from "../services/languageService.js";
 import { Header } from "../../components/ProfileHeader";
 import { Nav } from "../../../ui/components";
 import { useNoti } from "../../../../hooks/useNoti";

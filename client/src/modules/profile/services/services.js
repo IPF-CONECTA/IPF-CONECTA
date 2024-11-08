@@ -21,18 +21,7 @@ export const updateAbout = async (data, username) => {
     return { status: error.status };
   }
 };
-export const deleteAbout = async (username) => {
-  try {
-    const res = await axios.delete(`http://localhost:4000/about/${username}`, {
-      headers: {
-        Authorization: `Bearer ${authService.getToken()}`,
-      },
-    });
-    return { status: res.status };
-  } catch (error) {
-    return { status: error.status };
-  }
-};
+
 
 export const getProfileIdByUsername = async (username) => {
   try {

@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { JobCard } from "./JobCard";
 import { JobDetails } from "./JobDetails";
-
 import { useNoti } from "../../../../hooks/useNoti";
 import { getJobs } from "../services/jobServices";
-
 import styles from "../../../../../public/css/jobSearch.module.css";
 
 export const JobSearch = () => {

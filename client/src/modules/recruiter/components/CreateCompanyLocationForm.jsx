@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 

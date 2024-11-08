@@ -35,6 +35,7 @@ export const getPostByIdCtrl = async (req, res) => {
 export const createPostCtrl = async (req, res) => {
     const { id } = req.user.profile;
     try {
+        if (req.body.content == "") return res.status(400).json({ message: "No se puede postear un post vacio" });
         const result = await createPostSvc(req.body, req.files, id);
         if (!result) return res.status(400).json({ message: "Hubo un error al postear" });
         res.status(201).json(result);

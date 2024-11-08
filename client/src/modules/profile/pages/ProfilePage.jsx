@@ -3,6 +3,7 @@ import { Nav } from "../../ui/components";
 import { Profile } from "../components/Profile";
 import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
+
 export const ProfilePage = () => {
   return (
     <>

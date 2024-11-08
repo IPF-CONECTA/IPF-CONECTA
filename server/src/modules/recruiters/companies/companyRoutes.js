@@ -8,7 +8,7 @@ import {
 import { companySchema } from "./companySchema.js";
 import { validateSchema } from "../../../middlewares/expressValidator.js";
 import { isRecruiter } from "../../../middlewares/jwt/isRecruiter.js";
-import { isToken, isVerifiedAccount } from "../../../middlewares/jwt/isVerifiedAccount.js";
+import { isToken } from "../../../middlewares/jwt/isVerifiedAccount.js";
 import { getCompanyByIdCtrl } from "../../administration/admin/companies/companyControllers.js";
 import upload from "../../../config/multerConfig.js";
 const companyRoutes = Router();

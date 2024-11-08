@@ -72,7 +72,7 @@ export const findJobsCtrl = async (req, res) => {
     if (jobs.count == 0)
       return res
         .status(404)
-        .json({ message: "No se encontraron trabajos para tu busqueda" });
+        .json({ message: "No se encontraron trabajos para tu búsqueda" });
 
     res.status(200).json({
       jobs: jobs.data.rows,

@@ -1,11 +1,7 @@
 import { Dialog } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getConnections } from "../services/services";
 import { useNoti } from "../../../hooks/useNoti";
-import { BASE_URL } from "../../../constants/BASE_URL";
-import { Navigate, useNavigate } from "react-router-dom";
-import { authContext } from "../../../context/auth/Context";
-import { useFollow } from "../../../hooks/useFollow";
 import { AccountCard } from "../../feed/components/AccountCard";
 
 export const ConnectionsModal = ({

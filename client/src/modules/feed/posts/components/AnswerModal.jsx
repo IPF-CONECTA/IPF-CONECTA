@@ -4,14 +4,23 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
-import React from "react";
+import React, { useContext, useState } from "react";
+import { BASE_URL } from "../../../../constants/BASE_URL";
+import { getTime } from "../../../../helpers/getTime";
+import styles from "../../../../../public/css/feed.module.css";
+import { authContext } from "../../../../context/auth/Context";
 
 export const AnswerModal = ({
   showAnswerModal,
   setShowAnswerModal,
   post,
   handleComment,
+  isSubmitting,
 }) => {
+  console.log(isSubmitting);
+  const { authState } = useContext(authContext);
+  const [content, setContent] = useState("");
+
   return (
     <Dialog
       open={Boolean(showAnswerModal)}
@@ -36,18 +45,18 @@ export const AnswerModal = ({
               className="me-3 rounded-circle"
             />
             <div className="d-flex flex-column w-100 pe-3">
-              <div className="d-flex w-100 justify-content-between align-items-stretch">
+              <div className="d-flex w-100 justify-content-between align-items-stretch mb-2">
                 <div className="d-flex flex-column">
                   <div className="fs-5 fw-semibold">
                     {post?.profile.names} {post?.profile.surnames}
                   </div>
-                  <span className={`${styles.email} text-muted`}>
-                    {post?.profile.user.username}
+                  <span className={`${styles.smallText} text-muted`}>
+                    @{post?.profile.user.username}
                   </span>
                 </div>
                 <span className={`h-100 `}>{getTime(post?.createdAt)}</span>
               </div>
-              <div className="">
+              <div>
                 <DialogContentText>{post?.content}</DialogContentText>
               </div>
             </div>
@@ -75,7 +84,7 @@ export const AnswerModal = ({
           <input
             type="text"
             placeholder="Tu respuesta..."
-            className={`${styles.formInputFocused} border border-0 p-0`}
+            className={` border border-0 p-0 m-0`}
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
@@ -84,7 +93,7 @@ export const AnswerModal = ({
         <button
           disabled={content.length === 0 || isSubmitting}
           className="btn btn-primary fw-bold text-light"
-          onClick={handleComment}
+          onClick={(e) => handleComment(e)}
         >
           {isSubmitting ? (
             <>
@@ -96,7 +105,7 @@ export const AnswerModal = ({
               <span className="sr-only">Cargando...</span>
             </>
           ) : (
-            "Registrar"
+            "Responder"
           )}
         </button>
       </DialogActions>

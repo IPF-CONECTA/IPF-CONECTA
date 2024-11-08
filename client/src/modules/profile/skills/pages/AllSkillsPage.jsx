@@ -7,6 +7,7 @@ import styles from "../../../../../public/css/allSkills.module.css";
 import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
 import { AllSkills } from "../components/AllSkills";
 import { getSkills } from "../services";
+
 export const AllSkillsPage = () => {
   const { username } = useParams();
   const [skills, setSkills] = useState([]);

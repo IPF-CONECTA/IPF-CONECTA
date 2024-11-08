@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import { io } from "socket.io-client";
 import { useParams, Link } from "react-router-dom";
-
 import { authContext } from "../../../context/auth/Context";
 import { getProfileIdByUsername } from "../../profile/services/services";
 import { getFullDate, getHour } from "../../../helpers/getTime";
@@ -17,7 +16,7 @@ export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState({});
   const messagesEndRef = useRef(null);
-  const conteinerRef = useRef(null);
+  const containerRef = useRef(null);
 
   const socket = io("http://localhost:4000", {
     extraHeaders: {
@@ -46,9 +45,9 @@ export const Chat = () => {
     socket.on("chat message", (msg) => {
       if (msg.senderId !== authState.user.profile.id) {
         if (
-          conteinerRef.current.scrollHeight -
-            Math.round(conteinerRef.current.scrollTop) <
-          conteinerRef.current.clientHeight
+          containerRef.current.scrollHeight -
+            Math.round(containerRef.current.scrollTop) <
+          containerRef.current.clientHeight
         ) {
           messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         }
@@ -70,9 +69,9 @@ export const Chat = () => {
       return;
     }
     if (
-      conteinerRef.current.scrollHeight -
-        Math.round(conteinerRef.current.scrollTop) <
-      conteinerRef.current.clientHeight
+      containerRef.current.scrollHeight -
+        Math.round(containerRef.current.scrollTop) <
+      containerRef.current.clientHeight
     ) {
       messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
     }
@@ -127,7 +126,7 @@ export const Chat = () => {
           </span>
         </div>
         <div
-          ref={conteinerRef}
+          ref={containerRef}
           className="w-100 bg-dark-subtle p-3"
           style={{ height: "400px", overflowY: "scroll", overflowX: "hidden" }}
         >

@@ -8,27 +8,50 @@ import styles from "../../../../public/css/recommendedAccounts.module.css";
 export const RecommendedAccounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [error, setError] = useState({ message: null, statusCode: null });
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchAccounts = async () => {
-      const { data, statusCode, message } = await getAccounts();
-      if (statusCode !== 200) {
-        setError({ message, statusCode });
-        return;
+      setLoading(true);
+      try {
+        const res = await getAccounts();
+        if (res.status !== 200) {
+          setError({ message: res.message, statusCode: res.data });
+          return;
+        }
+        setAccounts(res.data);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      } finally {
+        setLoading(false);
       }
-      setAccounts(data);
     };
     fetchAccounts();
   }, []);
-  return (
+  return loading ? (
+    <aside className={`border rounded p-2 ${styles.recommendedAccounts}`}>
+      <header className="d-flex justify-content-center">
+        <span className="fs-5 fw-semibold pb-2">Cuentas recomendadas</span>
+      </header>
+      <div className={`d-flex justify-content-center my-3`}>
+        {" "}
+        <span
+          className={`spinner-border`}
+          role={`status`}
+          aria-hidden={`true`}
+        ></span>{" "}
+      </div>
+    </aside>
+  ) : (
     <aside
       className={`border rounded p-2 ${styles.recommendedAccounts} ${
         accounts.length < 1 && "d-none"
       }`}
     >
+      <header className="d-flex justify-content-center">
+        <span className="fs-5 fw-semibold pb-2">Cuentas recomendadas</span>
+      </header>
       <div className=" d-flex flex-column">
-        <header className="d-flex justify-content-center">
-          <span className="fs-5 fw-semibold pb-2">Cuentas recomendadas</span>
-        </header>
         <div className="d-flex flex-column align-items-center">
           {error.statusCode !== null ? (
             <>

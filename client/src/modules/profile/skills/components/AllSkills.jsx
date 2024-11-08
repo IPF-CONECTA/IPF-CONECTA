@@ -5,6 +5,7 @@ import { deleteSkill } from "../services";
 import { useNoti } from "../../../../hooks/useNoti";
 import Dialog from "@mui/material/Dialog";
 import { SkillCard } from "./SkillCard";
+
 export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
   const [skills, setSkills] = useState([]);
   const [openSkillFormModal, setOpenSkillFormModal] = useState(false);

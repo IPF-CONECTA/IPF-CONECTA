@@ -8,21 +8,29 @@ export const Comments = ({ postId, write, setWrite }) => {
   const inputRef = useRef(null);
   const [post, setPost] = useState(null);
   const [content, setContent] = useState("");
-
-  const fetchPost = async () => {
-    const post = await getPost(postId);
-    console.log(post);
-    if (post.message) {
-      return noti(post.message, "error");
-    }
-    setPost(post);
-  };
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (write) {
       inputRef.current.focus();
     }
   }, [write]);
   useEffect(() => {
+    const fetchPost = async () => {
+      setLoading(true);
+      try {
+        const res = await getPost(postId);
+        console.log(res);
+        if (res.message) {
+          return noti(res.message, "error");
+        }
+        setPost(res.data);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchPost();
   }, [postId]);
 
@@ -112,11 +120,21 @@ export const Comments = ({ postId, write, setWrite }) => {
         </div>
       </form>
       <div className="d-flex flex-column align-items-center">
-        {post &&
+        {loading ? (
+          <div className={`d-flex justify-content-center my-3`}>
+            {" "}
+            <span
+              className={`spinner-border`}
+              role={`status`}
+              aria-hidden={`true`}
+            ></span>{" "}
+          </div>
+        ) : (
           post?.comments?.length > 0 &&
           post?.comments?.map((post) => (
             <Post key={post.id} postData={post} details={false} />
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

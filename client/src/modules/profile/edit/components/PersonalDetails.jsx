@@ -1,15 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../../../../../public/css/editProfile.module.css";
 import PhoneInput from "react-phone-number-input";
 import { useForm } from "react-hook-form";
 import "react-phone-number-input/style.css";
-
 import { useNoti } from "../../../../hooks/useNoti";
-import {
-  getPrefixes,
-  updatePersonalDetails,
-} from "../services/editProfileServices";
-import { get } from "country-flag-emoji";
+import { updatePersonalDetails } from "../services/editProfileServices";
 
 const CustomPhoneInput = React.forwardRef(({ className, ...props }, ref) => (
   <input
@@ -156,6 +151,7 @@ export const PersonalDetails = ({ profileData, setProfileData }) => {
                 defaultValue={profileData.profile.birthdate || ""}
                 name="birthdate"
                 type="date"
+                max={"2006-12-31"}
                 className="form-control mb-0 w-100"
                 style={{ padding: "12px" }}
               />

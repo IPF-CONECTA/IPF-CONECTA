@@ -5,6 +5,7 @@ import axios from "axios";
 import { authService } from "../../../auth/services/authService";
 import styles from "../../../../../public/css/addSkillForm.module.css";
 import { useNoti } from "../../../../hooks/useNoti";
+
 export const AddSkillForm = ({
   openSkillModal,
   setOpenSkillModal,

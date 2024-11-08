@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 
 import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
-
-import notChats from "../../../../public/img/notChats.png";
 import { getTime } from "../../../helpers/getTime";
 import { BASE_URL } from "../../../constants/BASE_URL";
 
@@ -19,7 +17,7 @@ export const Messaging = () => {
 
   useEffect(() => {
     const getChats = async () => {
-      const res = await chatService.getChatsbyProfile();
+      const res = await chatService.getChatsByProfile();
       setChats(res.data);
     };
     getChats();
@@ -40,7 +38,7 @@ export const Messaging = () => {
                 </span>
               </div>
               <h5 className="d-flex text-center fw-semibold w-50">
-                No tienes ningun chat, conecta con alguien e inicia una
+                No tienes ningún chat, conecta con alguien e inicia una
                 conversación!
               </h5>
             </div>

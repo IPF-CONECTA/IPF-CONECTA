@@ -65,7 +65,7 @@ export const Header = ({ profileData, setProfileData }) => {
                   </span>
 
                   {profileData?.profile?.title && (
-                    <span className="text-dark fst-italic fw-semibold">
+                    <span className="text-dark fst-italic ">
                       {profileData.profile.title}
                     </span>
                   )}

@@ -8,12 +8,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 import styles from "../../../../public/main.module.css";
-// URL base de tu servidor para imágenes
-const BASE_URL = "http://localhost:4000/logoUrl/";
+import { BASE_URL } from "../../../constants/BASE_URL";
 
 export const AdminCompaniesPanel = () => {
   const noti = useNoti();
@@ -175,7 +173,7 @@ export const AdminCompaniesPanel = () => {
                     onClick={() => handleCompanyClick(company)}
                   >
                     <img
-                      src={`${BASE_URL}${company.logoUrl}`}
+                      src={`${BASE_URL}/logoUrl/${company.logoUrl}`}
                       height={40}
                       width={40}
                       className="rounded-circle m-0"

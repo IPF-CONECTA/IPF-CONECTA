@@ -114,11 +114,13 @@ export const updateProfileSvc = async (id, data) => {
       phonenumber: data.phonenumber || null,
       title: data.title,
     }, { where: { id: profile.id }, transaction: t });
-    const updatedUser = await User.update({ email: data.email, username: data.username }, { where: { id: profile.userId }, transaction: t });
+
+    await User.update({ email: data.email !== profile.user.email && data.email, username: data.username !== profile.user.username && data.username }, { where: { id: profile.userId }, transaction: t });
+
     await t.commit();
     return updatedProfile;
   } catch (error) {
-    console.log(error);
+    console.log(error)
     await t.rollback();
     throw error;
   }

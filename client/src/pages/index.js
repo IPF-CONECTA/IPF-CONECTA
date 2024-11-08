@@ -23,8 +23,6 @@ export { PostPage } from "../modules/feed/posts/pages/PostPage";
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
-export { LanguajeCardPage } from "../modules/profile/languaje/pages/LanguajeCardPage";
-export { LanguajeEditPage } from "../modules/profile/languaje/pages/LanguajeEditPage";
 
 
 //Projects Pages:

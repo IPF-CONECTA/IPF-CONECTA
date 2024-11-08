@@ -5,7 +5,7 @@ import {
   addLanguage,
   getAvailableLanguages,
   getAvailableLanguageLevels,
-} from "../services/languajeService.js";
+} from "../services/languageService.js";
 import { Modal, Button } from "react-bootstrap";
 import Select from "react-select";
 

@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import FsLightbox from "fslightbox-react";
 import { getDateWithHour, getTime } from "../../../../helpers/getTime";
 import { ProfileHover } from "../../../profile/components/ProfileHover";
-import { authContext } from "../../../../context/auth/Context";
 import {
   getProfileInfo,
   like,
@@ -14,7 +13,6 @@ import {
 } from "../../services/feedServices";
 import styles from "../../../../../public/css/PostCard.module.css";
 import { BASE_URL } from "../../../../constants/BASE_URL";
-
 import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { useNoti } from "../../../../hooks/useNoti";
 import { ReportModal } from "../../../app/components/ReportModal";
@@ -28,11 +26,9 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
     slide: 1,
   });
   const [openReportModal, setOpenReportModal] = useState(false);
-  const { authState } = useContext(authContext);
-  const [showProgress, setShowProgress] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [content, setContent] = useState("");
   const [showProfile, setShowProfile] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
   const profileRef = useRef(null);
@@ -41,16 +37,25 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
   const [showAnswerModal, setShowAnswerModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const noti = useNoti();
+
   useEffect(() => {
     const fetchPost = async () => {
-      const post = await getPost(postId);
-      console.log(post);
-      if (post.message) {
-        return noti(post.message, "error");
+      setLoading(true);
+      try {
+        const res = await getPost(postId);
+        console.log("respuesta: ", res);
+        if (res.status !== 200) {
+          return noti("Hubo un error al obtener la publicación", "error");
+        }
+        setPost(res.data);
+        setLiked(res.data.liked);
+        setReposted(res.data.reposted);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
-      setPost(post);
-      setLiked(post.liked);
-      setReposted(post.reposted);
     };
     postId && fetchPost();
   }, [postId]);
@@ -72,16 +77,17 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
     };
     navigator.share(ShareData);
   };
+
   const handleLike = async (e) => {
     e.stopPropagation();
-    const { statusCode } = await like(post.id);
-    if (statusCode !== 201 && statusCode !== 204) {
+    const res = await like(post?.id);
+    if (res.status !== 201 && res.status !== 204) {
       return;
     }
-    if (statusCode === 201) {
+    if (res.status === 201) {
       post.likes.length++;
       setLiked(true);
-    } else if (statusCode === 204) {
+    } else if (res.status === 204) {
       setLiked(false);
       if (post.likes.length > 0) {
         post.likes.length--;
@@ -91,20 +97,21 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
 
   const handleRepost = async (e) => {
     e.stopPropagation();
-    const status = await repostSvc(post.id);
-    if (status !== 201 && status !== 204) {
+    const res = await repostSvc(post?.id);
+    if (res.status !== 201 && res.status !== 204) {
       return;
     }
-    if (status === 201) {
+    if (res.status === 201) {
       post.reposts.length++;
       setReposted(true);
-    } else if (status === 204) {
+    } else if (res.status === 204) {
       setReposted(false);
       if (post.reposts.length > 0) {
         post.reposts.length--;
       }
     }
   };
+
   const actionDelete = (snackbarId) => (
     <>
       <button
@@ -147,22 +154,25 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
       </button>
     </>
   );
+
   const handleBlock = async () => {
     noti("Usuario bloqueado", "success");
   };
+
   const handleDelete = async () => {
-    const status = await deletePost(post.id);
-    if (status !== 204) {
+    const res = await deletePost(post?.id);
+    if (res.status !== 204) {
       return noti("Hubo un error al eliminar el post", "error");
     }
     noti("Post eliminado", "success");
     details ? navigate("/inicio") : setPost(null);
   };
+
   const handleComment = async (e) => {
-    e.preDefault();
+    e.preventDefault();
     e.stopPropagation();
     setIsSubmitting(true);
-    const status = await postSvc(content, null, post.id);
+    const status = await postSvc(content, null, post?.id);
     if (status !== 201) {
       return noti("Hubo un error al publicar el post", "error");
     }
@@ -172,7 +182,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
       setContent("");
       setPost((prevPost) => ({
         ...prevPost,
-        comments: [...prevPost.comments, {}],
+        comments: [...prevPost?.comments, {}],
       }));
       setIsSubmitting(false);
       setShowAnswerModal(false);
@@ -193,11 +203,11 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
 
     timeoutRef.current = setTimeout(async () => {
       setShowProfile(true);
-      const { data, statusCode } = await getProfileInfo(username);
-      if (statusCode !== 200) {
+      const res = await getProfileInfo(username);
+      if (res.status !== 200) {
         return;
       }
-      setProfile(data);
+      setProfile(res.data);
     }, 500);
   };
 
@@ -215,12 +225,20 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
 
   return (
     <>
-      {post && (
+      {loading ? (
+        <div className={`d-flex justify-content-center my-3`}>
+          <span
+            className={`spinner-border`}
+            role={`status`}
+            aria-hidden={`true`}
+          ></span>
+        </div>
+      ) : (
         <>
           <article
             onClick={() => {
               !details &&
-                navigate(`/${post?.profile.user.username}/post/${post.id}`);
+                navigate(`/${post?.profile.user.username}/post/${post?.id}`);
             }}
             className={`d-flex flex-column w-100  p-3 border-bottom `}
           >
@@ -233,16 +251,16 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                     height={35}
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/perfil/${post.profile.user.username}`);
+                      navigate(`/perfil/${post?.profile.user.username}`);
                     }}
                     onMouseEnter={() =>
-                      handleShowProfile(true, post.profile.user.username)
+                      handleShowProfile(true, post?.profile.user.username)
                     }
                     onMouseLeave={() =>
-                      handleShowProfile(false, post.profile.user.username)
+                      handleShowProfile(false, post?.profile.user.username)
                     }
-                    src={`${BASE_URL}/images/${post.profile.profilePic}`}
-                    alt={post.profile.names}
+                    src={`${BASE_URL}/images/${post?.profile.profilePic}`}
+                    alt={post?.profile.names}
                   />
                   {profile && (
                     <ProfileHover
@@ -257,15 +275,15 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                   <div className={`d-flex flex-column w-100 mb-2`}>
                     <div>
                       <span className="fw-bold fs-6 me-2">
-                        {post.profile.names} {post.profile.surnames}
+                        {post?.profile.names} {post?.profile.surnames}
                       </span>
                       <span className={`text-muted me-2 ${styles.smallText}`}>
-                        @{post.profile.user?.username}
+                        @{post?.profile.user?.username}
                       </span>
                       {!details && (
                         <span className={`text-secondary ${styles.smallText}`}>
                           {" "}
-                          {getTime(post.createdAt)}
+                          {getTime(post?.createdAt)}
                         </span>
                       )}
                     </div>
@@ -273,23 +291,23 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                       <p
                         className="my-2 text-break"
                         dangerouslySetInnerHTML={{
-                          __html: post.content.replace(/\n/g, "<br />"),
+                          __html: post?.content.replace(/\n/g, "<br />"),
                         }}
                       ></p>
                       <div
                         className={`d-flex flex-column mb-2 ${styles.imagesContainer}`}
                       >
-                        {post.attachments?.length > 0 && (
+                        {post?.attachments?.length > 0 && (
                           <>
-                            {post.attachments.length === 1 && (
+                            {post?.attachments.length === 1 && (
                               <img
                                 onClick={(e) => openLightboxOnSlide(0, e)}
-                                src={`${BASE_URL}/images/${post.attachments[0].url}`}
+                                src={`${BASE_URL}/images/${post?.attachments[0].url}`}
                                 alt="post attachment"
                                 className="w-100 rounded-4 border"
                               />
                             )}
-                            {post.attachments.length === 2 && (
+                            {post?.attachments.length === 2 && (
                               <div
                                 className="d-flex"
                                 style={{ overflow: "hidden" }}
@@ -300,8 +318,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                     borderTopLeftRadius: "15px",
                                     borderBottomLeftRadius: "15px",
                                   }}
-                                  src={`${BASE_URL}/images/${post.attachments[0].url}`}
-                                  alt={post.attachments[0].url}
+                                  src={`${BASE_URL}/images/${post?.attachments[0].url}`}
+                                  alt={post?.attachments[0].url}
                                   className={`${styles.attachment} border w-50 me-1`}
                                 />
                                 <img
@@ -310,21 +328,21 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                     borderTopRightRadius: "15px",
                                     borderBottomRightRadius: "15px",
                                   }}
-                                  src={`${BASE_URL}/images/${post.attachments[1].url}`}
-                                  alt={post.attachments[1].url}
+                                  src={`${BASE_URL}/images/${post?.attachments[1].url}`}
+                                  alt={post?.attachments[1].url}
                                   className={`${styles.attachment} border w-50`}
                                 />
                               </div>
                             )}
-                            {post.attachments.length === 3 && (
+                            {post?.attachments.length === 3 && (
                               <div
                                 className="d-flex w-100 pb-2"
                                 style={{ height: "200px", overflow: "hidden" }}
                               >
                                 <img
                                   onClick={(e) => openLightboxOnSlide(0, e)}
-                                  src={`${BASE_URL}/images/${post.attachments[0].url}`}
-                                  alt={post.attachments[0].url}
+                                  src={`${BASE_URL}/images/${post?.attachments[0].url}`}
+                                  alt={post?.attachments[0].url}
                                   style={{
                                     borderTopLeftRadius: "15px",
                                     borderBottomLeftRadius: "15px",
@@ -334,8 +352,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                 <div className="d-flex flex-column w-50">
                                   <img
                                     onClick={(e) => openLightboxOnSlide(1, e)}
-                                    src={`${BASE_URL}/images/${post.attachments[1].url}`}
-                                    alt={post.attachments[1].url}
+                                    src={`${BASE_URL}/images/${post?.attachments[1].url}`}
+                                    alt={post?.attachments[1].url}
                                     className={`${styles.attachment} w-100 border`}
                                     style={{
                                       height: "50%",
@@ -344,8 +362,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                   />
                                   <img
                                     onClick={(e) => openLightboxOnSlide(2, e)}
-                                    src={`${BASE_URL}/images/${post.attachments[2].url}`}
-                                    alt={post.attachments[2].url}
+                                    src={`${BASE_URL}/images/${post?.attachments[2].url}`}
+                                    alt={post?.attachments[2].url}
                                     className={`${styles.attachment} w-100 border  border-top-0`}
                                     style={{
                                       height: "50%",
@@ -355,13 +373,13 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                 </div>
                               </div>
                             )}
-                            {post.attachments.length === 4 && (
+                            {post?.attachments.length === 4 && (
                               <div style={{ overflow: "hidden" }}>
                                 <div className={`d-flex mb-1 `}>
                                   <img
                                     onClick={(e) => openLightboxOnSlide(0, e)}
-                                    src={`${BASE_URL}/images/${post.attachments[0].url}`}
-                                    alt={post.attachments[0].url}
+                                    src={`${BASE_URL}/images/${post?.attachments[0].url}`}
+                                    alt={post?.attachments[0].url}
                                     className={`${styles.attachment} w-50 border me-1`}
                                     style={{
                                       height: "120px",
@@ -370,8 +388,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                   />
                                   <img
                                     onClick={(e) => openLightboxOnSlide(1, e)}
-                                    src={`${BASE_URL}/images/${post.attachments[1].url}`}
-                                    alt={post.attachments[1].url}
+                                    src={`${BASE_URL}/images/${post?.attachments[1].url}`}
+                                    alt={post?.attachments[1].url}
                                     className={`${styles.attachment} w-50 border`}
                                     style={{
                                       height: "120px",
@@ -382,8 +400,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                 <div className="d-flex">
                                   <img
                                     onClick={(e) => openLightboxOnSlide(2, e)}
-                                    src={`${BASE_URL}/images/${post.attachments[2].url}`}
-                                    alt={post.attachments[2].url}
+                                    src={`${BASE_URL}/images/${post?.attachments[2].url}`}
+                                    alt={post?.attachments[2].url}
                                     className={`${styles.attachment} w-50 border  me-1`}
                                     style={{
                                       height: "120px",
@@ -392,8 +410,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                   />
                                   <img
                                     onClick={(e) => openLightboxOnSlide(3, e)}
-                                    src={`${BASE_URL}/images/${post.attachments[3].url}`}
-                                    alt={post.attachments[3].url}
+                                    src={`${BASE_URL}/images/${post?.attachments[3].url}`}
+                                    alt={post?.attachments[3].url}
                                     className={`${styles.attachment} w-50 border`}
                                     style={{
                                       height: "120px",
@@ -408,7 +426,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                       </div>
                       {details && (
                         <span className={`text-muted ${styles.smallText}`}>
-                          {getDateWithHour(post.createdAt)}
+                          {getDateWithHour(post?.createdAt)}
                         </span>
                       )}
                     </div>
@@ -464,7 +482,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                               }}
                               className="dropdown-item p-0 d-flex justify-content-between "
                             >
-                              Seguir a {post.profile.names}{" "}
+                              Seguir a {post?.profile.names}{" "}
                               <span className="material-symbols-outlined text-primary ms-1">
                                 person_add
                               </span>
@@ -523,7 +541,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                   <ReportModal
                     openModal={openReportModal}
                     setOpenModal={setOpenReportModal}
-                    reportableId={post.id}
+                    reportableId={post?.id}
                     reportable={"publicación"}
                   />
                 </div>
@@ -603,7 +621,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
               </button>
               <button
                 className="btn p-0 d-flex align-items-center share"
-                onClick={(e) => handleShare(e, post.id)}
+                onClick={(e) => handleShare(e, post?.id)}
               >
                 <span
                   className={`material-symbols-outlined ${styles.actionButtons}`}
@@ -635,6 +653,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
           setShowAnswerModal={setShowAnswerModal}
           post={post}
           handleComment={handleComment}
+          isSubmitting={isSubmitting}
         />
       )}
     </>

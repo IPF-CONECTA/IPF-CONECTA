@@ -14,7 +14,6 @@ import {
 } from "../../skills/skillable/skillableServices.js";
 import { sequelize } from "../../../config/db.js";
 import { getLocationByIdSvc } from "../../locations/locationServices.js";
-import { verifyToken } from "../../../helpers/verifyToken.js";
 
 export const createNewJobSvc = async (jobData, profileId) => {
   const t = await sequelize.transaction();

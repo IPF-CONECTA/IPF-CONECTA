@@ -8,14 +8,12 @@ import { ExperienceContainer } from "../experiences/components/ExperienceContain
 import { Header } from "./ProfileHeader";
 import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
-import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
-import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
-import { LanguajeCardPage } from "../languaje/pages/LanguajeCardPage";
 
 import { JobOffers } from "../jobs/components/JobOffers";
 import { jobsServices } from "../jobs/services/jobsServices";
+import { LanguageSelector } from "../language/components/LanguageCard";
 
 export const Profile = ({ data }) => {
   const noti = useNoti();
@@ -26,13 +24,22 @@ export const Profile = ({ data }) => {
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchProfile = async () => {
-    const res = await getProfile(data ? data : username);
-    if (res.status !== 200) {
-      return noti(res.message, "error");
+    setLoading(true);
+    try {
+      const res = await getProfile(data ? data : username);
+      if (res.status !== 200) {
+        return noti(res.message, "error");
+      }
+      setProfileData(res.data);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
-    setProfileData(res.data);
   };
   const fetchProjects = async () => {
     const res = await projectsService.getProjects(data ? data : username);
@@ -79,7 +86,7 @@ export const Profile = ({ data }) => {
     if (role === "recruiter") {
       fetchJobOffers();
     }
-  }, [username, role, data]);
+  }, [username, data]);
 
   useEffect(() => {
     if (profileData) {
@@ -90,7 +97,17 @@ export const Profile = ({ data }) => {
 
   return (
     <>
-      {profileData && (
+      {loading ? (
+        <div
+          className={`d-flex justify-content-center align-items-center my-3 h-100`}
+        >
+          <span
+            className={`spinner-border`}
+            role={`status`}
+            aria-hidden={`true`}
+          ></span>
+        </div>
+      ) : (
         <div>
           <Header profileData={profileData} setProfileData={setProfileData} />
           <Nav role={role} />
@@ -135,7 +152,7 @@ export const Profile = ({ data }) => {
               />
             )}
             {(profileData.own || profileData.profile.languages?.length > 0) && (
-              <LanguajeCardPage
+              <LanguageSelector
                 languagesData={profileData.profile.languages}
                 own={profileData.own}
                 username={username}
