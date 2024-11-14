@@ -198,7 +198,6 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
       }
     };
   }, [locationSearch]);
-
   const handleSkillChange = (selectedOption) => {
     const skills = Array.isArray(selectedOption)
       ? selectedOption

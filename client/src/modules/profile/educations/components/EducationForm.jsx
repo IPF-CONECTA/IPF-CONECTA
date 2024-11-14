@@ -5,6 +5,7 @@ import { educationsServices } from "../services/educationsServices";
 import { disciplinesServices } from "../services/disciplinesServices";
 import { Dialog } from "@mui/material";
 import Select from "react-select";
+import { SkillSearch } from "../../skills/components/FindSkills";
 
 export const EducationForm = ({
   openEducationModal,
@@ -13,11 +14,13 @@ export const EducationForm = ({
   username,
   education,
 }) => {
+  const noti = useNoti();
+  const [disciplines, setDisciplines] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control,
     setValue,
     reset,
   } = useForm({
@@ -38,10 +41,9 @@ export const EducationForm = ({
       endDateYear: education?.endDate
         ? new Date(education.endDate).getFullYear()
         : "",
+      skills: education ? education.skills : [],
     },
   });
-  const noti = useNoti();
-  const [disciplines, setDisciplines] = useState([]);
 
   useEffect(() => {
     const fetchDisciplines = async () => {
@@ -68,10 +70,12 @@ export const EducationForm = ({
       setValue("startDateYear", education.startDate?.slice(0, 4) || "");
       setValue("endDateMonth", education.endDate?.slice(5, 7) || "");
       setValue("endDateYear", education.endDate?.slice(0, 4) || "");
+      setValue("skills", education.skills);
     }
-  });
+  }, [education, setValue]);
 
   const onSubmit = async (data) => {
+    data.skills = selectedSkills;
     const educationData = {
       title: data.title,
       institution: data.institution,
@@ -81,9 +85,8 @@ export const EducationForm = ({
       endDate: data.endDateYear
         ? `${data.endDateMonth}-01-${data.endDateYear}`
         : null,
+      skills: data?.skills,
     };
-
-    console.log({ educationData });
 
     if (education) {
       await educationsServices.editEducation(education.id, educationData);
@@ -104,6 +107,14 @@ export const EducationForm = ({
     setOpenEducationModal(false);
     onEducationSubmit();
     reset();
+  };
+
+  const handleSkillChange = (selectedOption) => {
+    console.log(selectedOption);
+    const skills = Array.isArray(selectedOption)
+      ? selectedOption
+      : [selectedOption];
+    setSelectedSkills(skills.map((skill) => skill.value));
   };
 
   return (
@@ -252,7 +263,7 @@ export const EducationForm = ({
                 Año
               </option>
               {Array.from(
-                { length: new Date().getFullYear() - 1924 + 1 },
+                { length: new Date().getFullYear() - 1980 + 1 },
                 (_, i) => {
                   const year = new Date().getFullYear() - i;
                   return (
@@ -265,6 +276,24 @@ export const EducationForm = ({
             </select>
           </div>
         </div>
+
+        <div className="mb-3 skills">
+          <label>Habilidades</label>
+          <SkillSearch
+            onSkillSelect={handleSkillChange}
+            prevSelectedSkills={
+              education
+                ? education?.skills.map((skill) => {
+                    return {
+                      value: skill.id,
+                      label: skill.name,
+                    };
+                  })
+                : []
+            }
+          />
+        </div>
+
         <div className="buttons d-flex justify-content-between">
           <button
             type="button"

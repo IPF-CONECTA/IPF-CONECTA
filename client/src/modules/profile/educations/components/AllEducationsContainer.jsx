@@ -31,7 +31,7 @@ export const AllEducationsContainer = ({
                   arrow_back_ios
                 </span>
               </button>
-              <span className="fs-5 fw-bold">Educaciones</span>
+              <span className="fs-5 fw-bold">Formaciones academicas</span>
             </div>
             {own && (
               <div className="d-flex">
@@ -54,7 +54,7 @@ export const AllEducationsContainer = ({
             )}
           </div>
 
-          <ul className="list-group w-100">
+          <ul className="list-group-flush w-100">
             {educations?.length >= 1 ? (
               educations.map((education, index) => (
                 <React.Fragment key={education.id}>

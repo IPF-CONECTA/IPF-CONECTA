@@ -11,12 +11,13 @@ export const createEducationCtrl = async (req, res) => {
   try {
     const { id: profileId } = req.user.profile;
     const { education } = req.body;
-
+    console.log("HOLA HOLA");
+    console.log(education);
     const newEducation = await createEducationSvc(profileId, education);
     if (!newEducation)
       return res.status(400).json({ error: "No se pudo crear la educación" });
 
-    return res.status(201).json(newEducation);
+    return res.status(201).json();
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -29,6 +30,7 @@ export const getEducationsByUsernameCtrl = async (req, res) => {
     const educations = await getEducationSvc(profileId);
     return res.status(200).json(educations);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -42,6 +44,7 @@ export const getEducationByIdCtrl = async (req, res) => {
 
     return res.status(200).json(education);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -55,6 +58,7 @@ export const editEducationCtrl = async (req, res) => {
     const updatedEducation = await updateEducationSvc(id, education);
     return res.status(200).json(updatedEducation);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };

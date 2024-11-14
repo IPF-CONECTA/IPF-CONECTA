@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog } from "@mui/material";
 import { EducationForm } from "./EducationForm";
 
 import { useNoti } from "../../../../hooks/useNoti";
 
-import { getDateMonth } from "../../../../helpers/getTime";
+import { getDateMonth, getYear } from "../../../../helpers/getTime";
 import { disciplinesServices } from "../services/disciplinesServices";
+
+import styles from "../../../../../public/css/educationCard.module.css";
 
 export const EducationCard = ({
   education,
@@ -21,6 +23,8 @@ export const EducationCard = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [educationToEdit, setEducationToEdit] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showAllSkills, setShowAllSkills] = useState(false);
+  const [skills, setSkills] = useState([]);
 
   const handleEditClick = (education) => {
     setEducationToEdit(education);
@@ -54,69 +58,112 @@ export const EducationCard = ({
     fetchDisciplines();
   }, []);
 
-  console.log(education);
+  useEffect(() => {
+    const skills = education.skills?.slice(0, 3);
+    setSkills(skills);
+  }, [education]);
+
   if (loading) return <p>Cargando datos de tarjetas de educación...</p>;
 
   return (
     <>
-      <li key={education.id} className="list-group-flush py-2 d-flex w-100">
-        <div className="d-flex flex-column w-100">
-          <div className="w-100">
-            {edit && own && (
-              <div className="d-flex flex-row">
-                <button
-                  className="btn"
-                  onClick={() => handleEditClick(education)}
-                >
-                  <span className="material-symbols-outlined text-center">
-                    edit
-                  </span>
-                </button>
-              </div>
-            )}
-          </div>
-          {isModalOpen && (
-            <EducationForm
-              education={educationToEdit}
-              openEducationModal={isModalOpen}
-              setOpenEducationModal={setIsModalOpen}
-              onEducationSubmit={onEducationSubmit}
-              username={username}
+      <li key={education.id} className="list-group-item py-3">
+        <div className="d-flex justify-content-between align-items-start">
+          <div className="mx-2">
+            <img
+              src="/img/generic_image.png"
+              alt="PENE"
+              width={45}
+              className="border pe-none"
             />
-          )}
-          <div className="d-flex flex-column">
-            <div className="d-flex flex-column p-2 ">
-              <div className="d-flex flex-column p-2">
-                <div className="d-flex">
-                  <span className="material-symbols-outlined fs-3">
-                    workspace_premium
-                  </span>{" "}
-                  <h5 className="d-flex fw-semibold">{education.title}</h5>
-                </div>
-
-                <div className="d-flex">
-                  <span className="material-symbols-outlined fs-3">star</span>
-                  <p>
-                    <em>{education?.discipline?.name}</em>
-                  </p>
-                </div>
-                <div className="d-flex text-muted">
-                  <span className="material-symbols-outlined fs-3">school</span>
-                  <p>{education.institution}</p>
-                </div>
-
-                <p className="text-muted f-1">
-                  {getDateMonth(education.startDate)} -{" "}
-                  {getDateMonth(education.endDate)}
-                </p>
-
-                <div className="d-flex">
-                  <p className="text-secondary">{education?.description}</p>
-                </div>
-              </div>
-            </div>
           </div>
+          <div className={`flex-grow-1 ${styles.smallText}`}>
+            <p className="fw-semibold mb-1 d-flex align-items-center">
+              {education.title}
+            </p>
+            <p className="text-muted">
+              {getYear(education.startDate)} - {getYear(education.endDate)}
+            </p>
+            <div className="text-muted">{education.institution}</div>
+            <div className="text-muted">
+              <em>{education?.discipline?.name}</em>
+            </div>
+            <p>{education?.description}</p>
+            <ul className="p-0 m-0 d-flex align-items-center flex-row">
+              <span className="material-symbols-outlined fw-lighter me-2">
+                grade
+              </span>
+              <ul className={` ${styles.smallText} fw-semibold p-0`}>
+                {skills.map((skill, index) => (
+                  <li key={skill.id} className="d-inline me-2">
+                    <span>{skill.name}</span>
+                    {index !== education.skills.length - 1 && ","}
+                  </li>
+                ))}
+                {education.skills.length > 3 && (
+                  <li
+                    className="d-inline me-2 fw-semibold"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowAllSkills(true)}
+                  >
+                    y {education.skills.length - 3} más...
+                  </li>
+                )}
+                <Dialog
+                  open={showAllSkills}
+                  onClose={() => setShowAllSkills(false)}
+                  fullWidth
+                  maxWidth="sm"
+                >
+                  <div className="p-3">
+                    <div className="d-flex justify-content-between mb-3">
+                      <span className="fw-bold fs-5 ">{education.title}</span>
+                      <button
+                        onClick={() => setShowAllSkills(false)}
+                        className="btn d-flex p-0 align-items-center"
+                      >
+                        <span className="material-symbols-outlined text-dark-emphasis">
+                          close
+                        </span>
+                      </button>
+                    </div>
+                    <ul className="p-0 m-0">
+                      {education.skills.map((skill, index) => (
+                        <React.Fragment key={skill.id}>
+                          <li key={skill.id} className="list-unstyled">
+                            {skill.name}
+                          </li>
+                          {index !== education.skills.length - 1 && (
+                            <hr className="text-body-tertiary" />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </ul>
+                  </div>
+                </Dialog>
+              </ul>
+            </ul>
+          </div>
+
+          {edit && own && (
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={() => handleEditClick(education)}
+            >
+              <span className="material-symbols-outlined fs-5">edit</span>
+            </button>
+          )}
         </div>
+
+        {isModalOpen && (
+          <EducationForm
+            education={educationToEdit}
+            openEducationModal={isModalOpen}
+            setOpenEducationModal={setIsModalOpen}
+            onEducationSubmit={onEducationSubmit}
+            username={username}
+          />
+        )}
       </li>
     </>
   );
