@@ -31,11 +31,14 @@ export const ConnectionsModal = ({
       fullWidth
       maxWidth="xs"
     >
-      <div className="p-3 " style={{ maxHeight: "400px" }}>
-        <span className="fw-semibold fs-4 ">
+      <div
+        className="overflow-hidden d-flex flex-column align-items-center"
+        style={{ maxHeight: "400px" }}
+      >
+        <span className="fw-semibold fs-4 py-2">
           {typeConnection == "followers" ? "Seguidores" : "Siguiendo"}
         </span>
-        <ul className="list-group list-group-flush">
+        <ul className="list-group list-group-flush overflow-y-auto px-2 w-100">
           {data.map((profile, index) => {
             return (
               <li key={index} className="list-group-item">

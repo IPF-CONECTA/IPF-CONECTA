@@ -99,7 +99,7 @@ export const AccountCard = ({ index, account, setOpenConnections }) => {
           </span>
         </div>
       </div>
-      {authState.user.profile.id !== account.id && (
+      {authState?.user?.profile?.id !== account?.id && (
         <div>
           <button
             className={`${styles.buttonFollow} ms-2 ${styles.smallText} ${
