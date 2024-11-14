@@ -99,7 +99,6 @@ export const Profile = ({ data }) => {
   }),
     [profileData];
 
-  console.log(educations);
   return (
     <>
       {profileData && (

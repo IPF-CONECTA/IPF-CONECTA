@@ -5,6 +5,7 @@ import {
   DialogContentText,
 } from "@mui/material";
 import React from "react";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 
 export const AnswerModal = ({
   showAnswerModal,
