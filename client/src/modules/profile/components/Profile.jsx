@@ -10,16 +10,18 @@ import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
-
 import { JobOffers } from "../jobs/components/JobOffers";
 import { jobsServices } from "../jobs/services/jobsServices";
 import { LanguageSelector } from "../language/components/LanguageCard";
+import { educationsServices } from "../educations/services/educationsServices";
+import { EducationsContainer } from "../educations/components/EducationsContainer";
 
 export const Profile = ({ data }) => {
   const noti = useNoti();
   const { username } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [educations, setEducations] = useState([]);
   const [jobOffers, setJobOffers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -47,6 +49,14 @@ export const Profile = ({ data }) => {
       return noti("Hubo un error al obtener los proyectos", "error");
     }
     setProjects(res.data);
+  };
+
+  const fetchEducations = async () => {
+    const res = await educationsServices.getEducations(data ? data : username);
+    if (res.status !== 200 && res.status !== 404) {
+      return noti("Hubo un error al obtener las educaciones", "error");
+    }
+    setEducations(res.data);
   };
   const fetchJobOffers = async () => {
     const res = await jobsServices.getJobsByUsername(data ? data : username);
@@ -81,6 +91,7 @@ export const Profile = ({ data }) => {
     fetchProfile();
     fetchExperiences();
     fetchProjects();
+    fetchEducations();
     fetchSkills();
 
     if (role === "recruiter") {
@@ -95,6 +106,7 @@ export const Profile = ({ data }) => {
   }),
     [profileData];
 
+  console.log(educations);
   return (
     <>
       {loading ? (
@@ -122,6 +134,14 @@ export const Profile = ({ data }) => {
                 own={profileData.own}
                 experiencesData={experiences}
                 onExperienceSubmit={fetchExperiences}
+                username={username}
+              />
+            )}
+            {(profileData.own || educations?.length > 0) && (
+              <EducationsContainer
+                educationsData={educations}
+                own={profileData.own}
+                onEducationSubmit={fetchEducations}
                 username={username}
               />
             )}

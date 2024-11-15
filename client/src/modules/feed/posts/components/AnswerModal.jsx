@@ -17,7 +17,6 @@ export const AnswerModal = ({
   handleComment,
   isSubmitting,
 }) => {
-  console.log(isSubmitting);
   const { authState } = useContext(authContext);
   const [content, setContent] = useState("");
 

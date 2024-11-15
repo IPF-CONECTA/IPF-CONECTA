@@ -21,10 +21,9 @@ export const RecruiterJobOffersPage = () => {
   return (
     <>
       <Nav />
-
       <div className="d-flex justify-content-evenly px-5  my-4">
         <div style={{ width: "65%" }} className="border rounded">
-          <Header profileData={profileData} />
+          <Header profileData={profileData} setProfileData={setProfileData} />
           <AllJobOffersContainer username={username} />
         </div>
 

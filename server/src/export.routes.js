@@ -31,6 +31,10 @@ import langUserRouter from "./modules/profile/langs_user/langUserRoutes.js";
 import profilePicRoutes from "./modules/profile/profilePic/profilePicRoutes.js";
 import skillableRoutes from "./modules/skills/skillable/skillableRoutes.js";
 import contactRoutes from "./modules/profile/contact/contactRoutes.js";
+import educationsRoutes from "./modules/profile/education/educationRoutes.js";
+import disciplineRoutes from "./modules/profile/education/disciplines/disciplineRoutes.js";
+import instituteRoutes from "./modules/profile/education/institutes/instituteRoutes.js";
+
 
 
 export const routes = (app) => {
@@ -52,7 +56,7 @@ export const routes = (app) => {
   app.use(modalityRoutes);
   app.use(companyLocationRoutes);
   app.use(profileRoutes);
-  app.use(profilePicRoutes)
+  app.use(profilePicRoutes);
   app.use(experienceRoutes);
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
@@ -63,8 +67,11 @@ export const routes = (app) => {
   app.use(SkillProfileRoutes);
   app.use("/message", messageRoutes);
   app.use(chatRoutes);
-  app.use(skillableRoutes)
+  app.use(skillableRoutes);
   app.use(langRouter);
   app.use(langUserRouter);
   app.use(contactRoutes)
+  app.use("/educations", educationsRoutes);
+  app.use("/disciplines", disciplineRoutes);
+  app.use(instituteRoutes)
 };

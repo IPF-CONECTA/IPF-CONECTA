@@ -24,6 +24,11 @@ export { PostPage } from "../modules/feed/posts/pages/PostPage";
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
 
+export { LanguageCardPage } from "../modules/profile/language/pages/LanguageCardPage";
+export { LanguageEditPage } from "../modules/profile/language/pages/LanguageEditPage";
+
+export { ProfileEducationsPage } from "../modules/profile/educations/pages/ProfileEducationsPage";
+
 
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";

@@ -279,6 +279,8 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
       if (skillsToAdd.length > 0) {
         await createSkillables(jobId, skillsToAdd, "job", t);
       }
+    } else {
+      await deleteSkillables(jobId, [], t);
     }
 
     await t.commit();
