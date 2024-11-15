@@ -301,7 +301,6 @@ export const Post = ({
                         }}
                       ></p>
                       <div className={`d-flex flex-column mb-2 `}>
-                        {console.log(post?.attachments)}
                         {post?.attachments?.length > 0 && (
                           <>
                             {/* =================== UN ARCHIVO =================== */}
@@ -309,7 +308,11 @@ export const Post = ({
                               (post?.attachments[0].docType.split("/")[0] ==
                               "video" ? (
                                 <div className="ratio ratio-1x1 rounded-4 overflow-hidden">
-                                  <video controls width="100%" autoplay>
+                                  <video
+                                    controlsList="nodownload"
+                                    controls
+                                    width="100%"
+                                  >
                                     <source
                                       src={`${BASE_URL}/images/${post.attachments[0].url}`}
                                       type={post.attachments[0].docType}
@@ -331,9 +334,9 @@ export const Post = ({
                                 {post?.attachments[0].docType.split("/")[0] ==
                                 "video" ? (
                                   <video
+                                    controlsList="nodownload"
                                     controls
                                     className="w-50 me-1"
-                                    autoplay
                                   >
                                     <source
                                       src={`${BASE_URL}/images/${post.attachments[0].url}`}
@@ -351,9 +354,9 @@ export const Post = ({
                                 {post?.attachments[1].docType.split("/")[0] ==
                                 "video" ? (
                                   <video
+                                    controlsList="nodownload"
                                     controls
                                     width="100%"
-                                    autoplay
                                     className="w-50 border"
                                   >
                                     <source
@@ -385,9 +388,9 @@ export const Post = ({
                                 {post?.attachments[0].docType.split("/")[0] ==
                                 "video" ? (
                                   <video
+                                    controlsList="nodownload"
                                     controls
                                     className="w-50 rounded-start-4 me-1"
-                                    autoplay
                                   >
                                     <source
                                       src={`${BASE_URL}/images/${post.attachments[0].url}`}
@@ -410,7 +413,11 @@ export const Post = ({
                                 <div className="d-flex flex-column w-50">
                                   {post?.attachments[1].docType.split("/")[0] ==
                                   "video" ? (
-                                    <video controls className="h-50" autoplay>
+                                    <video
+                                      controlsList="nodownload"
+                                      controls
+                                      className="h-50"
+                                    >
                                       <source
                                         src={`${BASE_URL}/images/${post.attachments[1].url}`}
                                         type={post.attachments[1].docType}
@@ -431,9 +438,9 @@ export const Post = ({
                                   {post?.attachments[2].docType.split("/")[0] ==
                                   "video" ? (
                                     <video
+                                      controlsList="nodownload"
                                       controls
                                       className="h-50"
-                                      autoplay
                                       style={{
                                         borderBottomRightRadius: "15px",
                                       }}
@@ -465,9 +472,9 @@ export const Post = ({
                                   {post?.attachments[0].docType.split("/")[0] ==
                                   "video" ? (
                                     <video
+                                      controlsList="nodownload"
                                       controls
                                       className="w-50 me-1"
-                                      autoplay
                                       style={{
                                         height: "120px",
                                         borderTopLeftRadius: "15px",
@@ -493,9 +500,9 @@ export const Post = ({
                                   {post?.attachments[1].docType.split("/")[0] ==
                                   "video" ? (
                                     <video
+                                      controlsList="nodownload"
                                       controls
                                       className="w-50"
-                                      autoplay
                                       style={{
                                         height: "120px",
                                         borderTopRightRadius: "15px",
@@ -523,9 +530,9 @@ export const Post = ({
                                   {post?.attachments[2].docType.split("/")[0] ==
                                   "video" ? (
                                     <video
+                                      controlsList="nodownload"
                                       controls
                                       className="w-50 me-1"
-                                      autoplay
                                       style={{
                                         height: "120px",
                                         borderBottomLeftRadius: "15px",
@@ -551,9 +558,9 @@ export const Post = ({
                                   {post?.attachments[3].docType.split("/")[0] ==
                                   "video" ? (
                                     <video
+                                      controlsList="nodownload"
                                       controls
                                       className="w-50 me-1"
-                                      autoplay
                                       style={{
                                         height: "120px",
                                         borderBottomRightRadius: "15px",
