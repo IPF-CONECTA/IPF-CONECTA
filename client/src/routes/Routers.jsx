@@ -35,6 +35,7 @@ import {
   RecruiterJobOffersPage,
   JobPostulationsPage,
   ProfileEducationsPage,
+  ProfilePostPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -95,6 +96,11 @@ export const Routers = () => {
           <Route
             path="/perfil/:username/formaciones"
             element={<ProfileEducationsPage />}
+          />
+
+          <Route
+            path="/perfil/:username/publicaciones"
+            element={<ProfilePostPage />}
           />
 
           <Route path="/guardados" element={<ProfilePage />} />

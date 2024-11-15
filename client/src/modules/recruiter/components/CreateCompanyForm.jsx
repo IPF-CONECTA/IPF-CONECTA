@@ -89,7 +89,7 @@ export const CreateCompanyForm = () => {
       noti("Empresa creada exitosamente!", "success");
       navigate(`/crear-sede/${response.data.id}`);
     } catch (error) {
-      console.log(error);
+      console.log({ error });
       noti(
         error.response?.data?.message || "Error al crear la empresa",
         "error"

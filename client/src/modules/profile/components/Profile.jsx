@@ -17,6 +17,7 @@ import { jobsServices } from "../jobs/services/jobsServices";
 import { educationsServices } from "../educations/services/educationsServices";
 import { set } from "react-hook-form";
 import { EducationsContainer } from "../educations/components/EducationsContainer";
+import { PostsContainer } from "../posts/components/PostsContainer";
 
 export const Profile = ({ data }) => {
   const noti = useNoti();
@@ -111,6 +112,7 @@ export const Profile = ({ data }) => {
               aboutData={profileData.profile.about}
               username={username}
             />
+            <PostsContainer />
             {(profileData.own || experiences?.length > 0) && (
               <ExperienceContainer
                 own={profileData.own}
