@@ -71,8 +71,8 @@ export const EducationCard = ({
         <div className="d-flex justify-content-between align-items-start">
           <div className="mx-2">
             <img
-              src="/img/generic_image.png"
-              alt="PENE"
+              src="/img/education_generic_image.png"
+              alt="Educación"
               width={45}
               className="border pe-none"
             />

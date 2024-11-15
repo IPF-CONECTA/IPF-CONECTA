@@ -1,7 +1,5 @@
-export const PostsContainer = () => {
-  return (
-    <div>
-      <h1>PostsContainer</h1>
-    </div>
-  );
+export const PostsContainer = ({ username }) => {
+  //2 +2 =ñ
+  return;
+  <></>;
 };
