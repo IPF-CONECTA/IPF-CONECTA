@@ -33,7 +33,6 @@ export const ProfileEducationsPage = () => {
     fetchEducations();
   }, [username]);
 
-  // console.log({ profileData, educations });
   return (
     <>
       <Nav />
@@ -47,7 +46,6 @@ export const ProfileEducationsPage = () => {
             username={username}
           />
         </div>
-        <RecommendedAccounts />
       </div>
     </>
   );

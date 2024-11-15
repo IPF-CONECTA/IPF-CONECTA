@@ -38,6 +38,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const noti = useNoti();
 
+  console.log(postData);
+
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
@@ -304,7 +306,8 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                                 onClick={(e) => openLightboxOnSlide(0, e)}
                                 src={`${BASE_URL}/images/${post?.attachments[0].url}`}
                                 alt="post attachment"
-                                className="w-100 rounded-4 border"
+                                className="w-100 rounded-4 border object-fit-cover"
+                                style={{ maxHeight: "400px" }}
                               />
                             )}
                             {post?.attachments.length === 2 && (

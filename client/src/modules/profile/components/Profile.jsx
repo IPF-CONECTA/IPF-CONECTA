@@ -16,6 +16,7 @@ import { LanguageSelector } from "../language/components/LanguageCard";
 import { educationsServices } from "../educations/services/educationsServices";
 import { EducationsContainer } from "../educations/components/EducationsContainer";
 import { PostsContainer } from "../posts/components/PostsContainer";
+import { postsServices } from "../posts/services/postsServices";
 
 export const Profile = ({ data }) => {
   const noti = useNoti();
@@ -26,6 +27,7 @@ export const Profile = ({ data }) => {
   const [jobOffers, setJobOffers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -88,12 +90,21 @@ export const Profile = ({ data }) => {
     setSkills(res.data);
   };
 
+  const fetchPosts = async () => {
+    const res = await postsServices.getPostsByUsername(data ? data : username);
+    if (res.status !== 200 && res.status !== 404) {
+      return noti("Hubo un error al obtener los posts", "error");
+    }
+    setPosts(res.data);
+  };
+
   useEffect(() => {
     fetchProfile();
     fetchExperiences();
     fetchProjects();
     fetchEducations();
     fetchSkills();
+    fetchPosts();
 
     if (role === "recruiter") {
       fetchJobOffers();
@@ -106,7 +117,7 @@ export const Profile = ({ data }) => {
     }
   }),
     [profileData];
-
+  console.log(posts);
   return (
     <>
       {loading ? (
@@ -125,17 +136,24 @@ export const Profile = ({ data }) => {
           <Nav role={role} />
           <main className="w-100">
             <AboutCard
-              own={profileData.own}
+              own={profileData?.own}
               aboutData={profileData.profile.about}
               username={username}
             />
-            <PostsContainer />
+            {(profileData.own || posts?.length > 0) && (
+              <PostsContainer
+                username={username}
+                own={profileData.own}
+                postsData={posts}
+                onPostSubmit={fetchPosts}
+              />
+            )}
             {(profileData.own || experiences?.length > 0) && (
               <ExperienceContainer
+                username={username}
                 own={profileData.own}
                 experiencesData={experiences}
                 onExperienceSubmit={fetchExperiences}
-                username={username}
               />
             )}
             {(profileData.own || educations?.length > 0) && (
