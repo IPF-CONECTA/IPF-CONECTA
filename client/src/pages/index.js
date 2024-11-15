@@ -24,11 +24,12 @@ export { ProfilePostPage } from "../modules/profile/posts/pages/ProfilePostsPage
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
-export { LanguajeCardPage } from "../modules/profile/languaje/pages/LanguajeCardPage";
-export { LanguajeEditPage } from "../modules/profile/languaje/pages/LanguajeEditPage";
+
+export { LanguageCardPage } from "../modules/profile/language/pages/LanguageCardPage";
+export { LanguageEditPage } from "../modules/profile/language/pages/LanguageEditPage";
+
 export { ProfileEducationsPage } from "../modules/profile/educations/pages/ProfileEducationsPage";
 
-export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
 
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";

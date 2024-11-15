@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNoti } from "../../../hooks/useNoti";
+
 export const authService = {
   submitVerificationCode: async (code) => {
     try {

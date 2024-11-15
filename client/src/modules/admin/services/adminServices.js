@@ -10,12 +10,10 @@ export const getAssociationsSvc = async (status) => {
         },
       }
     );
-    const data = res.data.associations;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     console.error("Error al obtener las solicitudes:", error);
-    return { data: [], statusCode: error.response?.status };
+    return { data: [], status: error.status };
   }
 };
 

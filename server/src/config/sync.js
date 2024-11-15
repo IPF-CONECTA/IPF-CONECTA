@@ -25,6 +25,7 @@ import { createDiciplines } from "../modules/profile/education/disciplines/disci
 import { createReportReasons } from "../modules/reports/reportReasonModel.js";
 import { createContractTypes } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { createCompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
+import { createInstitutes } from "../modules/profile/education/institutes/instituteModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
@@ -51,7 +52,7 @@ export const createTablesAndRelations = async () => {
   // await createContractTypes();
   // await createCompanyIndustry();
   // await createModalities();
-
+  // await createInstitutes()
   console.log("Data created successfully");
   console.timeEnd("Db created in:");
 };

@@ -1,11 +1,7 @@
 import { Dialog } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getConnections } from "../services/services";
 import { useNoti } from "../../../hooks/useNoti";
-import { BASE_URL } from "../../../constants/BASE_URL";
-import { Navigate, useNavigate } from "react-router-dom";
-import { authContext } from "../../../context/auth/Context";
-import { useFollow } from "../../../hooks/useFollow";
 import { AccountCard } from "../../feed/components/AccountCard";
 
 export const ConnectionsModal = ({
@@ -35,11 +31,14 @@ export const ConnectionsModal = ({
       fullWidth
       maxWidth="xs"
     >
-      <div className="p-3 " style={{ maxHeight: "400px" }}>
-        <span className="fw-semibold fs-4 ">
+      <div
+        className="overflow-hidden d-flex flex-column align-items-center"
+        style={{ maxHeight: "400px" }}
+      >
+        <span className="fw-semibold fs-4 py-2">
           {typeConnection == "followers" ? "Seguidores" : "Siguiendo"}
         </span>
-        <ul className="list-group list-group-flush">
+        <ul className="list-group list-group-flush overflow-y-auto px-2 w-100">
           {data.map((profile, index) => {
             return (
               <li key={index} className="list-group-item">

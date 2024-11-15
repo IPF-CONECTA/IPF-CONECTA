@@ -25,13 +25,14 @@ export const PostList = () => {
     setError(null);
     try {
       const res = await getPosts(reset ? 1 : page);
+      console.log(res);
       if (reset) {
-        setPosts(res.data);
+        setPosts(res.data.rows);
         setPage(2);
       } else {
         if (res.data.length > 0) {
           setPage((prevPage) => prevPage + 1);
-          setPosts((prevPosts) => [...prevPosts, ...res.data]);
+          setPosts((prevPosts) => [...prevPosts, ...res.data.rows]);
         } else {
           setError("No hay mas posts para mostrar");
         }

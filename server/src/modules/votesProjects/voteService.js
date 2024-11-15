@@ -1,4 +1,3 @@
-import { Idea } from '../ideaProject/ideaModel.js';
 import { Vote } from './voteModel.js';
 
 export const addVote = async (id, ideaId) => {

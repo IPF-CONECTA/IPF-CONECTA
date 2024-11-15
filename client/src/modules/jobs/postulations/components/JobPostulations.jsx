@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Dialog, DialogContent } from "@mui/material";
-
 import { jobPostulationsServices } from "../services/jobPostulationsServices";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import { Profile } from "../../../profile/components/Profile";

@@ -7,6 +7,7 @@ import {
 } from "../services/ideaServices";
 import { useNoti } from "../../../hooks/useNoti";
 import styles from "../../../../public/css/ranking.module.css";
+
 export const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
   const { authState } = useContext(authContext);

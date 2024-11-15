@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Select from "react-select";
 import debounce from "lodash.debounce";
 import { findSkills } from "../../../recruiter/job/services/jobServices";
+
 export const SkillSearch = ({ prevSelectedSkills, onSkillSelect }) => {
   useEffect(() => {
     console.log("facu puto");

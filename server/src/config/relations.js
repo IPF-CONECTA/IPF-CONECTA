@@ -43,6 +43,7 @@ import { Certification } from "../modules/profile/certifications/certificationMo
 import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
 import { CompanyLocation } from "../modules/recruiters/companies/companyLocation/companyLocationModel.js";
 import { CompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
+import { Institute } from "../modules/profile/education/institutes/instituteModel.js";
 
 export const createRelations = async () => {
   try {
@@ -491,6 +492,12 @@ export const createRelations = async () => {
     });
     Education.belongsTo(Discipline, {
       foreignKey: "disciplineId",
+    });
+    Education.belongsTo(Institute, {
+      foreignKey: "instituteId",
+    });
+    Institute.hasMany(Education, {
+      foreignKey: "instituteId",
     });
   } catch (error) {
     console.log(error);

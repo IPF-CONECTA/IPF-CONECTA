@@ -1,9 +1,6 @@
-import jwt from "jsonwebtoken";
 import { validate as isValidUUID } from "uuid";
 
 import { Profile } from "../../profile/profileModel.js";
-import upload from "../../../config/multerConfig.js";
-import { Company } from "./companyModel.js";
 import { sendContactCompany } from "./mailServices/contactCompany.js";
 import { associateNewCompanySvc } from "../associations/associationServices.js";
 import {

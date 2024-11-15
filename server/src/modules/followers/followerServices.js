@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import { Profile } from "../profile/profileModel.js";
 import { User } from "../users/userModel.js";
 import { Follower } from "./followerModel.js";

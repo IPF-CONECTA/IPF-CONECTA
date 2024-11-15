@@ -133,8 +133,8 @@ export const EducationForm = ({
           <label className="form-label">Título</label>
           <input
             {...register("title", { required: true })}
-            className="form-control"
-            placeholder="Título"
+            className="form-control w-100"
+            placeholder="Tec. superior en desarrollo de software multiplataforma"
           />
           {errors.title && (
             <div className="text-danger">Este campo es requerido</div>
@@ -144,8 +144,8 @@ export const EducationForm = ({
           <label className="form-label">Institución</label>
           <input
             {...register("institution", { required: true })}
-            className="form-control"
-            placeholder="Institución"
+            className="form-control w-100"
+            placeholder="Instituto Politécnico Formosa"
           />
           {errors.institution && (
             <div className="text-danger">Este campo es requerido</div>
@@ -154,19 +154,16 @@ export const EducationForm = ({
         <div className="mb-3">
           <label className="form-label">Descripción</label>
           <input
-            {...register("description", { required: true })}
-            className="form-control"
-            placeholder="Descripción"
+            {...register("description")}
+            className="form-control w-100"
+            placeholder="Cuenta tu experiencia, logros, etc."
           />
-          {errors.description && (
-            <div className="text-danger">Este campo es requerido</div>
-          )}
         </div>
         <div className="mb-3">
           <label className="form-label">Disciplina</label>
           <Select
             {...register("disciplineId", { required: true })}
-            placeholder="Disciplina"
+            placeholder="Selecciona la disciplina"
             options={disciplines}
             defaultInputValue={education?.discipline?.name}
             getOptionLabel={(option) => option.name}

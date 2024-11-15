@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import styles from "../../../../public/css/dashboard.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
-// URL base de tu servidor para imágenes
 
 export const AdminDashboard = () => {
   const [associations, setAssociations] = useState([]);

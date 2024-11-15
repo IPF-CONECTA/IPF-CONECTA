@@ -3,6 +3,7 @@ import { ListOfIdeas } from "../components/ListOfIdeas";
 import { RankingList } from "../components/RankingList";
 import styles from "../../../../public/css/ideas.module.css";
 import { Nav, Footer } from "../../ui/components";
+
 export const Ideas = () => {
   return (
     <>

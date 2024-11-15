@@ -9,7 +9,7 @@ export const ProtectedRoutes = () => {
   const { authState } = useContext(authContext);
   useEffect(() => {
     if (!authService.getToken()) {
-      navigate("/");
+      navigate("/iniciar-sesion");
     }
   }, [authState.token]);
   return authService.getToken() ? <Outlet /> : <Navigate to="/" />;

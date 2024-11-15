@@ -8,8 +8,8 @@ export const JobCard = ({ job, onClick, selectedJob }) => {
       <article
         className={
           selectedJob === job.id
-            ? `${styles.selectedCard} p-3 w-100 shadow-sm border rounded`
-            : `${styles.jobCard} p-3 w-100 shadow-sm border rounded`
+            ? `${styles.selectedCard} p-3 shadow-sm border rounded`
+            : `${styles.jobCard}  p-3 shadow-sm border rounded`
         }
         onClick={onClick}
       >

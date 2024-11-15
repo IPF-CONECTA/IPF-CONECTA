@@ -67,7 +67,7 @@ export const EducationCard = ({
 
   return (
     <>
-      <li key={education.id} className="list-group-item py-3">
+      <li key={education.id} className="list-group-item py-3 px-0">
         <div className="d-flex justify-content-between align-items-start">
           <div className="mx-2">
             <img

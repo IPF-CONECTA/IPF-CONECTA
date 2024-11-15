@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 
@@ -154,9 +153,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
                 onChange={handleStateChange}
                 defaultValue={""}
               >
-                <option disabled value="">
-                  Seleccione un estado
-                </option>
+                <option value="">Seleccione un estado</option>
                 {location.states.length > 0 ? (
                   location.states.map((state) => (
                     <option key={state.id} value={state.id}>
@@ -185,9 +182,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
                 onChange={handleCityChange}
                 defaultValue={""}
               >
-                <option disabled value="">
-                  Seleccione una ciudad
-                </option>
+                <option value="">Seleccione una ciudad</option>
                 {location.cities.length > 0 ? (
                   location.cities.map((city) => (
                     <option key={city.id} value={city.id}>

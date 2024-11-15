@@ -23,12 +23,13 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
     control,
     setValue,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
       title: job ? job.title : "",
       description: job
         ? job.description
-        : `<i>EJEMPLO</i><p>El candidato ideal será responsable de contribuir al desarrollo y mantenimiento de aplicaciones de alta calidad. También se espera que participe en el diseño e implementación de código escalable y fácil de probar.</p><strong>Responsabilidades</strong><ul><li>Contribuir al desarrollo de software y aplicaciones web de calidad.</li><li>Analizar y mantener aplicaciones de software existentes.</li><li>Diseñar código escalable y fácil de probar.</li><li>Identificar y solucionar errores de programación.</li></ul><strong>Cualificaciones</strong><ul><li>Título universitario o experiencia equivalente en Ciencias de la Computación o campo relacionado.</li><li>Experiencia en desarrollo con lenguajes de programación.</li><li>Conocimientos en bases de datos SQL o bases de datos relacionales.</li></ul><strong>Beneficios</strong><ul><li>Trabajo remoto con flexibilidad de horarios.</li><li>Oportunidad de crecimiento y desarrollo profesional.</li><li>Integración a un equipo de trabajo colaborativo y profesional.</li></ul>`,
+        : `<i>EJEMPLO</i><p>El candidato ideal será responsable de contribuir al desarrollo y mantenimiento de aplicaciones de alta calidad. También se espera que participe en el diseño e implementación de código escalable y fácil de probar.</p><strong>Responsabilidades</strong><ul><li>Contribuir al desarrollo de software y aplicaciones web de calidad.</li><li>Analizar y mantener aplicaciones de software existentes.</li><li>Diseñar código escalable y fácil de probar.</li><li>Identificar y solucionar errores de programación.</li></ul><strong>Cualificaciones</strong><ul><li>Título universitario o experiencia equivalente en Ciencias de la Computación o campo relacionado.</li><li>Experiencia en desarrollo con languages de programación.</li><li>Conocimientos en bases de datos SQL o bases de datos relacionales.</li></ul><strong>Beneficios</strong><ul><li>Trabajo remoto con flexibilidad de horarios.</li><li>Oportunidad de crecimiento y desarrollo profesional.</li><li>Integración a un equipo de trabajo colaborativo y profesional.</li></ul>`,
       companyId: job ? job.companyId : "",
       location: job ? job.location.value : "",
       modalityId: job ? job.modalityId : "",
@@ -77,6 +78,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
     noti("Empleo creado", "success");
     setOpenModal(false);
     onJobUpdate();
+    reset();
   };
   const onEditSubmit = async (data) => {
     data.skills = selectedSkills;
@@ -246,7 +248,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
             initialValue={
               job
                 ? job.description
-                : `<i>EJEMPLO</i><p>El candidato ideal será responsable de contribuir al desarrollo y mantenimiento de aplicaciones de alta calidad. También se espera que participe en el diseño e implementación de código escalable y fácil de probar.</p><strong>Responsabilidades</strong><ul><li>Contribuir al desarrollo de software y aplicaciones web de calidad.</li><li>Analizar y mantener aplicaciones de software existentes.</li><li>Diseñar código escalable y fácil de probar.</li><li>Identificar y solucionar errores de programación.</li></ul><strong>Cualificaciones</strong><ul><li>Título universitario o experiencia equivalente en Ciencias de la Computación o campo relacionado.</li><li>Experiencia en desarrollo con lenguajes de programación.</li><li>Conocimientos en bases de datos SQL o bases de datos relacionales.</li></ul><strong>Beneficios</strong><ul><li>Trabajo remoto con flexibilidad de horarios.</li><li>Oportunidad de crecimiento y desarrollo profesional.</li><li>Integración a un equipo de trabajo colaborativo y profesional.</li></ul>`
+                : `<i>EJEMPLO</i><p>El candidato ideal será responsable de contribuir al desarrollo y mantenimiento de aplicaciones de alta calidad. También se espera que participe en el diseño e implementación de código escalable y fácil de probar.</p><strong>Responsabilidades</strong><ul><li>Contribuir al desarrollo de software y aplicaciones web de calidad.</li><li>Analizar y mantener aplicaciones de software existentes.</li><li>Diseñar código escalable y fácil de probar.</li><li>Identificar y solucionar errores de programación.</li></ul><strong>Cualificaciones</strong><ul><li>Título universitario o experiencia equivalente en Ciencias de la Computación o campo relacionado.</li><li>Experiencia en desarrollo con languages de programación.</li><li>Conocimientos en bases de datos SQL o bases de datos relacionales.</li></ul><strong>Beneficios</strong><ul><li>Trabajo remoto con flexibilidad de horarios.</li><li>Oportunidad de crecimiento y desarrollo profesional.</li><li>Integración a un equipo de trabajo colaborativo y profesional.</li></ul>`
             }
             onChange={(value) => setValue("description", value)}
           />

@@ -21,13 +21,10 @@ export const EducationsContainer = ({
   }, [educationsData]);
 
   return (
-    <div
-      className="about bg-body-tertiary w-100 border-bottom"
-      id="educaciones"
-    >
+    <div className="w-100 border-bottom" id="educaciones">
       <div className="p-4">
         <div className="d-flex justify-content-between mb-2">
-          <span className="fw-bold fs-5">Formaciones académicas</span>
+          <span className="fw-bold fs-5">Educación</span>
           {own && (
             <div className="d-flex">
               <button
@@ -57,15 +54,15 @@ export const EducationsContainer = ({
           )}
         </div>
         <div>
-          <ul className="list-group">
+          <ul className="list-group list-group-flush">
             {educations.length >= 1 ? (
               educations.map((education, index) => (
-                <React.Fragment key={education.id}>
-                  <EducationCard education={education} edit={false} own={own} />
-                  {index !== educations.length - 1 && (
-                    <hr className="text-body-tertiary" />
-                  )}
-                </React.Fragment>
+                <EducationCard
+                  key={index}
+                  education={education}
+                  edit={false}
+                  own={own}
+                />
               ))
             ) : (
               <li className="list-group-item text-secondary">

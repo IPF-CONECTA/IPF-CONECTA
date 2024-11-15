@@ -4,11 +4,13 @@ import { followOrUnfollow } from "../../feed/services/feedServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { Link } from "react-router-dom";
 import { ConnectionsModal } from "./ConnectionsModal";
+import { EditProfileModal } from "../edit/components/EditProfileModal";
 
 export const Header = ({ profileData, setProfileData }) => {
   const [followHoverText, setFollowHoverText] = useState("");
   const [openConnections, setOpenConnections] = useState(false);
   const [typeConnection, setTypeConnection] = useState("");
+  const [editProfile, setEditProfile] = useState(false);
   const handleMouseEnter = () => {
     if (profileData?.isFollowing) {
       setFollowHoverText("Dejar de seguir");
@@ -57,13 +59,13 @@ export const Header = ({ profileData, setProfileData }) => {
                     {profileData?.profile?.names +
                       " " +
                       profileData?.profile?.surnames}{" "}
-                    <span className="text-secondary fw-normal fs-6">
+                    <span className="text-secondary fw-normal fs-6 ms-2">
                       @{profileData?.profile?.user.username}
                     </span>
                   </span>
 
                   {profileData?.profile?.title && (
-                    <span className="text-dark fst-italic fw-semibold">
+                    <span className="text-dark fst-italic ">
                       {profileData.profile.title}
                     </span>
                   )}
@@ -140,16 +142,22 @@ export const Header = ({ profileData, setProfileData }) => {
               </button>
             </>
           ) : (
-            <Link
+            <button
               title="Editar perfil"
-              to={"/editar-perfil"}
+              onClick={() => setEditProfile(true)}
               className="btn d-flex align-items-center p-1"
             >
               <span className="material-symbols-outlined fs-3">settings</span>
-            </Link>
+            </button>
           )}
         </div>
       </div>
+      <EditProfileModal
+        openModal={editProfile}
+        setOpenModal={setEditProfile}
+        profileData={profileData}
+        setProfileData={setProfileData}
+      />
     </header>
   );
 };

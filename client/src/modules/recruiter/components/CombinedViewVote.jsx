@@ -1,7 +1,7 @@
-import React from 'react';
-import ProjectList from './VoteForm';
-import RankingList from './RankingList';
-import '../../public/conbinedView.css';
+import React from "react";
+import ProjectList from "./VoteForm";
+import RankingList from "./RankingList";
+import "../../public/combinedView.css";
 
 const CombinedView = () => {
   return (

@@ -8,13 +8,11 @@ export const getPosts = async (page) => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    const data = res.data.rows;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: [],
-      statusCode: error.response?.status,
+      status: error.status,
       message: error.response?.data?.message || "Hubo un error al obtener las publicaciones",
     };
   }
@@ -22,18 +20,16 @@ export const getPosts = async (page) => {
 
 export const getAccounts = async () => {
   try {
-    const res = await axios.get("http://localhost:4000/get-recomended-users", {
+    const res = await axios.get("http://localhost:4000/get-recommended-profiles", {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    const data = res.data;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: [],
-      statusCode: error.response?.status,
+      status: error.status,
       message: error.response?.data?.message,
     };
   }
@@ -62,13 +58,11 @@ export const getProfileInfo = async (username) => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    const data = res.data;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: null,
-      statusCode: error.response?.status,
+      status: error.status,
     };
   }
 };
@@ -104,13 +98,9 @@ export const like = async (id) => {
         },
       }
     );
-    const statusCode = res.status;
-    return { statusCode };
+    return { status: res.status };
   } catch (error) {
-    return {
-      data: error.data.message,
-      statusCode: error.response?.status,
-    };
+    return { status: res.status };
   }
 };
 
@@ -155,9 +145,9 @@ export const repostSvc = async (postId) => {
         },
       }
     );
-    return res.status;
+    return { status: res.status };
   } catch (error) {
-    return error.status;
+    return { status: error.status };
   }
 };
 
@@ -168,9 +158,9 @@ export const getPost = async (postId) => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    return res.data;
+    return { data: res.data, status: res.status };
   } catch (error) {
-    return error.status, error.message;
+    return { status: error.status };
   }
 };
 
@@ -181,9 +171,9 @@ export const deletePost = async (postId) => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    return res.status;
+    return { status: res.status };
   } catch (error) {
-    return error.status;
+    return { status: error.status };
   }
 };
 

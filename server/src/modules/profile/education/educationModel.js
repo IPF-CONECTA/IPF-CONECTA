@@ -10,8 +10,8 @@ export const Education = sequelize.define("education", {
     type: DataTypes.UUID,
     allowNull: false,
   },
-  institution: {
-    type: DataTypes.STRING(64),
+  instituteId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   title: {

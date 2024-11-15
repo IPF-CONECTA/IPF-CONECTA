@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import { authService } from "../../auth/services/authService";
 import { useNoti } from "../../../hooks/useNoti";
 import { findCompanies } from "../services/recruiterServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
-
 import styles from "../../../../public/css/SelectCompany.module.css";
 
 export const SelectCompany = () => {

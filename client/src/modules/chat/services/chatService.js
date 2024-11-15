@@ -67,7 +67,7 @@ export const chatService = {
     }
   },
 
-  getChatsbyProfile: async () => {
+  getChatsByProfile: async () => {
     try {
       const res = await axios.get("http://localhost:4000/get-profile-chats", {
         headers: { Authorization: `Bearer ${authService.getToken()}` },
