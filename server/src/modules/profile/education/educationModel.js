@@ -19,7 +19,7 @@ export const Education = sequelize.define("education", {
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT({ length: 2000 }),
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   startDate: {

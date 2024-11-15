@@ -26,13 +26,14 @@ import { createReportReasons } from "../modules/reports/reportReasonModel.js";
 import { createContractTypes } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { createCompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
 import { createInstitutes } from "../modules/profile/education/institutes/instituteModel.js";
+import { Education } from "../modules/profile/education/educationModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
 
   await createRelations();
   console.log("Relations created successfully");
-  // await sequelize.sync({ force: false });
+  // await Education.sync({ force: true });
   // await Job.sync({ force: true })
   console.log("Tables created successfully");
   // ===================================================================================

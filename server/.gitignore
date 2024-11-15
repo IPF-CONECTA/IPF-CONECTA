@@ -6,6 +6,7 @@ uploads/**/*.jpg
 uploads/**/*.jpeg
 uploads/**/*.gif
 uploads/**/*.svg
+uploads/**/*.mp4
 
 !uploads/images/defaultPfp.jpg
 

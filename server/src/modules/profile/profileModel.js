@@ -31,7 +31,7 @@ export const Profile = sequelize.define('profile', {
         allowNull: true
     },
     phonenumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
     },
     title: {
@@ -44,7 +44,7 @@ export const Profile = sequelize.define('profile', {
         allowNull: false,
     },
     about: {
-        type: DataTypes.TEXT({ length: 2000 }),
+        type: DataTypes.TEXT,
         allowNull: true,
     },
     profilePic: {

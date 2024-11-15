@@ -14,7 +14,7 @@ export const createEducationSvc = async (profileId, education) => {
     const newEducation = await Education.create(
       {
         title: education.title,
-        institution: education.institution,
+        instituteId: education.instituteId,
         description: education.description,
         startDate: education.startDate,
         endDate: education.endDate,
@@ -44,7 +44,6 @@ export const getEducationSvc = async (profileId) => {
     ],
   });
 
-  console.log(educations);
   educations = await Promise.all(
     educations.map(async (education) => {
       const skills = await getSkillables(education.id);

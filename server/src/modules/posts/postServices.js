@@ -6,7 +6,11 @@ import { Repost } from "./reposts/repostModel.js"
 import { Profile } from "../profile/profileModel.js"
 import { createAttachmentsSvc, getAttachmentsSvc } from "../attachment/attachmentServices.js"
 import { sequelize } from "../../config/db.js"
-
+import path from "path"
+import { fileURLToPath } from "url"
+import fs from 'fs/promises'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export const getPostsSvc = async (page, id) => {
     const profile = await Profile.findByPk(id)
     try {
@@ -207,18 +211,33 @@ export const getPostByIdSvc = async (postId, profileId) => {
 };
 
 export const deletePostSvc = async (postId, profileId) => {
+    const t = await sequelize.transaction();
     try {
-        const post = await Post.findByPk(postId)
-        const answers = await Post.findAll({
-            where: {
-                postId: post.id
-            }
-        })
+        const post = await Post.findByPk(postId, { transaction: t });
+        if (!post) throw new Error("Post no encontrado");
 
-        if (post.profileId !== profileId) throw new Error("No tienes permisos para eliminar este post")
-        await post.destroy()
-        return { message: "Post eliminado" }
+        if (post.profileId !== profileId) throw new Error("No tienes permisos para eliminar este post");
+
+        // Obtener los archivos adjuntos del post
+        const attachments = await getAttachmentsSvc(postId);
+
+        // Eliminar los archivos del sistema de archivos y base de datos
+        await Promise.all(attachments.map(async attachment => {
+            const filePath = path.join(__dirname, '../../../uploads/images', attachment.url);
+            await Attachment.destroy({ where: { id: attachment.id }, transaction: t });
+            try {
+                await fs.unlink(filePath);
+            } catch (error) {
+                console.error(`Error al eliminar el archivo ${filePath}:`, error);
+            }
+        }));
+        // Eliminar el post
+        await post.destroy({ transaction: t });
+
+        await t.commit();
+        return { message: "Post eliminado" };
     } catch (error) {
-        throw new Error(error.message)
+        await t.rollback();
+        throw new Error(error.message);
     }
-}
+};

@@ -70,7 +70,6 @@ export const getRecommendedProfilesCtrl = async (req, res) => {
     const { id } = req.user.profile
     try {
         const profiles = await getRecommendedProfilesSvc(id);
-        console.log("profiles aca", profiles)
         if (profiles.length == 0) {
             return res.status(404).json({ message: 'No se encontraron usuarios' })
         }

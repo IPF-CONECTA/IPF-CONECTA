@@ -18,7 +18,13 @@ import { useNoti } from "../../../../hooks/useNoti";
 import { ReportModal } from "../../../app/components/ReportModal";
 import { AnswerModal } from "./answerModal";
 
-export const Post = ({ postData = null, postId = null, details, setWrite }) => {
+export const Post = ({
+  postData = null,
+  postId = null,
+  details,
+  setWrite,
+  fetchPosts,
+}) => {
   const [post, setPost] = useState(postData);
   const navigate = useNavigate();
   const [lightboxController, setLightboxController] = useState({
@@ -165,7 +171,7 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
       return noti("Hubo un error al eliminar el post", "error");
     }
     noti("Post eliminado", "success");
-    details ? navigate("/inicio") : setPost(null);
+    details ? navigate("/inicio") : fetchPosts(true);
   };
 
   const handleComment = async (e) => {
@@ -294,130 +300,282 @@ export const Post = ({ postData = null, postId = null, details, setWrite }) => {
                           __html: post?.content.replace(/\n/g, "<br />"),
                         }}
                       ></p>
-                      <div
-                        className={`d-flex flex-column mb-2 ${styles.imagesContainer}`}
-                      >
+                      <div className={`d-flex flex-column mb-2 `}>
+                        {console.log(post?.attachments)}
                         {post?.attachments?.length > 0 && (
                           <>
-                            {post?.attachments.length === 1 && (
-                              <img
-                                onClick={(e) => openLightboxOnSlide(0, e)}
-                                src={`${BASE_URL}/images/${post?.attachments[0].url}`}
-                                alt="post attachment"
-                                className="w-100 rounded-4 border"
-                              />
-                            )}
-                            {post?.attachments.length === 2 && (
-                              <div
-                                className="d-flex"
-                                style={{ overflow: "hidden" }}
-                              >
-                                <img
-                                  onClick={(e) => openLightboxOnSlide(0, e)}
-                                  style={{
-                                    borderTopLeftRadius: "15px",
-                                    borderBottomLeftRadius: "15px",
-                                  }}
-                                  src={`${BASE_URL}/images/${post?.attachments[0].url}`}
-                                  alt={post?.attachments[0].url}
-                                  className={`${styles.attachment} border w-50 me-1`}
-                                />
-                                <img
-                                  onClick={(e) => openLightboxOnSlide(1, e)}
-                                  style={{
-                                    borderTopRightRadius: "15px",
-                                    borderBottomRightRadius: "15px",
-                                  }}
-                                  src={`${BASE_URL}/images/${post?.attachments[1].url}`}
-                                  alt={post?.attachments[1].url}
-                                  className={`${styles.attachment} border w-50`}
-                                />
-                              </div>
-                            )}
-                            {post?.attachments.length === 3 && (
-                              <div
-                                className="d-flex w-100 pb-2"
-                                style={{ height: "200px", overflow: "hidden" }}
-                              >
-                                <img
-                                  onClick={(e) => openLightboxOnSlide(0, e)}
-                                  src={`${BASE_URL}/images/${post?.attachments[0].url}`}
-                                  alt={post?.attachments[0].url}
-                                  style={{
-                                    borderTopLeftRadius: "15px",
-                                    borderBottomLeftRadius: "15px",
-                                  }}
-                                  className={`w-50 h-100 me-1 border ${styles.attachment}`}
-                                />
-                                <div className="d-flex flex-column w-50">
-                                  <img
-                                    onClick={(e) => openLightboxOnSlide(1, e)}
-                                    src={`${BASE_URL}/images/${post?.attachments[1].url}`}
-                                    alt={post?.attachments[1].url}
-                                    className={`${styles.attachment} w-100 border`}
-                                    style={{
-                                      height: "50%",
-                                      borderTopRightRadius: "15px",
-                                    }}
-                                  />
-                                  <img
-                                    onClick={(e) => openLightboxOnSlide(2, e)}
-                                    src={`${BASE_URL}/images/${post?.attachments[2].url}`}
-                                    alt={post?.attachments[2].url}
-                                    className={`${styles.attachment} w-100 border  border-top-0`}
-                                    style={{
-                                      height: "50%",
-                                      borderBottomRightRadius: "15px",
-                                    }}
-                                  />
+                            {/* =================== UN ARCHIVO =================== */}
+                            {post?.attachments.length === 1 &&
+                              (post?.attachments[0].docType.split("/")[0] ==
+                              "video" ? (
+                                <div className="ratio ratio-1x1 rounded-4 overflow-hidden">
+                                  <video controls width="100%" autoplay>
+                                    <source
+                                      src={`${BASE_URL}/images/${post.attachments[0].url}`}
+                                      type={post.attachments[0].docType}
+                                    ></source>
+                                  </video>
                                 </div>
-                              </div>
-                            )}
-                            {post?.attachments.length === 4 && (
-                              <div style={{ overflow: "hidden" }}>
-                                <div className={`d-flex mb-1 `}>
+                              ) : (
+                                <img
+                                  onClick={(e) => openLightboxOnSlide(0, e)}
+                                  src={`${BASE_URL}/images/${post?.attachments[0].url}`}
+                                  alt="post attachment"
+                                  className="w-100 rounded-4 border"
+                                />
+                              ))}
+
+                            {/* =================== DOS ARCHIVOS =================== */}
+                            {post?.attachments.length === 2 && (
+                              <div className="d-flex overflow-hidden border rounded-4">
+                                {post?.attachments[0].docType.split("/")[0] ==
+                                "video" ? (
+                                  <video
+                                    controls
+                                    className="w-50 me-1"
+                                    autoplay
+                                  >
+                                    <source
+                                      src={`${BASE_URL}/images/${post.attachments[0].url}`}
+                                      type="video/mp4"
+                                    ></source>
+                                  </video>
+                                ) : (
                                   <img
                                     onClick={(e) => openLightboxOnSlide(0, e)}
                                     src={`${BASE_URL}/images/${post?.attachments[0].url}`}
                                     alt={post?.attachments[0].url}
-                                    className={`${styles.attachment} w-50 border me-1`}
-                                    style={{
-                                      height: "120px",
-                                      borderTopLeftRadius: "15px",
-                                    }}
+                                    className={`${styles.attachment} border w-50 me-1`}
                                   />
+                                )}
+                                {post?.attachments[1].docType.split("/")[0] ==
+                                "video" ? (
+                                  <video
+                                    controls
+                                    width="100%"
+                                    autoplay
+                                    className="w-50 border"
+                                  >
+                                    <source
+                                      src={`${BASE_URL}/images/${post.attachments[1].url}`}
+                                      type="video/mp4"
+                                    ></source>
+                                  </video>
+                                ) : (
                                   <img
                                     onClick={(e) => openLightboxOnSlide(1, e)}
-                                    src={`${BASE_URL}/images/${post?.attachments[1].url}`}
-                                    alt={post?.attachments[1].url}
-                                    className={`${styles.attachment} w-50 border`}
                                     style={{
-                                      height: "120px",
                                       borderTopRightRadius: "15px",
-                                    }}
-                                  />
-                                </div>
-                                <div className="d-flex">
-                                  <img
-                                    onClick={(e) => openLightboxOnSlide(2, e)}
-                                    src={`${BASE_URL}/images/${post?.attachments[2].url}`}
-                                    alt={post?.attachments[2].url}
-                                    className={`${styles.attachment} w-50 border  me-1`}
-                                    style={{
-                                      height: "120px",
-                                      borderBottomLeftRadius: "15px",
-                                    }}
-                                  />
-                                  <img
-                                    onClick={(e) => openLightboxOnSlide(3, e)}
-                                    src={`${BASE_URL}/images/${post?.attachments[3].url}`}
-                                    alt={post?.attachments[3].url}
-                                    className={`${styles.attachment} w-50 border`}
-                                    style={{
-                                      height: "120px",
                                       borderBottomRightRadius: "15px",
                                     }}
+                                    src={`${BASE_URL}/images/${post?.attachments[1].url}`}
+                                    alt={post?.attachments[1].url}
+                                    className={`${styles.attachment} border w-50`}
                                   />
+                                )}
+                              </div>
+                            )}
+
+                            {/* =================== TRES ARCHIVOS =================== */}
+                            {post?.attachments.length === 3 && (
+                              <div
+                                className="d-flex w-100 pb-2 rounded-4 overflow-hidden"
+                                style={{ height: "200px" }}
+                              >
+                                {post?.attachments[0].docType.split("/")[0] ==
+                                "video" ? (
+                                  <video
+                                    controls
+                                    className="w-50 rounded-start-4 me-1"
+                                    autoplay
+                                  >
+                                    <source
+                                      src={`${BASE_URL}/images/${post.attachments[0].url}`}
+                                      type={post.attachments[0].docType}
+                                    ></source>
+                                  </video>
+                                ) : (
+                                  <img
+                                    onClick={(e) => openLightboxOnSlide(0, e)}
+                                    src={`${BASE_URL}/images/${post?.attachments[0].url}`}
+                                    alt={post?.attachments[0].url}
+                                    style={{
+                                      borderTopLeftRadius: "15px",
+                                      borderBottomLeftRadius: "15px",
+                                    }}
+                                    className={`w-50 h-100 me-1 border ${styles.attachment}`}
+                                  />
+                                )}
+
+                                <div className="d-flex flex-column w-50">
+                                  {post?.attachments[1].docType.split("/")[0] ==
+                                  "video" ? (
+                                    <video controls className="h-50" autoplay>
+                                      <source
+                                        src={`${BASE_URL}/images/${post.attachments[1].url}`}
+                                        type={post.attachments[1].docType}
+                                      ></source>
+                                    </video>
+                                  ) : (
+                                    <img
+                                      onClick={(e) => openLightboxOnSlide(1, e)}
+                                      src={`${BASE_URL}/images/${post?.attachments[1].url}`}
+                                      alt={post?.attachments[1].url}
+                                      className={`${styles.attachment} w-100 border`}
+                                      style={{
+                                        height: "50%",
+                                        borderTopRightRadius: "15px",
+                                      }}
+                                    />
+                                  )}
+                                  {post?.attachments[2].docType.split("/")[0] ==
+                                  "video" ? (
+                                    <video
+                                      controls
+                                      className="h-50"
+                                      autoplay
+                                      style={{
+                                        borderBottomRightRadius: "15px",
+                                      }}
+                                    >
+                                      <source
+                                        src={`${BASE_URL}/images/${post.attachments[2].url}`}
+                                        type={post.attachments[2].docType}
+                                      ></source>
+                                    </video>
+                                  ) : (
+                                    <img
+                                      onClick={(e) => openLightboxOnSlide(2, e)}
+                                      src={`${BASE_URL}/images/${post?.attachments[2].url}`}
+                                      alt={post?.attachments[2].url}
+                                      className={`${styles.attachment} w-100 border  border-top-0`}
+                                      style={{
+                                        height: "50%",
+                                        borderBottomRightRadius: "15px",
+                                      }}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                            {/* =================== CUATRO ARCHIVOS =================== */}
+                            {post?.attachments.length === 4 && (
+                              <div className="overflow-hidden">
+                                <div className={`d-flex mb-1 `}>
+                                  {post?.attachments[0].docType.split("/")[0] ==
+                                  "video" ? (
+                                    <video
+                                      controls
+                                      className="w-50 me-1"
+                                      autoplay
+                                      style={{
+                                        height: "120px",
+                                        borderTopLeftRadius: "15px",
+                                      }}
+                                    >
+                                      <source
+                                        src={`${BASE_URL}/images/${post.attachments[0].url}`}
+                                        type="video/mp4"
+                                      ></source>
+                                    </video>
+                                  ) : (
+                                    <img
+                                      onClick={(e) => openLightboxOnSlide(0, e)}
+                                      src={`${BASE_URL}/images/${post?.attachments[0].url}`}
+                                      alt={post?.attachments[0].url}
+                                      className={`${styles.attachment} w-50 border me-1`}
+                                      style={{
+                                        height: "120px",
+                                        borderTopLeftRadius: "15px",
+                                      }}
+                                    />
+                                  )}
+                                  {post?.attachments[1].docType.split("/")[0] ==
+                                  "video" ? (
+                                    <video
+                                      controls
+                                      className="w-50"
+                                      autoplay
+                                      style={{
+                                        height: "120px",
+                                        borderTopRightRadius: "15px",
+                                      }}
+                                    >
+                                      <source
+                                        src={`${BASE_URL}/images/${post.attachments[1].url}`}
+                                        type="video/mp4"
+                                      ></source>
+                                    </video>
+                                  ) : (
+                                    <img
+                                      onClick={(e) => openLightboxOnSlide(1, e)}
+                                      src={`${BASE_URL}/images/${post?.attachments[1].url}`}
+                                      alt={post?.attachments[1].url}
+                                      className={`${styles.attachment} w-50 border`}
+                                      style={{
+                                        height: "120px",
+                                        borderTopRightRadius: "15px",
+                                      }}
+                                    />
+                                  )}
+                                </div>
+                                <div className="d-flex">
+                                  {post?.attachments[2].docType.split("/")[0] ==
+                                  "video" ? (
+                                    <video
+                                      controls
+                                      className="w-50 me-1"
+                                      autoplay
+                                      style={{
+                                        height: "120px",
+                                        borderBottomLeftRadius: "15px",
+                                      }}
+                                    >
+                                      <source
+                                        src={`${BASE_URL}/images/${post.attachments[2].url}`}
+                                        type="video/mp4"
+                                      ></source>
+                                    </video>
+                                  ) : (
+                                    <img
+                                      onClick={(e) => openLightboxOnSlide(2, e)}
+                                      src={`${BASE_URL}/images/${post?.attachments[2].url}`}
+                                      alt={post?.attachments[2].url}
+                                      className={`${styles.attachment} w-50 border  me-1`}
+                                      style={{
+                                        height: "120px",
+                                        borderBottomLeftRadius: "15px",
+                                      }}
+                                    />
+                                  )}
+                                  {post?.attachments[3].docType.split("/")[0] ==
+                                  "video" ? (
+                                    <video
+                                      controls
+                                      className="w-50 me-1"
+                                      autoplay
+                                      style={{
+                                        height: "120px",
+                                        borderBottomRightRadius: "15px",
+                                      }}
+                                    >
+                                      <source
+                                        src={`${BASE_URL}/images/${post.attachments[3].url}`}
+                                        type="video/mp4"
+                                      ></source>
+                                    </video>
+                                  ) : (
+                                    <img
+                                      onClick={(e) => openLightboxOnSlide(3, e)}
+                                      src={`${BASE_URL}/images/${post?.attachments[3].url}`}
+                                      alt={post?.attachments[3].url}
+                                      className={`${styles.attachment} w-50 border`}
+                                      style={{
+                                        height: "120px",
+                                        borderBottomRightRadius: "15px",
+                                      }}
+                                    />
+                                  )}
                                 </div>
                               </div>
                             )}
