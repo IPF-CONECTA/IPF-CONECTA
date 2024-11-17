@@ -6,6 +6,7 @@ import { disciplinesServices } from "../services/disciplinesServices";
 import { Dialog } from "@mui/material";
 import Select from "react-select";
 import { SkillSearch } from "../../skills/components/FindSkills";
+import { instituteServices } from "../services/instituteServices";
 
 export const EducationForm = ({
   openEducationModal,
@@ -17,6 +18,9 @@ export const EducationForm = ({
   const noti = useNoti();
   const [disciplines, setDisciplines] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [institutions, setInstitutions] = useState([]);
+  const [query, setQuery] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -61,6 +65,20 @@ export const EducationForm = ({
   }, []);
 
   useEffect(() => {
+    const fetchInstitutions = async () => {
+      const res = await instituteServices.findInstitute(query);
+      if (res.status !== 200) {
+        return noti("Ha habido un error al obtener las instituciones", "error");
+      }
+      setInstitutions(res.data.slice(0, 10));
+    };
+
+    if (query) {
+      fetchInstitutions();
+    }
+  }, [query]);
+
+  useEffect(() => {
     if (education) {
       setValue("title", education.title);
       setValue("institution", education.institution);
@@ -89,16 +107,18 @@ export const EducationForm = ({
     };
 
     if (education) {
-      await educationsServices.editEducation(education.id, educationData);
+      // await educationsServices.editEducation(education.id, educationData);
       noti("Formación académica editada", "success");
+      console.log(educationData);
     } else {
-      await educationsServices.createEducation(educationData);
+      // await educationsServices.createEducation(educationData);
       noti("Formación académica añadida", "success");
+      console.log(educationData);
     }
 
-    setOpenEducationModal(false);
-    onEducationSubmit();
-    reset();
+    // setOpenEducationModal(false);
+    // onEducationSubmit();
+    // reset();
   };
 
   const handleDelete = async (educationId) => {
@@ -142,10 +162,19 @@ export const EducationForm = ({
         </div>
         <div className="mb-3">
           <label className="form-label">Institución</label>
-          <input
-            {...register("institution", { required: true })}
-            className="form-control w-100"
-            placeholder="Instituto Politécnico Formosa"
+          <Select
+            placeholder="Buscar institución..."
+            options={institutions.map((inst) => ({
+              value: inst.name,
+              label: inst.name,
+            }))}
+            onInputChange={(inputValue) => setQuery(inputValue)}
+            onChange={(selectedOption) => {
+              setValue(
+                "institution",
+                selectedOption ? selectedOption.value : ""
+              );
+            }}
           />
           {errors.institution && (
             <div className="text-danger">Este campo es requerido</div>
