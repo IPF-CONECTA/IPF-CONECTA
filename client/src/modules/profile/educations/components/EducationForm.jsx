@@ -30,7 +30,7 @@ export const EducationForm = ({
   } = useForm({
     defaultValues: {
       title: education?.title || "",
-      institution: education?.institution || "",
+      instituteId: education?.instituteId || "",
       description: education?.description || "",
       disciplineId: education?.disciplineId || "",
       startDateMonth: education?.startDate
@@ -81,7 +81,7 @@ export const EducationForm = ({
   useEffect(() => {
     if (education) {
       setValue("title", education.title);
-      setValue("institution", education.institution);
+      setValue("instituteId", education.instituteId);
       setValue("description", education.description);
       setValue("disciplineId", education.disciplineId);
       setValue("startDateMonth", education.startDate?.slice(5, 7) || "");
@@ -96,7 +96,7 @@ export const EducationForm = ({
     data.skills = selectedSkills;
     const educationData = {
       title: data.title,
-      institution: data.institution,
+      instituteId: data.instituteId,
       description: data.description,
       disciplineId: data.disciplineId,
       startDate: `${data.startDateMonth}-01-${data.startDateYear}`,
@@ -106,19 +106,19 @@ export const EducationForm = ({
       skills: data?.skills,
     };
 
+    console.log(educationData);
+
     if (education) {
-      // await educationsServices.editEducation(education.id, educationData);
+      await educationsServices.editEducation(education.id, educationData);
       noti("Formación académica editada", "success");
-      console.log(educationData);
     } else {
-      // await educationsServices.createEducation(educationData);
+      await educationsServices.createEducation(educationData);
       noti("Formación académica añadida", "success");
-      console.log(educationData);
     }
 
-    // setOpenEducationModal(false);
-    // onEducationSubmit();
-    // reset();
+    setOpenEducationModal(false);
+    onEducationSubmit();
+    reset();
   };
 
   const handleDelete = async (educationId) => {
@@ -165,18 +165,19 @@ export const EducationForm = ({
           <Select
             placeholder="Buscar institución..."
             options={institutions.map((inst) => ({
-              value: inst.name,
+              value: inst.id,
               label: inst.name,
             }))}
             onInputChange={(inputValue) => setQuery(inputValue)}
+            defaultValue={education ? education?.institute?.id : ""}
             onChange={(selectedOption) => {
               setValue(
-                "institution",
+                "instituteId",
                 selectedOption ? selectedOption.value : ""
               );
             }}
           />
-          {errors.institution && (
+          {errors.instituteId && (
             <div className="text-danger">Este campo es requerido</div>
           )}
         </div>

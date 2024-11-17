@@ -11,7 +11,6 @@ export const createEducationCtrl = async (req, res) => {
   try {
     const { id: profileId } = req.user.profile;
     const { education } = req.body;
-    console.log("HOLA HOLA");
     console.log(education);
     const newEducation = await createEducationSvc(profileId, education);
     if (!newEducation)
