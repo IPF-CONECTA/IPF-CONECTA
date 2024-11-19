@@ -44,6 +44,8 @@ export const Post = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const noti = useNoti();
 
+  console.log(postData);
+
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
@@ -300,7 +302,7 @@ export const Post = ({
                           __html: post?.content.replace(/\n/g, "<br />"),
                         }}
                       ></p>
-                      <div className={`d-flex flex-column mb-2 `}>
+                      <div className={`d-flex flex-column mb-2`}>
                         {post?.attachments?.length > 0 && (
                           <>
                             {/* =================== UN ARCHIVO =================== */}

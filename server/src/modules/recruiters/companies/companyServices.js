@@ -37,6 +37,7 @@ export const createCompany = async (company) => {
     if (!newCompany) throw new Error("No se pudo crear la empresa");
     return newCompany;
   } catch (error) {
+    console.log(error);
     throw new Error(error.message);
   }
 };

@@ -19,6 +19,7 @@ export { FeedPage } from "../modules/feed/pages/FeedPage";
 
 //Post pages:
 export { PostPage } from "../modules/feed/posts/pages/PostPage";
+export { ProfilePostPage } from "../modules/profile/posts/pages/ProfilePostsPages";
 
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
@@ -46,6 +47,7 @@ export { MessageRecruiterPage } from "../modules/recruiter/pages/MessageRecruite
 export { SelectCompanyPage } from "../modules/recruiter/pages/SelectCompanyPage";
 export { WaitingAssociationsApprovalPage } from "../modules/recruiter/pages/WaitingAssociationsApprovedPage";
 export { RecruiterJobOffersPage } from "../modules/profile/jobs/pages/ProfileJobOffersPage";
+
 //Job Pages:
 export { JobCreatePage } from "../modules/recruiter/job/pages/CreateJobsFormPage";
 export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";

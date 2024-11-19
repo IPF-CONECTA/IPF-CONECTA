@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProfile } from "../../../feed/services/feedServices";
-import { educationsServices } from "../../../profile/educations/services/educationsServices";
 import { Nav } from "../../../ui/components";
 import { Header } from "../../components/ProfileHeader";
-
-import { AllEducationsContainer } from "../../../profile/educations/components/AllEducationsContainer";
 import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
-export const ProfileEducationsPage = () => {
+import { AllPostsContainer } from "../components/AllPostsContainer";
+import { postsServices } from "../services/postsServices";
+
+export const ProfilePostPage = () => {
   const { username } = useParams();
-  const [profileData, setProfileData] = useState();
-  const [educations, setEducations] = useState();
+  const [profileData, setProfileData] = useState(null);
+  const [posts, setPosts] = useState([]);
 
   const fetchProfile = async () => {
     const res = await getProfile(username);
@@ -19,31 +19,34 @@ export const ProfileEducationsPage = () => {
     }
     setProfileData(res.data);
   };
-  const fetchEducations = async () => {
-    const res = await educationsServices.getEducations(username);
+
+  const fetchPosts = async () => {
+    const res = await postsServices.getPostsByUsername(username);
     if (res.status !== 200 && res.status !== 404) {
       return noti("error", "error");
     }
+
     if (res.status === 200) {
-      setEducations(res.data);
+      setPosts(res.data);
     }
   };
+
   useEffect(() => {
     fetchProfile();
-    fetchEducations();
+    fetchPosts();
   }, [username]);
 
   return (
     <>
       <Nav />
       <div className="d-flex justify-content-evenly px-5  my-4">
-        <div className="border rounded" style={{ width: "65%" }}>
+        <div style={{ width: "65%" }} className="border rounded">
           <Header profileData={profileData} setProfileData={setProfileData} />
-          <AllEducationsContainer
-            educationsData={educations}
-            own={profileData?.own}
-            onEducationSubmit={fetchEducations}
+          <AllPostsContainer
+            postData={posts}
             username={username}
+            onPostSubmit={fetchPosts}
+            own={profileData?.own}
           />
         </div>
       </div>

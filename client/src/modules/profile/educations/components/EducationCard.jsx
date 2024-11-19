@@ -74,8 +74,8 @@ export const EducationCard = ({
               school
             </span>
             <img
-              src="/img/generic_image.png"
-              alt="PENE"
+              src="/img/education_generic_image.png"
+              alt="Educación"
               width={45}
               className="border pe-none"
             />

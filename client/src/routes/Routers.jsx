@@ -32,6 +32,7 @@ import {
   RecruiterJobOffersPage,
   JobPostulationsPage,
   ProfileEducationsPage,
+  ProfilePostPage,
   LanguageCardPage,
   LanguageEditPage,
 } from "../pages";
@@ -93,6 +94,11 @@ export const Routers = () => {
           <Route
             path="/perfil/:username/formaciones"
             element={<ProfileEducationsPage />}
+          />
+
+          <Route
+            path="/perfil/:username/publicaciones"
+            element={<ProfilePostPage />}
           />
 
           <Route path="/guardados" element={<ProfilePage />} />

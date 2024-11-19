@@ -26,8 +26,6 @@ export const RecruiterJobOffersPage = () => {
           <Header profileData={profileData} setProfileData={setProfileData} />
           <AllJobOffersContainer username={username} />
         </div>
-
-        <RecommendedAccounts />
       </div>
     </>
   );
