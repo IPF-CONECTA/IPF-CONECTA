@@ -5,8 +5,10 @@ import {
   deleteSkillables,
   getSkillables,
 } from "../../skills/skillable/skillableServices.js";
-import { Discipline } from "./disciplines/disciplineModel.js";
+
 import { Education } from "./educationModel.js";
+import { Institute } from "./institutes/instituteModel.js";
+import { Discipline } from "./disciplines/disciplineModel.js";
 
 export const createEducationSvc = async (profileId, education) => {
   const t = await sequelize.transaction();
@@ -41,6 +43,11 @@ export const getEducationSvc = async (profileId) => {
         as: "discipline",
         attributes: ["name"],
       },
+      {
+        model: Institute,
+        as: "institute",
+        attributes: ["name"],
+      },
     ],
   });
 
@@ -61,6 +68,11 @@ export const getEducationByIdSvc = async (id) => {
       {
         model: Discipline,
         as: "discipline",
+        attributes: ["name"],
+      },
+      {
+        model: Institute,
+        as: "institute",
         attributes: ["name"],
       },
     ],

@@ -6,6 +6,7 @@ import { disciplinesServices } from "../services/disciplinesServices";
 import { Dialog } from "@mui/material";
 import Select from "react-select";
 import { SkillSearch } from "../../skills/components/FindSkills";
+import { instituteServices } from "../services/instituteServices";
 
 export const EducationForm = ({
   openEducationModal,
@@ -17,6 +18,9 @@ export const EducationForm = ({
   const noti = useNoti();
   const [disciplines, setDisciplines] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [institutions, setInstitutions] = useState([]);
+  const [query, setQuery] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -26,7 +30,7 @@ export const EducationForm = ({
   } = useForm({
     defaultValues: {
       title: education?.title || "",
-      institution: education?.institution || "",
+      instituteId: education?.instituteId || "",
       description: education?.description || "",
       disciplineId: education?.disciplineId || "",
       startDateMonth: education?.startDate
@@ -61,9 +65,23 @@ export const EducationForm = ({
   }, []);
 
   useEffect(() => {
+    const fetchInstitutions = async () => {
+      const res = await instituteServices.findInstitute(query);
+      if (res.status !== 200) {
+        return noti("Ha habido un error al obtener las instituciones", "error");
+      }
+      setInstitutions(res.data.slice(0, 10));
+    };
+
+    if (query) {
+      fetchInstitutions();
+    }
+  }, [query]);
+
+  useEffect(() => {
     if (education) {
       setValue("title", education.title);
-      setValue("institution", education.institution);
+      setValue("instituteId", education.instituteId);
       setValue("description", education.description);
       setValue("disciplineId", education.disciplineId);
       setValue("startDateMonth", education.startDate?.slice(5, 7) || "");
@@ -78,7 +96,7 @@ export const EducationForm = ({
     data.skills = selectedSkills;
     const educationData = {
       title: data.title,
-      institution: data.institution,
+      instituteId: data.instituteId,
       description: data.description,
       disciplineId: data.disciplineId,
       startDate: `${data.startDateMonth}-01-${data.startDateYear}`,
@@ -87,6 +105,8 @@ export const EducationForm = ({
         : null,
       skills: data?.skills,
     };
+
+    console.log(educationData);
 
     if (education) {
       await educationsServices.editEducation(education.id, educationData);
@@ -142,12 +162,22 @@ export const EducationForm = ({
         </div>
         <div className="mb-3">
           <label className="form-label">Institución</label>
-          <input
-            {...register("institution", { required: true })}
-            className="form-control w-100"
-            placeholder="Instituto Politécnico Formosa"
+          <Select
+            placeholder="Buscar institución..."
+            options={institutions.map((inst) => ({
+              value: inst.id,
+              label: inst.name,
+            }))}
+            onInputChange={(inputValue) => setQuery(inputValue)}
+            defaultValue={education ? education?.institute?.id : ""}
+            onChange={(selectedOption) => {
+              setValue(
+                "instituteId",
+                selectedOption ? selectedOption.value : ""
+              );
+            }}
           />
-          {errors.institution && (
+          {errors.instituteId && (
             <div className="text-danger">Este campo es requerido</div>
           )}
         </div>

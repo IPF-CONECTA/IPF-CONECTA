@@ -87,7 +87,7 @@ export const EducationCard = ({
             <p className="text-muted">
               {getYear(education.startDate)} - {getYear(education.endDate)}
             </p>
-            <div className="text-muted">{education.institution}</div>
+            <div className="text-muted">{education.institute.name}</div>
             <div className="text-muted">
               <em>{education?.discipline?.name}</em>
             </div>
