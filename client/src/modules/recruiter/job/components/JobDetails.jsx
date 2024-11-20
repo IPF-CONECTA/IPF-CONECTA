@@ -86,8 +86,6 @@ export const JobDetails = ({ jobId }) => {
     );
   }
 
-  console.log(selectedJob.job);
-
   return (
     selectedJob && (
       <aside className={`${styles.asideJobDetails} `}>

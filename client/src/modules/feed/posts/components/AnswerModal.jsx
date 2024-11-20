@@ -20,7 +20,6 @@ export const AnswerModal = ({
 }) => {
   const { authState } = useContext(authContext);
   const [content, setContent] = useState("");
-
   return (
     <Dialog
       open={Boolean(showAnswerModal)}
@@ -93,7 +92,7 @@ export const AnswerModal = ({
         <button
           disabled={content.length === 0 || isSubmitting}
           className="btn btn-primary fw-bold text-light"
-          onClick={(e) => handleComment(e)}
+          onClick={(e) => handleComment(e, content)}
         >
           {isSubmitting ? (
             <>

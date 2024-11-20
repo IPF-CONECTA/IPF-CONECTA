@@ -14,23 +14,23 @@ export const Comments = ({ postId, write, setWrite }) => {
       inputRef.current.focus();
     }
   }, [write]);
-  useEffect(() => {
-    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        const res = await getPost(postId);
-        console.log(res);
-        if (res.message) {
-          return noti(res.message, "error");
-        }
-        setPost(res.data);
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      } finally {
-        setLoading(false);
+
+  const fetchPost = async () => {
+    setLoading(true);
+    try {
+      const res = await getPost(postId);
+      if (res.message) {
+        return noti(res.message, "error");
       }
-    };
+      setPost(res.data);
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchPost();
   }, [postId]);
 
@@ -132,7 +132,12 @@ export const Comments = ({ postId, write, setWrite }) => {
         ) : (
           post?.comments?.length > 0 &&
           post?.comments?.map((post) => (
-            <Post key={post.id} postData={post} details={false} />
+            <Post
+              key={post.id}
+              postData={post}
+              details={false}
+              fetchPosts={fetchPost}
+            />
           ))
         )}
       </div>
