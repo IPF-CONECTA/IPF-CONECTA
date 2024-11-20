@@ -53,7 +53,6 @@ export const Profile = ({ data }) => {
     }
     setProjects(res.data);
   };
-
   const fetchEducations = async () => {
     const res = await educationsServices.getEducations(data ? data : username);
     if (res.status !== 200 && res.status !== 404) {
@@ -91,7 +90,7 @@ export const Profile = ({ data }) => {
   };
 
   const fetchPosts = async () => {
-    const res = await postsServices.getPostsByUsername(data ? data : username);
+    const res = await postsServices.getPostsByUsername(username);
     console.log(res);
     if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
@@ -100,13 +99,20 @@ export const Profile = ({ data }) => {
   };
 
   useEffect(() => {
+    setProfileData(null);
+    setExperiences([]);
+    setEducations([]);
+    setJobOffers([]);
+    setProjects([]);
+    setSkills([]);
+    setPosts([]);
+
     fetchProfile();
     fetchExperiences();
     fetchProjects();
     fetchEducations();
     fetchSkills();
     fetchPosts();
-
     if (role === "recruiter") {
       fetchJobOffers();
     }
@@ -118,7 +124,6 @@ export const Profile = ({ data }) => {
     }
   }),
     [profileData];
-  console.log(posts);
   return (
     <>
       {loading ? (
@@ -141,14 +146,12 @@ export const Profile = ({ data }) => {
               aboutData={profileData.profile.about}
               username={username}
             />
-            {(profileData.own || posts?.length > 0) && (
-              <PostsContainer
-                username={username}
-                own={profileData.own}
-                postsData={posts}
-                onPostSubmit={fetchPosts}
-              />
-            )}
+            <PostsContainer
+              username={username}
+              own={profileData?.own}
+              postsData={posts}
+              onPostSubmit={fetchPosts}
+            />
             {(profileData.own || experiences?.length > 0) && (
               <ExperienceContainer
                 username={username}

@@ -69,7 +69,7 @@ export const RegisterForm = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("http://localhost:4000/auth/signup", {
+      const response = await axios.post(`${BASE_URL}/auth/signup`, {
         user,
       });
       authService.setToken(response.data.token);
