@@ -118,7 +118,6 @@ export const Profile = ({ data }) => {
     }
   }),
     [profileData];
-  console.log(posts);
   return (
     <>
       {loading ? (
