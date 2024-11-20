@@ -241,8 +241,6 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
     const isCompany = await Company.findByPk(jobData.companyId);
     if (!isCompany) throw new Error("La empresa seleccionada no existe");
 
-    // Actualizar los campos del trabajo
-    console.log(jobData);
     const [updated] = await Job.update(
       {
         locationableId: jobData.location.value,
@@ -259,7 +257,6 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
 
     if (!updated) throw new Error("Error al actualizar la oferta de trabajo");
 
-    // Actualizar habilidades si existen
     if (jobData.skills && jobData.skills.length > 0) {
       const skillables = await getSkillables(jobId);
       const existingSkillIds = skillables.map((skill) => skill.id);
