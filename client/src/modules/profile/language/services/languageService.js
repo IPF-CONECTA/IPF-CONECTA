@@ -1,10 +1,9 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:4000";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 
 export const getUserLanguages = async (username) => {
   try {
-    const response = await axios.get(`${API_URL}/langs/${username}`);
+    const response = await axios.get(`${BASE_URL}/langs/${username}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching user's languages:", error);
@@ -14,7 +13,7 @@ export const getUserLanguages = async (username) => {
 
 export const getAvailableLanguages = async () => {
   try {
-    const response = await axios.get(`${API_URL}/langs`);
+    const response = await axios.get(`${BASE_URL}/langs`);
     const uniqueLanguages = Array.from(
       new Set(response.data.map((lang) => lang.id))
     ).map((id) => response.data.find((lang) => lang.id === id));
@@ -27,7 +26,7 @@ export const getAvailableLanguages = async () => {
 
 export const getAvailableLanguageLevels = async () => {
   try {
-    const response = await axios.get(`${API_URL}/lang-levels`);
+    const response = await axios.get(`${BASE_URL}/lang-levels`);
     return response.data;
   } catch (error) {
     console.error("Error fetching available language levels:", error);
@@ -37,7 +36,7 @@ export const getAvailableLanguageLevels = async () => {
 
 export const addLanguage = async (username, langId, langLevelId) => {
   try {
-    const response = await axios.post(`${API_URL}/langs/${username}`, {
+    const response = await axios.post(`${BASE_URL}/langs/${username}`, {
       langId,
       langLevelId,
       username,
@@ -55,7 +54,7 @@ export const updateLanguage = async (
   langLevelId
 ) => {
   try {
-    await axios.put(`${API_URL}/langs/${editingLanguageId}`, {
+    await axios.put(`${BASE_URL}/langs/${editingLanguageId}`, {
       langId,
       langLevelId,
     });
@@ -67,11 +66,11 @@ export const updateLanguage = async (
 
 export const deleteLanguage = async (languageId) => {
   try {
-    const response = await axios.delete(`${API_URL}/langs/${languageId}`);
-    return response; 
+    const response = await axios.delete(`${BASE_URL}/langs/${languageId}`);
+    return response;
   } catch (error) {
     console.error("Error deleting language:", error.response ? error.response.data : error.message);
-    throw error; 
+    throw error;
   }
 };
 

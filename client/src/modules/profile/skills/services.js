@@ -1,9 +1,9 @@
 import axios from "axios"
 import { authService } from "../../auth/services/authService"
-
+import { BASE_URL } from "../../../constants/BASE_URL"
 export const getSkills = async (username) => {
     try {
-        const res = await axios.get(`http://localhost:4000/skillsProfile/${username}`,
+        const res = await axios.get(`${BASE_URL}/skillsProfile/${username}`,
             {
                 headers: {
                     Authorization: `Bearer ${authService.getToken()}`
@@ -18,7 +18,7 @@ export const getSkills = async (username) => {
 
 export const deleteSkill = async (skillableId, skillId) => {
     try {
-        const res = await axios.post(`http://localhost:4000/skillable/${skillableId}/${skillId}`, {}, {
+        const res = await axios.post(`${BASE_URL}/skillable/${skillableId}/${skillId}`, {}, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`
             }

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../services/authService";
 import styles from "../../../../public/css/register.module.css";

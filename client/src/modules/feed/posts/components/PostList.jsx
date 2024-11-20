@@ -25,6 +25,8 @@ export const PostList = () => {
     setError(null);
     try {
       const res = await getPosts(reset ? 1 : page);
+      console.log("posts en la pag", page);
+      console.log(res.data.rows);
       if (reset) {
         setPosts(res.data.rows);
         setPage(2);
@@ -79,8 +81,6 @@ export const PostList = () => {
 
     setAttachments((prevAttachments) => [...prevAttachments, ...files]);
   };
-
-  console.log(attachments);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

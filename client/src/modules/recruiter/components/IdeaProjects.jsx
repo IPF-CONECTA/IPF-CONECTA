@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../../public/ideaprojects.module.css";
 import { authContext } from "../context/auth/Context";
 import { authService } from "../services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const IdeaProjects = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [ideas, setIdeas] = useState([]);
@@ -29,7 +29,7 @@ export const IdeaProjects = () => {
 
   const fetchIdeas = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/idea", {
+      const response = await axios.get(`${BASE_URL}/idea`, {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
         },
@@ -43,11 +43,11 @@ export const IdeaProjects = () => {
   const createIdea = async (idea) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/idea",
-        { ...idea, profileId: userId }, 
+        `${BASE_URL}/idea`,
+        { ...idea, profileId: userId },
         {
           headers: {
-            Authorization: `Bearer ${authService.getToken()}`
+            Authorization: `Bearer ${authService.getToken()}`,
           },
         }
       );

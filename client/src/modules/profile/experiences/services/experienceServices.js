@@ -1,6 +1,6 @@
 import axios from "axios"
 import { authService } from "../../../auth/services/authService"
-
+import { BASE_URL } from "../../../../constants/BASE_URL"
 export const createExperience = async (experience, skills, username) => {
     try {
 
@@ -31,7 +31,7 @@ export const createExperience = async (experience, skills, username) => {
                 throw new Error("La fecha de fin no puede ser anterior a la fecha de inicio")
             }
         }
-        const res = await axios.post(`http://localhost:4000/experience/${username}`,
+        const res = await axios.post(`${BASE_URL}/experience/${username}`,
             formData
             , {
                 headers: {
@@ -64,7 +64,7 @@ export const updateExperience = async (experience, skills, username, experienceI
             throw new Error("La fecha de fin no puede ser anterior a la fecha de inicio");
         }
     }
-    const res = await axios.patch(`http://localhost:4000/experience/${username}/${experienceId}`, {
+    const res = await axios.patch(`${BASE_URL}/experience/${username}/${experienceId}`, {
         experience: formattedExperience,
     }, {
         headers: {

@@ -12,7 +12,6 @@ import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 import styles from "../../../../public/main.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
-
 export const AdminCompaniesPanel = () => {
   const noti = useNoti();
   const [activeTab, setActiveTab] = useState("Aprobada");
@@ -30,7 +29,7 @@ export const AdminCompaniesPanel = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:4000/admin/get-companies/${activeTab}?page=${currentPage}`,
+        `${BASE_URL}/admin/get-companies/${activeTab}?page=${currentPage}`,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -68,7 +67,7 @@ export const AdminCompaniesPanel = () => {
   const handleCompanyClick = async (company) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/admin/get-company/${company.id}`
+        `${BASE_URL}/admin/get-company/${company.id}`
       );
       setSelectedCompany(response.data);
       setShowFullDescription(false);
@@ -83,7 +82,7 @@ export const AdminCompaniesPanel = () => {
         throw new Error("Por favor, ingrese un mensaje.");
       }
       const response = await axios.patch(
-        `http://localhost:4000/admin/update-company-status/${id}/${status}`,
+        `${BASE_URL}/admin/update-company-status/${id}/${status}`,
         { justification },
         {
           headers: {

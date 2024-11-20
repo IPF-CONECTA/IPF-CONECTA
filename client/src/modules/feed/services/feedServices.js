@@ -1,9 +1,9 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const getPosts = async (page) => {
   try {
-    const res = await axios.get(`http://localhost:4000/feed/posts?page=${page}`, {
+    const res = await axios.get(`${BASE_URL}/feed/posts?page=${page}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -20,7 +20,7 @@ export const getPosts = async (page) => {
 
 export const getAccounts = async () => {
   try {
-    const res = await axios.get("http://localhost:4000/get-recommended-profiles", {
+    const res = await axios.get(`${BASE_URL}/get-recommended-profiles`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -38,7 +38,7 @@ export const getAccounts = async () => {
 export const getProfile = async (username) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/get-user-profile/${username}`,
+      `${BASE_URL}/get-user-profile/${username}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -53,7 +53,7 @@ export const getProfile = async (username) => {
 
 export const getProfileInfo = async (username) => {
   try {
-    const res = await axios.get(`http://localhost:4000/get-user-info/${username}`, {
+    const res = await axios.get(`${BASE_URL}/get-user-info/${username}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -70,7 +70,7 @@ export const getProfileInfo = async (username) => {
 export const followOrUnfollow = async (username) => {
   try {
     const res = await axios.post(
-      `http://localhost:4000/follow/${username}`,
+      `${BASE_URL}/follow/${username}`,
       {},
       {
         headers: {
@@ -90,7 +90,7 @@ export const followOrUnfollow = async (username) => {
 export const like = async (id) => {
   try {
     const res = await axios.post(
-      `http://localhost:4000/like/${id}`,
+      `${BASE_URL}/like/${id}`,
       {},
       {
         headers: {
@@ -118,7 +118,7 @@ export const postSvc = async (post, images, postId = null) => {
 
   try {
     const res = await axios.post(
-      `http://localhost:4000/feed/post`,
+      `${BASE_URL}/feed/post`,
       formData,
       {
         headers: {
@@ -135,7 +135,7 @@ export const postSvc = async (post, images, postId = null) => {
 export const repostSvc = async (postId) => {
   try {
     const res = await axios.post(
-      "http://localhost:4000/repost",
+      `${BASE_URL}/repost`,
       {
         postId,
       },
@@ -153,7 +153,7 @@ export const repostSvc = async (postId) => {
 
 export const getPost = async (postId) => {
   try {
-    const res = await axios.get(`http://localhost:4000/feed/post/${postId}`, {
+    const res = await axios.get(`${BASE_URL}/feed/post/${postId}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -166,7 +166,7 @@ export const getPost = async (postId) => {
 
 export const deletePost = async (postId) => {
   try {
-    const res = await axios.delete(`http://localhost:4000/feed/post/${postId}`, {
+    const res = await axios.delete(`${BASE_URL}/feed/post/${postId}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -180,7 +180,7 @@ export const deletePost = async (postId) => {
 export const getExperiences = async (username) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/experiences/${username}`,
+      `${BASE_URL}/experiences/${username}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,

@@ -8,7 +8,7 @@ export const changePfp = async (file) => {
         formData.append("images", file);
 
         const res = await axios.post(
-            "http://localhost:4000/update-profile-pic",
+            `${BASE_URL}/update-profile-pic`,
             formData,
             { headers: { Authorization: `Bearer ${authService.getToken()}` } }
         );

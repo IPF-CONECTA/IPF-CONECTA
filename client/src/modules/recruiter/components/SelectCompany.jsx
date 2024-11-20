@@ -6,7 +6,6 @@ import { useNoti } from "../../../hooks/useNoti";
 import { findCompanies } from "../services/recruiterServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import styles from "../../../../public/css/SelectCompany.module.css";
-
 export const SelectCompany = () => {
   const [companies, setCompanies] = useState([]);
   const [search, setSearch] = useState("");
@@ -58,7 +57,7 @@ export const SelectCompany = () => {
   const handleSendRequest = async (companyId) => {
     try {
       await axios.post(
-        `http://localhost:4000/associate-company`,
+        `${BASE_URL}/associate-company`,
         { companyId, message },
         {
           headers: {

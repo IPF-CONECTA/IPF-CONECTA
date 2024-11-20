@@ -3,7 +3,7 @@ import { authService } from "../../auth/services/authService";
 
 export const getIdeasLogged = async () => {
     try {
-        const res = await axios.get("http://localhost:4000/ideasLogged", {
+        const res = await axios.get(`${BASE_URL}/ideasLogged`, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
@@ -16,7 +16,7 @@ export const getIdeasLogged = async () => {
 }
 export const getIdeas = async () => {
     try {
-        const res = await axios.get("http://localhost:4000/ideas", {
+        const res = await axios.get(`${BASE_URL}/ideas`, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
@@ -29,7 +29,7 @@ export const getIdeas = async () => {
 }
 export const getRankingIdeas = async () => {
     try {
-        const res = await axios.get("http://localhost:4000/ideasByVotes");
+        const res = await axios.get(`${BASE_URL}/ideasByVotes`);
 
         return { data: res.data, status: res.status };
     } catch (error) {
@@ -38,7 +38,7 @@ export const getRankingIdeas = async () => {
 }
 export const getRankingIdeasLogged = async () => {
     try {
-        const res = await axios.get("http://localhost:4000/ideasByVotesLogged", {
+        const res = await axios.get(`${BASE_URL}/ideasByVotesLogged`, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
@@ -51,7 +51,7 @@ export const getRankingIdeasLogged = async () => {
 
 export const createIdea = async (idea) => {
     try {
-        const res = await axios.post("http://localhost:4000/idea", { idea }, {
+        const res = await axios.post(`${BASE_URL}/idea`, { idea }, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
@@ -64,7 +64,7 @@ export const createIdea = async (idea) => {
 
 export const likeIdea = async (ideaId) => {
     try {
-        const res = await axios.post(`http://localhost:4000/idea/${ideaId}/vote`, {}, {
+        const res = await axios.post(`${BASE_URL}/idea/${ideaId}/vote`, {}, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },

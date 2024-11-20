@@ -13,7 +13,7 @@ export const AdminDashboard = () => {
     const fetchAssociations = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/admin/get-associations/Pendiente",
+          `${BASE_URL}/admin/get-associations/Pendiente`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -29,7 +29,7 @@ export const AdminDashboard = () => {
     const fetchCompanies = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/admin/get-companies/Aprobada",
+          `${BASE_URL}/admin/get-companies/Aprobada`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

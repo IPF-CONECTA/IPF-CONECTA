@@ -1,9 +1,10 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const getAssociationsSvc = async (status) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/admin/get-associations/${status}`,
+      `${BASE_URL}/admin/get-associations/${status}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -20,7 +21,7 @@ export const getAssociationsSvc = async (status) => {
 export const updateAssociationStatus = async (id, status, justification) => {
   try {
     const res = await axios.patch(
-      `http://localhost:4000/admin/update-association-status/${id}/${status}`,
+      `${BASE_URL}/admin/update-association-status/${id}/${status}`,
       { justification },
       {
         headers: {

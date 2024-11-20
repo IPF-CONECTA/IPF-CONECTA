@@ -1,11 +1,11 @@
 import axios from "axios";
 import { authService } from "../../../auth/services/authService";
-
+import { BASE_URL } from "../../../../constants/BASE_URL";
 export const educationsServices = {
   getEducations: async (username) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/educations/profile/${username}`,
+        `${BASE_URL}/educations/profile/${username}`,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,
@@ -20,7 +20,7 @@ export const educationsServices = {
   createEducation: async (education) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/educations/add",
+        `${BASE_URL}/educations/add`,
         { education },
         {
           headers: {
@@ -36,7 +36,7 @@ export const educationsServices = {
   editEducation: async (id, education) => {
     try {
       const response = await axios.patch(
-        `http://localhost:4000/educations/${id}/edit`,
+        `${BASE_URL}/educations/${id}/edit`,
         { education },
         {
           headers: {
@@ -52,7 +52,7 @@ export const educationsServices = {
   deleteEducation: async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:4000/educations/${id}/delete`,
+        `${BASE_URL}/educations/${id}/delete`,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,

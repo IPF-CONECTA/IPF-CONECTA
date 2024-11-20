@@ -110,7 +110,7 @@ export const Header = ({ profileData, setProfileData }) => {
               {profileData?.followsYou && (
                 <span
                   title={`${profileData?.profile?.user?.username} te sigue`}
-                  className="text-light-emphasis bg-secondary-subtle px-2 py-1 rounded me-4 fw-semibold"
+                  className="bg-light border rounded bg-light-emphasis px-2 py-1 rounded me-4 fw-semibold"
                 >
                   Te sigue
                 </span>

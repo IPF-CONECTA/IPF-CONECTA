@@ -67,12 +67,9 @@ export const EducationCard = ({
 
   return (
     <>
-      <li key={education.id} className="list-group-item py-3 px-0">
+      <li key={education.id} className="list-group-item py-2 px-0">
         <div className="d-flex justify-content-between align-items-start">
           <div className="mx-2">
-            <span className="material-symbols-outlined" style={{ color: "" }}>
-              school
-            </span>
             <img
               src="/img/education_generic_image.png"
               alt="Educación"

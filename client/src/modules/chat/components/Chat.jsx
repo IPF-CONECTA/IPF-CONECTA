@@ -18,7 +18,7 @@ export const Chat = () => {
   const messagesEndRef = useRef(null);
   const containerRef = useRef(null);
 
-  const socket = io("http://localhost:4000", {
+  const socket = io(BASE_URL, {
     extraHeaders: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

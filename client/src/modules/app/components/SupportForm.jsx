@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { useNoti } from "../../../hooks/useNoti";
 import "../../../../public/support.css";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const SupportForm = () => {
   const noti = useNoti();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const SupportForm = () => {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post("http://localhost:4000/contact", {
+      const response = await axios.post(`${BASE_URL}/contact`, {
         from: email,
         name: name,
         subject: "Consulta de Soporte IPF-Conecta",

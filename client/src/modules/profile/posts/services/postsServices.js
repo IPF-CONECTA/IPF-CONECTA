@@ -1,12 +1,12 @@
 import axios from "axios";
 
 import { authService } from "../../../auth/services/authService.js";
-
+import { BASE_URL } from "../../../../constants/BASE_URL.js";
 export const postsServices = {
   getPostsByUsername: async (username) => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/feed/posts/${username}`,
+        `${BASE_URL}/feed/posts/${username}`,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,

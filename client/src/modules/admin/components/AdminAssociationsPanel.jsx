@@ -55,7 +55,7 @@ export const AdminAssociationsPanel = () => {
       if (selectedAssociationId) {
         try {
           const res = await axios.get(
-            `http://localhost:4000/admin/get-association/${selectedAssociationId}`,
+            `${BASE_URL}/admin/get-association/${selectedAssociationId}`,
             {
               headers: {
                 Authorization: `Bearer ${authService.getToken()}`,

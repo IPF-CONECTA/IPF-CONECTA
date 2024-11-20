@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import "../../../styles/RecruiterPanel.css";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export function RecruiterPanel() {
   const [companies, setCompanies] = useState([]);
   const [filteredCompanies, setFilteredCompanies] = useState([]);
@@ -11,7 +11,7 @@ export function RecruiterPanel() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/get-companies")
+      .get(`${BASE_URL}/get-companies`)
       .then((response) => {
         setCompanies(response.data);
         setFilteredCompanies(response.data);

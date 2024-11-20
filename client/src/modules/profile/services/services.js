@@ -1,10 +1,10 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const updateAbout = async (data, username) => {
   try {
     const res = await axios.patch(
-      "http://localhost:4000/about",
+      `${BASE_URL}/about`,
       {
         username,
         about: data.about,
@@ -26,7 +26,7 @@ export const updateAbout = async (data, username) => {
 export const getProfileIdByUsername = async (username) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/get-user-profile/${username}`,
+      `${BASE_URL}/get-user-profile/${username}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -43,7 +43,7 @@ export const getProfileIdByUsername = async (username) => {
 export const getConnections = async (username, typeConnection) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/connections/${username}/${typeConnection}`,
+      `${BASE_URL}/connections/${username}/${typeConnection}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
