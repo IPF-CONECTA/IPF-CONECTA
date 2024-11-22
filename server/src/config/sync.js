@@ -17,13 +17,15 @@ import { createRelations } from "./relations.js";
 import { Attachment } from "../modules/attachment/attachmentModel.js";
 import { Job } from "../modules/recruiters/job/jobModel.js";
 import { Experience } from "../modules/profile/experiences/experiencesModel.js";
+import { Profile } from "../modules/profile/profileModel.js";
+import { User } from "../modules/users/userModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
 
   await createRelations();
   console.log("Relations created successfully");
-  // await sequelize.sync({ force: false });
+  // await sequelize.sync({ force: true });
   // await Job.sync({ force: true })
   console.log("Tables created successfully");
   // ===================================================================================
