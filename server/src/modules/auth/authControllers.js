@@ -63,7 +63,6 @@ export const authIsUsernameAvailableCtrl = async (req, res) => {
 };
 export const authLogInCtrl = async (req, res) => {
   const { user } = req.body;
-  console.log(user)
   try {
     const response = await authLogInSvc(user);
     if (!response.token) {

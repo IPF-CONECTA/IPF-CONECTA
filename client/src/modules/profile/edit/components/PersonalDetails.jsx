@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import "react-phone-number-input/style.css";
 import { useNoti } from "../../../../hooks/useNoti";
 import { updatePersonalDetails } from "../services/editProfileServices";
+import { formatDateToForm } from "../../../../helpers/getTime";
 
 const CustomPhoneInput = React.forwardRef(({ className, ...props }, ref) => (
   <input
@@ -15,7 +16,7 @@ const CustomPhoneInput = React.forwardRef(({ className, ...props }, ref) => (
 ));
 
 export const PersonalDetails = ({ profileData, setProfileData }) => {
-  console.log(profileData);
+  console.log(new Date(profileData.profile.birthdate).toLocaleDateString());
   const [phone, setPhone] = useState(profileData.profile.phonenumber || null);
 
   const { register, handleSubmit } = useForm();
@@ -148,7 +149,10 @@ export const PersonalDetails = ({ profileData, setProfileData }) => {
                   valueAsDate: true,
                 })}
                 disabled={sending}
-                defaultValue={profileData.profile.birthdate || ""}
+                defaultValue={
+                  profileData.profile.birthdate &&
+                  formatDateToForm(profileData.profile.birthdate)
+                }
                 name="birthdate"
                 type="date"
                 max={"2006-12-31"}

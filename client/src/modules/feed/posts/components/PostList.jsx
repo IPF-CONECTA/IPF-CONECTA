@@ -26,12 +26,12 @@ export const PostList = () => {
     try {
       const res = await getPosts(reset ? 1 : page);
       console.log("posts en la pag", page);
-      console.log(res.data.rows);
+      console.log(res);
       if (reset) {
         setPosts(res.data.rows);
         setPage(2);
       } else {
-        if (res.data.length > 0) {
+        if (res.data.count > 0) {
           setPage((prevPage) => prevPage + 1);
           setPosts((prevPosts) => [...prevPosts, ...res.data.rows]);
         } else {
@@ -39,7 +39,7 @@ export const PostList = () => {
         }
       }
     } catch (error) {
-      if (error.statusCode !== 200) {
+      if (error.status !== 200) {
         return setError(error.message);
       }
     } finally {

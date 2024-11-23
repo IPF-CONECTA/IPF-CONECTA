@@ -5,7 +5,6 @@ export const fetchLangsByProfileId = async (profileId) => {
 };
 
 export const createLang = async (langId, langLevelId, profileId) => {
-  console.log(langId, langLevelId, profileId);
   return await LangsUser.create({ langId, langLevelId, profileId });
 };
 

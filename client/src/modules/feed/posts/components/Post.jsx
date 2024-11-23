@@ -32,7 +32,6 @@ export const Post = ({
     slide: 1,
   });
   const [openReportModal, setOpenReportModal] = useState(false);
-  const [content, setContent] = useState("");
   const [showProfile, setShowProfile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -44,14 +43,11 @@ export const Post = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const noti = useNoti();
 
-  console.log(postData);
-
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
       try {
         const res = await getPost(postId);
-        console.log("respuesta: ", res);
         if (res.status !== 200) {
           return noti("Hubo un error al obtener la publicación", "error");
         }
@@ -60,7 +56,6 @@ export const Post = ({
         setReposted(res.data.reposted);
       } catch (error) {
         setLoading(false);
-        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -176,25 +171,27 @@ export const Post = ({
     details ? navigate("/inicio") : fetchPosts(true);
   };
 
-  const handleComment = async (e) => {
+  const handleComment = async (e, content) => {
     e.preventDefault();
     e.stopPropagation();
     setIsSubmitting(true);
-    const status = await postSvc(content, null, post?.id);
-    if (status !== 201) {
-      return noti("Hubo un error al publicar el post", "error");
-    }
+    try {
+      const status = await postSvc(content, null, post?.id);
+      if (status !== 201) {
+        return noti("Hubo un error al publicar el post", "error");
+      }
 
-    setTimeout(() => {
       noti("Comentario publicado", "success");
-      setContent("");
       setPost((prevPost) => ({
         ...prevPost,
         comments: [...prevPost?.comments, {}],
       }));
+    } catch (error) {
+      console.log(error);
+    } finally {
       setIsSubmitting(false);
       setShowAnswerModal(false);
-    }, 500);
+    }
   };
 
   const handleShowProfile = (boolean, username) => {

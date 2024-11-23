@@ -6,7 +6,6 @@ import { State } from "../../locations/models/stateModel.js";
 import { CompanyIndustry } from "../companies/companyIndustry/companyIndustryModel.js";
 
 export const createAssociation = async (profileId, companyId, message) => {
-  console.log(companyId);
   try {
     const association = await Association.create({
       profileId,
