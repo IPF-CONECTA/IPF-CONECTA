@@ -16,11 +16,12 @@ export const getProfileByUsernameCtrl = async (req, res) => {
 }
 
 export const updateProfileCtrl = async (req, res) => {
-    const { id } = req.user.profile
+    const { id: profileId } = req.user.profile
+    const { id: userId } = req.user
     try {
-        if (!await isEmailAvailable(req.body.email, id)) return res.status(400).json({ message: "El email ya esta en uso" })
-        if (!await isUsernameAvailable(req.body.username, id)) return res.status(400).json({ message: "El username ya esta en uso" })
-        const updatedProfile = await updateProfileSvc(id, req.body)
+        if (!await isEmailAvailable(req.body.email, userId)) return res.status(400).json({ message: "El email ya esta en uso" })
+        if (!await isUsernameAvailable(req.body.username, userId)) return res.status(400).json({ message: "El username ya esta en uso" })
+        const updatedProfile = await updateProfileSvc(profileId, req.body)
         if (!updatedProfile || updatedProfile.length < 1) return res.status(400).json({ message: "No se pudo actualizar el perfil" })
         res.status(201).json()
     } catch (error) {
