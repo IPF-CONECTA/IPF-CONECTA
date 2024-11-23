@@ -14,6 +14,7 @@ export const createNewJobCtrl = async (req, res) => {
 
   try {
     const newJob = await createNewJobSvc(req.body.jobData, id);
+    console.log(newJob);
     res.status(201).json(newJob);
   } catch (error) {
     console.log(error);
@@ -37,11 +38,12 @@ export const getJobsCtrl = async (req, res) => {
 export const getJobByIdCtrl = async (req, res) => {
   const { id } = req.params;
   try {
-
     if (!id) throw new Error("No se seleccionó ninguna oferta");
-    let profileId
+    let profileId;
     if (req.headers.authorization) {
-      ({ id: profileId } = await verifyToken(req.headers.authorization.split(" ")[1]));
+      ({ id: profileId } = await verifyToken(
+        req.headers.authorization.split(" ")[1]
+      ));
     }
     const job = await getJobByIdSvc(id, profileId);
 
