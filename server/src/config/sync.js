@@ -32,6 +32,7 @@ export const createTablesAndRelations = async () => {
   console.time("Db created in:");
 
   await createRelations();
+  // await sequelize.sync({force: true})
   console.log("Relations created successfully");
   // await Education.sync({ force: true });
   // await Job.sync({ force: true })
@@ -39,7 +40,7 @@ export const createTablesAndRelations = async () => {
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // // ===================================================================================
-  // await Attachment.sync({ force: true });
+  // await Attachment.sync({ force: false });
   // await createRoles();
   // await createUserStates();
   // await createLangLevels();

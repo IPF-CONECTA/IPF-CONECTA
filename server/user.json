@@ -1,0 +1,47 @@
+[
+    {
+      "username": "alexsh",
+      "names": "Alejandro",
+      "surnames": "Ruiz Díaz",
+      "email": "alexsh882@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "Milanesa",
+      "names": "Diego David",
+      "surnames": "Jara Gallardo",
+      "email": "diegojara88574@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "silfarias20",
+      "names": "Silvana Abigail",
+      "surnames": "Farias",
+      "email": "silvifarias17@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "danteb",
+      "names": "Dante",
+      "surnames": "Benitez",
+      "email": "benitezdante123@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "clorodev",
+      "names": "Gonzalo Alejandro",
+      "surnames": "Aquino",
+      "email": "clorodev@proton.me",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    }
+  ]
