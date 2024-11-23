@@ -8,6 +8,7 @@ import locationRoutes from "./modules/locations/locationRoutes.js";
 import associationRoutes from "./modules/recruiters/associations/associationRoutes.js";
 import companyIndustriesRoutes from "./modules/recruiters/companies/companyIndustry/companyIndustryRoutes.js";
 import skillsRoutes from "./modules/skills/skillsRoutes.js";
+import SkillUserRouter from "./modules/users/skills_user/skillsUserRoutes.js";
 import postRoutes from "./modules/posts/postRoutes.js";
 import followerRoutes from "./modules/followers/followerRoutes.js";
 import repostRoutes from "./modules/posts/reposts/repostRoutes.js";
@@ -23,6 +24,7 @@ import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/profile/project/projectRoutes.js";
 import ideaRoutes from "./modules/ideas/ideaRoutes.js";
 import voteRoutes from "./modules/ideas/votes/voteRoutes.js";
+<<<<<<< HEAD
 import SkillProfileRoutes from "./modules/profile/skills_user/skillProfileRoutes.js";
 import messageRoutes from "./modules/chat/message/messageRoutes.js";
 import chatRoutes from "./modules/chat/chatRoutes.js";
@@ -36,6 +38,8 @@ import disciplineRoutes from "./modules/profile/education/disciplines/discipline
 import instituteRoutes from "./modules/profile/education/institutes/instituteRoutes.js";
 
 
+=======
+>>>>>>> 166135bf0ccd58015a96076590f7549fad98facc
 
 export const routes = (app) => {
   app.use(userRoutes);
@@ -48,6 +52,7 @@ export const routes = (app) => {
   app.use(locationRoutes);
   app.use(companyIndustriesRoutes);
   app.use(skillsRoutes);
+  app.use(SkillUserRouter)
   app.use("/feed", postRoutes);
   app.use(followerRoutes);
   app.use(repostRoutes);

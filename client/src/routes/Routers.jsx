@@ -36,8 +36,13 @@ import {
   LanguageCardPage,
   LanguageEditPage,
 } from "../pages";
+<<<<<<< HEAD
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
+=======
+import SkillViewAdmin from "../modules/recruiter/components/SkillViewAdmin";
+import SkillViewUser from "../modules/recruiter/components/SkillViewUser";
+>>>>>>> 166135bf0ccd58015a96076590f7549fad98facc
 export const Routers = () => {
   return (
     <BrowserRouter>
@@ -47,6 +52,8 @@ export const Routers = () => {
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/Skills" element={<SkillViewAdmin />} />
+          <Route path="/Skill" element={<SkillViewUser />} />
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
 

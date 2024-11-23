@@ -1,17 +1,19 @@
 import { sequelize, DataTypes } from "../../../config/db.js";
 
-export const SkillsProfile = sequelize.define('skillsProfile', {
+export const ContactType = sequelize.define('contactType', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
     },
-    skillId: {
-        type: DataTypes.INTEGER,
+    name: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    profileId: {
-        type: DataTypes.UUID,
+    logo: {
+        type: DataTypes.STRING,
         allowNull: false
-    },
+    }
+}, {
+    timestamps: false
 })

@@ -7,4 +7,5 @@ const profileRoutes = Router()
 profileRoutes.get('/get-user-profile/:username', isToken, getProfileByUsernameCtrl)
 profileRoutes.put('/update-profile', isToken, updateProfileCtrl)
 
+
 export default profileRoutes
