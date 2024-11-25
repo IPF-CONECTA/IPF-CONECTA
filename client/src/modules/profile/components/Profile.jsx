@@ -107,12 +107,13 @@ export const Profile = ({ data }) => {
     setSkills([]);
     setPosts([]);
 
-    fetchProfile();
-    fetchExperiences();
-    fetchProjects();
-    fetchEducations();
-    fetchSkills();
     fetchPosts();
+    fetchSkills();
+    fetchProfile();
+    fetchProjects();
+    fetchJobOffers();
+    fetchEducations();
+    fetchExperiences();
     if (role === "recruiter") {
       fetchJobOffers();
     }

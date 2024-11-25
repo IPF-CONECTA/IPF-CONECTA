@@ -60,6 +60,9 @@ export const CreateExperienceModal = ({
   const [actualWork, setActualWork] = useState(
     experience ? (experience?.endDate !== null ? false : true) : false
   );
+  const [isRecruited, setIsRecruited] = useState(
+    experience?.isRecruited || false
+  );
   const [addSkills, setAddSkills] = useState(false);
   const [contractTypes, setContractTypes] = useState([]);
   const [modalities, setModalities] = useState([]);
@@ -135,6 +138,7 @@ export const CreateExperienceModal = ({
         setValue("startDateYear", experience.startDate?.slice(0, 4) || "");
         setValue("endDateMonth", experience.endDate?.slice(5, 7) || "");
         setValue("endDateYear", experience.endDate?.slice(0, 4) || "");
+        setValue("isRecruited", experience.isRecruited || false);
       }
     };
 
@@ -256,6 +260,8 @@ export const CreateExperienceModal = ({
   };
   const submitExperience = async (data) => {
     data.images = newImages;
+    data.isRecruited = isRecruited;
+    console.log({ data });
     try {
       const res = await createExperience(data, selectedSkills, username);
       if (res.status !== 201) {
@@ -275,6 +281,12 @@ export const CreateExperienceModal = ({
       );
     }
   };
+
+  const handleSwitchChange = (e) => {
+    console.log("SE CAMBIO EL VALOR A", e.target.checked);
+    setIsRecruited(e.target.checked);
+  };
+
   return (
     <Dialog
       open={Boolean(openExperienceModal)}
@@ -287,20 +299,36 @@ export const CreateExperienceModal = ({
       maxWidth="sm"
     >
       <div className={`p-3`}>
-        <div className="d-flex flex-column">
-          <span className="fs-4 fw-semibold ">Agregar experiencia</span>
-          <span className="text-secondary">
-            NOTA: * significa que el campo es obligatorio.
-          </span>
+        <div className="d-flex  justify-content-between">
+          <div className="d-flex flex-column">
+            <span className="fs-4 fw-semibold ">Agregar experiencia</span>
+            <span className="text-secondary">
+              NOTA: * significa que el campo es obligatorio.
+            </span>
+          </div>
         </div>
+
         <div>
           <form
             className="shadow-none border-0 p-0 pt-2 d-flex flex-column"
             onSubmit={handleSubmit(submitExperience)}
           >
             <div className="mb-3 title">
-              <label htmlFor="title">
-                Título <span className="text-danger">*</span>
+              <label
+                htmlFor="title"
+                className="d-flex  justify-content-between"
+              >
+                <div>
+                  Título <span className="text-danger">*</span>
+                </div>
+                <div>
+                  <span className="me-2">Encontrado en IPF-CONECTA?</span>
+                  <input
+                    type="checkbox"
+                    checked={isRecruited}
+                    onChange={handleSwitchChange}
+                  />
+                </div>
               </label>
               <input
                 name="title"
@@ -319,6 +347,7 @@ export const CreateExperienceModal = ({
                 <span className="text-danger">{errors.title.message}</span>
               )}
             </div>
+
             <div className="mb-3 description">
               <label htmlFor="description">
                 Descripción del puesto <span className="text-danger">*</span>
@@ -679,6 +708,7 @@ export const CreateExperienceModal = ({
                 onSkillSelect={handleSkillSelect}
               />
             </div>
+
             <div className="w-100 d-flex justify-content-end">
               <button className="btn btn-dark px-3 fw-semibold" type="submit">
                 {experience ? "Actualizar" : "Agregar"}
