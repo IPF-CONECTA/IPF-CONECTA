@@ -1,8 +1,9 @@
 import {
+  getNewUsers,
   skillsTrendSvc,
   recruitedByIPFC,
-  getNewUsers,
   getPostsByMonth,
+  getActiveJobsSvc,
 } from "./statisticsServices.js";
 
 export const skillsTrendCtrl = async (_req, res) => {
@@ -36,6 +37,15 @@ export const getPostsByMonthCtrl = async (_req, res) => {
   try {
     const posts = await getPostsByMonth();
     res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getActiveJobsCtrl = async (_req, res) => {
+  try {
+    const jobs = await getActiveJobsSvc();
+    res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

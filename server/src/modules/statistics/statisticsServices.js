@@ -1,12 +1,13 @@
 import { Op } from "sequelize";
-import { sequelize } from "../../config/db.js";
+
 import { Job } from "../recruiters/job/jobModel.js";
-import { Experience } from "../profile/experiences/experiencesModel.js";
-import { getSkillablesByIds } from "../skills/skillable/skillableServices.js";
-import { getMonth } from "../../helpers/getTime.js";
 import { User } from "../users/userModel.js";
-import { BASIC_ROLES } from "../../constant/roles.js";
 import { Post } from "../posts/postModel.js";
+import { Experience } from "../profile/experiences/experiencesModel.js";
+
+import { getMonth } from "../../helpers/getTime.js";
+import { BASIC_ROLES } from "../../constant/roles.js";
+import { getSkillablesByIds } from "../skills/skillable/skillableServices.js";
 
 export const skillsTrendSvc = async () => {
   try {
@@ -104,6 +105,21 @@ export const getPostsByMonth = async () => {
     }, {});
 
     return orderPosts;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getActiveJobsSvc = async () => {
+  try {
+    const jobs = await Job.findAndCountAll({
+      where: {
+        active: true,
+      },
+    });
+
+    return jobs.count;
   } catch (error) {
     console.log(error);
     throw error;
