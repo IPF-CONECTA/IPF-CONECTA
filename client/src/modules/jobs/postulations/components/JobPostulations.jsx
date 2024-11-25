@@ -111,7 +111,8 @@ export const JobPostulations = () => {
                             <p></p>
                             <p className="fw-semibold text-secondary text-break">
                               {postulation?.profile.title ||
-                                postulation?.profile.about.slice(0, 50) + "..."}
+                                postulation?.profile.about?.slice(0, 50) +
+                                  "..."}
                             </p>
                           </div>
                         </div>
@@ -175,7 +176,6 @@ export const JobPostulations = () => {
           )}
         </div>
       </div>
-      <RecommendedAccounts />
     </div>
   );
 };

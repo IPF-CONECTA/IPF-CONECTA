@@ -11,10 +11,9 @@ import {
 
 export const createNewJobCtrl = async (req, res) => {
   const { id } = req.user.profile;
-
+  const { jobData } = req.body;
   try {
-    const newJob = await createNewJobSvc(req.body.jobData, id);
-    console.log(newJob);
+    const newJob = await createNewJobSvc(jobData, id);
     res.status(201).json(newJob);
   } catch (error) {
     console.log(error);

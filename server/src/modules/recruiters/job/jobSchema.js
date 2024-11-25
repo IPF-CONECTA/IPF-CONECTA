@@ -1,25 +1,22 @@
-import { body } from 'express-validator';
-import { Job } from './jobModel.js';
-import { Company } from '../companies/companyModel.js';
-import jwt from 'jsonwebtoken';
+import { body } from "express-validator";
+
 export const jobSchema = [
-    // body('modalityId')
-    //     .isNumeric().withMessage('La modalidad es invalida')
-    //     .notEmpty().withMessage('La modalidad es necesaria')
-    //     .isLength({
-    //         min: 1,
-    //         max: 4
-    //     }).withMessage('La modalidad es invalida')
-    // ,
-    // body('description')
-    //     .isString()
-    //     .notEmpty()
-    //     .isLength({ min: 10 })
-    //     .withMessage('La descripción debe tener al menos 10 caracteres'),
-    // body('companyId')
-    //     .notEmpty()
-    //     .isUUID()
-    //     .withMessage('La empresa es requerida'),
-    // body('contractTypeId')
-    //     .notEmpty().withMessage('El tipo de contrato es requerido')
-]
+  body("jobData.title").isString().withMessage("El título debe ser un string"),
+
+  body("jobData.description")
+    .notEmpty()
+    .withMessage("La descripción es requerida")
+    .isString()
+    .withMessage("La descripción debe ser un string"),
+  body("jobData.companyId").notEmpty().withMessage("La empresa es requerida"),
+  body("jobData.modalityId")
+    .notEmpty()
+    .withMessage("La modalidad es requerida"),
+  body("jobData.contractTypeId")
+    .notEmpty()
+    .withMessage("El tipo de contrato es requerido"),
+  body("jobData.skills")
+    .isArray()
+    .notEmpty()
+    .withMessage("Las habilidades son requeridas"),
+];
