@@ -1,5 +1,6 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
+import { BASE_URL } from "../../../constants/BASE_URL";
 
 export const getIdeasLogged = async () => {
     try {
@@ -50,14 +51,17 @@ export const getRankingIdeasLogged = async () => {
 }
 
 export const createIdea = async (idea) => {
+    console.log("idea en el servicio", idea)
     try {
         const res = await axios.post(`${BASE_URL}/idea`, { idea }, {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
             },
         });
+        console.log(res)
         return { status: res.status }
     } catch (error) {
+        console.log(error)
         return { status: error.status }
     }
 }

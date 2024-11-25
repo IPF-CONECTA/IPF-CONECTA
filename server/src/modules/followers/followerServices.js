@@ -44,8 +44,6 @@ export const getConnectionsSvc = async (id, type, reqId) => {
         followers.map(follower => {
             follower.dataValues.followingProfile ? follower.dataValues.followingProfile.dataValues.isFollowing = follower.followerId === reqId :
                 follower.dataValues.followerProfile.dataValues.isFollowing = follower.followingId === reqId;
-            console.log("reqId", reqId)
-            console.log("follower", follower.dataValues)
 
         });
         return followers;

@@ -43,8 +43,6 @@ export const Post = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const noti = useNoti();
 
-  console.log(postData);
-
   useEffect(() => {
     const fetchPost = async () => {
       setLoading(true);
@@ -184,7 +182,6 @@ export const Post = ({
       }
 
       noti("Comentario publicado", "success");
-      setContent("");
       setPost((prevPost) => ({
         ...prevPost,
         comments: [...prevPost?.comments, {}],

@@ -14,6 +14,7 @@ import { Header } from "../../components/ProfileHeader";
 import { Nav } from "../../../ui/components";
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/allSkills.module.css";
+import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts.jsx";
 
 export const LanguagesEdit = () => {
   const { username } = useParams();
@@ -300,7 +301,7 @@ export const LanguagesEdit = () => {
             </Modal>
           </section>
         </div>
-        <RecomendedAccounts />
+        <RecommendedAccounts />
       </div>
     </>
   );
