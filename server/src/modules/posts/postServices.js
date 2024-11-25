@@ -1,18 +1,21 @@
-import { Attachment } from "../attachment/attachmentModel.js"
-import { Post } from "./postModel.js"
-import { User } from "../users/userModel.js"
-import { Like } from "../posts/likes/likeModel.js"
-import { Repost } from "./reposts/repostModel.js"
-import { Profile } from "../profile/profileModel.js"
-import { createAttachmentsSvc, getAttachmentsSvc } from "../attachment/attachmentServices.js"
-import { sequelize } from "../../config/db.js"
-import path from "path"
-import { fileURLToPath } from "url"
-import fs from 'fs/promises'
-import { getProfileIdByUsername } from "../users/userServices.js"
+import { Attachment } from "../attachment/attachmentModel.js";
+import { Post } from "./postModel.js";
+import { User } from "../users/userModel.js";
+import { Like } from "../posts/likes/likeModel.js";
+import { Repost } from "./reposts/repostModel.js";
+import { Profile } from "../profile/profileModel.js";
+import {
+  createAttachmentsSvc,
+  getAttachmentsSvc,
+} from "../attachment/attachmentServices.js";
+import { sequelize } from "../../config/db.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs/promises";
+import { getProfileIdByUsername } from "../users/userServices.js";
+import { ALL_ROLES } from "../../constant/roles.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 export const getPostsSvc = async (page, id) => {
   const profile = await Profile.findByPk(id);
@@ -227,27 +230,34 @@ export const getPostByIdSvc = async (postId, profileId) => {
   }
 };
 
-export const deletePostSvc = async (postId, profileId) => {
+export const deletePostSvc = async (postId, profileId, role) => {
   const t = await sequelize.transaction();
   try {
     const post = await Post.findByPk(postId, { transaction: t });
     if (!post) throw new Error("Post no encontrado");
 
-    if (post.profileId !== profileId) throw new Error("No tienes permisos para eliminar este post");
-
     // Obtener los archivos adjuntos del post
     const attachments = await getAttachmentsSvc(postId);
 
     // Eliminar los archivos del sistema de archivos y base de datos
-    await Promise.all(attachments.map(async attachment => {
-      const filePath = path.join(__dirname, '../../../uploads/images', attachment.url);
-      await Attachment.destroy({ where: { id: attachment.id }, transaction: t });
-      try {
-        await fs.unlink(filePath);
-      } catch (error) {
-        console.error(`Error al eliminar el archivo ${filePath}:`, error);
-      }
-    }));
+    await Promise.all(
+      attachments.map(async (attachment) => {
+        const filePath = path.join(
+          __dirname,
+          "../../../uploads/images",
+          attachment.url
+        );
+        await Attachment.destroy({
+          where: { id: attachment.id },
+          transaction: t,
+        });
+        try {
+          await fs.unlink(filePath);
+        } catch (error) {
+          console.error(`Error al eliminar el archivo ${filePath}:`, error);
+        }
+      })
+    );
     // Eliminar el post
     await post.destroy({ transaction: t });
 

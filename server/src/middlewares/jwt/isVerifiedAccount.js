@@ -38,6 +38,7 @@ export const isToken = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     if (error.message === "jwt malformed") {
+      console.log({ errrrrrrrrrrrrrrrrrrrrrrror: error });
       return res.status(401).json({ message: "Inicie sesion para continuar" });
     }
     res.status(401).json({ message: error.message });

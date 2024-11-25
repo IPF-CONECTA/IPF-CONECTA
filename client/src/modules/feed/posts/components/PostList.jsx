@@ -227,7 +227,7 @@ export const PostList = () => {
         </form>
       </div>
       <div className="w-75 d-flex flex-column flex-grow-1 align-items-center border-end border-start">
-        {posts.map((post) => (
+        {posts?.map((post) => (
           <Post
             key={post.id}
             postData={post}

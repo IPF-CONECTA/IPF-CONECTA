@@ -123,6 +123,7 @@ export const createRelations = async () => {
     Job.hasMany(JobPostulation, {
       foreignKey: "jobId",
       as: "postulate",
+      onDelete: "CASCADE",
     });
     JobPostulation.belongsTo(Job, {
       foreignKey: "jobId",
