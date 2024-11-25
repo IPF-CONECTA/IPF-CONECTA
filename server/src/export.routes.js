@@ -17,7 +17,7 @@ import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoute
 import companyLocationRoutes from "./modules/recruiters/companies/companyLocation/companyLocationRoutes.js";
 import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
-import experienceRoutes from "./modules/profile/experiences/experienceRoutes.js"
+import experienceRoutes from "./modules/profile/experiences/experienceRoutes.js";
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
 import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/profile/project/projectRoutes.js";
@@ -34,8 +34,7 @@ import contactRoutes from "./modules/profile/contact/contactRoutes.js";
 import educationsRoutes from "./modules/profile/education/educationRoutes.js";
 import disciplineRoutes from "./modules/profile/education/disciplines/disciplineRoutes.js";
 import instituteRoutes from "./modules/profile/education/institutes/instituteRoutes.js";
-
-
+import statisticsRoutes from "./modules/statistics/statisticsRoutes.js";
 
 export const routes = (app) => {
   app.use(userRoutes);
@@ -70,8 +69,9 @@ export const routes = (app) => {
   app.use(skillableRoutes);
   app.use(langRouter);
   app.use(langUserRouter);
-  app.use(contactRoutes)
+  app.use(contactRoutes);
   app.use("/educations", educationsRoutes);
   app.use("/disciplines", disciplineRoutes);
-  app.use(instituteRoutes)
+  app.use(instituteRoutes);
+  app.use("/stats", statisticsRoutes);
 };

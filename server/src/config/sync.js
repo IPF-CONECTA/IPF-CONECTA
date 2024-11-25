@@ -33,7 +33,7 @@ export const createTablesAndRelations = async () => {
 
   await createRelations();
   console.log("Relations created successfully");
-  // await Education.sync({ force: true });
+  // await sequelize.sync({ force: false });
   // await Job.sync({ force: true })
   console.log("Tables created successfully");
   // ===================================================================================
