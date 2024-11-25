@@ -11,7 +11,7 @@ export const getAssociationsSvc = async (status) => {
         },
       }
     );
-    return { data: res.data, status: res.status };
+    return { data: res.data.associations, status: res.status };
   } catch (error) {
     console.error("Error al obtener las solicitudes:", error);
     return { data: [], status: error.status };

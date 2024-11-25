@@ -6,7 +6,6 @@ export const AdminDashboardPage = () => {
     <>
       <Nav />
       <AdminDashboard />
-      <Footer />
     </>
   );
 };

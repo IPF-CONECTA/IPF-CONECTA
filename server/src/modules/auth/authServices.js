@@ -55,8 +55,8 @@ export const authSignUpSvc = async (user) => {
       process.env.TOKEN_SECRET_KEY
     );
 
+    await sendConfirmAccountSvc(createdUser.id, t);
     await t.commit();
-    await sendConfirmAccountSvc(createdUser.id);
     return token;
   } catch (error) {
     await t.rollback();
@@ -118,15 +118,16 @@ export const authLogInSvc = async (user) => {
   }
 }
 
-export const sendConfirmAccountSvc = async (userId) => {
+export const sendConfirmAccountSvc = async (userId, t) => {
   try {
     const newVerifyCode = generateVerificationCode();
-    await User.update({ verifyCode: newVerifyCode }, { where: { id: userId }, attributes: ['verifyCode', 'email'] });
+    await User.update({ verifyCode: newVerifyCode }, { where: { id: userId }, attributes: ['verifyCode', 'email'], transaction: t },);
     const user = await User.findByPk(userId, {
       include: [{
         model: Profile,
         attributes: ['names']
-      }]
+      }],
+      transaction: t
     });
     if (!user.verifyCode || !user.email || !user.profile.names) {
       throw new Error("Error interno en el servidor, inicie sesion nuevamente");
