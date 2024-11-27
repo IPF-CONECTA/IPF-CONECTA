@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Pagination from "@mui/material/Pagination";
-import DOMPurify from "dompurify";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import Pagination from "@mui/material/Pagination";
+import axios from "axios";
+import DOMPurify from "dompurify";
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
-import styles from "../../../../public/main.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
+import styles from "../../../../public/css/associationPanel.module.css";
+import { DialogTitle, DialogContentText } from "@mui/material";
+
 export const AdminCompaniesPanel = () => {
   const noti = useNoti();
   const [activeTab, setActiveTab] = useState("Aprobada");
@@ -37,7 +37,6 @@ export const AdminCompaniesPanel = () => {
           },
         }
       );
-
       setTotalPages(res.data.totalPages);
       if (res.data.companies.length === 0)
         noti("No se encontraron empresas", "info");
@@ -90,7 +89,6 @@ export const AdminCompaniesPanel = () => {
           },
         }
       );
-
       noti(`Empresa ${status.toLowerCase()} con éxito`, "success");
       setSelectedCompany(null);
       setCompanies((prevCompanies) =>
@@ -130,66 +128,53 @@ export const AdminCompaniesPanel = () => {
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;
 
+  console.log(companies);
+
   return (
-    <div className={` ${styles.AdminPanel} h-100`}>
-      <header className={`${styles.Header} pt-3`}>
+    <div className={`container mt-4 ${styles.AdminPanel}`}>
+      <div className="btn-group mb-3" role="group">
         {["Aprobada", "Pendiente", "Rechazada"].map((tab) => (
-          <button key={tab} onClick={() => handleTabClick(tab)}>
-            Empresas {tab}
+          <button
+            key={tab}
+            className={`btn btn-outline-success ${
+              activeTab === tab ? "active" : ""
+            }`}
+            onClick={() => handleTabClick(tab)}
+          >
+            {tab}
           </button>
         ))}
-      </header>
-
-      <div className="d-flex flex-column align-items-center justify-content-end h-100">
-        <h2 className="pb-4 pt-4">
-          {activeTab === "Aprobada"
-            ? "Empresas Aprobadas"
-            : activeTab === "Pendiente"
-            ? "Empresas Pendientes de Aprobación"
-            : "Empresas Rechazadas"}
-        </h2>
-
-        <div className={styles.CompanyList}>
-          <div className={styles.Companies}>
+      </div>
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Empresas {activeTab}</h5>
+          <div className={styles.CompanyList}>
             {companies.length === 0 ? (
               <p>No hay empresas disponibles en esta categoría.</p>
             ) : (
-              companies.map((company) => {
-                const words = company.name.split(" ");
-                const firstWord = words[0];
-                const restOfName = words.slice(1).join(" ");
-                const displayName =
-                  firstWord.length > 10
-                    ? `${firstWord.substring(0, 10)}-\n${firstWord.substring(
-                        10
-                      )} ${restOfName}`
-                    : company.name;
-
-                return (
-                  <div
-                    key={company.id}
-                    className={styles.Company}
-                    onClick={() => handleCompanyClick(company)}
-                  >
-                    <img
-                      src={`${BASE_URL}/logoUrl/${company.logoUrl}`}
-                      height={40}
-                      width={40}
-                      className="rounded-circle m-0"
-                      alt={`Logo de ${company.name}`}
-                    />
-
-                    <h3 style={{ whiteSpace: "pre-wrap" }}>
-                      {displayName.length > 15
-                        ? `${displayName.substring(0, 15)}...`
-                        : displayName}
-                    </h3>
-                    {company.companyIndustry && (
-                      <p>{company.companyIndustry.name}</p>
-                    )}
-                  </div>
-                );
-              })
+              companies.map((company) => (
+                <div
+                  key={company.id}
+                  className="d-flex flex-column align-items-center p-3 m-2 bg-light rounded"
+                  onClick={() => handleCompanyClick(company)}
+                >
+                  <img
+                    src={`${BASE_URL}/logoUrl/${company.logoUrl}`}
+                    height={40}
+                    width={40}
+                    className="rounded-circle m-0"
+                    alt={`Logo de ${company.name}`}
+                  />
+                  <h3 style={{ whiteSpace: "pre-wrap" }}>
+                    {company.name.length > 15
+                      ? `${company.name.substring(0, 15)}...`
+                      : company.name}
+                  </h3>
+                  {company.companyIndustry && (
+                    <p>{company?.companyIndustry.name}</p>
+                  )}
+                </div>
+              ))
             )}
           </div>
           <Pagination
@@ -200,6 +185,7 @@ export const AdminCompaniesPanel = () => {
         </div>
       </div>
 
+      {console.log(selectedCompany)}
       {selectedCompany && (
         <Dialog
           open={Boolean(selectedCompany)}
@@ -208,16 +194,16 @@ export const AdminCompaniesPanel = () => {
           maxWidth="md"
         >
           <DialogContent>
-            <div className={` d-flex flex-column`}>
+            <div className={`d-flex flex-column`}>
               <div className={styles.CompanyDetails}>
                 <div className="d-flex flex-row justify-content-start">
                   <img
-                    src={`${BASE_URL}${selectedCompany.logoUrl}`}
+                    src={`${BASE_URL}/logoUrl/${selectedCompany.logoUrl}`}
                     alt={`Logo de ${selectedCompany.name}`}
                     className={"m-0 me-3 rounded-pill"}
                     height={60}
                   />
-                  <div className="d-flex flex-column ">
+                  <div className="d-flex flex-column">
                     <strong className="fs-3">{selectedCompany.name}</strong>
                     <div className="d-flex">
                       <p className="fst-italic text-muted pe-2">
@@ -275,48 +261,26 @@ export const AdminCompaniesPanel = () => {
                   </div>
                 </div>
               </div>
-              <hr />
-              <div className={`d-flex align-items-center`}>
-                {/* <button
-                  className="btn p-0"
-                  onClick={() => alert(selectedCompany.associations[0].user.id)}
-                >
-                  <img
-                    src={selectedCompany.associations[0].user.profilePic}
-                    alt="Foto de perfil"
-                    height={60}
-                    width={60}
-                    className="rounded-pill me-3"
-                  />
-                </button>
-                <div>
-                  <strong className="fs-5 w-100">{`${selectedCompany.associations[0].user.names} ${selectedCompany.associations[0].user.surnames}`}</strong>
-                  <p className="w-50 text-muted">
-                    {selectedCompany.associations[0].user.email}
-                  </p>
-                </div> */}
-              </div>
             </div>
+            {activeTab === "Pendiente" && (
+              <DialogActions>
+                <Button color="secondary" onClick={handleOpenModal}>
+                  Rechazar
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() =>
+                    handleCompanyStatus(selectedCompany.id, "Aprobada")
+                  }
+                >
+                  Aprobar
+                </Button>
+              </DialogActions>
+            )}
           </DialogContent>
-          {activeTab === "Pendiente" && (
-            <DialogActions>
-              <Button color="secondary" onClick={handleOpenModal}>
-                Rechazar
-              </Button>
-              <Button
-                color="primary"
-                onClick={() =>
-                  handleCompanyStatus(selectedCompany.id, "Aprobada")
-                }
-              >
-                Aprobar
-              </Button>
-            </DialogActions>
-          )}
         </Dialog>
       )}
 
-      {/* Modal de justificación */}
       <Dialog open={open} onClose={handleCloseModal}>
         <DialogTitle>Rechazar Empresa</DialogTitle>
         <DialogContent>
