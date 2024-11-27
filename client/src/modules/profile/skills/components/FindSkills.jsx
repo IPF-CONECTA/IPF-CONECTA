@@ -5,7 +5,6 @@ import { findSkills } from "../../../recruiter/job/services/jobServices";
 
 export const SkillSearch = ({ prevSelectedSkills, onSkillSelect }) => {
   useEffect(() => {
-    console.log("facu puto");
     if (prevSelectedSkills?.length > 0) {
       onSkillSelect(prevSelectedSkills);
     }

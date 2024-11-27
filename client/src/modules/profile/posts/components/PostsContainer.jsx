@@ -13,12 +13,11 @@ export const PostsContainer = ({ username, own, postsData, onPostSubmit }) => {
     setPosts(posts);
   }, [postsData]);
 
-  console.log("postsData", postsData);
   return (
     <>
       <div className="w-100 border-bottom" id="posts">
-        <div className="p-4">
-          <div className="d-flex justify-content-between mb-2">
+        <div className="p-2">
+          <div className="d-flex justify-content-between mb-2 p-2">
             <span className="fw-bold fs-5">Publicaciones</span>
             {own && (
               <div className="d-flex">

@@ -83,9 +83,10 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
   const onEditSubmit = async (data) => {
     data.skills = selectedSkills;
     const res = await jobsServices.updateJob(job.id, data);
+    console.log(res);
     if (res.status !== 200) {
       if (res.status === 400) {
-        return res.messages.forEach((message) => {
+        return res.messages?.forEach((message) => {
           noti(message.msg, "danger");
         });
       }

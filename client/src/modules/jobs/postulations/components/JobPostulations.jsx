@@ -178,7 +178,6 @@ export const JobPostulations = () => {
           )}
         </div>
       </div>
-      <RecommendedAccounts />
     </div>
   );
 };

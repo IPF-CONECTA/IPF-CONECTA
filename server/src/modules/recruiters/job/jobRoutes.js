@@ -48,6 +48,13 @@ jobRoutes.get("/get-jobs/:username", isToken, getJobsByUsernameCtrl);
 
 jobRoutes.delete("/delete-job/:id", isToken, isRecruiter, deleteJobCtrl);
 
-jobRoutes.put("/update-job/:id", isToken, isRecruiter, editJobCtrl);
+jobRoutes.put(
+  "/update-job/:id",
+  isToken,
+  jobSchema,
+  validateSchema,
+  isRecruiter,
+  editJobCtrl
+);
 
 export default jobRoutes;
