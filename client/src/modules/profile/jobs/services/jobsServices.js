@@ -21,14 +21,11 @@ export const jobsServices = {
   },
   getJobsByUsername: async (username) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/get-jobs/${username}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/get-jobs/${username}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
       return { data: response.data, status: response.status };
     } catch (error) {
       return { status: error.status };
@@ -36,14 +33,11 @@ export const jobsServices = {
   },
   deleteJob: async (jobId) => {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/delete-job/${jobId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${BASE_URL}/delete-job/${jobId}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
       return { data: response.data, status: response.status };
     } catch (error) {
       return { status: error.status };
@@ -62,19 +56,16 @@ export const jobsServices = {
       );
       return { data: response.data, status: response.status };
     } catch (error) {
-      return { status: error.status };
+      return { status: error.status, messages: error.response.data.errors };
     }
   },
   getJobById: async (jobId) => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/get-job/${jobId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/get-job/${jobId}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
       return { data: response.data, status: response.status };
     } catch (error) {
       return { status: error.status };

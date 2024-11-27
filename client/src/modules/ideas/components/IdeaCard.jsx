@@ -32,7 +32,9 @@ export const IdeaCard = ({ idea }) => {
     >
       <div className="card-body d-flex flex-column">
         <h5 className="card-title fw-bold text-primary">{idea.title}</h5>
-        <p className="card-text text-muted flex-grow-1">{idea.description}</p>
+        <p className="card-text text-muted flex-grow-1">
+          {idea.description.slice(0, 50) + "..."}
+        </p>
         <div className="d-flex justify-content-between align-items-center mt-3">
           <button
             className="btn btn-light d-flex"

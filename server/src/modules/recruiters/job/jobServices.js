@@ -86,10 +86,9 @@ export const getJobsSvc = async () => {
 
 export const getJobByIdSvc = async (id, profileId) => {
   try {
-
     const job = await Job.findByPk(id, {
       attributes: {
-        exclude: ["active", "companyId", "profileId", "updatedAt"],
+        exclude: ["active", "companyId", "updatedAt"],
       },
       include: [
         {
@@ -142,7 +141,7 @@ export const getJobByIdSvc = async (id, profileId) => {
       postulated: postulate ? true : false,
     };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw new Error(error.message);
   }
 };

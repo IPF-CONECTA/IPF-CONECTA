@@ -11,7 +11,7 @@ export const getAssociationsSvc = async (status) => {
         },
       }
     );
-    return { data: res.data, status: res.status };
+    return { data: res.data.associations, status: res.status };
   } catch (error) {
     console.error("Error al obtener las solicitudes:", error);
     return { data: [], status: error.status };
@@ -31,6 +31,12 @@ export const updateAssociationStatus = async (id, status, justification) => {
     );
     return { status: res.status };
   } catch (error) {
-    return { status: error.status, error: error.response?.data || error.response.data.errors || "Hubo un error al actualizar el estado de la solicitud" };
+    return {
+      status: error.status,
+      error:
+        error.response?.data ||
+        error.response.data.errors ||
+        "Hubo un error al actualizar el estado de la solicitud",
+    };
   }
 };

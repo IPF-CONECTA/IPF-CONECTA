@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Header } from "../../components/ProfileHeader";
 import { getProfile } from "../../../feed/services/feedServices";
 import { useParams } from "react-router-dom";
-import { Nav } from "../../../ui/components";
+import { Nav, SideBar } from "../../../ui/components";
 import styles from "../../../../../public/css/allSkills.module.css";
 import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
 import { AllSkills } from "../components/AllSkills";
@@ -44,9 +44,9 @@ export const AllSkillsPage = () => {
 
   return (
     <>
-      <Nav />
-      <div className="d-flex justify-content-evenly px-5 ">
-        <div className={`${styles.profileContainer} border rounded-4 my-3`}>
+      <SideBar />
+      <div className="d-flex justify-content-evenly px-5 pt-4">
+        <div className={`${styles.profileContainer} border rounded-4`}>
           {loading ? (
             <div className={`d-flex justify-content-center my-3`}>
               {" "}

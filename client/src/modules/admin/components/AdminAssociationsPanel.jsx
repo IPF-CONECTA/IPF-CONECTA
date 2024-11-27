@@ -34,7 +34,7 @@ export const AdminAssociationsPanel = () => {
       } else if (res.status !== 200) {
         noti("Error al obtener las solicitudes", "error");
       } else {
-        setAssociations(res.data);
+        setAssociations(res.data.associations);
       }
     };
 
@@ -134,7 +134,7 @@ export const AdminAssociationsPanel = () => {
         <div className="card-body">
           <h5 className="card-title">Solicitudes {tab}</h5>
           <ul className="list-group">
-            {associations.map((association) => (
+            {associations?.map((association) => (
               <li
                 key={association.id}
                 className="list-group-item d-flex justify-content-between align-items-center"

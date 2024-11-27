@@ -7,8 +7,8 @@ import { getDateWithHour } from "../../../../helpers/getTime";
 export const PostCard = ({ post, username, own }) => {
   const navigate = useNavigate();
   return (
-    <div
-      className="card mb-3"
+    <li
+      className="list-group-item card "
       style={{ cursor: "pointer" }}
       onClick={() => navigate(`/${username}/post/${post?.id}`)}
     >
@@ -72,6 +72,6 @@ export const PostCard = ({ post, username, own }) => {
           </div>
         </div>
       </div>
-    </div>
+    </li>
   );
 };

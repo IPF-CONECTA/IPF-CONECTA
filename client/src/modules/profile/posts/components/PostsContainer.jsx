@@ -7,19 +7,17 @@ export const PostsContainer = ({ username, own, postsData, onPostSubmit }) => {
   const navigate = useNavigate();
 
   const [posts, setPosts] = useState([]);
-  const [openPostModal, setOpenPostModal] = useState(false);
 
   useEffect(() => {
     const posts = postsData.rows?.slice(0, 3);
     setPosts(posts);
   }, [postsData]);
 
-  console.log(posts);
   return (
     <>
       <div className="w-100 border-bottom" id="posts">
-        <div className="p-4">
-          <div className="d-flex justify-content-between mb-2">
+        <div className="p-2">
+          <div className="d-flex justify-content-between mb-2 p-2">
             <span className="fw-bold fs-5">Publicaciones</span>
             {own && (
               <div className="d-flex">
@@ -67,7 +65,7 @@ export const PostsContainer = ({ username, own, postsData, onPostSubmit }) => {
             to="publicaciones"
             className="fw-semibold p-0 text-body-tertiary text-decoration-none"
           >
-            Ver todas las publicaciones ({postsData.count})
+            Ver todas las publicaciones ({postsData.rows?.length})
           </Link>
         </div>
       )}

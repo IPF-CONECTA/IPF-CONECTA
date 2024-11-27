@@ -1,12 +1,11 @@
-import { Nav, Footer } from "../../ui/components";
+import { Nav, Footer, SideBar } from "../../ui/components";
 import { AdminDashboard } from "../components/AdminDashboard";
 
 export const AdminDashboardPage = () => {
   return (
     <>
-      <Nav />
+      <SideBar />
       <AdminDashboard />
-      <Footer />
     </>
   );
 };

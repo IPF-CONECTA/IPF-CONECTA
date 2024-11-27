@@ -1,3 +1,4 @@
+import { ALL_ROLES } from "../../constant/roles.js";
 import { getProfileIdByUsername } from "../users/userServices.js";
 import {
   createPostSvc,
@@ -60,12 +61,23 @@ export const createPostCtrl = async (req, res) => {
 
 export const deletePostCtrl = async (req, res) => {
   const { id } = req.user.profile;
+  const { role } = req.user;
   const { postId } = req.params;
+
+  const post = await getPostByIdSvc(postId, id);
+  console.log(req.user.role.dataValues);
+
   try {
-    await deletePostSvc(postId, id);
-    res.status(204).json();
+    if (post.profileId === id || role.name === "admin") {
+      await deletePostSvc(postId, id, role);
+    } else {
+      res
+        .status(401)
+        .json({ message: "No tienes permisos para eliminar este post" });
+    }
+    res.status(200).json({ message: "Posteo eliminado exitosamente" });
   } catch (error) {
-    console.log(error);
+    console.log({ error });
     res.status(500).json(error.message);
   }
 };

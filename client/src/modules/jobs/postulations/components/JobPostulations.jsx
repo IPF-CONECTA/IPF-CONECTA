@@ -72,8 +72,8 @@ export const JobPostulations = () => {
             </Link>
             <span className="fs-5 fw-bold">
               Postulados de{" "}
-              {job?.title.length > 20
-                ? job?.title.slice(0, 20) + "..."
+              {job?.title?.length > 20
+                ? job?.title?.slice(0, 20) + "..."
                 : job?.title}
             </span>
           </div>
@@ -110,8 +110,11 @@ export const JobPostulations = () => {
                             </p>
                             <p></p>
                             <p className="fw-semibold text-secondary text-break">
-                              {postulation?.profile.title ||
-                                postulation?.profile.about.slice(0, 50) + "..."}
+                              {(postulation?.profile?.title &&
+                                postulation?.profile?.title) ||
+                                (postulation?.profile?.about &&
+                                  postulation?.profile?.about?.slice(0, 50) +
+                                    "...")}
                             </p>
                           </div>
                         </div>
@@ -175,7 +178,6 @@ export const JobPostulations = () => {
           )}
         </div>
       </div>
-      <RecommendedAccounts />
     </div>
   );
 };

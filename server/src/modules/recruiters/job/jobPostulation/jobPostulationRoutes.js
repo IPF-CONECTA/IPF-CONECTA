@@ -16,6 +16,6 @@ jobPostulationRoutes.post(
   createJobPostulationCtrl
 );
 
-jobPostulationRoutes.get("/postulations/:jobId", getPostulationsCtrl);
+jobPostulationRoutes.get("/postulations/:jobId", isToken, getPostulationsCtrl);
 
 export default jobPostulationRoutes;

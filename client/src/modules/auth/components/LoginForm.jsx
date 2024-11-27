@@ -10,7 +10,7 @@ export const LoginForm = () => {
   const [watchPassword, setWatchPassword] = useState(false);
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (authState.isLogged) {
       navigate("/");
@@ -18,48 +18,63 @@ export const LoginForm = () => {
   }, [authState.isLogged]);
 
   async function onSubmit(data) {
-    const response = await login(data);
-    if (response && response.role == "recruiter") {
-      if (response.associations.length === 0) {
-        navigate("/seleccionar-empresa");
-      } else {
-        const isApproved = response.associations.find(
-          (association) => association.status == "Aprobada"
-        );
-        const isRefused = response.associations.find(
-          (association) => association.status == "Rechazada"
-        );
-
-        if (isApproved) {
-          navigate("/inicio");
+    setLoading(true);
+    try {
+      const response = await login(data);
+      if (response && response.role == "recruiter") {
+        if (response.associations.length === 0) {
+          navigate("/seleccionar-empresa");
         } else {
-          const isPending = response.associations.find(
-            (association) => association.status == "Pendiente"
+          const isApproved = response.associations.find(
+            (association) => association.status == "Aprobada"
           );
-          if (isPending) {
-            navigate("/solicitud-del-mentor", {
-              state: {
-                companyName: isPending.company.name,
-                status: "Pendiente",
-              },
-            });
-          }
+          const isRefused = response.associations.find(
+            (association) => association.status == "Rechazada"
+          );
 
-          if (isRefused) {
-            navigate("/solicitud-del-reclutador", {
-              state: {
-                companyName: isRefused.company.name,
-                status: "Rechazada",
-              },
-            });
+          if (isApproved) {
+            navigate("/inicio");
+          } else {
+            const isPending = response.associations.find(
+              (association) => association.status == "Pendiente"
+            );
+            if (isPending) {
+              navigate("/solicitud-del-mentor", {
+                state: {
+                  companyName: isPending.company.name,
+                  status: "Pendiente",
+                },
+              });
+            }
+
+            if (isRefused) {
+              navigate("/solicitud-del-reclutador", {
+                state: {
+                  companyName: isRefused.company.name,
+                  status: "Rechazada",
+                },
+              });
+            }
           }
         }
+      } else if (response.role == "student") {
+        navigate("/inicio");
+      } else if (response.role == "admin") {
+        navigate("/admin/dash");
       }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="d-flex w-100 justify-content-between align-items-center">
+    <div
+      className="d-flex w-100 justify-content-between align-items-center"
+      style={{ height: "100vh" }}
+    >
       <div className="w-50 d-flex justify-content-center">
         <img src="./img/login.jpg" height={600} alt="Login" />
       </div>
@@ -108,6 +123,7 @@ export const LoginForm = () => {
           </div>
           <div className={styles["form-group"]}>
             <button
+              disabled={loading}
               type="submit"
               className={`fw-bold fs-5 p-2 ${styles.button}`}
             >
