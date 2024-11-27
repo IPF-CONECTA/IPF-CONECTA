@@ -11,7 +11,7 @@ import {
   updateLanguage,
 } from "../services/languageService.js";
 import { Header } from "../../components/ProfileHeader";
-import { Nav } from "../../../ui/components";
+import { Nav, SideBar } from "../../../ui/components";
 import { useNoti } from "../../../../hooks/useNoti";
 import styles from "../../../../../public/css/allSkills.module.css";
 import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts.jsx";
@@ -142,8 +142,8 @@ export const LanguagesEdit = () => {
 
   return (
     <>
-      <Nav />
-      <div className="d-flex justify-content-evenly px-5">
+      <SideBar />
+      <div className="d-flex justify-content-evenly px-5 pt-4">
         <div className={`${styles.profileContainer} border rounded`}>
           <Header profileData={profileData} setProfileData={setProfileData} />
           <section>

@@ -47,7 +47,10 @@ export const SupportForm = () => {
 
   return (
     <>
-      <main className="d-flex align-items-center justify-content-center gap-3">
+      <main
+        className="d-flex align-items-center justify-content-center gap-3 ms-5"
+        style={{ height: "100vh" }}
+      >
         <div className=" border d-flex align-items-center p-3 rounded shadow">
           <form onSubmit={handleSubmit} className="border-0 shadow-none p-0">
             <h2 className="support-header">

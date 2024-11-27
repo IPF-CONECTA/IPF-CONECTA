@@ -3,13 +3,14 @@ import { Nav } from "../../ui/components";
 import { Profile } from "../components/Profile";
 import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
 import styles from "../../../../public/css/profile.module.css";
+import { SideBar } from "../../ui/components/SideBar";
 
 export const ProfilePage = () => {
   return (
-    <>
-      <Nav />
+    <div>
+      <SideBar />
       <div
-        className={`w-100 d-flex justify-content-evenly px-5 pt-4 ${styles.mainContainer}`}
+        className={`d-flex justify-content-around px-5 pt-4 ms-5 ${styles.mainContainer}`}
       >
         <div
           className={`profile d-flex flex-column align-items-center border border-bottom-0 rounded-top-4 mb-4 ${styles.profileContainer}`}
@@ -18,6 +19,6 @@ export const ProfilePage = () => {
         </div>
         <RecommendedAccounts />
       </div>
-    </>
+    </div>
   );
 };

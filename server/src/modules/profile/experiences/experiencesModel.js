@@ -53,5 +53,6 @@ export const Experience = sequelize.define("experience", {
   isRecruited: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false
   },
 });

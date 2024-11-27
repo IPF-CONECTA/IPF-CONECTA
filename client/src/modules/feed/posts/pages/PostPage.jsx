@@ -1,4 +1,4 @@
-import { HomeNav } from "../../../ui/components";
+import { HomeNav, SideBar } from "../../../ui/components";
 import { RecommendedAccounts } from "../../components/RecommendedAccounts";
 import styles from "../../../../../public/css/feed.module.css";
 import { Post } from "../components/Post";
@@ -34,7 +34,7 @@ export const PostPage = () => {
   return (
     <>
       <main className="d-flex justify-content-center w-100 ">
-        <HomeNav />
+        <SideBar />
         <div
           className="d-flex flex-column align-items-center border"
           style={{ width: "38%", minHeight: "100vh" }}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProfile } from "../../../feed/services/feedServices";
 import { educationsServices } from "../../../profile/educations/services/educationsServices";
-import { Nav } from "../../../ui/components";
+import { Nav, SideBar } from "../../../ui/components";
 import { Header } from "../../components/ProfileHeader";
 
 import { AllEducationsContainer } from "../../../profile/educations/components/AllEducationsContainer";
@@ -35,7 +35,7 @@ export const ProfileEducationsPage = () => {
 
   return (
     <>
-      <Nav />
+      <SideBar />
       <div className="d-flex justify-content-evenly px-5  my-4">
         <div className="border rounded" style={{ width: "65%" }}>
           <Header profileData={profileData} setProfileData={setProfileData} />

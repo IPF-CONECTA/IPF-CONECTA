@@ -69,10 +69,10 @@ export const JobSearch = () => {
   };
 
   return (
-    <main className="w-100 h-100 d-flex flex-column align-items-center mb-5">
+    <main className="w-100 h-100 d-flex flex-column align-items-center mb-5 mt-3">
       <div className={`w-100`}>
         <nav
-          className={` w-100  d-flex flex-column justify-content-center pb-2 align-items-center`}
+          className={` w-100  d-flex flex-column justify-content-center pb-3 align-items-center`}
         >
           <form
             className={`${styles.form}  d-flex justify-content-center w-50 p-0`}

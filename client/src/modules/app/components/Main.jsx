@@ -10,25 +10,31 @@ export const Home = () => {
       <div className={`ubuntu-thin ${styles.headerSection}`}>
         <div className={`d-flex `}>
           <div className="d-flex flex-column justify-content-center align-items-start ms-5">
-            <span className="ubuntu-bold" style={{ fontSize: 55 }}>
+            <div className={`ubuntu-bold ${styles.movingGradientText}`}>
               IPF-CONECTA
-            </span>
+            </div>
             <div className={"rounded mb-2 d-flex flex-column"}>
-              <h3 className="mb-3 fw-light w-75">
+              <h3 className="mb-3 fw-light w-75 fs-2">
                 Encuentra tu próximo empleo, expande tu red profesional y obtén
                 asesoramiento de expertos.
               </h3>
               <div>
                 <Link
-                  to={authState.isLogged ? "/inicio" : "/registrate"}
-                  className={"btn btn-dark fw-semibold montserrat-bold"}
+                  to={
+                    authState.isLogged
+                      ? authState.role !== "admin"
+                        ? "/inicio"
+                        : "/admin/dash"
+                      : "/iniciar-sesion"
+                  }
+                  className={`px-3 py-2 text-decoration-none rounded-3 fw-semibold montserrat-bold fs-5 ${styles.startBtn}`}
                 >
-                  Comenzar
+                  <span> Comenzar</span>
                 </Link>
               </div>
             </div>
           </div>
-          <img src="/img/landingImage.png" style={{ height: "92.6vh" }} />
+          <img src="/img/landingImage2.png" style={{ height: "100vh" }} />
         </div>
       </div>
       {/* <section id="services" className={`mb-4 ${styles["services-section"]}`}>

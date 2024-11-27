@@ -1,9 +1,11 @@
 import {
   getNewUsers,
   skillsTrendSvc,
-  recruitedByIPFC,
+  recruitedByMonth,
   getPostsByMonth,
   getActiveJobsSvc,
+  recruitedUsers,
+  getPosts,
 } from "./statisticsServices.js";
 
 export const skillsTrendCtrl = async (_req, res) => {
@@ -15,10 +17,19 @@ export const skillsTrendCtrl = async (_req, res) => {
   }
 };
 
-export const jobsObteniedCtrl = async (_req, res) => {
+export const recruitedUsersByMonthCtrl = async (_req, res) => {
   try {
-    const jobs = await recruitedByIPFC();
+    const jobs = await recruitedByMonth();
     res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const recruitedUsersCtrl = async (_req, res) => {
+  try {
+    const recruited = await recruitedUsers();
+    res.status(200).json(recruited);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -36,6 +47,14 @@ export const getNewUsersCtrl = async (_req, res) => {
 export const getPostsByMonthCtrl = async (_req, res) => {
   try {
     const posts = await getPostsByMonth();
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getPostsCtrl = async (_req, res) => {
+  try {
+    const posts = await getPosts();
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });

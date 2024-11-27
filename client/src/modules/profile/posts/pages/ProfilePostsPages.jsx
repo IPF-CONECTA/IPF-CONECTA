@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProfile } from "../../../feed/services/feedServices";
-import { Nav } from "../../../ui/components";
+import { Nav, SideBar } from "../../../ui/components";
 import { Header } from "../../components/ProfileHeader";
 import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
 import { AllPostsContainer } from "../components/AllPostsContainer";
@@ -38,7 +38,7 @@ export const ProfilePostPage = () => {
 
   return (
     <>
-      <Nav />
+      <SideBar />
       <div className="d-flex justify-content-evenly px-5  my-4">
         <div style={{ width: "65%" }} className="border rounded">
           <Header profileData={profileData} setProfileData={setProfileData} />

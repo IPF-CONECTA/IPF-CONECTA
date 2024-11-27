@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { HomeNav } from "../../ui/components";
+import { HomeNav, SideBar } from "../../ui/components";
 import { PostList } from "../posts/components/PostList";
 import { RecommendedAccounts } from "../components/RecommendedAccounts";
 
@@ -21,7 +21,7 @@ export const BookmarksPage = () => {
   return (
     <>
       <main className="d-flex justify-content-center w-100 ">
-        <HomeNav />
+        <SideBar />
         <PostList />
         <RecommendedAccounts error={error} accounts={accounts} />
       </main>

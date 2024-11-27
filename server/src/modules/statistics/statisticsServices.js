@@ -33,11 +33,11 @@ export const skillsTrendSvc = async () => {
     return sortedSkills;
   } catch (error) {
     console.log(error);
-    throw new Error(error);
+    throw error
   }
 };
 
-export const recruitedByIPFC = async () => {
+export const recruitedByMonth = async () => {
   try {
     const experiencies = await Experience.findAndCountAll({
       where: {
@@ -58,13 +58,27 @@ export const recruitedByIPFC = async () => {
     return expByMonth;
   } catch (error) {
     console.log(error);
-    throw new Error(error);
+    throw error
   }
 };
 
+export const recruitedUsers = async () => {
+  try {
+    const cantRecruited = await Experience.count({
+      where: {
+        isRecruited: true,
+      }
+    })
+    return cantRecruited
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export const getNewUsers = async () => {
   try {
-    const users = await User.findAndCountAll({
+    const users = await User.findAll({
       where: {
         [Op.or]: [
           { roleId: BASIC_ROLES.recruiter },
@@ -76,13 +90,14 @@ export const getNewUsers = async () => {
       attributes: ["createdAt"],
     });
 
-    const orderUsers = users.rows.reduce((acc, user) => {
-      const month = getMonth(user.createdAt);
-      acc[month] = acc[month] ? acc[month] + 1 : 1;
-      return acc;
-    }, {});
+    const usersByMonth = Array(12).fill(0);
 
-    return orderUsers;
+    users.forEach(user => {
+      const month = new Date(user.createdAt).getMonth(); // Obtener el mes (0-11)
+      usersByMonth[month] += 1;
+    });
+
+    return usersByMonth;
   } catch (error) {
     console.log(error);
     throw error;
@@ -91,25 +106,37 @@ export const getNewUsers = async () => {
 
 export const getPostsByMonth = async () => {
   try {
-    const posts = await Post.findAndCountAll({
+    const posts = await Post.findAll({
       where: {
         createdAt: { [Op.gte]: new Date(`${new Date().getFullYear()}-01-01`) },
       },
       attributes: ["createdAt"],
     });
 
-    const orderPosts = posts.rows.reduce((acc, post) => {
-      const month = getMonth(post.createdAt);
-      acc[month] = acc[month] ? acc[month] + 1 : 1;
-      return acc;
-    }, {});
+    const postsByMonth = Array(12).fill(0);
 
-    return orderPosts;
+    posts.forEach(post => {
+      const month = new Date(post.createdAt).getMonth(); // Obtener el mes (0-11)
+      postsByMonth[month] += 1;
+    });
+
+    return postsByMonth;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
+
+export const getPosts = async () => {
+  try {
+    const posts = await Post.count()
+    return posts
+  } catch (error) {
+    console.log(error)
+    throw error
+
+  }
+}
 
 export const getActiveJobsSvc = async () => {
   try {
