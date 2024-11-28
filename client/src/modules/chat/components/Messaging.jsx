@@ -1,15 +1,17 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 
 import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
 import { getTime } from "../../../helpers/getTime";
 import { BASE_URL } from "../../../constants/BASE_URL";
+import { useChatContext } from "../../../context/chat/ChatContext";
 
 export const Messaging = () => {
   const { authState } = useContext(authContext);
   const [chats, setChats] = useState([]);
   const [profileId, setProfileId] = useState("");
+
+  const { setChatId } = useChatContext();
 
   useEffect(() => {
     setProfileId(authState.user?.profile?.id);
@@ -25,7 +27,7 @@ export const Messaging = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-end w-100 p-5">
+      <div className="d-flex justify-content-end w-50 p-5">
         <div className="list-group w-75">
           {chats?.length === 0 ? (
             <div className="d-flex flex-column justify-content-center">
@@ -52,9 +54,10 @@ export const Messaging = () => {
                     : chat.profile1;
 
                 return (
-                  <Link
+                  <div
                     key={chat.id}
-                    to={`/chat/${receptorId.user.username}`}
+                    // to={`/chat/${receptorId.user.username}`}
+                    onClick={() => setChatId(chat.id)}
                     className="text-decoration-none border rounded"
                   >
                     <div className="d-flex align-items-center w-100 gap-3 list-group-item bg-dark-subtle p-3">
@@ -85,7 +88,7 @@ export const Messaging = () => {
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
             </>

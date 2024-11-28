@@ -4,12 +4,14 @@ import { Profile } from "../../profile/profileModel.js";
 import { User } from "../../users/userModel.js";
 
 import { createChat, existChat } from "../chatService.js";
+import { Chat } from "../chatModel.js";
 
 export const sendMessage = async (senderId, receptorId, message) => {
   const t = await sequelize.transaction();
-
+  console.log({ senderId, receptorId, message });
   try {
     let chat = await existChat(senderId, receptorId);
+
     if (!chat) {
       chat = await createChat(senderId, receptorId);
     }
@@ -28,7 +30,7 @@ export const sendMessage = async (senderId, receptorId, message) => {
   }
 };
 
-export const getMessagesChat = async (chatId) => {
+export const getMessagesChat = async (chatId, profileId) => {
   try {
     const messages = await Message.findAll({
       where: {
@@ -50,9 +52,40 @@ export const getMessagesChat = async (chatId) => {
       order: [["createdAt", "ASC"]],
     });
 
-    return messages;
+    const profiles = await Chat.findByPk(chatId, {
+      include: [
+        {
+          model: Profile,
+          as: "profile1",
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["username"],
+            },
+          ],
+        },
+        {
+          model: Profile,
+          as: "profile2",
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ["username"],
+            },
+          ],
+        },
+      ],
+    });
+    const receiver =
+      profiles.profile1.id === profileId
+        ? profiles.profile2
+        : profiles.profile1;
+
+    return { messages, receiver };
   } catch (error) {
-    console.log(error);
+    console.log({ error });
     throw new Error(error);
   }
 };
