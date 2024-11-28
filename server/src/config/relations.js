@@ -186,29 +186,19 @@ export const createRelations = async () => {
     Like.belongsTo(Profile, {
       foreignKey: "profileId",
     });
-    Post.hasMany(Report, {
-      foreignKey: "postId",
-    });
+
     Post.hasMany(Post, {
       foreignKey: "postId",
       as: "comments",
       onDelete: "CASCADE",
     });
-    Report.belongsTo(Post, {
-      foreignKey: "postId",
-    });
-    Profile.hasMany(Report, {
-      foreignKey: "profileId",
-    });
-    Report.belongsTo(Profile, {
-      foreignKey: "profileId",
-    });
+
+
+
     ReportReason.hasMany(Report, {
       foreignKey: "reasonId",
     });
-    Report.belongsTo(ReportReason, {
-      foreignKey: "reasonId",
-    });
+
     Profile.hasMany(Follower, {
       foreignKey: "followingId",
     });
@@ -443,6 +433,60 @@ export const createRelations = async () => {
       constraints: false,
       as: "certification",
     });
+
+    //reportable
+
+    Post.hasMany(Report, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "post",
+      },
+    });
+
+    User.hasMany(Report, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "user",
+      },
+    });
+
+    Job.hasMany(Report, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "job",
+      },
+    });
+
+    Report.belongsTo(Post, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "post",
+      },
+      as: "post",
+    });
+
+    Report.belongsTo(User, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "user",
+      },
+      as: "user",
+    });
+
+    Report.belongsTo(Job, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "job",
+      },
+      as: "job",
+    });
+
 
     // Experience
     Experience.belongsTo(State, {

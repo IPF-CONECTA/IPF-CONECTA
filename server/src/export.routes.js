@@ -74,4 +74,5 @@ export const routes = (app) => {
   app.use("/disciplines", disciplineRoutes);
   app.use(instituteRoutes);
   app.use("/stats", statisticsRoutes);
+  app.use(repostRoutes)
 };

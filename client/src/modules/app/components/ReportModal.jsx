@@ -7,7 +7,7 @@ export const ReportModal = ({
   openModal,
   setOpenModal,
   reportableId,
-  reportable,
+  reportableType,
 }) => {
   const {
     register,
@@ -34,7 +34,7 @@ export const ReportModal = ({
         className="d-flex flex-column p-3 border-0"
       >
         <span className="fs-4 mb-2 fw-semibold">
-          Reportar {reportable || ""}
+          Reportar {reportableType || ""}
         </span>
         <select
           {...register("reason", {

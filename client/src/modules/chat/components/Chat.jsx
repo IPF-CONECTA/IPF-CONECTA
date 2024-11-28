@@ -7,11 +7,10 @@ import { getFullDate, getHour } from "../../../helpers/getTime";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import styles from "../../../../public/css/chat.module.css";
 
-export const Chat = () => {
+export const Chat = ({ chatId }) => {
   const { authState } = useContext(authContext);
   const { username } = useParams();
 
-  const [chatId, setChatId] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState({});
@@ -40,8 +39,6 @@ export const Chat = () => {
   }, [chatId]);
 
   useEffect(() => {
-    socket.emit("getChatId", { profile2Id: receiver.id });
-    socket.on("chatId", (id) => setChatId(id));
     socket.on("chat message", (msg) => {
       if (msg.senderId !== authState.user.profile.id) {
         if (

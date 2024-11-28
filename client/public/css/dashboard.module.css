@@ -1,3 +1,18 @@
 .mainContainer {
   margin-left: 6rem;
 }
+.nav {
+  background-color: #f4f4f4;
+  width: fit-content;
+  padding: 0.3rem;
+}
+
+.activeTab {
+  background-color: #d1d1d1;
+}
+.activeTab {
+  transition: background-color 0.3s ease;
+}
+.tab:hover {
+  background-color: #d1d1d1;
+}
