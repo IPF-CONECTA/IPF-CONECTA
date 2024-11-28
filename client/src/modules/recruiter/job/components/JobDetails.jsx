@@ -48,6 +48,8 @@ export const JobDetails = ({ jobId }) => {
       noti("Inicia sesión para postularte", "info");
       navigate("/iniciar-sesion");
       return;
+    } else if (authState.role !== "student") {
+      return noti("No tienes permisos esto", "warning");
     }
     try {
       if (selectedJob.applicationLink) {

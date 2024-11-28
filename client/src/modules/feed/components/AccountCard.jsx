@@ -6,9 +6,11 @@ import { useFollow } from "../../../hooks/useFollow";
 import styles from "../../../../public/css/accountCard.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { authContext } from "../../../context/auth/Context";
+import { useNoti } from "../../../hooks/useNoti";
 
 export const AccountCard = ({ index, account, setOpenConnections }) => {
   const [showProfile, setShowProfile] = useState(false);
+  const noti = useNoti();
   const { authState } = useContext(authContext);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
@@ -50,8 +52,12 @@ export const AccountCard = ({ index, account, setOpenConnections }) => {
     setProfile(null);
   };
 
-  const handleFollowClick = (event) => {
-    handleFollowOrUnfollow(event, account.user.username);
+  const handleFollowClick = async (event) => {
+    if (authState.role == "admin") {
+      return noti("No tienes permisos para esto", "warning");
+    }
+    await handleFollowOrUnfollow(event, account.user.username);
+
     setIsFollowing(!isFollowing);
   };
 
