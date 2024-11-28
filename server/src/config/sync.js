@@ -30,7 +30,7 @@ import { Education } from "../modules/profile/education/educationModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
-
+  // await sequelize.sync({ force: true })
   await createRelations();
   console.log("Relations created successfully");
   // await sequelize.sync({ force: false });
