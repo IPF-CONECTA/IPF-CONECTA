@@ -22,23 +22,19 @@ export const updateAbout = async (data, username) => {
   }
 };
 
-
 export const getProfileIdByUsername = async (username) => {
   try {
-    const res = await axios.get(
-      `${BASE_URL}/get-user-profile/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${authService.getToken()}`,
-        },
-      }
-    );
+    const res = await axios.get(`${BASE_URL}/get-user-profile/${username}`, {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      },
+    });
     return { data: res.data, status: res.status };
   } catch (error) {
     console.log(error);
+    return { status: error.status };
   }
 };
-
 
 export const getConnections = async (username, typeConnection) => {
   try {
@@ -54,4 +50,4 @@ export const getConnections = async (username, typeConnection) => {
   } catch (error) {
     return { status: error.status };
   }
-}
+};

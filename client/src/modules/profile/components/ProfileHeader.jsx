@@ -2,20 +2,39 @@ import React, { useState } from "react";
 import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../feed/services/feedServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ConnectionsModal } from "./ConnectionsModal";
 import { EditProfileModal } from "../edit/components/EditProfileModal";
+import { chatService } from "../../chat/services/chatService";
+import { useChatContext } from "../../../context/chat/ChatContext";
 
 export const Header = ({ profileData, setProfileData }) => {
+  const navigate = useNavigate();
+
   const [followHoverText, setFollowHoverText] = useState("");
   const [openConnections, setOpenConnections] = useState(false);
   const [typeConnection, setTypeConnection] = useState("");
   const [editProfile, setEditProfile] = useState(false);
+
   const handleMouseEnter = () => {
     if (profileData?.isFollowing) {
       setFollowHoverText("Dejar de seguir");
     }
   };
+
+  const handleChatClick = () => {
+    const getChatId = async (username) => {
+      const res = await chatService.getChatId(username);
+      if (res.status !== 200) {
+        return setReceiver(profileData.profile);
+      }
+      setChatId(res.data.chatId);
+    };
+    getChatId(profileData?.profile.user.username);
+    navigate("/mensajes");
+  };
+
+  const { setChatId, setReceiver } = useChatContext();
 
   const handleMouseLeave = () => {
     setFollowHoverText("");
@@ -115,15 +134,15 @@ export const Header = ({ profileData, setProfileData }) => {
                   Te sigue
                 </span>
               )}
-              <Link
+              <button
                 className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
-                to={`/chat/${profileData?.profile?.user.username}`}
+                onClick={handleChatClick}
               >
                 <span className="material-symbols-outlined fs-3 fw-light">
                   chat
                 </span>
-              </Link>
+              </button>
               <button
                 className={`btn my-1 ${styles.followBtn} ${
                   profileData?.isFollowing

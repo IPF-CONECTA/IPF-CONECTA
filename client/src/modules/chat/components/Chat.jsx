@@ -1,81 +1,53 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef, useMemo } from "react";
 import { io } from "socket.io-client";
-import { useParams, Link } from "react-router-dom";
 import { authContext } from "../../../context/auth/Context";
-import { getProfileIdByUsername } from "../../profile/services/services";
 import { getFullDate, getHour } from "../../../helpers/getTime";
 import { BASE_URL } from "../../../constants/BASE_URL";
-import styles from "../../../../public/css/chat.module.css";
+
+import { useChatContext } from "../../../context/chat/ChatContext";
 
 export const Chat = () => {
   const { authState } = useContext(authContext);
-  const { username } = useParams();
-
-  const [chatId, setChatId] = useState("");
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [receiver, setReceiver] = useState({});
+  const [message, setMessage] = useState("");
+
   const messagesEndRef = useRef(null);
-  const containerRef = useRef(null);
 
-  const socket = io(BASE_URL, {
-    extraHeaders: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const { chatId, receiver, setReceiver } = useChatContext();
 
-  useEffect(() => {
-    const getReceiver = async () => {
-      const { data } = await getProfileIdByUsername(username);
-      setReceiver(data.profile);
-    };
-    getReceiver(username);
-  }, []);
+  const socket = useMemo(() =>
+    io(BASE_URL, {
+      extraHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+  );
 
-  useEffect(() => {
-    socket.emit("getAllMessages", { chatId });
-    socket.on("all messages", (msgs) => {
-      setMessages(groupMessagesByDate(msgs));
-    });
-  }, [chatId]);
+  // const socket = useMemo(
+  //   () =>
+  //     io(BASE_URL, {
+  //       transports: ["websocket", "polling"],
+  //       auth: `Bearer ${localStorage.getItem("token")}`,
+  //       autoConnect: false,
+  //     }),
+  //   [authState.token]
+  // );
 
   useEffect(() => {
-    socket.emit("getChatId", { profile2Id: receiver.id });
-    socket.on("chatId", (id) => setChatId(id));
-    socket.on("chat message", (msg) => {
-      if (msg.senderId !== authState.user.profile.id) {
-        if (
-          containerRef.current.scrollHeight -
-            Math.round(containerRef.current.scrollTop) <
-          containerRef.current.clientHeight
-        ) {
-          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        }
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { message: msg.message, sender: receiver, createdAt: msg.createdAt },
-        ]);
-      }
-    });
+    if (chatId) {
+      console.log(chatId);
+      socket.emit("getAllMessages", { chatId });
+      socket.on("all messages", (msgs) => {
+        console.log(msgs);
+        setMessages(groupMessagesByDate(msgs.messages));
+        setReceiver(msgs.receiver);
+      });
 
-    return () => {
-      socket.disconnect();
-    };
-  }, [receiver]);
-
-  useEffect(() => {
-    if (messages.at(-1)?.sender.user.username === authState.user.username) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-      return;
+      return () => {
+        socket.off("all messages");
+      };
     }
-    if (
-      containerRef.current.scrollHeight -
-        Math.round(containerRef.current.scrollTop) <
-      containerRef.current.clientHeight
-    ) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-    }
-  }, [messages]);
+  }, [chatId, receiver]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -93,149 +65,87 @@ export const Chat = () => {
     }
     setMessage("");
   };
+
   const groupMessagesByDate = (messages) => {
-    const groupedMessages = [];
+    const grouped = [];
     let lastDate = null;
-
     messages.forEach((msg) => {
-      const messageDate = getFullDate(msg.createdAt);
-      if (messageDate !== lastDate) {
-        groupedMessages.push({ type: "date", date: messageDate });
-        lastDate = messageDate;
+      const date = getFullDate(msg.createdAt);
+      if (date !== lastDate) {
+        grouped.push({ type: "date", date });
+        lastDate = date;
       }
-      groupedMessages.push(msg);
+      grouped.push(msg);
     });
-
-    return groupedMessages;
+    return grouped;
   };
 
   return (
-    <div className="d-flex justify-content-end">
-      <div className="rounded border w-25 m-md-5 bg-body-secondary">
-        <div className="px-3 py-2 w-100 bg-body-secondary d-flex align-items-center">
-          <Link to={`/perfil/${receiver.user?.username}`}>
-            <img
-              src={`${BASE_URL}/images/${receiver.profilePic}`}
-              className="rounded-circle border border-2 border-white my-2 me-2"
-              alt={receiver.id + "_icon"}
-              width={40}
-            />
-          </Link>
-          <span className="fw-semibold fs-5">
-            {receiver.names + " " + receiver.surnames}
-          </span>
+    <div className="d-flex flex-column h-100 bg-white">
+      <div className="d-flex align-items-center p-3 bg-secondary text-white">
+        <img
+          src={`${BASE_URL}/images/${receiver?.profilePic}`}
+          className="rounded-circle me-3"
+          alt={`Foto de perfil de ${receiver?.user?.username}`}
+          width={50}
+        />
+        <div>
+          <h5 className="mb-0">{receiver?.user?.username}</h5>
+          <small>
+            {receiver?.names} {receiver?.surnames}
+          </small>
         </div>
-        <div
-          ref={containerRef}
-          className="w-100 bg-dark-subtle p-3"
-          style={{ height: "400px", overflowY: "scroll", overflowX: "hidden" }}
-        >
-          {messages?.length > 0 ? (
-            messages.map((msg, index) =>
-              msg.type === "date" ? (
-                <div key={index} className="text-center my-3">
-                  <span className="badge bg-secondary">
-                    {msg.date == "Invalid DateTime" ? "Nuevo" : msg.date}
-                  </span>
-                </div>
-              ) : (
-                <div
-                  key={index}
-                  className={`mb-3 d-flex align-items-end ${
-                    msg.sender.user.username === authState.user?.username
-                      ? "justify-content-end"
-                      : "justify-content-start"
-                  }`}
-                >
-                  {msg.sender.user.username !== authState.user?.username && (
-                    <img
-                      src={`${BASE_URL}/images/${receiver.profilePic}`}
-                      alt="foto de perfil"
-                      className="rounded-circle me-2"
-                      width={40}
-                      height={40}
-                    />
-                  )}
-                  <div
-                    style={{
-                      width: "fit-content",
-                      minWidth: "10%",
-                      maxWidth: "80%",
-                    }}
-                    className={`${
-                      msg.sender.user.username === authState.user?.username
-                        ? "bg-body-secondary text-black rounded p-2  "
-                        : "bg-body-secondary text-black rounded p-2"
-                    }`}
-                  >
-                    <span className="fs-6 text-break">{msg.message}</span>{" "}
-                    <span className={`text-secondary ${styles.smallText}`}>
-                      {getHour(
-                        msg.createdAt || new Date().toLocaleTimeString()
-                      )}
-                    </span>
-                  </div>
-                  {msg.sender.user.username === authState.user?.username && (
-                    <img
-                      src={`${BASE_URL}/images/${authState.user.profile.profilePic}`}
-                      alt="foto de perfil"
-                      className="rounded-circle ms-2"
-                      width={40}
-                      height={40}
-                    />
-                  )}
-                </div>
-              )
-            )
-          ) : (
-            <div className="my-2 d-flex h-100 justify-content-center align-items-center">
-              <div className="d-flex flex-column justify-content-center align-items-center gap-2">
-                <img
-                  src={`${BASE_URL}/images/${receiver.profilePic}`}
-                  width={70}
-                  className="rounded-circle"
-                  alt={`Foto de perfil de ${receiver.names}`}
-                />
-                <div className="d-flex flex-column align-items-center">
-                  <span className="fw-semibold fs-5">
-                    {receiver.names + " " + receiver.surnames}
-                  </span>
-                  <span className="fs-6 text-secondary">
-                    {receiver.user?.username}
-                  </span>
-                </div>
-                <Link
-                  to={`/perfil/${receiver.user?.username}`}
-                  className="btn btn-light shadow-sm"
-                >
-                  Ver perfil
-                </Link>
-              </div>
-            </div>
-          )}
-          <div style={{ scrollMarginBottom: "100px" }} ref={messagesEndRef} />
-        </div>
-        <form
-          onSubmit={(e) => {
-            sendMessage(e);
-          }}
-          style={{ maxWidth: "none" }}
-          className="p-0 d-flex shadow-none border-0"
-        >
-          <input
-            className="w-100 border-0 rounded-bottom border-0"
-            placeholder="Escribe un mensaje..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button
-            className="btn border-none btn-dark  rounded-0 rounded-end text-white fw-semibold h-100"
-            type="submit"
-          >
-            Enviar
-          </button>
-        </form>
       </div>
+      <div className="flex-grow-1 p-3 overflow-auto">
+        {messages.length === 0 ? (
+          <div className="text-center mt-5 text-muted">
+            <p>No hay mensajes en este chat</p>
+          </div>
+        ) : (
+          messages.map((msg, index) =>
+            msg.type === "date" ? (
+              <div key={index} className="text-center my-3">
+                <span className="badge bg-secondary">{msg.date}</span>
+              </div>
+            ) : (
+              <div
+                key={index}
+                className={`d-flex ${
+                  msg.sender.user.username === authState.user?.username
+                    ? "justify-content-end"
+                    : "justify-content-start"
+                } mb-3`}
+              >
+                <div
+                  className={`p-3 rounded ${
+                    msg.sender.user.username === authState.user?.username
+                      ? "bg-primary text-white"
+                      : "bg-light text-dark"
+                  }`}
+                  style={{ maxWidth: "70%" }}
+                >
+                  <p className="mb-1">{msg.message}</p>
+                  <small className="text-muted">{getHour(msg.createdAt)}</small>
+                </div>
+              </div>
+            )
+          )
+        )}
+      </div>
+
+      {/* Input para enviar mensaje */}
+      <form className="d-flex border-top" onSubmit={sendMessage}>
+        <input
+          type="text"
+          className="form-control border-0"
+          placeholder="Escribe un mensaje..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button className="btn btn-primary" type="submit">
+          Enviar
+        </button>
+      </form>
     </div>
   );
 };

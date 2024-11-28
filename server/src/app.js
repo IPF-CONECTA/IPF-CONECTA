@@ -19,6 +19,7 @@ import {
   sendMessage,
 } from "./modules/chat/message/messageServices.js";
 import { getChatIdSvc } from "./modules/chat/chatService.js";
+import { socketHandShake } from "./middlewares/jwt/infoTokenSocket.js";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -28,14 +29,18 @@ const io = new Server(httpServer, {
   },
 });
 
+io.use(socketHandShake);
+
 app.use((req, res, next) => {
   next();
   res.setHeader("cross-origin-resource-policy", "cross-origin");
 });
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-}))
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  })
+);
 app.use(express.json());
 app.use(
   helmet({
@@ -104,7 +109,11 @@ io.on("connection", async (socket) => {
       }
 
       try {
-        const messages = await getMessagesChat(chatId);
+        const messages = await getMessagesChat(
+          chatId,
+          socket.user.dataValues.profile.dataValues.id
+        );
+
         socket.emit("all messages", messages);
       } catch (error) {
         console.error(error);

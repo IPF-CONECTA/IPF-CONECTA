@@ -9,6 +9,9 @@ export const getChatIdCtrl = async (req, res) => {
     const profile2Id = await getProfileIdByUsername(username);
 
     const chatId = await getChatIdSvc(profile1Id, profile2Id);
+    if (!chatId) {
+      return res.status(404).json({ error: "No se encontró el chat" });
+    }
     res.status(200).json({ chatId });
   } catch (error) {
     console.log(error);
