@@ -15,30 +15,22 @@ export const Chat = () => {
 
   const { chatId, receiver, setReceiver } = useChatContext();
 
-  const socket = useMemo(() =>
-    io(BASE_URL, {
-      extraHeaders: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+  const socket = useMemo(
+    () =>
+      io(BASE_URL, {
+        auth: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        transports: ["websocket"],
+        autoConnect: true,
+      }),
+    []
   );
-
-  // const socket = useMemo(
-  //   () =>
-  //     io(BASE_URL, {
-  //       transports: ["websocket", "polling"],
-  //       auth: `Bearer ${localStorage.getItem("token")}`,
-  //       autoConnect: false,
-  //     }),
-  //   [authState.token]
-  // );
 
   useEffect(() => {
     if (chatId) {
-      console.log(chatId);
       socket.emit("getAllMessages", { chatId });
       socket.on("all messages", (msgs) => {
-        console.log(msgs);
         setMessages(groupMessagesByDate(msgs.messages));
         setReceiver(msgs.receiver);
       });

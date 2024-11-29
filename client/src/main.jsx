@@ -9,7 +9,7 @@ import { AuthProvider } from "./context/auth/Provider.jsx";
 import { ChatProvider } from "./context/chat/Provider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
       <AuthProvider>
         <ChatProvider>
@@ -19,5 +19,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </ChatProvider>
       </AuthProvider>
     </SnackbarProvider>
-  </React.StrictMode>
+  </>
 );

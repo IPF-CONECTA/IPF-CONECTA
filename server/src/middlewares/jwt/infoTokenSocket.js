@@ -5,7 +5,8 @@ import { getUserById } from "../../modules/users/userServices.js";
 
 export const socketHandShake = async (socket, next) => {
   try {
-    const token = socket.handshake.headers.authorization;
+    const token = socket.handshake.auth.Authorization;
+    console.log(token);
     if (!token) {
       return next(new Error("Inicie sesión primero"));
     }
