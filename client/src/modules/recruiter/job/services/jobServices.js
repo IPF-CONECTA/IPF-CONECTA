@@ -1,24 +1,38 @@
 import axios from "axios";
 import { authService } from "../../../auth/services/authService";
-
+import { BASE_URL } from "../../../../constants/BASE_URL";
 export const getJobs = async (query = "", page) => {
   try {
     if (!page) {
       page = 1;
     }
     const res = await axios.get(
-      `http://localhost:4000/job/search?query=${query}&page=${page}`
+      `${BASE_URL}/job/search?query=${query}&page=${page}`
     );
     return res;
   } catch (error) {
     return error;
   }
 };
-
+export const getJobInfo = async (jobId, authenticated) => {
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/get-job/${jobId}`,
+      authenticated && {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      }
+    );
+    return { data: res.data, status: res.status };
+  } catch (error) {
+    return { status: error.status };
+  }
+}
 export const getCompaniesByUser = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:4000/get-companies-by-user",
+      `${BASE_URL}/get-companies-by-user`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -34,7 +48,7 @@ export const getCompaniesByUser = async () => {
 
 export const getModalities = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/get-modalities", {
+    const response = await axios.get(`${BASE_URL}/get-modalities`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
@@ -49,7 +63,7 @@ export const getModalities = async () => {
 export const getContractTypes = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:4000/get-contract-types",
+      `${BASE_URL}/get-contract-types`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -66,7 +80,7 @@ export const getContractTypes = async () => {
 export const findSkills = async (query) => {
   try {
     const response = await axios.get(
-      `http://localhost:4000/find-skills?query=${query}`
+      `${BASE_URL}/find-skills?query=${query}`
     );
     return response;
   } catch (error) {

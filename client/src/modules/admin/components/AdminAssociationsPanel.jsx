@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../../../../public/css/associationPanel.module.css";
-
 import {
   updateAssociationStatus,
   getAssociationsSvc,
 } from "../services/adminServices";
-
 import { useNoti } from "../../../hooks/useNoti";
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
@@ -31,13 +28,14 @@ export const AdminAssociationsPanel = () => {
 
   useEffect(() => {
     const getAssociations = async () => {
-      const { data, statusCode } = await getAssociationsSvc(tab);
-      if (statusCode === 404) {
+      const res = await getAssociationsSvc(tab);
+      console.log(res);
+      if (res.status === 404) {
         noti("No se encontraron asociaciones", "warning");
-      } else if (statusCode !== 200) {
+      } else if (res.status !== 200) {
         noti("Error al obtener las solicitudes", "error");
       } else {
-        setAssociations(data);
+        setAssociations(res.data);
       }
     };
 
@@ -58,7 +56,7 @@ export const AdminAssociationsPanel = () => {
       if (selectedAssociationId) {
         try {
           const res = await axios.get(
-            `http://localhost:4000/admin/get-association/${selectedAssociationId}`,
+            `${BASE_URL}/admin/get-association/${selectedAssociationId}`,
             {
               headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
@@ -137,7 +135,7 @@ export const AdminAssociationsPanel = () => {
         <div className="card-body">
           <h5 className="card-title">Solicitudes {tab}</h5>
           <ul className="list-group">
-            {associations.map((association) => (
+            {associations?.map((association) => (
               <li
                 key={association.id}
                 className="list-group-item d-flex justify-content-between align-items-center"

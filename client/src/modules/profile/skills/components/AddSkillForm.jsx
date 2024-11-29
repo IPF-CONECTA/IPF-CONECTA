@@ -5,6 +5,7 @@ import axios from "axios";
 import { authService } from "../../../auth/services/authService";
 import styles from "../../../../../public/css/addSkillForm.module.css";
 import { useNoti } from "../../../../hooks/useNoti";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 export const AddSkillForm = ({
   openSkillModal,
   setOpenSkillModal,
@@ -24,7 +25,7 @@ export const AddSkillForm = ({
       await Promise.all(
         selectedSkills.map((skillId) =>
           axios.post(
-            `http://localhost:4000/skillProfile/${skillId}`,
+            `${BASE_URL}/skillProfile/${skillId}`,
             {},
             {
               headers: {

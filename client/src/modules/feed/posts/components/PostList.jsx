@@ -11,7 +11,7 @@ export const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [images, setImages] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -25,21 +25,21 @@ export const PostList = () => {
     setError(null);
     try {
       const res = await getPosts(reset ? 1 : page);
+      console.log("posts en la pag", page);
       console.log(res);
-      console.log(page);
       if (reset) {
-        setPosts(res.data);
+        setPosts(res.data.rows);
         setPage(2);
       } else {
-        if (res.data.length > 0) {
+        if (res.data.count > 0) {
           setPage((prevPage) => prevPage + 1);
-          setPosts((prevPosts) => [...prevPosts, ...res.data]);
+          setPosts((prevPosts) => [...prevPosts, ...res.data.rows]);
         } else {
           setError("No hay mas posts para mostrar");
         }
       }
     } catch (error) {
-      if (error.statusCode !== 200) {
+      if (error.status !== 200) {
         return setError(error.message);
       }
     } finally {
@@ -50,6 +50,7 @@ export const PostList = () => {
   useEffect(() => {
     fetchPosts(true);
   }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       if (containerRef.current) {
@@ -68,23 +69,24 @@ export const PostList = () => {
   }, [isLoading]);
 
   const handleEmojiClick = (emojiObject) => {
-    console.log(emojiObject.emoji);
     setContent((prevContent) => prevContent + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
 
   const handleAttachmentSelect = (e) => {
-    if (images.length == 4) {
+    if (attachments.length == 4) {
       return noti("Solo puedes adjuntar 4 archivos", "warning");
     }
     const files = Array.from(e.target.files);
-    setImages((prevImages) => [...prevImages, ...files]);
+
+    setAttachments((prevAttachments) => [...prevAttachments, ...files]);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (content.length === 0 || content.length > 200) return;
     setIsSubmitting(true);
-    const status = await postSvc(content, images);
+    const status = await postSvc(content, attachments);
     if (status !== 201) {
       setIsSubmitting(false);
       return noti("Hubo un error al publicar el post", "error");
@@ -92,7 +94,7 @@ export const PostList = () => {
     setPosts([]);
     setContent("");
     setFocused(false);
-    setImages([]);
+    setAttachments([]);
     setIsSubmitting(false);
     setPage(1);
     fetchPosts(true);
@@ -192,24 +194,24 @@ export const PostList = () => {
               onEmojiClick={handleEmojiClick}
             />
           )}
-          {images.length > 0 && (
+          {attachments.length > 0 && (
             <div className="w-100 d-flex">
-              {images.map((image, index) => (
-                <React.Fragment key={image.id}>
+              {attachments.map((attachment, index) => (
+                <React.Fragment key={attachment.id}>
                   <div className={`d-flex align-items-start`}>
                     <img
                       height={60}
                       className="me-1 border rounded p-1"
-                      src={URL.createObjectURL(image)}
+                      src={URL.createObjectURL(attachment)}
                       alt={`Imagen ${index + 1}`}
                       onClick={() => {
-                        openImage(image);
+                        openImage(attachment);
                       }}
                     />
                     <button
                       onClick={() => {
-                        setImages((prevImages) =>
-                          prevImages.filter((_, i) => i !== index)
+                        setAttachments((prevattachments) =>
+                          prevattachments.filter((_, i) => i !== index)
                         );
                       }}
                       type="button"
@@ -225,8 +227,13 @@ export const PostList = () => {
         </form>
       </div>
       <div className="w-75 d-flex flex-column flex-grow-1 align-items-center border-end border-start">
-        {posts.map((post) => (
-          <Post key={post.id} postData={post} details={false} />
+        {posts?.map((post) => (
+          <Post
+            key={post.id}
+            postData={post}
+            details={false}
+            fetchPosts={fetchPosts}
+          />
         ))}
         {isLoading && (
           <div className="d-flex justify-content-center my-3">

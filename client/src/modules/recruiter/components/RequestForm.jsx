@@ -7,7 +7,7 @@ export default function RequestForm({ addRequest }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [message, setmessage] = useState("");
+  const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const [logo, setLogo] = useState(null);
 
@@ -26,7 +26,7 @@ export default function RequestForm({ addRequest }) {
     setName("");
     setEmail("");
     setCompanyName("");
-    setmessage("");
+    setMessage("");
     setImage(null);
     setLogo(null);
   };
@@ -80,7 +80,7 @@ export default function RequestForm({ addRequest }) {
         <div className="mb-3">
           <textarea
             value={message}
-            onChange={(e) => setmessage(e.target.value)}
+            onChange={(e) => setMessage(e.target.value)}
             className="form-control"
             placeholder="Justificación"
           />

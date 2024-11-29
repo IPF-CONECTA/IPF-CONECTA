@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import '../../public/ranking.css'; 
+import "../../public/ranking.css";
 import { authService } from "../services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
 
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/idea", {
+        const response = await axios.get(`${BASE_URL}/idea`, {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,
-          }
+          },
         });
 
-        const ideasWithVotes = response.data.map(idea => ({
+        const ideasWithVotes = response.data.map((idea) => ({
           ...idea,
-          totalVotes: idea.votes.length 
+          totalVotes: idea.votes.length,
         }));
 
-        const sortedIdeas = ideasWithVotes.sort((a, b) => b.totalVotes - a.totalVotes);
-        setIdeas(sortedIdeas); 
+        const sortedIdeas = ideasWithVotes.sort(
+          (a, b) => b.totalVotes - a.totalVotes
+        );
+        setIdeas(sortedIdeas);
       } catch (error) {
         console.error("Error fetching ranking:", error);
       }

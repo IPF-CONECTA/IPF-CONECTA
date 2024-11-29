@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import { Profile } from "../profile/profileModel.js";
 import { User } from "../users/userModel.js";
 import { Follower } from "./followerModel.js";
@@ -45,8 +44,6 @@ export const getConnectionsSvc = async (id, type, reqId) => {
         followers.map(follower => {
             follower.dataValues.followingProfile ? follower.dataValues.followingProfile.dataValues.isFollowing = follower.followerId === reqId :
                 follower.dataValues.followerProfile.dataValues.isFollowing = follower.followingId === reqId;
-            console.log("reqId", reqId)
-            console.log("follower", follower.dataValues)
 
         });
         return followers;

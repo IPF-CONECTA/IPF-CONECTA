@@ -6,10 +6,8 @@ import EditorComponent from "../../ui/components/Editor";
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
 import styles from "../../../../public/css/createCompany.module.css";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const CreateCompanyForm = () => {
-  const quillRef = useRef(null);
-
   const navigate = useNavigate();
   const noti = useNoti();
   const {
@@ -22,23 +20,15 @@ export const CreateCompanyForm = () => {
 
   const [industries, setIndustries] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [formData, setFormData] = useState({
-    message: "",
-    name: "",
-    description: "",
-    industryId: "",
-    countryOriginId: "",
-    cantEmployees: "",
-  });
   const [logo, setLogo] = useState(null);
   const [previewLogo, setPreviewLogo] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/industries").then((response) => {
+    axios.get(`${BASE_URL}/industries`).then((response) => {
       setIndustries(response.data);
     });
 
-    axios.get("http://localhost:4000/find-all-countries").then((response) => {
+    axios.get(`${BASE_URL}/find-all-countries`).then((response) => {
       setCountries(response.data);
     });
   }, []);
@@ -77,7 +67,7 @@ export const CreateCompanyForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/create-company",
+        `${BASE_URL}/create-company`,
         formDataToSend,
         {
           headers: {
@@ -89,7 +79,7 @@ export const CreateCompanyForm = () => {
       noti("Empresa creada exitosamente!", "success");
       navigate(`/crear-sede/${response.data.id}`);
     } catch (error) {
-      console.log(error);
+      console.log({ error });
       noti(
         error.response?.data?.message || "Error al crear la empresa",
         "error"
@@ -208,7 +198,8 @@ export const CreateCompanyForm = () => {
           {previewLogo && (
             <img
               src={previewLogo}
-              className={`${styles.roundedImage} mb-2 me-0 img-thumbnail rounded-circle`}
+              alt="logo"
+              className={`${styles.roundedImage} mb-2 me-0 img-thumbnail `}
             />
           )}
           <div>

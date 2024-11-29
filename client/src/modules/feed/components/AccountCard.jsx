@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { ProfileHover } from "../../profile/components/ProfileHover";
 import { getProfileInfo } from "../services/feedServices";
 import { useFollow } from "../../../hooks/useFollow";
-
 import styles from "../../../../public/css/accountCard.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { authContext } from "../../../context/auth/Context";
+import { useNoti } from "../../../hooks/useNoti";
 
 export const AccountCard = ({ index, account, setOpenConnections }) => {
   const [showProfile, setShowProfile] = useState(false);
+  const noti = useNoti();
   const { authState } = useContext(authContext);
   const [profile, setProfile] = useState(null);
   const timeoutRef = useRef(null);
@@ -32,11 +32,11 @@ export const AccountCard = ({ index, account, setOpenConnections }) => {
 
     timeoutRef.current = setTimeout(async () => {
       setShowProfile(true);
-      const { data, statusCode } = await getProfileInfo(username);
-      if (statusCode !== 200) {
+      const res = await getProfileInfo(username);
+      if (res.status !== 200) {
         return;
       }
-      setProfile(data);
+      setProfile(res.data);
     }, 500);
   };
 
@@ -52,8 +52,12 @@ export const AccountCard = ({ index, account, setOpenConnections }) => {
     setProfile(null);
   };
 
-  const handleFollowClick = (event) => {
-    handleFollowOrUnfollow(event, account.user.username);
+  const handleFollowClick = async (event) => {
+    if (authState.role == "admin") {
+      return noti("No tienes permisos para esto", "warning");
+    }
+    await handleFollowOrUnfollow(event, account.user.username);
+
     setIsFollowing(!isFollowing);
   };
 
@@ -101,7 +105,7 @@ export const AccountCard = ({ index, account, setOpenConnections }) => {
           </span>
         </div>
       </div>
-      {authState.user.profile.id !== account.id && (
+      {authState?.user?.profile?.id !== account?.id && (
         <div>
           <button
             className={`${styles.buttonFollow} ms-2 ${styles.smallText} ${

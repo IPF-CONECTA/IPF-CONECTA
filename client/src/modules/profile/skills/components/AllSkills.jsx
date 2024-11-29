@@ -5,8 +5,8 @@ import { deleteSkill } from "../services";
 import { useNoti } from "../../../../hooks/useNoti";
 import Dialog from "@mui/material/Dialog";
 import { SkillCard } from "./SkillCard";
+
 export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
-  console.log(skillsData);
   const [skills, setSkills] = useState([]);
   const [openSkillFormModal, setOpenSkillFormModal] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -21,10 +21,8 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
     if (!selectedSkill) {
       return;
     }
-    console.log(selectedSkill);
     Promise.all(
       selectedSkill[1].map((ass) => {
-        console.log(ass);
         return deleteSkill(ass.id, selectedSkill[2]);
       })
     );

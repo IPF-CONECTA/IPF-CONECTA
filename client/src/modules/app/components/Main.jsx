@@ -1,48 +1,45 @@
 import { Link } from "react-router-dom";
 import styles from "../../../../public/main.module.css";
-
+import "../../../../public/css/fonts.css";
+import { useContext } from "react";
+import { authContext } from "../../../context/auth/Context";
 export const Home = () => {
-  const scrollToSection = (sectionId) => {
-    document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
-  };
-
+  const { authState } = useContext(authContext);
   return (
     <main>
-      <div className={`pe-3 ${styles.headerSection}`}>
-        <div className={`mx-5 ${styles.textAndButton}`}>
-          <center>
-            <h1 className="fw-bold text-info-emphasis">
-              ¡Bienvenido a IPF-CONECTA!
-            </h1>
-          </center>
-          <div className={"bg-info-subtle p-2 rounded mb-2 text-center"}>
-            <h3>
-              La plataforma donde egresados del IPF, empleadores,
-              inversionistas, mentores y tutores se encuentran para conectar y
-              descubrir nuevas oportunidades. <br /> ¡Tu próxima gran
-              oportunidad comienza aquí!
-            </h3>
+      <div className={`ubuntu-thin ${styles.headerSection}`}>
+        <div className={`d-flex `}>
+          <div className="d-flex flex-column justify-content-center align-items-start ms-5">
+            <div className={`ubuntu-bold ${styles.movingGradientText}`}>
+              IPF-CONECTA
+            </div>
+            <div className={"rounded mb-2 d-flex flex-column"}>
+              <h3 className="mb-3 fw-light w-75 fs-2">
+                Encuentra tu próximo empleo, expande tu red profesional y obtén
+                asesoramiento de expertos.
+              </h3>
+              <div>
+                <Link
+                  to={
+                    authState.isLogged
+                      ? authState.role !== "admin"
+                        ? "/inicio"
+                        : "/admin/dash"
+                      : "/iniciar-sesion"
+                  }
+                  className={`px-3 py-2 text-decoration-none rounded-3 fw-semibold montserrat-bold fs-5 ${styles.startBtn}`}
+                >
+                  <span> Comenzar</span>
+                </Link>
+              </div>
+            </div>
           </div>
-
-          <center>
-            <button
-              className={"btn border rounded text-info-emphasis fw-bold"}
-              onClick={() => scrollToSection("services")}
-            >
-              Explorar más
-            </button>
-          </center>
+          <img src="/img/landingImage2.png" style={{ height: "100vh" }} />
         </div>
-        <img
-          src="/img/homeImage.gif"
-          className="img-fluid mx-5"
-          alt="/img/homeImage.gif"
-        />
       </div>
-
-      <section id="services" className={`mb-4 ${styles["services-section"]}`}>
+      {/* <section id="services" className={`mb-4 ${styles["services-section"]}`}>
         <center>
-          <h2 className="fw-bold text-info-emphasis">
+          <h2 className="fw-bold">
             Lo que ofrecemos{" "}
             <span className="material-symbols-outlined fw-bold">check</span>
           </h2>
@@ -66,7 +63,7 @@ export const Home = () => {
               </div>
             </div>
             <button
-              className={"btn border rounded text-info-emphasis fw-bold"}
+              className={"btn border rounded fw-bold"}
               onClick={() => scrollToSection("networking")}
             >
               Más información
@@ -88,7 +85,7 @@ export const Home = () => {
               </p>
             </div>
             <button
-              className={"btn border rounded text-info-emphasis fw-bold"}
+              className={"btn border rounded fw-bold"}
               onClick={() => scrollToSection("job-opportunities")}
             >
               Más información
@@ -110,7 +107,7 @@ export const Home = () => {
               </p>
             </div>
             <button
-              className={"btn border rounded text-info-emphasis fw-bold"}
+              className={"btn border rounded fw-bold"}
               onClick={() => scrollToSection("expert-guidance")}
             >
               Más información
@@ -132,7 +129,7 @@ export const Home = () => {
               </p>
             </div>
             <button
-              className={"btn border rounded text-info-emphasis fw-bold"}
+              className={"btn border rounded fw-bold"}
               onClick={() => scrollToSection("project-ideas")}
             >
               Más información
@@ -145,7 +142,7 @@ export const Home = () => {
         id="testimonials"
         className={"w-100 d-flex flex-column align-items-center mb-5"}
       >
-        <h2 className=" fw-bold text-info-emphasis">Testimonios</h2>
+        <h2 className=" fw-bold">Testimonios</h2>
         <div className={`${styles.wrapper} d-flex  w-75`}>
           <div className={`${styles.reviewCard} me-5 p-3 border rounded`}>
             <div className={`${styles.headerContent}`}>
@@ -228,9 +225,7 @@ export const Home = () => {
         id="faq"
         className="w-100 d-flex flex-column align-items-center mb-5"
       >
-        <span className="fs-3 pb-2 fw-bold text-info-emphasis">
-          Preguntas frecuentes
-        </span>
+        <span className="fs-3 pb-2 fw-bold">Preguntas frecuentes</span>
         <div className="w-75">
           <div className="accordion" id="accordionExample">
             <div className="accordion-item">
@@ -377,7 +372,7 @@ export const Home = () => {
                 incansablemente para brindarte las mejores oportunidades.
               </p>
               <center>
-                <button className={"btn border rounded text-info-emphasis"}>
+                <button className={"btn border rounded"}>
                   <Link to="/contacto" className={"nav-link fw-bold"}>
                     Contáctanos
                   </Link>
@@ -386,7 +381,7 @@ export const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 };

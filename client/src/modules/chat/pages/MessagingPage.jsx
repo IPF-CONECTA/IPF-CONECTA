@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { HomeNav } from "../../ui/components";
+import { SideBar } from "../../ui/components/SideBar";
 import { Messaging } from "../components/Messaging";
-import { ChatPage } from "./ChatPage";
+import { Chat } from "../components/Chat";
+
 export const MessagingPage = () => {
   return (
-    <div>
+    <div className="d-flex gap-3 vh-100 p-3">
+      <SideBar />
       <Messaging />
-      <HomeNav />
+      <Chat />
     </div>
   );
 };

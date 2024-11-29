@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../../../../../public/css/editProfile.module.css";
-import axios from "axios";
 import { useNoti } from "../../../../hooks/useNoti";
-import { authService } from "../../../auth/services/authService";
 import { BASE_URL } from "../../../../constants/BASE_URL";
-import { changePfp } from "../services/pfpServices";
+import { changePfp } from "../services/editProfileServices";
+import { authContext } from "../../../../context/auth/Context";
 
 export const EditPfp = ({ profileData, setProfileData }) => {
+  console.log(profileData);
   const noti = useNoti();
   const [profilePicPreview, setProfilePicPreview] = useState([
     profileData?.profile?.profilePic,
     false,
   ]);
+  const { updateProfilePic } = useContext(authContext);
   const [file, setFile] = useState(null);
 
   const onPfpChange = async (e) => {
@@ -29,36 +30,31 @@ export const EditPfp = ({ profileData, setProfileData }) => {
         "warning"
       );
     const res = await changePfp(file);
+    console.log(res);
     if (res.status !== 201)
       return noti("Hubo un error al actualizar tu foto de perfil", "warning");
-    setProfileData({ ...profileData, profile: res.data });
+    setProfilePicPreview([res.data, false]);
+    setProfileData({
+      ...profileData,
+      profile: { ...profileData.profile, profilePic: res.data },
+    });
+    updateProfilePic(res.data);
     noti("Foto actualizada", "success");
   };
-
   return (
     <form
-      className={`d-flex flex-column align-items-center bg-body-tertiary shadow rounded me-4 p-3 ${styles.pfpContainer}`}
+      className={`d-flex flex-column bg-transparent align-items-center border-0 shadow-none rounded-0 p-0 ${styles.pfpContainer}`}
       onSubmit={(e) => onSave(e)}
     >
-      <span className="fs-4 fw-semibold mb-2">Foto de perfil</span>
       <div>
-        <img
-          width={188}
-          height={188}
-          src={
-            profilePicPreview[1]
-              ? profilePicPreview[0]
-              : `${BASE_URL}/images/${profileData?.profile?.profilePic}`
-          }
-          alt="tu foto de perfil"
-          className={`rounded-circle mb-3 ${styles.pfp}`}
-        />
-        <div className="d-flex flex-column justify-content-center ">
+        <div className="d-flex justify-content-center position-absolute">
           <label
             htmlFor="pfpInput"
-            className={`${styles.pfpLabel}  p-1 btn btn-outline-dark d-flex align-items-center justify-content-center mb-2`}
+            className={`${styles.pfpLabel} bg-white rounded-circle  p-1 btn btn-outline-white border-black d-flex align-items-center justify-content-center h-25 me-1`}
           >
-            <span className="material-symbols-outlined ">add_a_photo</span>
+            <span className="material-symbols-outlined fw-light">
+              add_a_photo
+            </span>
           </label>
           <input
             name="images"
@@ -71,17 +67,32 @@ export const EditPfp = ({ profileData, setProfileData }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="btn btn-danger p-1 d-flex align-items-center w-100 justify-content-center"
+            className="btn btn-danger p-1 border border-black d-flex rounded-circle align-items-center h-25 justify-content-center"
           >
-            <span className="material-symbols-outlined">delete</span>
+            <span className="material-symbols-outlined fw-light">delete</span>
           </button>
+          {profilePicPreview[1] && (
+            <button
+              type="submit"
+              className="ms-1 btn btn-success p-1 border border-black d-flex rounded-circle align-items-center h-25 justify-content-center"
+            >
+              <span className="material-symbols-outlined">check</span>
+            </button>
+          )}
         </div>
+        <img
+          height={166}
+          width={166}
+          src={
+            profilePicPreview[1]
+              ? profilePicPreview[0]
+              : `${BASE_URL}/images/${profileData?.profile?.profilePic}`
+          }
+          alt="tu foto de perfil"
+          className={`rounded-circle bg-white border border-dark `}
+          style={{ objectFit: "cover" }}
+        />
       </div>
-      {profilePicPreview[1] && (
-        <button type="submit" className="btn btn-outline-dark mt-2">
-          Guardar
-        </button>
-      )}
     </form>
   );
 };

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Card, Spinner, Row, Col } from "react-bootstrap";
 import { authService } from "../../../modules/auth/services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const IdeaDetails = () => {
   const { ideaId } = useParams();
   const [idea, setIdea] = useState(null);
@@ -13,14 +13,11 @@ export const IdeaDetails = () => {
   useEffect(() => {
     const fetchIdeaDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/idea/${ideaId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authService.getToken()}`,
-            },
-          }
-        );
+        const response = await axios.get(`${BASE_URL}/idea/${ideaId}`, {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        });
         setIdea(response.data);
         setLoading(false);
       } catch (error) {
@@ -67,7 +64,8 @@ export const IdeaDetails = () => {
                 <strong>Categoría:</strong> {idea.category}
               </Card.Subtitle>
               <Card.Text className="idea-state mb-2">
-                <strong>Fecha de Creación: </strong>{idea.updatedAt}
+                <strong>Fecha de Creación: </strong>
+                {idea.updatedAt}
               </Card.Text>
             </Card.Body>
           </Card>

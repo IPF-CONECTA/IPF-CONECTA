@@ -3,10 +3,10 @@ import { CreateExperienceModal } from "./CreateExperienceModal";
 import { ExperienceCard } from "./ExperienceCard";
 import { useNavigate } from "react-router-dom";
 export const AllExperienceContainer = ({
+  username,
   own,
   experiencesData,
   onExperienceSubmit,
-  username,
 }) => {
   const navigate = useNavigate();
   const [experiences, setExperiences] = useState([]);

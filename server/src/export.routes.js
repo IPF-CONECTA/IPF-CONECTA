@@ -17,7 +17,7 @@ import modalityRoutes from "./modules/recruiters/job/jobModalities/modalityRoute
 import companyLocationRoutes from "./modules/recruiters/companies/companyLocation/companyLocationRoutes.js";
 import uploadRoutes from "./upload.routes.js";
 import profileRoutes from "./modules/profile/profileRoutes.js";
-import experienceRoutes from "./modules/profile/experiences/experienceRoutes.js"
+import experienceRoutes from "./modules/profile/experiences/experienceRoutes.js";
 import jobPostulationRoutes from "./modules/recruiters/job/jobPostulation/jobPostulationRoutes.js";
 import aboutRoutes from "./modules/profile/about/aboutRoutes.js";
 import projectRoutes from "./modules/profile/project/projectRoutes.js";
@@ -28,9 +28,14 @@ import messageRoutes from "./modules/chat/message/messageRoutes.js";
 import chatRoutes from "./modules/chat/chatRoutes.js";
 import langRouter from "./modules/langs/lang.routes.js";
 import langUserRouter from "./modules/profile/langs_user/langUserRoutes.js";
-
 import profilePicRoutes from "./modules/profile/profilePic/profilePicRoutes.js";
 import skillableRoutes from "./modules/skills/skillable/skillableRoutes.js";
+import contactRoutes from "./modules/profile/contact/contactRoutes.js";
+import educationsRoutes from "./modules/profile/education/educationRoutes.js";
+import disciplineRoutes from "./modules/profile/education/disciplines/disciplineRoutes.js";
+import instituteRoutes from "./modules/profile/education/institutes/instituteRoutes.js";
+import statisticsRoutes from "./modules/statistics/statisticsRoutes.js";
+
 export const routes = (app) => {
   app.use(userRoutes);
   app.use(authRoutes);
@@ -50,7 +55,7 @@ export const routes = (app) => {
   app.use(modalityRoutes);
   app.use(companyLocationRoutes);
   app.use(profileRoutes);
-  app.use(profilePicRoutes)
+  app.use(profilePicRoutes);
   app.use(experienceRoutes);
   app.use(uploadRoutes);
   app.use(jobPostulationRoutes);
@@ -61,9 +66,13 @@ export const routes = (app) => {
   app.use(SkillProfileRoutes);
   app.use("/message", messageRoutes);
   app.use(chatRoutes);
+  app.use(skillableRoutes);
   app.use(langRouter);
   app.use(langUserRouter);
-  app.use(skillableRoutes)
-  app.use(langRouter);
-  app.use(langUserRouter);
+  app.use(contactRoutes);
+  app.use("/educations", educationsRoutes);
+  app.use("/disciplines", disciplineRoutes);
+  app.use(instituteRoutes);
+  app.use("/stats", statisticsRoutes);
+  app.use(repostRoutes)
 };

@@ -9,17 +9,25 @@ export const ProtectedRoutes = () => {
   const { authState } = useContext(authContext);
   useEffect(() => {
     if (!authService.getToken()) {
-      navigate("/");
+      navigate("/iniciar-sesion");
     }
   }, [authState.token]);
   return authService.getToken() ? <Outlet /> : <Navigate to="/" />;
 };
 
 export const AdminRoutes = () => {
+  const navigate = useNavigate();
+
   const { authState } = useContext(authContext);
-  return authState.role === VALID_ROLES.admin ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/iniciar-sesion" />
-  );
+
+  useEffect(() => {
+    if (!authService.getToken()) {
+      navigate("/iniciar-sesion");
+    } else if (authState.role) {
+      if (authState.role !== VALID_ROLES.admin) {
+        navigate("/");
+      }
+    }
+  }, [authState.token]);
+  return authService.getToken() ? <Outlet /> : <Navigate to="/" />;
 };

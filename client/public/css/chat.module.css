@@ -1,3 +1,13 @@
 .smallText {
   font-size: 0.6rem;
 }
+
+.chat :hover {
+  background-color: #f8f9fa;
+}
+
+.messagesContainer {
+  background-color: #f5f5f5;
+  scrollbar-width: thin;
+  scrollbar-color: #117bb9 #f5f5f5;
+}

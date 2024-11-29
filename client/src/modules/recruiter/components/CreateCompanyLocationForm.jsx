@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useNoti } from "../../../hooks/useNoti";
 import { authService } from "../../auth/services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const CreateCompanyLocationForm = ({ companyId }) => {
   const navigate = useNavigate();
   const noti = useNoti();
@@ -22,7 +21,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:4000/find-all-countries").then((response) => {
+    axios.get(`${BASE_URL}/find-all-countries`).then((response) => {
       setLocation((prev) => {
         return { ...prev, countries: response.data };
       });
@@ -32,7 +31,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
   useEffect(() => {
     if (selectedCountry) {
       axios
-        .get(`http://localhost:4000/states-by-country/${selectedCountry}`)
+        .get(`${BASE_URL}/states-by-country/${selectedCountry}`)
         .then((response) => {
           setLocation((prev) => {
             return { ...prev, states: response.data };
@@ -44,7 +43,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
   useEffect(() => {
     if (selectedState) {
       axios
-        .get(`http://localhost:4000/cities-by-state/${selectedState}`)
+        .get(`${BASE_URL}/cities-by-state/${selectedState}`)
         .then((response) => {
           setLocation((prev) => {
             return { ...prev, cities: response.data };
@@ -77,7 +76,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
 
     axios
       .post(
-        "http://localhost:4000/create-company-location",
+        `${BASE_URL}/create-company-location`,
         {
           companyLocation: {
             companyId: companyId,
@@ -154,9 +153,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
                 onChange={handleStateChange}
                 defaultValue={""}
               >
-                <option disabled value="">
-                  Seleccione un estado
-                </option>
+                <option value="">Seleccione un estado</option>
                 {location.states.length > 0 ? (
                   location.states.map((state) => (
                     <option key={state.id} value={state.id}>
@@ -185,9 +182,7 @@ export const CreateCompanyLocationForm = ({ companyId }) => {
                 onChange={handleCityChange}
                 defaultValue={""}
               >
-                <option disabled value="">
-                  Seleccione una ciudad
-                </option>
+                <option value="">Seleccione una ciudad</option>
                 {location.cities.length > 0 ? (
                   location.cities.map((city) => (
                     <option key={city.id} value={city.id}>

@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Dialog, DialogContent } from "@mui/material";
-
 import { jobPostulationsServices } from "../services/jobPostulationsServices";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 import { Profile } from "../../../profile/components/Profile";
@@ -40,13 +39,10 @@ export const JobPostulations = () => {
     fetchJob();
   }, [jobId]);
 
-  console.log({ job });
-
   useEffect(() => {
     const fetchProfile = async () => {
       const res = await getProfile(username);
       setProfileData(res.data);
-      console.log(res);
     };
     username && fetchProfile();
   }, [username]);
@@ -76,8 +72,8 @@ export const JobPostulations = () => {
             </Link>
             <span className="fs-5 fw-bold">
               Postulados de{" "}
-              {job?.title.length > 20
-                ? job?.title.slice(0, 20) + "..."
+              {job?.title?.length > 20
+                ? job?.title?.slice(0, 20) + "..."
                 : job?.title}
             </span>
           </div>
@@ -114,8 +110,11 @@ export const JobPostulations = () => {
                             </p>
                             <p></p>
                             <p className="fw-semibold text-secondary text-break">
-                              {postulation?.profile.title ||
-                                postulation?.profile.about.slice(0, 50) + "..."}
+                              {(postulation?.profile?.title &&
+                                postulation?.profile?.title) ||
+                                (postulation?.profile?.about &&
+                                  postulation?.profile?.about?.slice(0, 50) +
+                                    "...")}
                             </p>
                           </div>
                         </div>
@@ -179,7 +178,6 @@ export const JobPostulations = () => {
           )}
         </div>
       </div>
-      <RecommendedAccounts />
     </div>
   );
 };

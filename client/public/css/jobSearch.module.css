@@ -1,8 +1,10 @@
 .jobsContainer {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 30px;
   position: relative;
+  padding: 0;
 }
 .form {
   max-width: none;

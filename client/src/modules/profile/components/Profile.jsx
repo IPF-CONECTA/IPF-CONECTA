@@ -8,31 +8,43 @@ import { ExperienceContainer } from "../experiences/components/ExperienceContain
 import { Header } from "./ProfileHeader";
 import { Nav } from "./ProfileNav";
 import { Projects } from "../project/components/Projects";
-import { RecommendedAccounts } from "../../feed/components/RecommendedAccounts";
-import styles from "../../../../public/css/profile.module.css";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
-import { LanguajeCardPage } from "../languaje/pages/LanguajeCardPage";
-
 import { JobOffers } from "../jobs/components/JobOffers";
 import { jobsServices } from "../jobs/services/jobsServices";
+import { LanguageSelector } from "../language/components/LanguageCard";
+import { educationsServices } from "../educations/services/educationsServices";
+import { EducationsContainer } from "../educations/components/EducationsContainer";
+import { PostsContainer } from "../posts/components/PostsContainer";
+import { postsServices } from "../posts/services/postsServices";
 
 export const Profile = ({ data }) => {
   const noti = useNoti();
   const { username } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
+  const [educations, setEducations] = useState([]);
   const [jobOffers, setJobOffers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchProfile = async () => {
-    const res = await getProfile(data ? data : username);
-    if (res.status !== 200) {
-      return noti(res.message, "error");
+    setLoading(true);
+    try {
+      const res = await getProfile(data ? data : username);
+      if (res.status !== 200) {
+        return noti(res.message, "error");
+      }
+      setProfileData(res.data);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
-    setProfileData(res.data);
   };
   const fetchProjects = async () => {
     const res = await projectsService.getProjects(data ? data : username);
@@ -40,6 +52,13 @@ export const Profile = ({ data }) => {
       return noti("Hubo un error al obtener los proyectos", "error");
     }
     setProjects(res.data);
+  };
+  const fetchEducations = async () => {
+    const res = await educationsServices.getEducations(data ? data : username);
+    if (res.status !== 200 && res.status !== 404) {
+      return noti("Hubo un error al obtener las educaciones", "error");
+    }
+    setEducations(res.data);
   };
   const fetchJobOffers = async () => {
     const res = await jobsServices.getJobsByUsername(data ? data : username);
@@ -70,16 +89,35 @@ export const Profile = ({ data }) => {
     setSkills(res.data);
   };
 
-  useEffect(() => {
-    fetchProfile();
-    fetchExperiences();
-    fetchProjects();
-    fetchSkills();
+  const fetchPosts = async () => {
+    const res = await postsServices.getPostsByUsername(username);
+    console.log(res);
+    if (res.status !== 200 && res.status !== 404) {
+      return noti("Hubo un error al obtener los posts", "error");
+    }
+    setPosts(res.data);
+  };
 
+  useEffect(() => {
+    setProfileData(null);
+    setExperiences([]);
+    setEducations([]);
+    setJobOffers([]);
+    setProjects([]);
+    setSkills([]);
+    setPosts([]);
+
+    fetchPosts();
+    fetchSkills();
+    fetchProfile();
+    fetchProjects();
+    fetchJobOffers();
+    fetchEducations();
+    fetchExperiences();
     if (role === "recruiter") {
       fetchJobOffers();
     }
-  }, [username, role, data]);
+  }, [username, data]);
 
   useEffect(() => {
     if (profileData) {
@@ -87,64 +125,84 @@ export const Profile = ({ data }) => {
     }
   }),
     [profileData];
-
   return (
     <>
-      {profileData && (
+      {loading ? (
+        <div
+          className={`d-flex justify-content-center align-items-center my-3 h-100`}
+        >
+          <span
+            className={`spinner-border`}
+            role={`status`}
+            aria-hidden={`true`}
+          ></span>
+        </div>
+      ) : (
         <div>
-          <div>
-            <Header profileData={profileData} setProfileData={setProfileData} />
-            <Nav role={role} />
-            <main className="w-100">
-              <AboutCard
+          <Header profileData={profileData} setProfileData={setProfileData} />
+          <Nav role={role} />
+          <main className="w-100">
+            <AboutCard
+              own={profileData?.own}
+              aboutData={profileData.profile.about}
+              username={username}
+            />
+            <PostsContainer
+              username={username}
+              own={profileData?.own}
+              postsData={posts}
+              onPostSubmit={fetchPosts}
+            />
+            {(profileData.own || experiences?.length > 0) && (
+              <ExperienceContainer
+                username={username}
                 own={profileData.own}
-                aboutData={profileData.profile.about}
+                experiencesData={experiences}
+                onExperienceSubmit={fetchExperiences}
+              />
+            )}
+            {(profileData.own || educations?.length > 0) && (
+              <EducationsContainer
+                educationsData={educations}
+                own={profileData.own}
+                onEducationSubmit={fetchEducations}
                 username={username}
               />
-              {(profileData.own || experiences?.length > 0) && (
-                <ExperienceContainer
+            )}
+            {role === "student" &&
+              (profileData.own || projects?.length > 0) && (
+                <Projects
                   own={profileData.own}
-                  experiencesData={experiences}
-                  onExperienceSubmit={fetchExperiences}
-                  username={username}
+                  username={profileData.profile.user.username}
+                  names={profileData.profile.names}
+                  projectsData={projects}
+                  onProjectSubmit={fetchProjects}
                 />
               )}
-              {role === "student" &&
-                (profileData.own || projects?.length > 0) && (
-                  <Projects
-                    own={profileData.own}
-                    username={profileData.profile.user.username}
-                    names={profileData.profile.names}
-                    projectsData={projects}
-                    onProjectSubmit={fetchProjects}
-                  />
-                )}
-              {role === "recruiter" && (
-                <JobOffers
-                  own={profileData.own}
-                  jobOffersData={jobOffers}
-                  onJobUpdate={fetchJobOffers}
-                />
-              )}
+            {role === "recruiter" && (
+              <JobOffers
+                own={profileData.own}
+                jobOffersData={jobOffers}
+                onJobUpdate={fetchJobOffers}
+              />
+            )}
 
-              {(profileData.own || skills?.length > 0) && (
-                <SkillsContainer
-                  skillsData={skills}
-                  own={profileData.own}
-                  onSkillSubmit={fetchSkills}
-                  username={username}
-                />
-              )}
-              {(profileData.own ||
-                profileData.profile.languages?.length > 0) && (
-                <LanguajeCardPage
-                  languagesData={profileData.profile.languages}
-                  own={profileData.own}
-                  username={username}
-                />
-              )}
-            </main>
-          </div>
+            {(profileData.own || skills?.length > 0) && (
+              <SkillsContainer
+                skillsData={skills}
+                own={profileData.own}
+                onSkillSubmit={fetchSkills}
+                username={username}
+              />
+            )}
+            {(profileData.own || profileData.profile.languages?.length > 0) && (
+              <LanguageSelector
+                languagesData={profileData.profile.languages}
+                own={profileData.own}
+                username={username}
+              />
+            )}
+          </main>
         </div>
       )}
     </>

@@ -7,13 +7,6 @@ import { Op } from "sequelize";
 import { Profile } from "../profile/profileModel.js";
 import { sequelize } from "../../config/db.js";
 import { Role } from "../roles/roleModel.js";
-import { Association } from "../recruiters/associations/associationModel.js";
-import { Company } from "../recruiters/companies/companyModel.js";
-import { CompanyIndustry } from "../recruiters/companies/companyIndustry/companyIndustryModel.js";
-import { LangsUser } from "../profile/langs_user/langsUserModel.js";
-import { Lang } from "../langs/langModel.js";
-import { LangLevel } from "../langs/langLevelsModel.js";
-import { Post } from "../posts/postModel.js";
 
 export const getUsers = async () => {
   const users = await User.findAll();
@@ -59,6 +52,28 @@ export const getRecommendedProfilesSvc = async (profileId) => {
     throw error;
   }
 };
+
+export const isEmailAvailable = async (email, userId) => {
+  try {
+    const emailExists = await User.findOne({ where: { email } });
+    if (emailExists && emailExists.id !== userId) return false
+
+    return true
+  } catch (error) {
+    throw error;
+  }
+}
+export const isUsernameAvailable = async (username, userId) => {
+  try {
+    const usernameExists = await User.findOne({ where: { username } });
+    if (usernameExists && usernameExists.id !== userId) return false
+
+    return true
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getProfileIdByUsername = async (username) => {
   try {
     const user = await User.findOne({ where: { username }, include: { model: Profile } })

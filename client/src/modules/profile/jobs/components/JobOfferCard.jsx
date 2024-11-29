@@ -2,15 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { Dialog } from "@mui/material";
-
 import styles from "../../../../../public/css/jobProfileCard.module.css";
-
 import { BASE_URL } from "../../../../constants/BASE_URL";
-import { getFullDate, getTime } from "../../../../helpers/getTime";
+import { getFullDate } from "../../../../helpers/getTime";
 import { JobDetails } from "../../../recruiter/job/components/JobDetails";
-
 import { JobForm } from "../components/JobForm";
-import { createSlug } from "../../../../helpers/createSlug";
 import { jobPostulationsServices } from "../../../jobs/postulations/services/jobPostulationsServices";
 
 export const JobOfferCard = ({
@@ -35,7 +31,6 @@ export const JobOfferCard = ({
     });
   });
 
-  console.log();
   return (
     <div className="d-flex justify-content-between w-100">
       <div className=" py-2 d-flex w-100">

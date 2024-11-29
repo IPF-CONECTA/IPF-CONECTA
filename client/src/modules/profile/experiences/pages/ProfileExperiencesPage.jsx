@@ -6,7 +6,7 @@ import {
   getExperiences,
   getProfile,
 } from "../../../feed/services/feedServices";
-import { Nav } from "../../../ui/components";
+import { Nav, SideBar } from "../../../ui/components";
 import styles from "../../../../../public/css/allSkills.module.css";
 import { RecommendedAccounts } from "../../../feed/components/RecommendedAccounts";
 export const ProfileExperiencesPage = () => {
@@ -37,7 +37,7 @@ export const ProfileExperiencesPage = () => {
 
   return (
     <>
-      <Nav />
+      <SideBar />
       <div className="d-flex justify-content-evenly px-5  my-4">
         <div className={`${styles.profileContainer} border  rounded`}>
           <Header profileData={profileData} setProfileData={setProfileData} />
@@ -48,7 +48,6 @@ export const ProfileExperiencesPage = () => {
             username={username}
           />
         </div>
-        <RecommendedAccounts />
       </div>
     </>
   );

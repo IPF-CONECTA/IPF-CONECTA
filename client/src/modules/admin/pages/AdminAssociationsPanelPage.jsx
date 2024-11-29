@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Nav, Footer } from "../../ui/components";
+import { SideBar } from "../../ui/components";
 import { AdminAssociationsPanel } from "../components/AdminAssociationsPanel";
 
 import "../../../../public/panel.css";
@@ -8,9 +8,8 @@ import "../../../../public/panel.css";
 export const AdminAssociationsPanelPage = () => {
   return (
     <>
-      <Nav />
+      <SideBar />
       <AdminAssociationsPanel />
-      <Footer />
     </>
   );
 };

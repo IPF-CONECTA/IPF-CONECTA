@@ -4,4 +4,10 @@
 
 .loginButton {
   height: fit-content;
+  background-color: #51c0ff;
+}
+
+.loginButton:hover {
+  transition: ease-in-out 0.2s;
+  background-color: #429acd;
 }

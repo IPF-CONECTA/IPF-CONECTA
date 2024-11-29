@@ -64,6 +64,9 @@ export const AuthProvider = ({ children }) => {
 
     return response;
   };
+  const updateProfilePic = (profilePic) => {
+    dispatch({ type: "UPDATE_PROFILE_PIC", payload: profilePic });
+  };
 
   const logout = () => {
     dispatch({
@@ -74,7 +77,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <authContext.Provider value={{ login, logout, authState }}>
+    <authContext.Provider
+      value={{ login, logout, authState, updateProfilePic }}
+    >
       {children}
     </authContext.Provider>
   );

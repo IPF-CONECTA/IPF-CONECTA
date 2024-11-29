@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
 import { useNoti } from "../../../hooks/useNoti";
-import { deleteAbout, updateAbout } from "../services/services";
-
-import styles from "../../../../public/css/profile.module.css";
+import { updateAbout } from "../services/services";
 
 export const AboutCard = ({ own, aboutData, username }) => {
   const noti = useNoti();
@@ -25,11 +21,11 @@ export const AboutCard = ({ own, aboutData, username }) => {
   const handleUpdateAbout = async (data) => {
     const res = await updateAbout(data, username);
     if (res.status !== 201) {
-      return noti("Hubo un error al actualizar la descripcion", "error");
+      return noti("Hubo un error al actualizar la descripción", "error");
     }
     setEditDescription(false);
     setAbout(data.about);
-    noti("Descripcion actualizada", "success");
+    noti("Descripción actualizada", "success");
   };
 
   const renderForm = () => (

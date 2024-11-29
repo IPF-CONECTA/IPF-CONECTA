@@ -1,9 +1,4 @@
 import { Association } from "./associations/associationModel.js"
-import { createCompany } from "./companies/companyServices.js"
-import { Company } from "./companies/companyModel.js"
-
-
-
 
 export const useCompany = async (profileId, companyId) => {
     try {

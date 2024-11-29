@@ -1,12 +1,12 @@
 import axios from "axios";
 import { authService } from "../../../auth/services/authService";
-
+import { BASE_URL } from "../../../../constants/BASE_URL";
 export const projectsService = {
 
   getProjects: async (username) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/projects/${username}`,
+        `${BASE_URL}/projects/${username}`,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,
@@ -20,7 +20,7 @@ export const projectsService = {
   },
   getProject: async (id) => {
     try {
-      const res = await axios.get(`http://localhost:4000/project/${id}`, {
+      const res = await axios.get(`${BASE_URL}/project/${id}`, {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
         },
@@ -62,7 +62,7 @@ export const projectsService = {
     try {
 
       const response = await axios.post(
-        "http://localhost:4000/project",
+        `${BASE_URL}/project`,
         formData,
         {
           headers: {

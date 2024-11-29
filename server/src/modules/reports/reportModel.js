@@ -6,12 +6,21 @@ export const Report = sequelize.define('report', {
         allowNull: false,
         primaryKey: true
     },
+    status: {
+        type: DataTypes.ENUM('pending', 'resolved'),
+        allowNull: false,
+        defaultValue: 'pending'
+    },
     reasonId: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    postId: {
+    reportableId: {
         type: DataTypes.UUID,
+        allowNull: false
+    },
+    reportableType: {
+        type: DataTypes.ENUM('post', 'user', 'job'),
         allowNull: false
     },
     profileId: {

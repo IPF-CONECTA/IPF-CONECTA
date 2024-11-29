@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Card, Spinner, Row, Col } from "react-bootstrap";
-import '../../public/ideadetails.css';
+import "../../public/ideadetails.css";
 import { authService } from "../services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const IdeaDetails = () => {
   const { ideaId } = useParams();
   const [idea, setIdea] = useState(null);
@@ -14,10 +14,10 @@ export const IdeaDetails = () => {
   useEffect(() => {
     const fetchIdeaDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/idea/${ideaId}`, {
+        const response = await axios.get(`${BASE_URL}/idea/${ideaId}`, {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,
-          }
+          },
         });
         setIdea(response.data);
         setLoading(false);
@@ -53,7 +53,9 @@ export const IdeaDetails = () => {
           <Card className="idea-card shadow-lg p-4 rounded">
             <Card.Body>
               <Card.Title className="idea-title">{idea.title}</Card.Title>
-              <Card.Text className="idea-description">Descripción: {idea.description}</Card.Text>
+              <Card.Text className="idea-description">
+                Descripción: {idea.description}
+              </Card.Text>
               <Card.Subtitle className="mb-3 text-muted">
                 Categoría: <strong>{idea.category}</strong>
               </Card.Subtitle>

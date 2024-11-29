@@ -18,11 +18,10 @@ export const LangLevel = sequelize.define('langLevel', {
 
 export const createLangLevels = async () => {
     await LangLevel.bulkCreate([
-        { level: 'A1' },
-        { level: 'A2' },
-        { level: 'B1' },
-        { level: 'B2' },
-        { level: 'C1' },
-        { level: 'C2' }
+        { level: 'básico' },
+        { level: 'básico limitada' },
+        { level: 'básico profesional' },
+        { level: 'básico profesional completo' },
+        { level: 'bilingüe o nativo' },
     ])
 }

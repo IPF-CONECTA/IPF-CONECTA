@@ -1,11 +1,11 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const chatService = {
   sendMessage: async (receptor, message) => {
     try {
       const res = await axios.post(
-        `http://localhost:4000/message/send/${receptor}`,
+        `${BASE_URL}/message/send/${receptor}`,
         {
           message,
         },
@@ -27,7 +27,7 @@ export const chatService = {
   getReceiver: async (username) => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/user/get-user-info/${username}`,
+        `${BASE_URL}/user/get-user-info/${username}`,
         {
           headers: { Authorization: `Bearer ${authService.getToken()}` },
         }
@@ -48,7 +48,7 @@ export const chatService = {
   getChatId: async (username) => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/get-chat/${username}`,
+        `${BASE_URL}/get-chat/${username}`,
         {
           headers: { Authorization: `Bearer ${authService.getToken()}` },
         }
@@ -67,9 +67,9 @@ export const chatService = {
     }
   },
 
-  getChatsbyProfile: async () => {
+  getChatsByProfile: async () => {
     try {
-      const res = await axios.get("http://localhost:4000/get-profile-chats", {
+      const res = await axios.get(`${BASE_URL}/get-profile-chats`, {
         headers: { Authorization: `Bearer ${authService.getToken()}` },
       });
       return { data: res.data, status: res.status };

@@ -34,10 +34,10 @@ export const userSchema = [
             minUppercase: 1,
             minNumbers: 1,
             minSymbols: 1,
-        }).withMessage('La contraseña no cumple con los requisitos minimos'),
+        }).withMessage('La contraseña no cumple con los requisitos mínimos'),
     body('user.cuil')
         .if(body('user.role').equals('student'))
         .notEmpty().withMessage('Ingrese el CUIL')
-        .isNumeric().withMessage('El CUIL debe ser numerico')
-        .isLength({ min: 11, max: 11 }).withMessage('El CUIL debe tener 11 digitos')
+        .isNumeric().withMessage('El CUIL debe ser numérico')
+        .isLength({ min: 11, max: 11 }).withMessage('El CUIL debe tener 11 dígitos')
 ]

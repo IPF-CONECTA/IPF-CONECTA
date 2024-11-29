@@ -1,36 +1,50 @@
+import { Job } from "../modules/recruiters/job/jobModel.js";
+
 import { Role } from "../modules/roles/roleModel.js";
 import { User } from "../modules/users/userModel.js";
 import { Post } from "../modules/posts/postModel.js";
 import { Like } from "../modules/posts/likes/likeModel.js";
-import { Report } from "../modules/reports/reportModel.js";
-import { ReportReason } from "../modules/reports/reportReasonModel.js";
-import { Follower } from "../modules/followers/followerModel.js";
-import { Country } from "../modules/locations/models/countryModel.js";
-import { City } from "../modules/locations/models/cityModel.js";
-import { Skill } from "../modules/skills/skillsModel.js";
-import { UserState } from "../modules/profile/states/userStateModel.js";
-import { LangLevel } from "../modules/langs/langLevelsModel.js";
-import { Lang } from "../modules/langs/langModel.js";
-import { State } from "../modules/locations/models/stateModel.js";
-import { CompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
-import { Company } from "../modules/recruiters/companies/companyModel.js";
-import { Association } from "../modules/recruiters/associations/associationModel.js";
-import { LangsUser } from "../modules/profile/langs_user/langsUserModel.js";
-import { Job } from "../modules/recruiters/job/jobModel.js";
-import { ContractType } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
-import { Experience } from "../modules/profile/experiences/experiencesModel.js";
-import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
-import { CompanyLocation } from "../modules/recruiters/companies/companyLocation/companyLocationModel.js";
-import { Repost } from "../modules/posts/reposts/repostModel.js";
-import { Profile } from "../modules/profile/profileModel.js";
-import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
-import { Project } from "../modules/profile/project/projectModel.js";
 import { Vote } from "../modules/ideas/votes/voteModel.js";
 import { Idea } from "../modules/ideas/ideaModel.js";
 import { Chat } from "../modules/chat/chatModel.js";
+import { Lang } from "../modules/langs/langModel.js";
+import { City } from "../modules/locations/models/cityModel.js";
+
+import { Skill } from "../modules/skills/skillsModel.js";
+import { State } from "../modules/locations/models/stateModel.js";
+
+import { Report } from "../modules/reports/reportModel.js";
+import { Repost } from "../modules/posts/reposts/repostModel.js";
+
+import { Country } from "../modules/locations/models/countryModel.js";
+import { Company } from "../modules/recruiters/companies/companyModel.js";
+import { Profile } from "../modules/profile/profileModel.js";
+import { Project } from "../modules/profile/project/projectModel.js";
 import { Message } from "../modules/chat/message/messageModel.js";
+
+import { Follower } from "../modules/followers/followerModel.js";
+import { Modality } from "../modules/recruiters/job/jobModalities/modalityModel.js";
+
 import { Skillable } from "../modules/skills/skillable/skillableModel.js";
+import { Education } from "../modules/profile/education/educationModel.js";
+import { UserState } from "../modules/profile/states/userStateModel.js";
+import { LangLevel } from "../modules/langs/langLevelsModel.js";
+import { LangsUser } from "../modules/profile/langs_user/langsUserModel.js";
+
+import { Discipline } from "../modules/profile/education/disciplines/disciplineModel.js";
+import { Experience } from "../modules/profile/experiences/experiencesModel.js";
+import { Association } from "../modules/recruiters/associations/associationModel.js";
+
+import { ContractType } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
+import { ReportReason } from "../modules/reports/reportReasonModel.js";
+
 import { Certification } from "../modules/profile/certifications/certificationModel.js";
+
+import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPostulationModel.js";
+import { CompanyLocation } from "../modules/recruiters/companies/companyLocation/companyLocationModel.js";
+import { CompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
+import { Institute } from "../modules/profile/education/institutes/instituteModel.js";
+
 export const createRelations = async () => {
   try {
     User.hasOne(Profile, {
@@ -39,6 +53,7 @@ export const createRelations = async () => {
     Profile.belongsTo(User, {
       foreignKey: "userId",
     });
+
     CompanyLocation.belongsTo(Company, {
       foreignKey: "companyId",
     });
@@ -108,6 +123,7 @@ export const createRelations = async () => {
     Job.hasMany(JobPostulation, {
       foreignKey: "jobId",
       as: "postulate",
+      onDelete: "CASCADE",
     });
     JobPostulation.belongsTo(Job, {
       foreignKey: "jobId",
@@ -170,30 +186,19 @@ export const createRelations = async () => {
     Like.belongsTo(Profile, {
       foreignKey: "profileId",
     });
-    Post.hasMany(Report, {
-      foreignKey: "postId",
-    });
+
     Post.hasMany(Post, {
       foreignKey: "postId",
       as: "comments",
+      onDelete: "CASCADE",
     });
 
 
-    Report.belongsTo(Post, {
-      foreignKey: "postId",
-    });
-    Profile.hasMany(Report, {
-      foreignKey: "profileId",
-    });
-    Report.belongsTo(Profile, {
-      foreignKey: "profileId",
-    });
+
     ReportReason.hasMany(Report, {
       foreignKey: "reasonId",
     });
-    Report.belongsTo(ReportReason, {
-      foreignKey: "reasonId",
-    });
+
     Profile.hasMany(Follower, {
       foreignKey: "followingId",
     });
@@ -208,7 +213,6 @@ export const createRelations = async () => {
       foreignKey: "followerId",
       as: "followerProfile",
     });
-
 
     Company.belongsTo(Country, {
       foreignKey: "countryOriginId",
@@ -281,17 +285,17 @@ export const createRelations = async () => {
       foreignKey: "contractTypeId",
     });
     Company.hasMany(Experience, {
-      foreignKey: "companyId"
-    })
+      foreignKey: "companyId",
+    });
     Experience.belongsTo(Company, {
-      foreignKey: "companyId"
-    })
+      foreignKey: "companyId",
+    });
     Modality.hasMany(Experience, {
-      foreignKey: "modalityId"
-    })
+      foreignKey: "modalityId",
+    });
     Experience.belongsTo(Modality, {
-      foreignKey: "modalityId"
-    })
+      foreignKey: "modalityId",
+    });
     Profile.hasMany(Experience, {
       foreignKey: "profileId",
     });
@@ -300,154 +304,207 @@ export const createRelations = async () => {
 
     //Job locationable
     Country.hasMany(Job, {
-      foreignKey: 'locationableId',
+      foreignKey: "locationableId",
       constraints: false,
       scope: {
-        locationableType: 'country'
+        locationableType: "country",
       },
-      as: 'jobs'
+      as: "jobs",
     });
 
     State.hasMany(Job, {
-      foreignKey: 'locationableId',
+      foreignKey: "locationableId",
       constraints: false,
       scope: {
-        locationableType: 'state'
+        locationableType: "state",
       },
-      as: 'jobs'
+      as: "jobs",
     });
 
     City.hasMany(Job, {
-      foreignKey: 'locationableId',
+      foreignKey: "locationableId",
       constraints: false,
       scope: {
-        locationableType: 'city'
+        locationableType: "city",
       },
-      as: 'jobs'
+      as: "jobs",
     });
 
     Job.belongsTo(Country, {
-      foreignKey: 'locationableId',
+      foreignKey: "locationableId",
       constraints: false,
       scope: {
-        locationableType: 'country'
+        locationableType: "country",
       },
-      as: 'country'
+      as: "country",
     });
 
     Job.belongsTo(State, {
-      foreignKey: 'locationableId',
+      foreignKey: "locationableId",
       constraints: false,
       scope: {
-        locationableType: 'state'
+        locationableType: "state",
       },
-      as: 'state'
+      as: "state",
     });
 
     Job.belongsTo(City, {
-      foreignKey: 'locationableId',
+      foreignKey: "locationableId",
       constraints: false,
       scope: {
-        locationableType: 'city'
+        locationableType: "city",
       },
-      as: 'city'
+      as: "city",
     });
-
 
     //Skillable
     Skill.hasMany(Skillable, {
-      foreignKey: 'skillId',
-      as: 'skillables'
+      foreignKey: "skillId",
+      as: "skillables",
     });
 
     Skillable.belongsTo(Skill, {
-      foreignKey: 'skillId',
-      as: 'skill'
+      foreignKey: "skillId",
+      as: "skill",
     });
 
     Profile.hasMany(Skillable, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
       scope: {
-        skillableType: 'profile'
-      }
+        skillableType: "profile",
+      },
     });
 
     Experience.hasMany(Skillable, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
       scope: {
-        skillableType: 'experience'
-      }
+        skillableType: "experience",
+      },
     });
 
     Project.hasMany(Skillable, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
       scope: {
-        skillableType: 'project'
-      }
+        skillableType: "project",
+      },
     });
     Idea.hasMany(Skillable, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
       scope: {
-        skillableType: 'idea'
-      }
-    })
+        skillableType: "idea",
+      },
+    });
     Certification.hasMany(Skillable, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
       scope: {
-        skillableType: 'certification'
-      }
-    })
+        skillableType: "certification",
+      },
+    });
     Skillable.belongsTo(Profile, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
-      as: 'profile'
+      as: "profile",
     });
 
     Skillable.belongsTo(Experience, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
-      as: 'experience'
+      as: "experience",
     });
 
     Skillable.belongsTo(Project, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
-      as: 'project'
+      as: "project",
     });
     Skillable.belongsTo(Idea, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
-      as: 'idea'
+      as: "idea",
     });
 
     Skillable.belongsTo(Certification, {
-      foreignKey: 'skillableId',
+      foreignKey: "skillableId",
       constraints: false,
-      as: 'certification'
+      as: "certification",
     });
+
+    //reportable
+
+    Post.hasMany(Report, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "post",
+      },
+    });
+
+    User.hasMany(Report, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "user",
+      },
+    });
+
+    Job.hasMany(Report, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "job",
+      },
+    });
+
+    Report.belongsTo(Post, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "post",
+      },
+      as: "post",
+    });
+
+    Report.belongsTo(User, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "user",
+      },
+      as: "user",
+    });
+
+    Report.belongsTo(Job, {
+      foreignKey: "reportableId",
+      constraints: false,
+      scope: {
+        reportableType: "job",
+      },
+      as: "job",
+    });
+
 
     // Experience
     Experience.belongsTo(State, {
-      foreignKey: 'locationId',
+      foreignKey: "locationId",
       constraints: false,
-      as: 'state'
+      as: "state",
     });
 
     Experience.belongsTo(Country, {
-      foreignKey: 'locationId',
+      foreignKey: "locationId",
       constraints: false,
-      as: 'country'
+      as: "country",
     });
 
     Experience.belongsTo(City, {
-      foreignKey: 'locationId',
+      foreignKey: "locationId",
       constraints: false,
-      as: 'city'
+      as: "city",
     });
     Idea.belongsTo(Profile, {
       foreignKey: "profileId",
@@ -466,6 +523,26 @@ export const createRelations = async () => {
     });
     Profile.hasMany(Vote, {
       foreignKey: "profileId",
+    });
+
+    //Education
+    Profile.hasMany(Education, {
+      foreignKey: "profileId",
+    });
+    Education.belongsTo(Profile, {
+      foreignKey: "profileId",
+    });
+    Discipline.hasMany(Education, {
+      foreignKey: "disciplineId",
+    });
+    Education.belongsTo(Discipline, {
+      foreignKey: "disciplineId",
+    });
+    Education.belongsTo(Institute, {
+      foreignKey: "instituteId",
+    });
+    Institute.hasMany(Education, {
+      foreignKey: "instituteId",
     });
   } catch (error) {
     console.log(error);

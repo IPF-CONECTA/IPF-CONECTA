@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "../../../../public/css/homeNav.module.css";
@@ -64,7 +64,7 @@ export const HomeNav = () => {
         </div>
         <div className={`${styles.button}`}>
           <Link
-            to="/soporte"
+            to="/contacto"
             className={`fs-5 fw-bold text-secondary text-decoration-none d-flex align-items-center`}
           >
             <span className="material-symbols-outlined fs-2 pe-3">

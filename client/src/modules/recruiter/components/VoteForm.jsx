@@ -5,7 +5,7 @@ import { authContext } from "../context/auth/Context";
 import { useNavigate } from "react-router-dom";
 import "../../public/vote.css";
 import { authService } from "../services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 const ProjectList = () => {
   const { authState } = useContext(authContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -14,7 +14,7 @@ const ProjectList = () => {
 
   const fetchIdeas = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/idea", {
+      const response = await axios.get(`${BASE_URL}/idea`, {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
         },
@@ -43,14 +43,11 @@ const ProjectList = () => {
       const idea = ideas.find((idea) => idea.id === ideaId);
 
       if (idea.userVote > 0) {
-        const response = await axios.delete(
-          `http://localhost:4000/vote/${ideaId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${authService.getToken()}`,
-            },
-          }
-        );
+        const response = await axios.delete(`${BASE_URL}/vote/${ideaId}`, {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        });
         setIdeas((prevIdeas) =>
           prevIdeas.map((idea) =>
             idea.id === ideaId
@@ -61,7 +58,7 @@ const ProjectList = () => {
         enqueueSnackbar("Voto retirado", { variant: "info" });
       } else {
         const response = await axios.post(
-          "http://localhost:4000/vote",
+          `${BASE_URL}/vote`,
           {
             profileId: profileId,
             ideaId: ideaId,

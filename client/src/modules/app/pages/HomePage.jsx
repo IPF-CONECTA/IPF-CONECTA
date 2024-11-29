@@ -4,9 +4,7 @@ import { Home } from "../components/Main";
 export const HomePage = () => {
   return (
     <>
-      <Nav />
       <Home />
-      <Footer />
     </>
   );
 };

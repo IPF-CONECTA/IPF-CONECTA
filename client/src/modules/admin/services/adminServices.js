@@ -1,28 +1,27 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const getAssociationsSvc = async (status) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/admin/get-associations/${status}`,
+      `${BASE_URL}/admin/get-associations/${status}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
         },
       }
     );
-    const data = res.data.associations;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data.associations, status: res.status };
   } catch (error) {
     console.error("Error al obtener las solicitudes:", error);
-    return { data: [], statusCode: error.response?.status };
+    return { data: [], status: error.status };
   }
 };
 
 export const updateAssociationStatus = async (id, status, justification) => {
   try {
     const res = await axios.patch(
-      `http://localhost:4000/admin/update-association-status/${id}/${status}`,
+      `${BASE_URL}/admin/update-association-status/${id}/${status}`,
       { justification },
       {
         headers: {
@@ -32,6 +31,12 @@ export const updateAssociationStatus = async (id, status, justification) => {
     );
     return { status: res.status };
   } catch (error) {
-    return { status: error.status, error: error.response?.data || error.response.data.errors || "Hubo un error al actualizar el estado de la solicitud" };
+    return {
+      status: error.status,
+      error:
+        error.response?.data ||
+        error.response.data.errors ||
+        "Hubo un error al actualizar el estado de la solicitud",
+    };
   }
 };

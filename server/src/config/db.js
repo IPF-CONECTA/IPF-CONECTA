@@ -1,6 +1,8 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-export const sequelize = new Sequelize(`postgres://${process.env.DB_USER}:${process.env.DB_PASS}@localhost:5432/${process.env.DB_NAME}`)
+export const sequelize = new Sequelize(`postgres://${process.env.DB_USER}:${process.env.DB_PASS}@localhost:5432/${process.env.DB_NAME}`, {
+    logging: false
+})
 
 export const connectDB = async () => {
     try {

@@ -27,13 +27,14 @@ import {
   CreateIdeas,
   DetailsIdeas,
   ProfileExperiencesPage,
-  LanguajeCardPage,
-  LanguajeEditPage,
-  EditProfile,
   MessagingPage,
   ChatPage,
   RecruiterJobOffersPage,
   JobPostulationsPage,
+  ProfileEducationsPage,
+  ProfilePostPage,
+  LanguageCardPage,
+  LanguageEditPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -48,7 +49,6 @@ export const Routers = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/seleccionar-empresa" element={<SelectCompanyPage />} />
-
           <Route path="/" element={<AdminRoutes />}>
             <Route path="/admin/dash" element={<AdminDashboardPage />} />
             <Route
@@ -62,7 +62,6 @@ export const Routers = () => {
           </Route>
           <Route path="mensajes" element={<MessagingPage />} />
           <Route path="chat/:username" element={<ChatPage />} />
-
           <Route path="/inicio" element={<FeedPage />} />
           <Route path="/:username/post/:postId" element={<PostPage />} />
           <Route path="/perfil/:username" element={<ProfilePage />} />
@@ -70,7 +69,6 @@ export const Routers = () => {
             path="/perfil/:username/empleos"
             element={<RecruiterJobOffersPage />}
           />
-          <Route path="/editar-perfil" element={<EditProfile />} />
           <Route
             path="/:username/proyectos"
             element={<ProfileProjectsPage />}
@@ -81,21 +79,30 @@ export const Routers = () => {
           />
           <Route
             path="/perfil/:username/idioma"
-            element={<LanguajeCardPage />}
+            element={<LanguageCardPage />}
           />
-          <Route path="/languages/:username/edit" element={<LanguajeEditPage />} />
+          <Route
+            path="/languages/:username/edit"
+            element={<LanguageEditPage />}
+          />
           <Route
             path="/perfil/:username/experiencias"
             element={<ProfileExperiencesPage />}
           />
-
+          <Route
+            path="/perfil/:username/formaciones"
+            element={<ProfileEducationsPage />}
+          />
+          <Route
+            path="/perfil/:username/publicaciones"
+            element={<ProfilePostPage />}
+          />
           <Route path="/guardados" element={<ProfilePage />} />
           <Route path="/registrar-empresa" element={<CreateCompanyPage />} />
           <Route
             path="/crear-sede/:companyId"
             element={<CreateCompanyLocationPage />}
           />
-
           <Route
             path="/mis-empresas"
             element={<WaitingAssociationsApprovalPage />}
@@ -104,8 +111,7 @@ export const Routers = () => {
             path="/solicitud-del-mentor"
             element={<MessageRecruiterPage />}
           />
-          <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />
-          <Route path="/nuevo-empleo" element={<JobCreatePage />} />
+          <Route path="/company-confirmed" element={<CompanyConfirmedPage />} />{" "}
         </Route>
 
         <Route path="/buscar-empleo" element={<JobSearchPage />} />

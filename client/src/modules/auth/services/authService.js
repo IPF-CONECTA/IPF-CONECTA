@@ -1,10 +1,10 @@
 import axios from "axios";
-import { useNoti } from "../../../hooks/useNoti";
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const authService = {
   submitVerificationCode: async (code) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/auth/confirm-account",
+        `${BASE_URL}/auth/confirm-account`,
         { receivedCode: code },
         {
           headers: {
@@ -19,10 +19,9 @@ export const authService = {
     }
   },
   isUsername: async (username) => {
-    console.log(username);
     try {
       const res = await axios.post(
-        "http://localhost:4000/auth/is-username-available",
+        `${BASE_URL}/auth/is-username-available`,
         {
           username,
         }
@@ -35,7 +34,7 @@ export const authService = {
   isEmail: async (email) => {
     try {
       const res = await axios.post(
-        "http://localhost:4000/auth/is-email-available",
+        `${BASE_URL}/auth/is-email-available`,
         {
           email,
         }
@@ -47,7 +46,7 @@ export const authService = {
   },
   login: async ({ email, password }) => {
     try {
-      const res = await axios.post(`http://localhost:4000/auth/login`, {
+      const res = await axios.post(`${BASE_URL}/auth/login`, {
         user: {
           email,
           password,
@@ -72,7 +71,7 @@ export const authService = {
   getToken: () => {
     return localStorage.getItem("token");
   },
-      
+
   setToken: (data) => {
     localStorage.setItem("token", data);
   },
@@ -82,7 +81,7 @@ export const authService = {
   },
   verifyToken: async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/auth/verify-token`, {
+      const res = await axios.get(`${BASE_URL}/auth/verify-token`, {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
         },

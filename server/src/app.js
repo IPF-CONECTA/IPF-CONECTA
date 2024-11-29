@@ -19,6 +19,8 @@ import {
   sendMessage,
 } from "./modules/chat/message/messageServices.js";
 import { getChatIdSvc } from "./modules/chat/chatService.js";
+import { socketHandShake } from "./middlewares/jwt/infoTokenSocket.js";
+import { CLIENT_RENEG_LIMIT } from "tls";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -28,14 +30,21 @@ const io = new Server(httpServer, {
   },
 });
 
+io.use(socketHandShake);
+
 app.use((req, res, next) => {
   next();
-  res.setHeader("cross-origin-resource-policy", "cross-origin");
+  if (!res.headersSent) {
+    res.setHeader("cross-origin-resource-policy", "cross-origin");
+  }
 });
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-}))
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  })
+);
 app.use(express.json());
 app.use(
   helmet({
@@ -49,25 +58,24 @@ connectDB();
 createTablesAndRelations();
 
 io.on("connection", async (socket) => {
-  let token = socket.handshake.headers["authorization"];
-  token = token.split(" ")[1];
-
   try {
-    const {
-      profile: { id: senderId },
-    } = await verifyToken(token);
-    console.log("Cliente conectado:", senderId);
+    // const {
+    //   profile: { id: user.profile.id },
+    // } = await verifyToken(token);
+
+    const user = socket.user;
+    console.log("Cliente conectado:", socket.user.id);
 
     socket.on("getChatId", async (data) => {
       const { profile2Id } = data;
 
-      if (!senderId || !profile2Id) {
+      if (!user.profile.id || !profile2Id) {
         socket.emit("error", "Los IDs de perfil no pueden ser undefined");
         return;
       }
 
       try {
-        const chatId = await getChatIdSvc(senderId, profile2Id);
+        const chatId = await getChatIdSvc(user.profile.id, profile2Id);
         socket.emit("chatId", chatId);
         socket.join(chatId);
       } catch (error) {
@@ -76,7 +84,7 @@ io.on("connection", async (socket) => {
       }
     });
 
-    socket.join(senderId);
+    socket.join(user.profile.id);
 
     socket.on("send chat message", async (data) => {
       const { message, receptorId, chatId } = data;
@@ -87,7 +95,11 @@ io.on("connection", async (socket) => {
       }
 
       try {
-        const newMessage = await sendMessage(senderId, receptorId, message);
+        const newMessage = await sendMessage(
+          user.profile.id,
+          receptorId,
+          message
+        );
         socket.to(chatId).emit("chat message", newMessage);
       } catch (error) {
         console.error(error);
@@ -97,14 +109,17 @@ io.on("connection", async (socket) => {
 
     socket.on("getAllMessages", async (data) => {
       const { chatId } = data;
-
       if (!chatId) {
         socket.emit("error", "El chatId no puede ser undefined");
         return;
       }
 
       try {
-        const messages = await getMessagesChat(chatId);
+        const messages = await getMessagesChat(
+          chatId,
+          socket.user.dataValues.profile.dataValues.id
+        );
+
         socket.emit("all messages", messages);
       } catch (error) {
         console.error(error);

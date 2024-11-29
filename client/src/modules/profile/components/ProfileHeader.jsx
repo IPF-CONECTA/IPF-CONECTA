@@ -1,25 +1,55 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../../../../public/css/profile.module.css";
 import { followOrUnfollow } from "../../feed/services/feedServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ConnectionsModal } from "./ConnectionsModal";
+import { EditProfileModal } from "../edit/components/EditProfileModal";
+import { chatService } from "../../chat/services/chatService";
+import { useChatContext } from "../../../context/chat/ChatContext";
+import { authContext } from "../../../context/auth/Context";
+import { useNoti } from "../../../hooks/useNoti";
 
 export const Header = ({ profileData, setProfileData }) => {
+  const navigate = useNavigate();
+
+  const { authState } = useContext(authContext);
+  const noti = useNoti();
   const [followHoverText, setFollowHoverText] = useState("");
   const [openConnections, setOpenConnections] = useState(false);
   const [typeConnection, setTypeConnection] = useState("");
+  const [editProfile, setEditProfile] = useState(false);
+
   const handleMouseEnter = () => {
     if (profileData?.isFollowing) {
       setFollowHoverText("Dejar de seguir");
     }
   };
 
+  const handleChatClick = () => {
+    if (authState.role == "admin")
+      return noti("No tienes permiso para hacer esto", "warning");
+    const getChatId = async (username) => {
+      const res = await chatService.getChatId(username);
+      if (res.status !== 200) {
+        return setReceiver(profileData.profile);
+      }
+      setChatId(res.data.chatId);
+    };
+    getChatId(profileData?.profile.user.username);
+    navigate("/mensajes");
+  };
+
+  const { setChatId, setReceiver } = useChatContext();
+
   const handleMouseLeave = () => {
     setFollowHoverText("");
   };
 
   const handleFollow = async () => {
+    if (authState.role == "admin") {
+      return noti("No tienes permisos para esto", "warning");
+    }
     const res = await followOrUnfollow(profileData?.profile.user.username);
     if (res.status !== 201) return;
     setProfileData((prevData) => ({
@@ -57,13 +87,13 @@ export const Header = ({ profileData, setProfileData }) => {
                     {profileData?.profile?.names +
                       " " +
                       profileData?.profile?.surnames}{" "}
-                    <span className="text-secondary fw-normal fs-6">
+                    <span className="text-secondary fw-normal fs-6 ms-2">
                       @{profileData?.profile?.user.username}
                     </span>
                   </span>
 
                   {profileData?.profile?.title && (
-                    <span className="text-dark fst-italic fw-semibold">
+                    <span className="text-dark fst-italic ">
                       {profileData.profile.title}
                     </span>
                   )}
@@ -108,20 +138,20 @@ export const Header = ({ profileData, setProfileData }) => {
               {profileData?.followsYou && (
                 <span
                   title={`${profileData?.profile?.user?.username} te sigue`}
-                  className="text-light-emphasis bg-secondary-subtle px-2 py-1 rounded me-4 fw-semibold"
+                  className="bg-light border rounded bg-light-emphasis px-2 py-1 rounded me-4 fw-semibold"
                 >
                   Te sigue
                 </span>
               )}
-              <Link
+              <button
                 className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
-                to={`/chat/${profileData?.profile?.user.username}`}
+                onClick={handleChatClick}
               >
                 <span className="material-symbols-outlined fs-3 fw-light">
                   chat
                 </span>
-              </Link>
+              </button>
               <button
                 className={`btn my-1 ${styles.followBtn} ${
                   profileData?.isFollowing
@@ -140,16 +170,22 @@ export const Header = ({ profileData, setProfileData }) => {
               </button>
             </>
           ) : (
-            <Link
+            <button
               title="Editar perfil"
-              to={"/editar-perfil"}
+              onClick={() => setEditProfile(true)}
               className="btn d-flex align-items-center p-1"
             >
               <span className="material-symbols-outlined fs-3">settings</span>
-            </Link>
+            </button>
           )}
         </div>
       </div>
+      <EditProfileModal
+        openModal={editProfile}
+        setOpenModal={setEditProfile}
+        profileData={profileData}
+        setProfileData={setProfileData}
+      />
     </header>
   );
 };

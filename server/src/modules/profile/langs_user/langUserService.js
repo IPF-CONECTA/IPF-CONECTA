@@ -5,15 +5,11 @@ export const fetchLangsByProfileId = async (profileId) => {
 };
 
 export const createLang = async (langId, langLevelId, profileId) => {
-  console.log(langId, langLevelId, profileId);
   return await LangsUser.create({ langId, langLevelId, profileId });
 };
 
 export const modifyLang = async (id, langId, langLevelId) => {
-  return await LangsUser.update(
-    { langId, langLevelId },
-    { where: { id } }
-  );
+  return await LangsUser.update({ langId, langLevelId }, { where: { id } });
 };
 
 export const removeLang = async (id) => {

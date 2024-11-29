@@ -19,14 +19,17 @@ export { FeedPage } from "../modules/feed/pages/FeedPage";
 
 //Post pages:
 export { PostPage } from "../modules/feed/posts/pages/PostPage";
+export { ProfilePostPage } from "../modules/profile/posts/pages/ProfilePostsPages";
 
 //Profile pages:
 export { ProfilePage } from "../modules/profile/pages/ProfilePage";
 export { ProfileExperiencesPage } from "../modules/profile/experiences/pages/ProfileExperiencesPage";
-export { LanguajeCardPage } from "../modules/profile/languaje/pages/LanguajeCardPage";
-export { LanguajeEditPage } from "../modules/profile/languaje/pages/LanguajeEditPage";
 
-export { EditProfile } from "../modules/profile/edit/pages/EditProfile";
+export { LanguageCardPage } from "../modules/profile/language/pages/LanguageCardPage";
+export { LanguageEditPage } from "../modules/profile/language/pages/LanguageEditPage";
+
+export { ProfileEducationsPage } from "../modules/profile/educations/pages/ProfileEducationsPage";
+
 
 //Projects Pages:
 export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
@@ -44,6 +47,7 @@ export { MessageRecruiterPage } from "../modules/recruiter/pages/MessageRecruite
 export { SelectCompanyPage } from "../modules/recruiter/pages/SelectCompanyPage";
 export { WaitingAssociationsApprovalPage } from "../modules/recruiter/pages/WaitingAssociationsApprovedPage";
 export { RecruiterJobOffersPage } from "../modules/profile/jobs/pages/ProfileJobOffersPage";
+
 //Job Pages:
 export { JobCreatePage } from "../modules/recruiter/job/pages/CreateJobsFormPage";
 export { JobSearchPage } from "../modules/recruiter/job/pages/JobSearchPage";

@@ -1,3 +1,4 @@
+import { getJobByIdSvc } from "../jobServices.js";
 import {
   createJobPostulationSvc,
   getJobPostulationsSvc,
@@ -16,15 +17,24 @@ export const createJobPostulationCtrl = async (req, res) => {
 
     res.status(201).json({ message: "Postulación enviada!", jobPostulation });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
 
 export const getPostulationsCtrl = async (req, res) => {
   try {
+    const { id } = req.user.profile;
     const { jobId } = req.params;
-    const postulations = await getJobPostulationsSvc(jobId);
+    const job = await getJobByIdSvc(jobId, id);
 
+    if (job.job.dataValues.profileId !== id) {
+      return res
+        .status(401)
+        .json({ error: "No tienes permitido ver estas postulaciones" });
+    }
+
+    const postulations = await getJobPostulationsSvc(jobId);
     res.status(200).json(postulations);
   } catch (error) {
     res.status(500).json({ error: error.message });

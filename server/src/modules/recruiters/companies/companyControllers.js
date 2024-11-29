@@ -1,9 +1,6 @@
-import jwt from "jsonwebtoken";
 import { validate as isValidUUID } from "uuid";
 
 import { Profile } from "../../profile/profileModel.js";
-import upload from "../../../config/multerConfig.js";
-import { Company } from "./companyModel.js";
 import { sendContactCompany } from "./mailServices/contactCompany.js";
 import { associateNewCompanySvc } from "../associations/associationServices.js";
 import {
@@ -51,15 +48,20 @@ export const associateNewCompanyCtrl = async (req, res) => {
     ) {
       return res.status(400).json({ message: "Faltan datos requeridos" });
     }
-    const logoUrl = req.file ? await resizeImage(req.file.filename, "logoUrls", 200, 200) : null;
+    const logoUrl = req.file
+      ? await resizeImage(req.file.filename, "logoUrls", 200, 200)
+      : null;
     const association = await associateNewCompanySvc(message, id, {
       ...company,
       logoUrl,
     });
 
     if (!association) throw new Error("Error al asociar la empresa");
-    res.status(201).json({ message: "Empresa asociada correctamente", id: association });
+    res
+      .status(201)
+      .json({ message: "Empresa asociada correctamente", id: association });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

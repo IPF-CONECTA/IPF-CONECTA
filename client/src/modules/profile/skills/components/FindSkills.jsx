@@ -1,8 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Select from "react-select";
 import debounce from "lodash.debounce";
 import { findSkills } from "../../../recruiter/job/services/jobServices";
+
 export const SkillSearch = ({ prevSelectedSkills, onSkillSelect }) => {
+  useEffect(() => {
+    if (prevSelectedSkills?.length > 0) {
+      onSkillSelect(prevSelectedSkills);
+    }
+  }, []);
   const [options, setOptions] = useState([]);
   const fetchSkills = async (query) => {
     if (!query) return;
@@ -31,7 +37,9 @@ export const SkillSearch = ({ prevSelectedSkills, onSkillSelect }) => {
       onInputChange={handleInputChange}
       options={options}
       defaultValue={prevSelectedSkills}
-      onChange={(selected) => onSkillSelect(selected)}
+      onChange={(selected) => {
+        onSkillSelect(selected);
+      }}
       placeholder="Buscar habilidades..."
     />
   );

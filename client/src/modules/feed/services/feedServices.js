@@ -1,21 +1,18 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
-
+import { BASE_URL } from "../../../constants/BASE_URL";
 export const getPosts = async (page) => {
   try {
-    const res = await axios.get(`http://localhost:4000/feed/posts?page=${page}`, {
+    const res = await axios.get(`${BASE_URL}/feed/posts?page=${page}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    console.log("pagina ", page, "respuesta ", res)
-    const data = res.data.rows;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: [],
-      statusCode: error.response?.status,
+      status: error.status,
       message: error.response?.data?.message || "Hubo un error al obtener las publicaciones",
     };
   }
@@ -23,18 +20,16 @@ export const getPosts = async (page) => {
 
 export const getAccounts = async () => {
   try {
-    const res = await axios.get("http://localhost:4000/get-recomended-users", {
+    const res = await axios.get(`${BASE_URL}/get-recommended-profiles`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    const data = res.data;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: [],
-      statusCode: error.response?.status,
+      status: error.status,
       message: error.response?.data?.message,
     };
   }
@@ -43,7 +38,7 @@ export const getAccounts = async () => {
 export const getProfile = async (username) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/get-user-profile/${username}`,
+      `${BASE_URL}/get-user-profile/${username}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -58,18 +53,16 @@ export const getProfile = async (username) => {
 
 export const getProfileInfo = async (username) => {
   try {
-    const res = await axios.get(`http://localhost:4000/get-user-info/${username}`, {
+    const res = await axios.get(`${BASE_URL}/get-user-info/${username}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    const data = res.data;
-    const statusCode = res.status;
-    return { data, statusCode };
+    return { data: res.data, status: res.status };
   } catch (error) {
     return {
       data: null,
-      statusCode: error.response?.status,
+      status: error.status,
     };
   }
 };
@@ -77,7 +70,7 @@ export const getProfileInfo = async (username) => {
 export const followOrUnfollow = async (username) => {
   try {
     const res = await axios.post(
-      `http://localhost:4000/follow/${username}`,
+      `${BASE_URL}/follow/${username}`,
       {},
       {
         headers: {
@@ -97,7 +90,7 @@ export const followOrUnfollow = async (username) => {
 export const like = async (id) => {
   try {
     const res = await axios.post(
-      `http://localhost:4000/like/${id}`,
+      `${BASE_URL}/like/${id}`,
       {},
       {
         headers: {
@@ -105,18 +98,13 @@ export const like = async (id) => {
         },
       }
     );
-    const statusCode = res.status;
-    return { statusCode };
+    return { status: res.status };
   } catch (error) {
-    return {
-      data: error.data.message,
-      statusCode: error.response?.status,
-    };
+    return { status: res.status };
   }
 };
 
 export const postSvc = async (post, images, postId = null) => {
-  console.log("postId en servicio", postId)
   const formData = new FormData();
   formData.append("content", post);
   if (postId) {
@@ -130,7 +118,7 @@ export const postSvc = async (post, images, postId = null) => {
 
   try {
     const res = await axios.post(
-      `http://localhost:4000/feed/post`,
+      `${BASE_URL}/feed/post`,
       formData,
       {
         headers: {
@@ -147,7 +135,7 @@ export const postSvc = async (post, images, postId = null) => {
 export const repostSvc = async (postId) => {
   try {
     const res = await axios.post(
-      "http://localhost:4000/repost",
+      `${BASE_URL}/repost`,
       {
         postId,
       },
@@ -157,42 +145,42 @@ export const repostSvc = async (postId) => {
         },
       }
     );
-    return res.status;
+    return { status: res.status };
   } catch (error) {
-    return error.status;
+    return { status: error.status };
   }
 };
 
 export const getPost = async (postId) => {
   try {
-    const res = await axios.get(`http://localhost:4000/feed/post/${postId}`, {
+    const res = await axios.get(`${BASE_URL}/feed/post/${postId}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    return res.data;
+    return { data: res.data, status: res.status };
   } catch (error) {
-    return error.status, error.message;
+    return { status: error.status };
   }
 };
 
 export const deletePost = async (postId) => {
   try {
-    const res = await axios.delete(`http://localhost:4000/feed/post/${postId}`, {
+    const res = await axios.delete(`${BASE_URL}/feed/post/${postId}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-    return res.status;
+    return { status: res.status };
   } catch (error) {
-    return error.status;
+    return { status: error.status };
   }
 };
 
 export const getExperiences = async (username) => {
   try {
     const res = await axios.get(
-      `http://localhost:4000/experiences/${username}`,
+      `${BASE_URL}/experiences/${username}`,
       {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,

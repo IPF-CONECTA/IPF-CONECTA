@@ -1,10 +1,11 @@
 import axios from "axios";
 import { authService } from "../../../auth/services/authService";
+import { BASE_URL } from "../../../../constants/BASE_URL";
 export const jobsServices = {
   createJob: async (jobData) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/create-job",
+        `${BASE_URL}/create-job`,
         { jobData },
         {
           headers: {
@@ -20,14 +21,11 @@ export const jobsServices = {
   },
   getJobsByUsername: async (username) => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/get-jobs/${username}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/get-jobs/${username}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
       return { data: response.data, status: response.status };
     } catch (error) {
       return { status: error.status };
@@ -35,14 +33,11 @@ export const jobsServices = {
   },
   deleteJob: async (jobId) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:4000/delete-job/${jobId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      );
+      const response = await axios.delete(`${BASE_URL}/delete-job/${jobId}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
       return { data: response.data, status: response.status };
     } catch (error) {
       return { status: error.status };
@@ -51,7 +46,7 @@ export const jobsServices = {
   updateJob: async (jobId, jobData) => {
     try {
       const response = await axios.put(
-        `http://localhost:4000/update-job/${jobId}`,
+        `${BASE_URL}/update-job/${jobId}`,
         { jobData },
         {
           headers: {
@@ -61,19 +56,16 @@ export const jobsServices = {
       );
       return { data: response.data, status: response.status };
     } catch (error) {
-      return { status: error.status };
+      return { status: error.status, messages: error.response.data.errors };
     }
   },
   getJobById: async (jobId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/get-job/${jobId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authService.getToken()}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/get-job/${jobId}`, {
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      });
       return { data: response.data, status: response.status };
     } catch (error) {
       return { status: error.status };

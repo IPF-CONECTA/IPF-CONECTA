@@ -18,6 +18,6 @@ export const createModalities = async () => {
     await Modality.bulkCreate([
         { name: 'Presencial' },
         { name: 'Remoto' },
-        { name: 'Hibrido' },
+        { name: 'Híbrido' },
     ])
 }

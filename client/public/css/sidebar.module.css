@@ -1,0 +1,122 @@
+.navContainer {
+  width: 65px; /* Ancho cuando está cerrado */
+  transition: width 0.5s ease-in-out, transform 0.5s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1000;
+  overflow: hidden;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.navContainer.open {
+  width: 180px; /* Ancho cuando está abierto */
+  box-shadow: 20px 0 100px rgba(0, 0, 0, 0.1);
+}
+
+.navItem {
+  cursor: pointer;
+  width: 100%;
+}
+.navItem:hover {
+  background-color: #117bb92a;
+}
+.navText {
+  opacity: 0;
+  white-space: nowrap;
+  transform: translateX(-20px);
+  color: #117bb9;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.navLogo {
+  margin-left: 0.05rem;
+}
+
+.navText.open {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.burgerIconAnimation {
+  margin-left: 0.2rem;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  transform: rotate(0deg);
+  transition: transform 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.burgerIconAnimation span {
+  display: block;
+  position: absolute;
+  height: 3px; /* Ajustar el grosor de las barras */
+  width: 100%;
+  background: #117bb9;
+  border-radius: 3px; /* Ajustar el radio de las esquinas */
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: transform 0.25s ease-in-out, top 0.25s ease-in-out,
+    opacity 0.25s ease-in-out;
+}
+
+.burgerIconAnimation span:nth-child(1) {
+  top: 0px;
+}
+
+.burgerIconAnimation span:nth-child(2) {
+  top: 8px; /* Ajustar la posición de la barra del medio */
+}
+
+.burgerIconAnimation span:nth-child(3) {
+  top: 16px; /* Ajustar la posición de la barra inferior */
+}
+
+/* Animación cuando se aplica la clase open */
+.burgerIconAnimation.open span:nth-child(1) {
+  top: 8px;
+  transform: rotate(45deg);
+}
+
+.burgerIconAnimation.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.burgerIconAnimation.open span:nth-child(3) {
+  top: 8px;
+  transform: rotate(-45deg);
+}
+
+.movingGradientText {
+  font-weight: bold;
+  text-transform: uppercase;
+  background: linear-gradient(
+    to right,
+    #47b8f9,
+    #6fc575,
+    #47b8f9,
+    #6fc575,
+    #47b8f9
+  ); /* Gradiente extendido */
+  background-size: 300%; /* Tamaño mayor para suavidad */
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  /* Compatibilidad para text-fill-color */
+  color: transparent; /* Estándar */
+  -webkit-text-fill-color: transparent; /* Prefijo para navegadores Webkit */
+  animation: gradientMove 3s linear infinite; /* Animación infinita */
+}
+
+/* Animación del gradiente */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%; /* Inicio */
+  }
+  100% {
+    background-position: 100% 50%; /* Fin (suave, porque el gradiente se extiende) */
+  }
+}
