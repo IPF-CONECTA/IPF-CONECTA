@@ -57,7 +57,6 @@ export const getChatIdSvc = async (profile1Id, profile2Id) => {
     throw new Error("Los IDs de perfil no pueden ser undefined");
   }
 
-  const t = await sequelize.transaction();
   try {
     const chat = await Chat.findOne({
       where: {
@@ -70,14 +69,10 @@ export const getChatIdSvc = async (profile1Id, profile2Id) => {
         { model: Profile, as: "profile1" },
         { model: Profile, as: "profile2" },
       ],
-      transaction: t,
     });
-
-    await t.commit();
-
-    return chat.id;
+    if (!chat) return null;
+    return chat.dataValues.id;
   } catch (error) {
-    await t.rollback();
     throw error;
   }
 };
@@ -106,7 +101,6 @@ export const getProfileChatsSvc = async (profileId) => {
           as: "messages",
           include: [{ model: Profile, as: "sender" }],
           order: [["createdAt", "DESC"]],
-
         },
       ],
       transaction: t,
