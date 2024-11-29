@@ -1,0 +1,87 @@
+.user-search {
+  position: relative;
+  width: 300px;
+  margin: auto;
+}
+
+.user-search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #202327;
+  color: #fff;
+  outline: none;
+}
+
+.user-search-input::placeholder {
+  color: #6c737d;
+}
+
+.dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background-color: #15181c; /* Fondo oscuro para el dropdown */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  color: #fff;
+  z-index: 10;
+  max-height: 300px; /* Ajusta la altura máxima */
+  overflow-y: auto;
+  border: 1px solid #333; /* Agrega un borde sutil */
+}
+
+.dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  background-color: #202327; /* Fondo para cada elemento */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #1f2327; /* Fondo al pasar el cursor */
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.username {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.no-results {
+  color: #ccc;
+  text-align: center;
+}
+
+.loading-text {
+  color: #fff;
+  text-align: center;
+}
+
+.error-text {
+  color: #e74c3c;
+  text-align: center;
+}
