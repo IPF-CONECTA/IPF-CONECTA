@@ -40,13 +40,12 @@
   flex-direction: column;
   gap: 10px;
 }
-
 .dropdown-item {
   display: flex;
   align-items: center;
   padding: 10px;
   width: 100%;
-  background-color: #202327; /* Fondo para cada elemento */
+  background-color: #fff; /* Fondo blanco */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -54,8 +53,9 @@
 }
 
 .dropdown-item:hover {
-  background-color: #1f2327; /* Fondo al pasar el cursor */
+  background-color: #d3d3d3; /* Fondo gris al pasar el cursor */
 }
+
 
 .user-avatar {
   width: 24px;

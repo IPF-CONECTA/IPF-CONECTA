@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../../public/css/nav.module.css";
+import { BASE_URL } from "../../../constants/BASE_URL"; // Importación correcta de BASE_URL
+import "../../../../public/css/UserSerach.module.css";
 
 function UserSearch() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -77,21 +78,46 @@ function UserSearch() {
           {!loading && !error && users.length > 0 && (
             <div className="dropdown-list">
               {users.map((user) => (
-                <button
+                <div
                   key={user.id}
-                  className="dropdown-item"
+                  className="dropdown-item user-container"
                   onClick={() => goToProfile(user.username)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    padding: "8px 12px",
+                    borderBottom: "1px solid #ddd",
+                  }}
                 >
-                  <div style={{ width: '24px', height: '24px', overflow: 'hidden', borderRadius: '50%' }}>
+                  <div
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      overflow: "hidden",
+                      borderRadius: "50%",
+                      marginRight: "10px",
+                    }}
+                  >
                     <img
-                      src={user.profilePic || "../../../../public/egresado.png"}
-                      alt="Avatar"
+                      src={
+                        user.profilePic
+                          ? `${BASE_URL}/images/${user.profilePic}`
+                          : "/img/default-avatar.png"
+                      }
+                      alt={`${user.username} avatar`}
                       className="user-avatar"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                   </div>
-                  <span className="username">{user.username}</span>
-                </button>
+                  <span className="username" style={{ fontWeight: "bold" }}>
+                    {user.username}
+                  </span>
+                </div>
               ))}
             </div>
           )}
