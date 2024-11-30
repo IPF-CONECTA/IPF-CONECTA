@@ -1,7 +1,8 @@
 import { Dialog } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNoti } from "../../../hooks/useNoti";
+import { getReportReasons, report } from "../services/reportServices";
 
 export const ReportModal = ({
   openModal,
@@ -15,12 +16,29 @@ export const ReportModal = ({
     formState: { errors },
     reset,
   } = useForm();
+  const [reportReasons, setReportReasons] = useState([]);
+  const [loading, setLoading] = useState(false);
   const noti = useNoti();
-  const onSubmit = (data) => {
+  useEffect(() => {
+    const fetchReportReasons = async () => {
+      const res = await getReportReasons();
+      console.log(res);
+      if (res.status == 200) {
+        return setReportReasons(res.data);
+      }
+    };
+    fetchReportReasons();
+  }, [openModal]);
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    await report(data, reportableType, reportableId);
+    setLoading(false);
     noti("Reporte enviado", "info");
     reset();
     setOpenModal(false);
   };
+
   return (
     <Dialog
       open={Boolean(openModal)}
@@ -33,9 +51,7 @@ export const ReportModal = ({
         onSubmit={handleSubmit(onSubmit)}
         className="d-flex flex-column p-3 border-0"
       >
-        <span className="fs-4 mb-2 fw-semibold">
-          Reportar {reportableType || ""}
-        </span>
+        <span className="fs-4 mb-2 fw-semibold">Reportar</span>
         <select
           {...register("reason", {
             required: "Este campo es obligatorio",
@@ -47,11 +63,9 @@ export const ReportModal = ({
           <option value="" disabled>
             Razón
           </option>
-          <option value="1">Contenido inapropiado</option>
-          <option value="2">Contenido violento</option>
-          <option value="3">Contenido sexual</option>
-          <option value="4">Contenido falso</option>
-          <option value="5">Contenido ofensivo</option>
+          {reportReasons.map((reason) => (
+            <option value={reason.id}>{reason.reason}</option>
+          ))}
         </select>
         {errors.reason && (
           <span className="text-danger">{errors.reason.message}</span>
@@ -70,7 +84,7 @@ export const ReportModal = ({
           <span className="text-danger">{errors.description.message}</span>
         )}
         <div className="d-flex justify-content-end">
-          <button type="submit" className="btn btn-primary">
+          <button disabled={loading} type="submit" className="btn btn-primary">
             Reportar
           </button>
         </div>

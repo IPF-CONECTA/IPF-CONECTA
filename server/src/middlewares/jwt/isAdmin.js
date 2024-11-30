@@ -9,7 +9,6 @@ export const isAdmin = async (req, res, next) => {
         if (!token) throw new Error('Inicie sesion para continuar');
 
         token = token.split(' ')[1];
-        token = token.replace(/"/g, '');
 
         let decoded;
         try {

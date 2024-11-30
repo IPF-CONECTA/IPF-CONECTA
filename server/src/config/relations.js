@@ -36,7 +36,7 @@ import { Experience } from "../modules/profile/experiences/experiencesModel.js";
 import { Association } from "../modules/recruiters/associations/associationModel.js";
 
 import { ContractType } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
-import { ReportReason } from "../modules/reports/reportReasonModel.js";
+import { ReportReason } from "../modules/reports/reasons/reasonModel.js";
 
 import { Certification } from "../modules/profile/certifications/certificationModel.js";
 
@@ -198,7 +198,15 @@ export const createRelations = async () => {
     ReportReason.hasMany(Report, {
       foreignKey: "reasonId",
     });
-
+    Report.belongsTo(ReportReason, {
+      foreignKey: "reasonId",
+    });
+    Profile.hasMany(Report, {
+      foreignKey: "profileId"
+    })
+    Report.belongsTo(Profile, {
+      foreignKey: "profileId"
+    })
     Profile.hasMany(Follower, {
       foreignKey: "followingId",
     });

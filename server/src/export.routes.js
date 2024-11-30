@@ -35,6 +35,8 @@ import educationsRoutes from "./modules/profile/education/educationRoutes.js";
 import disciplineRoutes from "./modules/profile/education/disciplines/disciplineRoutes.js";
 import instituteRoutes from "./modules/profile/education/institutes/instituteRoutes.js";
 import statisticsRoutes from "./modules/statistics/statisticsRoutes.js";
+import reportRoutes from "./modules/reports/reportRoutes.js";
+import reportAdminRoutes from "./modules/administration/admin/reports/reportRoutes.js";
 
 export const routes = (app) => {
   app.use(userRoutes);
@@ -44,6 +46,7 @@ export const routes = (app) => {
   app.use(associationRoutes);
   app.use("/admin", associationAdminRoutes);
   app.use("/admin", companyAdminRoutes);
+  app.use("/admin", reportAdminRoutes)
   app.use(locationRoutes);
   app.use(companyIndustriesRoutes);
   app.use(skillsRoutes);
@@ -74,5 +77,5 @@ export const routes = (app) => {
   app.use("/disciplines", disciplineRoutes);
   app.use(instituteRoutes);
   app.use("/stats", statisticsRoutes);
-  app.use(repostRoutes)
+  app.use(reportRoutes)
 };

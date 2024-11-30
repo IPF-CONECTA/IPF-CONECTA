@@ -1,19 +1,12 @@
 import { Report } from "./reportModel.js"
 
-export const createReportSvc = async (reportableType, reportableId, reasonId, profileId) => {
+export const createReportSvc = async (reportableType, description, reportableId, reasonId, profileId) => {
     return await Report.create({
         reportableType,
         reportableId,
+        description,
         reasonId,
         profileId
     })
 }
 
-export const getReportsByTypeSvc = async (reportableType, status) => {
-    return await Report.findAll({
-        where: {
-            reportableType,
-            status
-        }
-    })
-}

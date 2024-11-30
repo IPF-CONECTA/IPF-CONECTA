@@ -60,7 +60,7 @@ export const getProfileByUsername = async (reqId, username) => {
 export const getProfileById = async (id) => {
   try {
     const profile = await Profile.findByPk(id);
-    if (!profile) throw new error("No se encontro el perfil");
+    if (!profile) throw new Error("No se encontro el perfil");
     return profile;
   } catch (error) {
     throw error;
