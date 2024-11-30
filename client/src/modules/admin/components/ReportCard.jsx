@@ -56,7 +56,7 @@ export const ReportCard = ({ report }) => {
             <Comments postId={report?.reportableId} />
           </div>
         ) : (
-          <div>hola</div>
+          <div>prueba</div>
         )}
       </Modal>
     </>
