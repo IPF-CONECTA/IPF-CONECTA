@@ -733,27 +733,6 @@ export const Post = ({
                 </span>
               </div>
 
-              <div className="d-flex align-items-center repost">
-                <button
-                  className="btn p-0 d-flex align-items-center"
-                  onClick={handleRepost}
-                >
-                  <span
-                    className={`material-symbols-outlined ${
-                      styles.actionButtons
-                    } ${reposted ? "text-info" : ""}`}
-                  >
-                    repeat
-                  </span>{" "}
-                </button>
-                <span
-                  className={`${styles.numberContainer} ${styles.smallText} ms-1`}
-                >
-                  {post?.reposts.length > 0 && (
-                    <span>{post?.reposts.length}</span>
-                  )}
-                </span>
-              </div>
               <div className="d-flex align-items-center comment">
                 <button
                   className="btn p-0 d-flex align-items-center"

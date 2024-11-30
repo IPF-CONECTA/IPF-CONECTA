@@ -94,10 +94,17 @@ export const AccountCard = ({ index, account, setOpenConnections }) => {
 
         <div className=" d-flex flex-column">
           <span className="fs-6">
-            {account.names.length + account.surnames.length > 18
-              ? account.names.length > 12
-                ? account.names + " " + account.surnames.slice(0, 3) + "..."
-                : account.names + " " + account.surnames.slice(0, 8)
+            {account.names.length + account.surnames.length > 15
+              ? account.names.length > 7 && account.surnames.length > 7
+                ? account.names.slice(0, 7) +
+                  "... " +
+                  account.surnames.slice(0, 7) +
+                  "..."
+                : account.names.length > 8
+                ? account.names.slice(0, 8) + " " + account.surnames + "..."
+                : account.surnames.length > 8
+                ? account.names + " " + account.surnames.slice(0, 8) + "..."
+                : account.names + " " + account.surnames
               : account.names + " " + account.surnames}
           </span>
           <span className={`text-muted ${styles.smallText}`}>

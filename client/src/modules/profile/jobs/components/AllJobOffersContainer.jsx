@@ -74,7 +74,6 @@ export const AllJobOffersContainer = ({ username }) => {
               <JobOfferCard
                 onJobUpdate={fetchJobOffers}
                 jobOffer={jobOffer}
-                description={jobOffer.description}
                 own={profileData?.own}
                 edit={own ? true : false}
               />

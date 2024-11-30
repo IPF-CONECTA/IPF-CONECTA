@@ -1,6 +1,7 @@
 import { JobPostulation } from "./jobPostulationModel.js";
 import { Profile } from "../../../profile/profileModel.js";
 import { User } from "../../../users/userModel.js";
+import { Job } from "../jobModel.js";
 
 export const createJobPostulationSvc = async (profId, jobId) => {
   try {
@@ -21,20 +22,21 @@ export const createJobPostulationSvc = async (profId, jobId) => {
 
 export const getJobPostulationsSvc = async (jobId) => {
   try {
-    const postulations = await JobPostulation.findAll({
-      where: { jobId },
-      include: {
-        model: Profile,
-        attributes: ["names", "surnames", "profilePic", "about"],
-        include: [
-          {
+    return await Job.findByPk(jobId, {
+      attributes: ["title"],
+      include: [{
+        model: JobPostulation,
+        as: "postulate",
+        include: [{
+          model: Profile,
+          attributes: ["names", "surnames", "title", "profilePic"],
+          include: [{
             model: User,
-            attributes: ["username"],
-          },
-        ],
-      },
-    });
-    return postulations;
+            attributes: ["username"]
+          }]
+        }]
+      }]
+    })
   } catch (error) {
     throw error;
   }

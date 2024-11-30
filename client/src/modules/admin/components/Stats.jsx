@@ -8,12 +8,12 @@ import SkillsTrend from "./SkillsTrend";
 export const Stats = () => {
   return (
     <>
-      <div className="d-flex gap-2 justify-content-between">
+      <div className="d-flex justify-content-between w-50">
         <ActiveJobs />
         <RecruitedUsers />
         <PostsQ />
       </div>
-      <div className="d-flex flex-column">
+      <div className="d-flex mt-2 justify-content-between me-3">
         <PostsByMonth />
         <SkillsTrend />
       </div>

@@ -23,12 +23,12 @@ const RecruitedUsers = () => {
   }, []);
 
   return (
-    <div className="d-flex flex-column align-items-center p-2 border rounded-3 ">
+    <div className="d-flex flex-column align-items-center p-2 border rounded-3">
       {loading ? (
         "cargando"
       ) : (
         <>
-          <span className="fw-semibold fs-4">Usuarios conectados</span>
+          <span className="fw-semibold fs-4">Egresados conectados</span>
           <span className="fw-bold fs-2">{recruitedUsers}</span>
         </>
       )}

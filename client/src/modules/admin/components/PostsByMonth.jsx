@@ -63,8 +63,8 @@ const options = {
 
 export const PostsByMonth = () => {
   return (
-    <div className="mt-2 border rounded-3 p-2">
-      <span className="fs-4">Usuarios nuevos y publicaciones por mes</span>
+    <div className="border rounded-3 p-2" style={{ width: "49.5%" }}>
+      <span className="fs-4">Usuarios y publicaciones nuevas por mes</span>
       <Line data={data} options={options} />
     </div>
   );

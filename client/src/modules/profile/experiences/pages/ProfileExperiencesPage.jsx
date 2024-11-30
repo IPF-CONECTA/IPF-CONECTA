@@ -48,6 +48,7 @@ export const ProfileExperiencesPage = () => {
             username={username}
           />
         </div>
+        <RecommendedAccounts />
       </div>
     </>
   );

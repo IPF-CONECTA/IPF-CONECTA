@@ -5,7 +5,7 @@ import { getFullDate, getHour } from "../../../helpers/getTime";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import styles from "../../../../public/css/chat.module.css";
 import { useChatContext } from "../../../context/chat/ChatContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Chat = () => {
   const { authState } = useContext(authContext);
@@ -86,30 +86,62 @@ export const Chat = () => {
   };
 
   return (
-    <div className="d-flex flex-column h-100 w-50 rounded-4 border border-secondary overflow-hidden">
+    <div className="d-flex flex-column h-100 w-75 rounded-4 border overflow-hidden">
       <div className="d-flex align-items-center p-3 bg-white">
         <img
-          src={`${BASE_URL}/images/${receiver?.profilePic}`}
+          src={`${BASE_URL}/images/${
+            receiver?.profilePic ? receiver?.profilePic : "defaultPfp.jpg"
+          }`}
           className="rounded-circle me-3"
           alt={`Foto de perfil de ${receiver?.user?.username}`}
           width={50}
           title={`Perfil de ${receiver?.user?.username}`}
-          onClick={() => navigate(`/perfil/${receiver?.user?.username}`)}
+          onClick={() =>
+            receiver ||
+            (chatId && navigate(`/perfil/${receiver?.user?.username}`))
+          }
         />
         <div>
           <h5 className="mb-0">
-            {receiver?.names} {receiver?.surnames}
+            {receiver
+              ? receiver?.names + "" + receiver?.surnames
+              : "Selecciona un chat"}
           </h5>
-          <small className="text-secondary">@{receiver?.user?.username}</small>
+          {receiver && (
+            <small className="text-secondary">
+              @{receiver?.user?.username}
+            </small>
+          )}
         </div>
       </div>
       <div
         ref={containerRef}
         className={`flex-grow-1 p-3 overflow-auto ${styles.messagesContainer}`}
       >
-        {messages.length === 0 ? (
-          <div className="text-center mt-5 text-muted">
-            <p>No hay mensajes en este chat</p>
+        {messages.length === 0 && receiver ? (
+          <div className="d-flex h-100 justify-content-center align-items-center">
+            <div className="d-flex flex-column justify-content-center align-items-center gap-2">
+              <img
+                src={`${BASE_URL}/images/${receiver.profilePic}`}
+                width={70}
+                className="rounded-circle"
+                alt={`Foto de perfil de ${receiver.names}`}
+              />
+              <div className="d-flex flex-column align-items-center">
+                <span className="fw-semibold fs-5">
+                  {receiver.names + " " + receiver.surnames}
+                </span>
+                <span className="fs-6 text-secondary">
+                  {receiver.user?.username}
+                </span>
+              </div>
+              <Link
+                to={`/perfil/${receiver.user?.username}`}
+                className="btn btn-light shadow-sm"
+              >
+                Ver perfil
+              </Link>
+            </div>
           </div>
         ) : (
           messages.map((msg, index) =>
@@ -130,7 +162,7 @@ export const Chat = () => {
                   className={`px-2 py-1 rounded d-flex align-items-center gap-3 ${
                     msg.sender.user.username === authState.user?.username
                       ? " text-white"
-                      : "bg-light text-dark"
+                      : "bg-white text-dark"
                   }`}
                   style={{
                     maxWidth: "70%",
@@ -151,7 +183,9 @@ export const Chat = () => {
                     `}
                       style={{ fontSize: "0.7rem" }}
                     >
-                      {getHour(msg.createdAt)}
+                      {getHour(msg.createdAt) === "Invalid DateTime"
+                        ? getHour(new Date().toLocaleTimeString())
+                        : getHour(msg.createdAt)}
                     </span>
                   </div>
                 </div>
@@ -162,13 +196,13 @@ export const Chat = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input para enviar mensaje */}
       <form
         className="d-flex border-top w-100 p-0 rounded border-0"
         style={{ minWidth: "100%" }}
         onSubmit={sendMessage}
       >
         <input
+          disabled={!chatId && !receiver}
           type="text"
           className="form-control border-0 w-100 h-100"
           placeholder="Escribe un mensaje..."
@@ -176,6 +210,7 @@ export const Chat = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
+          disabled={!chatId && !receiver}
           className="btn text-white"
           style={{ backgroundColor: "#117bb9" }}
           type="submit"

@@ -151,14 +151,7 @@ export const PostList = () => {
               >
                 <span className="material-symbols-outlined fs-5">gif_box</span>
               </button>
-              <button
-                type="button"
-                className="btn d-flex align-items-center h-100 me-1"
-              >
-                <span className="material-symbols-outlined fs-5">
-                  location_on
-                </span>
-              </button>
+
               <button
                 type="button"
                 className="btn d-flex align-items-center h-100 me-1"

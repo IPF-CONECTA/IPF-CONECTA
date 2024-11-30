@@ -90,8 +90,7 @@ export const Profile = ({ data }) => {
   };
 
   const fetchPosts = async () => {
-    const res = await postsServices.getPostsByUsername(username);
-    console.log(res);
+    const res = await postsServices.getPostsByUsername(data ? data : username);
     if (res.status !== 200 && res.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
     }
@@ -117,7 +116,7 @@ export const Profile = ({ data }) => {
     if (role === "recruiter") {
       fetchJobOffers();
     }
-  }, [username, data]);
+  }, [data, username]);
 
   useEffect(() => {
     if (profileData) {

@@ -38,7 +38,7 @@ export const EducationsContainer = ({
               </button>
               <button
                 className="btn d-flex p-0 align-items-center"
-                onClick={() => navigate("formaciones")}
+                onClick={() => navigate("educacion")}
               >
                 <span className="material-symbols-outlined text-dark-emphasis">
                   edit
@@ -66,7 +66,7 @@ export const EducationsContainer = ({
               ))
             ) : (
               <li className="list-group-item text-secondary">
-                Agrega formaciones a tu perfil.
+                Agrega tu educación académica
               </li>
             )}
           </ul>
@@ -78,10 +78,10 @@ export const EducationsContainer = ({
 
           <div className="w-100 d-flex justify-content-center py-2">
             <Link
-              to={"formaciones"}
+              to={"educacion"}
               className="fw-semibold p-0 text-body-tertiary text-decoration-none"
             >
-              Ver todas las formaciones ({educationsData.length})
+              Ver toda la educación ({educationsData.length})
             </Link>
           </div>
         </>

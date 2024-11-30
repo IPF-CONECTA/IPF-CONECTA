@@ -1,16 +1,16 @@
-import { useState, useEffect, useContext } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
+import { BsChatFill } from "react-icons/bs";
 import { chatService } from "../services/chatService";
 import { authContext } from "../../../context/auth/Context";
 import { getTime } from "../../../helpers/getTime";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { useChatContext } from "../../../context/chat/ChatContext";
 import styles from "../../../../public/css/chat.module.css";
+
 export const Messaging = () => {
   const { authState } = useContext(authContext);
   const [chats, setChats] = useState([]);
   const [profileId, setProfileId] = useState("");
-
   const { setChatId, chatId } = useChatContext();
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export const Messaging = () => {
   useEffect(() => {
     const getChats = async () => {
       const res = await chatService.getChatsByProfile();
+      console.log(res.data);
       setChats(res.data);
     };
     getChats();
@@ -29,36 +30,30 @@ export const Messaging = () => {
     <>
       <div className="d-flex w-50 flex-column" style={{ marginLeft: "6rem" }}>
         <div className="list-group w-100 h-100 border rounded-4 px-3 py-3">
+          <span className="fs-3 fw-semibold">Mensajes</span>
+
           {chats?.length === 0 ? (
-            <div className="d-flex flex-column justify-content-center">
-              <div className="d-flex">
-                <span
-                  className="material-symbols-outlined"
-                  style={{ fontSize: "150px" }}
-                >
-                  chat
-                </span>
+            <div className="d-flex flex-column justify-content-center h-100 align-items-center">
+              <div className="d-flex align-items-center">
+                <div className="d-flex flex-column align-items-center">
+                  <BsChatFill size={65} color="#117bb9" className="mb-2" />
+                  <h5 className="fw-semibold m-0 text-body">
+                    No hay chats para mostrar
+                  </h5>
+                  <span className="text-secondary">
+                    Conecta con alguien y chatea
+                  </span>
+                </div>
               </div>
-              <h5 className="d-flex text-center fw-semibold w-50">
-                No tienes ningún chat, conecta con alguien e inicia una
-                conversación!
-              </h5>
             </div>
           ) : (
             <>
               <div className="d-flex flex-column">
-                <span className="fs-3 fw-semibold">Mensajes</span>
                 <hr className="my-2 text-body-tertiary" />
                 {chats.map((chat) => {
-                  const receptorId =
-                    chat.profile1.id === profileId
-                      ? chat.profile2
-                      : chat.profile1;
-
                   return (
-                    <>
+                    <React.Fragment key={chat.id}>
                       <div
-                        key={chat.id}
                         style={{
                           cursor: "pointer",
                         }}
@@ -69,8 +64,8 @@ export const Messaging = () => {
                       >
                         <div className="d-flex align-items-center w-100 gap-3 p-2">
                           <img
-                            src={`${BASE_URL}/images/${receptorId?.profilePic}`}
-                            alt={receptorId.id + "_icon"}
+                            src={`${BASE_URL}/images/${chat.receiver.profilePic}`}
+                            alt={chat.receiver.id + "_icon"}
                             className="rounded-circle"
                             width={50}
                           />
@@ -78,36 +73,31 @@ export const Messaging = () => {
                             <div className="d-flex justify-content-between">
                               <div className="d-flex gap-2 align-items-center">
                                 <p className="mb-1 fw-semibold">
-                                  {receptorId.names} {receptorId.surnames}
+                                  {chat.receiver.names} {chat.receiver.surnames}
                                 </p>
                                 <small className="text-secondary">
-                                  @{receptorId.user.username}
+                                  @{chat.receiver.user.username}
                                 </small>
                               </div>
                               <p>
-                                hace{" "}
-                                {getTime(
-                                  chat?.messages[chat.messages.length - 1]
-                                    ?.createdAt
-                                )}
+                                hace {getTime(chat?.lastMessage?.createdAt)}
                               </p>
                             </div>
                             <div>
                               <p className="text-start">
-                                {chat?.messages[chat?.messages?.length - 1]
-                                  ?.senderId == authState.user.profile?.id &&
-                                  "Tú" + ": "}
-                                {
-                                  chat?.messages[chat.messages.length - 1]
-                                    ?.message
-                                }
+                                {chat.lastMessage.sender.id === profileId &&
+                                  "Tu: "}
+                                {chat.lastMessage.message.length > 50
+                                  ? chat.lastMessage.message.slice(0, 50) +
+                                    "..."
+                                  : chat.lastMessage.message}
                               </p>
                             </div>
                           </div>
                         </div>
                       </div>
                       <hr className="my-2 text-body-tertiary" />
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </div>

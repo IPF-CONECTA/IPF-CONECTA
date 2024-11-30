@@ -3,24 +3,24 @@ import "moment/locale/es";
 import { DateTime, Settings } from "luxon";
 Settings.defaultLocale = "es";
 
-export const formatDateToForm = (dateData) =>{
+export const formatDateToForm = (dateData) => {
   const date = new Date(dateData);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 moment.updateLocale("es", {
   relativeTime: {
     future: "en %s",
     past: "%s",
-    s: "unos segundos",
-    m: "un minuto",
+    s: "%ds",
+    m: "%dm",
     mm: "%dm",
     h: "%dh",
     hh: "%dh",
-    d: "un día",
+    d: "%dd",
     dd: "%dd",
     M: "un mes",
     MM: "%dm",
@@ -29,34 +29,36 @@ moment.updateLocale("es", {
   },
 });
 
-export const getTime = (date) => {
+export const getTime = (date) => { // Hace 2 horas
   return moment(date).fromNow();
 };
+
 export const getDateWithHour = (dt) => {
   let date = DateTime.fromISO(dt);
   return date.toFormat("dd LLL yyyy, HH:mm");
 };
 
-export const getHour = (dt) => {
+export const getHour = (dt) => { // 12:00
   let date = DateTime.fromISO(dt);
-  return date.toFormat("HH:mm");
+  date = date.toFormat("HH:mm")
+  return date;
 };
-export const getDateMonth = (dt) => {
+export const getDateMonth = (dt) => { // Nov. 2024
   let date = DateTime.fromISO(dt);
   return date.toFormat("LLL. yyyy");
 };
 
-export const getFullDate = (dt) => {
+export const getFullDate = (dt) => { // 12 de nov de 2024
   let date = DateTime.fromISO(dt);
   return date.toFormat("dd LLL yyyy");
 };
 
-export const getYear = (dt) => {
+export const getYear = (dt) => { // 2024
   let date = DateTime.fromISO(dt);
   return date.toFormat("yyyy");
 };
 
-export const getTimeQuantity = (startDate, endDate) => {
+export const getTimeQuantity = (startDate, endDate) => { // 2 años y 3 meses
   let start = DateTime.fromISO(startDate);
   endDate = endDate ? endDate : DateTime.now().toISODate();
   let end = DateTime.fromISO(endDate);

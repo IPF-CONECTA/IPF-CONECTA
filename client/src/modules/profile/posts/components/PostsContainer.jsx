@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { PostCard } from "../components/PostCard";
 
-export const PostsContainer = ({ username, own, postsData, onPostSubmit }) => {
+export const PostsContainer = ({ username, own, postsData }) => {
   const navigate = useNavigate();
 
   const [posts, setPosts] = useState([]);
@@ -14,7 +14,7 @@ export const PostsContainer = ({ username, own, postsData, onPostSubmit }) => {
   }, [postsData]);
 
   return (
-    <>
+    <div className="border-bottom">
       <div className="w-100 border-bottom" id="posts">
         <div className="p-2">
           <div className="d-flex justify-content-between mb-2 p-2">
@@ -69,6 +69,6 @@ export const PostsContainer = ({ username, own, postsData, onPostSubmit }) => {
           </Link>
         </div>
       )}
-    </>
+    </div>
   );
 };

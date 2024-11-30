@@ -8,25 +8,21 @@ import { getFullDate } from "../../../../helpers/getTime";
 import { JobDetails } from "../../../recruiter/job/components/JobDetails";
 import { JobForm } from "../components/JobForm";
 import { jobPostulationsServices } from "../../../jobs/postulations/services/jobPostulationsServices";
+import { GrNotes } from "react-icons/gr";
 
-export const JobOfferCard = ({
-  jobOffer,
-  description,
-  own,
-  edit,
-  onJobUpdate,
-}) => {
+export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
   const [openModal, setOpenModal] = useState(false);
   const [jobPostulationsNumber, setJobPostulationsNumber] = useState(0);
   const shortDescription =
-    description?.length > 40
-      ? `${description.substring(0, 100)}...`
-      : description;
+    jobOffer.description?.length > 40
+      ? `${jobOffer.description.substring(0, 100)}...`
+      : jobOffer.description;
 
   useEffect(() => {
     jobPostulationsServices.getPostulationsByJobId(jobOffer.id).then((res) => {
       if (res.status === 200) {
-        setJobPostulationsNumber(res.data.length);
+        console.log(res.data);
+        setJobPostulationsNumber(res.data.postulate.length);
       }
     });
   });
@@ -71,6 +67,7 @@ export const JobOfferCard = ({
       {edit && own && (
         <div className="d-flex align-items-center">
           <button
+            title="Editar trabajo"
             className="btn d-flex p-1 me-2"
             onClick={() => setOpenModal(true)}
           >
@@ -82,13 +79,13 @@ export const JobOfferCard = ({
             to={`/empleo/${jobOffer.id}/postulaciones`}
             className="link-offset-1-hover text-decoration-none"
           >
-            <button className="btn p-1 d-flex">
+            <button className="btn p-1 d-flex" title="Postulaciones">
               <span className="d-flex align-items-center gap-2">
-                <span className="material-symbols-outlined">group</span>
+                <GrNotes size={18} />
               </span>
             </button>
           </Link>
-          <p>{jobPostulationsNumber}</p>
+          <small className="fw-semibold">{jobPostulationsNumber}</small>
         </div>
       )}
 

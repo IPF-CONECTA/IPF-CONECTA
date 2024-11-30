@@ -90,7 +90,7 @@ export const Routers = () => {
             element={<ProfileExperiencesPage />}
           />
           <Route
-            path="/perfil/:username/formaciones"
+            path="/perfil/:username/educacion"
             element={<ProfileEducationsPage />}
           />
           <Route

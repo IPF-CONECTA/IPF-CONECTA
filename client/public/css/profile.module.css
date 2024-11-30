@@ -27,6 +27,11 @@
   width: 140px;
 }
 
+.buttons {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
 .unfollowBtn:hover {
   background-color: rgb(226, 43, 43);
   transition: background-color 0.2s ease-in;
@@ -34,8 +39,8 @@
 }
 @media (max-width: 1300px) {
   .buttons {
-    padding-top: 4rem !important;
-    padding-bottom: 4rem !important;
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
   }
 }
 

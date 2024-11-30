@@ -59,9 +59,8 @@ export const SkillsTrend = () => {
   };
 
   return (
-    <div className="mt-2">
+    <div className="border rounded-3 p-2 w-50" style={{ width: "49%" }}>
       <span className="fs-4">Habilidades más solicitadas</span>
-
       <Bar data={chartData} options={options} />
     </div>
   );

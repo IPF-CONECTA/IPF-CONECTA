@@ -37,7 +37,7 @@ export const ProfileEducationsPage = () => {
     <>
       <SideBar />
       <div className="d-flex justify-content-evenly px-5  my-4">
-        <div className="border rounded" style={{ width: "65%" }}>
+        <div className="border rounded-4" style={{ width: "65%" }}>
           <Header profileData={profileData} setProfileData={setProfileData} />
           <AllEducationsContainer
             educationsData={educations}
@@ -46,6 +46,7 @@ export const ProfileEducationsPage = () => {
             username={username}
           />
         </div>
+        <RecommendedAccounts />
       </div>
     </>
   );

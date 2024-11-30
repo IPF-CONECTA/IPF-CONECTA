@@ -18,7 +18,7 @@ export const AllEducationsContainer = ({
 
   return (
     <>
-      <div className="bg-bg-body-tertiary w-100">
+      <div className="bg-bg-body-tertiary w-100 border-top">
         <div className="p-4">
           <div className="d-flex justify-content-between mb-2">
             <div className="d-flex">
@@ -31,7 +31,7 @@ export const AllEducationsContainer = ({
                   arrow_back_ios
                 </span>
               </button>
-              <span className="fs-5 fw-bold">Formaciones academicas</span>
+              <span className="fs-5 fw-bold">Educación</span>
             </div>
             {own && (
               <div className="d-flex">
@@ -55,34 +55,29 @@ export const AllEducationsContainer = ({
           </div>
 
           <ul className="list-group-flush w-100">
-            {educations?.length >= 1 ? (
-              educations.map((education, index) => (
-                <React.Fragment key={education.id}>
-                  <EducationCard
-                    onEducationSubmit={onEducationSubmit}
-                    username={username}
-                    education={education}
-                    edit={true}
-                    own={own}
-                  />
-                  {index !== educations.length - 1 && (
-                    <hr className="text-bg-body-tertiary" />
-                  )}
-                </React.Fragment>
-              ))
-            ) : own ? (
-              <li className="list-group-item text-secondary">
-                Agrega formaciones academicas que hayas tenido a tu perfil
-              </li>
-            ) : (
-              <li className="list-group-item text-secondary">
-                Este usuario no tiene educaciones.
-              </li>
-            )}
+            {educations?.length >= 1
+              ? educations.map((education, index) => (
+                  <React.Fragment key={education.id}>
+                    <EducationCard
+                      onEducationSubmit={onEducationSubmit}
+                      username={username}
+                      education={education}
+                      edit={true}
+                      own={own}
+                    />
+                    {index !== educations.length - 1 && (
+                      <hr className="text-bg-body-tertiary" />
+                    )}
+                  </React.Fragment>
+                ))
+              : own && (
+                  <li className="list-group-item text-secondary">
+                    Agrega tu educación académica
+                  </li>
+                )}
           </ul>
         </div>
       </div>
-      <hr className="m-0" />
     </>
   );
 };

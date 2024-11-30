@@ -14,10 +14,12 @@ import { authContext } from "../../../context/auth/Context.js";
 import styles from "../../../../public/css/sidebar.module.css";
 import { useNoti } from "../../../hooks/useNoti.jsx";
 import { BASE_URL } from "../../../constants/BASE_URL.js";
+import { useChatContext } from "../../../context/chat/ChatContext.jsx";
 
 export const SideBar = () => {
   const [open, setOpen] = useState(false);
   const { authState, logout } = useContext(authContext);
+  const { setReceiver, setChatId } = useChatContext();
   const location = useLocation();
   const noti = useNoti();
   const navigate = useNavigate();
@@ -157,7 +159,11 @@ export const SideBar = () => {
               </span>
             </button>
             <button
-              onClick={() => handleNavigatePrivate("/mensajes")}
+              onClick={() => {
+                handleNavigatePrivate("/mensajes");
+                setReceiver(null);
+                setChatId(null);
+              }}
               className={`d-flex align-items-center p-1 rounded btn ${styles.navItem}`}
             >
               <BsChatFill

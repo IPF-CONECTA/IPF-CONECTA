@@ -32,6 +32,7 @@ export const Header = ({ profileData, setProfileData }) => {
     const getChatId = async (username) => {
       const res = await chatService.getChatId(username);
       if (res.status !== 200) {
+        setChatId(null);
         return setReceiver(profileData.profile);
       }
       setChatId(res.data.chatId);
@@ -131,7 +132,7 @@ export const Header = ({ profileData, setProfileData }) => {
           </div>
         </div>
         <div
-          className={`d-flex align-items-center h-100 py-5 me-5 ${styles.buttons}`}
+          className={`d-flex align-items-center h-100 me-5 ${styles.buttons}`}
         >
           {!profileData?.own ? (
             <>
