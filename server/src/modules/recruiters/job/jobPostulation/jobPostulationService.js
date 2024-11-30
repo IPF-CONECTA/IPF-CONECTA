@@ -24,19 +24,36 @@ export const getJobPostulationsSvc = async (jobId) => {
   try {
     return await Job.findByPk(jobId, {
       attributes: ["title"],
-      include: [{
-        model: JobPostulation,
-        as: "postulate",
-        include: [{
-          model: Profile,
-          attributes: ["names", "surnames", "title", "profilePic"],
-          include: [{
-            model: User,
-            attributes: ["username"]
-          }]
-        }]
-      }]
-    })
+      include: [
+        {
+          model: JobPostulation,
+          as: "postulate",
+          include: [
+            {
+              model: Profile,
+              attributes: ["names", "surnames", "title", "profilePic"],
+              include: [
+                {
+                  model: User,
+                  attributes: ["username"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changeJobPostulationStatusSvc = async (id) => {
+  try {
+    const jobPostulation = await JobPostulation.findByPk(id);
+    jobPostulation.approved = !jobPostulation.approved;
+    await jobPostulation.save();
+    return jobPostulation;
   } catch (error) {
     throw error;
   }

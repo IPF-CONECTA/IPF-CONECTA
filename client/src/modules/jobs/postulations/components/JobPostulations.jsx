@@ -17,6 +17,7 @@ export const JobPostulations = () => {
   const { jobId } = useParams();
   const { authState } = useContext(authContext);
   const [profileData, setProfileData] = useState({});
+
   const [job, setJob] = useState();
   const [open, setOpen] = useState(false);
   const { setChatId, setReceiver } = useChatContext();
@@ -34,6 +35,23 @@ export const JobPostulations = () => {
     setChatId(res.data.chatId);
     navigate("/mensajes");
   };
+
+  const handleStatusClick = async (jobPostulationId) => {
+    const res = await jobPostulationsServices.changeJobPostulationStatus(
+      jobPostulationId
+    );
+    if (res.status !== 200) {
+      return useNoti("error", res.error);
+    }
+    const updatedJob = job?.postulate?.map((postulation) => {
+      if (postulation.id === jobPostulationId) {
+        postulation.approved = !postulation.approved;
+      }
+      return postulation;
+    });
+    setJob({ ...job, postulate: updatedJob });
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       const res = await getProfile(username);
@@ -50,6 +68,10 @@ export const JobPostulations = () => {
     };
     fetchJob();
   }, [jobId]);
+
+  const sortedPostulations = job?.postulate?.sort(
+    (a, b) => b.approved - a.approved
+  );
 
   return (
     <div style={{ width: "65%" }} className="border rounded-4">
@@ -72,11 +94,11 @@ export const JobPostulations = () => {
           </span>
         </div>
 
-        {job?.postulate?.length > 0 ? (
+        {sortedPostulations?.length > 0 ? (
           <>
             <div className="d-flex flex-column mx-5">
               <ul className="list-group list-group-flush ">
-                {job.postulate.map((postulation) => (
+                {sortedPostulations?.map((postulation) => (
                   <li
                     className="list-group-item mb-1 border w-100 mx-auto"
                     key={postulation.id}
@@ -102,7 +124,6 @@ export const JobPostulations = () => {
                               @{postulation.profile.user.username}
                             </span>
                           </p>
-                          <p></p>
                           <p className="fw-semibold text-secondary text-break">
                             {(postulation?.profile?.title &&
                               postulation?.profile?.title) ||
@@ -110,11 +131,21 @@ export const JobPostulations = () => {
                                 postulation?.profile?.about?.slice(0, 50) +
                                   "...")}
                           </p>
-                        </div>
+                        </div>{" "}
                       </div>
 
                       <div className="d-flex">
                         <div className="d-flex align-items-center me-2">
+                          <span
+                            className="material-symbols-outlined mx-3 "
+                            onClick={() => handleStatusClick(postulation.id)}
+                            style={{
+                              color: postulation.approved ? "gold" : "",
+                              cursor: "pointer",
+                            }}
+                          >
+                            stars
+                          </span>
                           <button
                             onClick={() => setOpen(true)}
                             className="btn btn-outline-dark"
