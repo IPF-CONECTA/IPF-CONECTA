@@ -22,7 +22,7 @@ import { createLangLevels } from "../modules/langs/langLevelsModel.js";
 import { createModalities } from "../modules/recruiters/job/jobModalities/modalityModel.js";
 import { createDiciplines } from "../modules/profile/education/disciplines/disciplineModel.js";
 
-import { createReportReasons } from "../modules/reports/reportReasonModel.js";
+import { createReportReasons } from "../modules/reports/reasons/reasonModel.js";
 import { createContractTypes } from "../modules/recruiters/job/contractTypes/contractTypeModel.js";
 import { createCompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
 import { createInstitutes } from "../modules/profile/education/institutes/instituteModel.js";
@@ -34,7 +34,7 @@ export const createTablesAndRelations = async () => {
 
   await createRelations();
   console.log("Relations created successfully");
-  await Report.sync({ force: false });
+  // await Report.sync({ force: true });
   // await Experience.sync({ force: true })
   console.log("Tables created successfully");
   // ===================================================================================

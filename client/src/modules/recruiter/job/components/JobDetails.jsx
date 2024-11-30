@@ -132,7 +132,8 @@ export const JobDetails = ({ jobId }) => {
               <ReportModal
                 openModal={openReportModal}
                 setOpenModal={setOpenReportModal}
-                reportable="trabajo"
+                reportableType="job"
+                reportableId={selectedJob.id}
               />
               <button
                 type="submit"

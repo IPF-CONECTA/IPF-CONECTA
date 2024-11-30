@@ -3,7 +3,7 @@ import { getPost, postSvc } from "../../services/feedServices";
 import styles from "../../../../../public/css/postById.module.css";
 import { Post } from "./Post";
 
-export const Comments = ({ postId, write, setWrite }) => {
+export const Comments = ({ postId, write, setWrite, viewOnly }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef(null);
   const [post, setPost] = useState(null);
@@ -51,74 +51,78 @@ export const Comments = ({ postId, write, setWrite }) => {
   };
   return (
     <div className="w-100">
-      <form
-        onSubmit={handleSubmit}
-        className={`border-0 border-bottom d-flex flex-column align-items-end p-3 ${styles.form}`}
-      >
-        <textarea
-          ref={inputRef}
-          className={`p-0  border-0 rounded  w-100 ${styles.formInput}`}
-          placeholder="Escriba su comentario"
-          id="content"
-          value={content}
-          onBlur={() => {
-            setWrite(false);
-          }}
-          onChange={(e) => setContent(e.target.value)}
-        ></textarea>
-        <div className="d-flex justify-content-between align-items-center w-100">
-          <div className=" w-100 d-flex justify-content-between  pt-2">
-            <div className="d-flex">
+      {viewOnly && (
+        <form
+          onSubmit={handleSubmit}
+          className={`border-0 border-bottom d-flex flex-column align-items-end p-3 ${styles.form}`}
+        >
+          <textarea
+            ref={inputRef}
+            className={`p-0  border-0 rounded  w-100 ${styles.formInput}`}
+            placeholder="Escriba su comentario"
+            id="content"
+            value={content}
+            onBlur={() => {
+              setWrite(false);
+            }}
+            onChange={(e) => setContent(e.target.value)}
+          ></textarea>
+          <div className="d-flex justify-content-between align-items-center w-100">
+            <div className=" w-100 d-flex justify-content-between  pt-2">
+              <div className="d-flex">
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center h-100 me-1"
+                >
+                  <span className="material-symbols-outlined fs-5">
+                    attachment
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center h-100 me-1"
+                >
+                  <span className="material-symbols-outlined fs-5">
+                    gif_box
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center h-100 me-1"
+                >
+                  <span className="material-symbols-outlined fs-5">
+                    location_on
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center h-100 me-1"
+                >
+                  <span className="material-symbols-outlined fs-5">mood</span>
+                </button>
+              </div>
               <button
-                type="button"
-                className="btn d-flex align-items-center h-100 me-1"
+                disabled={content == "" || isSubmitting}
+                type="submit"
+                className="btn btn-primary text-light px-3 py-1 h-100 fw-bold"
               >
-                <span className="material-symbols-outlined fs-5">
-                  attachment
-                </span>
-              </button>
-              <button
-                type="button"
-                className="btn d-flex align-items-center h-100 me-1"
-              >
-                <span className="material-symbols-outlined fs-5">gif_box</span>
-              </button>
-              <button
-                type="button"
-                className="btn d-flex align-items-center h-100 me-1"
-              >
-                <span className="material-symbols-outlined fs-5">
-                  location_on
-                </span>
-              </button>
-              <button
-                type="button"
-                className="btn d-flex align-items-center h-100 me-1"
-              >
-                <span className="material-symbols-outlined fs-5">mood</span>
+                {isSubmitting ? (
+                  <>
+                    <span className="sr-only">Responder</span>
+                    <span
+                      className="spinner-border spinner-border-sm ms-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </>
+                ) : (
+                  "Responder"
+                )}
               </button>
             </div>
-            <button
-              disabled={content == "" || isSubmitting}
-              type="submit"
-              className="btn btn-primary text-light px-3 py-1 h-100 fw-bold"
-            >
-              {isSubmitting ? (
-                <>
-                  <span className="sr-only">Responder</span>
-                  <span
-                    className="spinner-border spinner-border-sm ms-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                </>
-              ) : (
-                "Responder"
-              )}
-            </button>
           </div>
-        </div>
-      </form>
+        </form>
+      )}
       <div className="d-flex flex-column align-items-center">
         {loading ? (
           <div className={`d-flex justify-content-center my-3`}>

@@ -52,7 +52,12 @@ export const PostPage = () => {
             </span>
           </div>
           <Post postId={postId} details={true} setWrite={setWrite} />
-          <Comments postId={postId} write={write} setWrite={setWrite} />
+          <Comments
+            postId={postId}
+            write={write}
+            setWrite={setWrite}
+            viewOnly={true}
+          />
         </div>
         <div className={`${styles.asideContainer}`}>
           <RecommendedAccounts />

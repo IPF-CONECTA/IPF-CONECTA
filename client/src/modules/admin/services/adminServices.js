@@ -40,3 +40,16 @@ export const updateAssociationStatus = async (id, status, justification) => {
     };
   }
 };
+
+export const getReports = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/reports`, {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      }
+    })
+    return { status: res.status, data: res.data }
+  } catch (error) {
+    return { status: error.status }
+  }
+}

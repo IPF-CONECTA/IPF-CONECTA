@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "../../../../public/css/dashboard.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
 import { Stats } from "./Stats";
+import { ReportsContainer } from "./Reports";
 
 export const AdminDashboard = () => {
   const [associations, setAssociations] = useState([]);
@@ -169,9 +170,7 @@ export const AdminDashboard = () => {
               className="border rounded-3 p-3 mb-3 w-50"
               style={{ marginRight: "2.3rem" }}
             >
-              <span className="fw-bold fs-3 ">
-                Reportes ({associations.length})
-              </span>
+              <ReportsContainer />
             </div>
           </div>
         ) : (

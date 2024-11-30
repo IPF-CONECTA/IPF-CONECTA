@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FsLightbox from "fslightbox-react";
 import { getDateWithHour, getTime } from "../../../../helpers/getTime";
@@ -17,6 +17,7 @@ import { closeSnackbar, enqueueSnackbar } from "notistack";
 import { useNoti } from "../../../../hooks/useNoti";
 import { ReportModal } from "../../../app/components/ReportModal";
 import { AnswerModal } from "./answerModal";
+import { authContext } from "../../../../context/auth/Context";
 
 export const Post = ({
   postData = null,
@@ -25,6 +26,7 @@ export const Post = ({
   setWrite,
   fetchPosts,
 }) => {
+  const { authState } = useContext(authContext);
   const [post, setPost] = useState(postData);
   const navigate = useNavigate();
   const [lightboxController, setLightboxController] = useState({
@@ -73,6 +75,9 @@ export const Post = ({
 
   const handleShare = async (e, id) => {
     e.stopPropagation();
+    if (authState.role == "admin") {
+      return noti("No puedes compartir como administrador", "error");
+    }
     const ShareData = {
       title: "Compartir post",
       text: "Comparte este post con tus amigos",
@@ -83,6 +88,9 @@ export const Post = ({
 
   const handleLike = async (e) => {
     e.stopPropagation();
+    if (authState.role == "admin") {
+      return noti("No puedes dar like como administrador", "error");
+    }
     const res = await like(post?.id);
     if (res.status !== 201 && res.status !== 204) {
       return;
@@ -94,23 +102,6 @@ export const Post = ({
       setLiked(false);
       if (post.likes.length > 0) {
         post.likes.length--;
-      }
-    }
-  };
-
-  const handleRepost = async (e) => {
-    e.stopPropagation();
-    const res = await repostSvc(post?.id);
-    if (res.status !== 201 && res.status !== 204) {
-      return;
-    }
-    if (res.status === 201) {
-      post.reposts.length++;
-      setReposted(true);
-    } else if (res.status === 204) {
-      setReposted(false);
-      if (post.reposts.length > 0) {
-        post.reposts.length--;
       }
     }
   };
@@ -174,6 +165,9 @@ export const Post = ({
   const handleComment = async (e, content) => {
     e.preventDefault();
     e.stopPropagation();
+    if (authState.role == "admin") {
+      return noti("No puedes comentar como administrador", "error");
+    }
     setIsSubmitting(true);
     try {
       const status = await postSvc(content, null, post?.id);
@@ -245,7 +239,7 @@ export const Post = ({
               !details &&
                 navigate(`/${post?.profile.user.username}/post/${post?.id}`);
             }}
-            className={`d-flex flex-column w-100  p-3 border-bottom `}
+            className={`d-flex flex-column w-100 bg-white  p-3 border-bottom `}
           >
             <header className="position-relative">
               <div className="avatar d-flex align-items-start">
@@ -703,10 +697,10 @@ export const Post = ({
                     </ul>
                   </div>
                   <ReportModal
+                    reportableId={post?.id}
                     openModal={openReportModal}
                     setOpenModal={setOpenReportModal}
-                    reportableId={post?.id}
-                    reportable={"publicación"}
+                    reportableType={"post"}
                   />
                 </div>
               </div>
@@ -738,6 +732,12 @@ export const Post = ({
                   className="btn p-0 d-flex align-items-center"
                   onClick={(e) => {
                     e.stopPropagation();
+                    if (authState.role == "admin") {
+                      return noti(
+                        "No puedes comentar como administrador",
+                        "error"
+                      );
+                    }
                     details ? setWrite(true) : setShowAnswerModal(true);
                   }}
                 >
