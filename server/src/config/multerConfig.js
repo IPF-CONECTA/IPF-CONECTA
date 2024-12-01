@@ -9,6 +9,8 @@ const storage = multer.diskStorage({
       cb(null, "uploads/profilePics/"); // Carpeta para perfiles
     } else if (file.fieldname === "images") {
       cb(null, "uploads/images/"); // Carpeta para imágenes
+    } else if (file.fieldname === "attachments") {
+      cb(null, "uploads/attachments/"); // Carpeta para archivos adjuntos
     } else {
       cb(new Error("Campo de archivo no válido"), false);
     }

@@ -90,6 +90,7 @@ export const authLogInSvc = async (user) => {
         ]
       }
     })
+    console.log("isUser", isUser.id)
     if (!isUser) {
       throw new Error('No se encontro una cuenta con ese email o nombre de usuario')
     }
@@ -104,6 +105,7 @@ export const authLogInSvc = async (user) => {
     const token = jwt.sign({ userId: isUser.id }, process.env.TOKEN_SECRET_KEY);
 
     const existingUser = await getUserById(isUser.id)
+    console.log("existingUser", existingUser)
 
     const response = { token, existingUser, isVerified };
 
@@ -114,6 +116,7 @@ export const authLogInSvc = async (user) => {
     return response;
 
   } catch (error) {
+    console.log(error)
     throw new Error(error.message)
   }
 }

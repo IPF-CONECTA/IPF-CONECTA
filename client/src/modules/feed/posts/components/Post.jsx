@@ -26,6 +26,7 @@ export const Post = ({
   fetchPosts,
 }) => {
   const [post, setPost] = useState(postData);
+  console.log(post);
   const navigate = useNavigate();
   const [lightboxController, setLightboxController] = useState({
     toggler: false,
@@ -243,7 +244,7 @@ export const Post = ({
           <article
             onClick={() => {
               !details &&
-                navigate(`/${post?.profile.user.username}/post/${post?.id}`);
+                navigate(`/${post?.profile?.user.username}/post/${post?.id}`);
             }}
             className={`d-flex flex-column w-100  p-3 border-bottom `}
           >
@@ -256,16 +257,16 @@ export const Post = ({
                     height={35}
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/perfil/${post?.profile.user.username}`);
+                      navigate(`/perfil/${post?.profile?.user.username}`);
                     }}
                     onMouseEnter={() =>
-                      handleShowProfile(true, post?.profile.user.username)
+                      handleShowProfile(true, post?.profile?.user.username)
                     }
                     onMouseLeave={() =>
-                      handleShowProfile(false, post?.profile.user.username)
+                      handleShowProfile(false, post?.profile?.user.username)
                     }
-                    src={`${BASE_URL}/images/${post?.profile.profilePic}`}
-                    alt={post?.profile.names}
+                    src={`${BASE_URL}/images/${post?.profile?.profilePic}`}
+                    alt={post?.profile?.names}
                   />
                   {profile && (
                     <ProfileHover
@@ -280,10 +281,10 @@ export const Post = ({
                   <div className={`d-flex flex-column w-100 mb-2`}>
                     <div>
                       <span className="fw-bold fs-6 me-2">
-                        {post?.profile.names} {post?.profile.surnames}
+                        {post?.profile?.names} {post?.profile?.surnames}
                       </span>
                       <span className={`text-muted me-2 ${styles.smallText}`}>
-                        @{post?.profile.user?.username}
+                        @{post?.profile?.user?.username}
                       </span>
                       {!details && (
                         <span className={`text-secondary ${styles.smallText}`}>
@@ -646,7 +647,7 @@ export const Post = ({
                               }}
                               className="dropdown-item p-0 d-flex justify-content-between "
                             >
-                              Seguir a {post?.profile.names}{" "}
+                              Seguir a {post?.profile?.names}{" "}
                               <span className="material-symbols-outlined text-primary ms-1">
                                 person_add
                               </span>
@@ -678,7 +679,7 @@ export const Post = ({
                               onClick={(e) => {
                                 e.stopPropagation();
                                 enqueueSnackbar(
-                                  `Bloquear a ${post?.profile.user.username}?`,
+                                  `Bloquear a ${post?.profile?.user.username}?`,
                                   {
                                     action: actionBlock,
                                     autoHideDuration: 5000,
@@ -692,7 +693,7 @@ export const Post = ({
                               }}
                               className="dropdown-item d-flex p-0 justify-content-between"
                             >
-                              Bloquear a {post?.profile.names}
+                              Bloquear a {post?.profile?.names}
                               <span className="material-symbols-outlined text-primary  ms-1">
                                 block
                               </span>

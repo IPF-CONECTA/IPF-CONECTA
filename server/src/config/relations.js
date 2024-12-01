@@ -44,6 +44,7 @@ import { JobPostulation } from "../modules/recruiters/job/jobPostulation/jobPost
 import { CompanyLocation } from "../modules/recruiters/companies/companyLocation/companyLocationModel.js";
 import { CompanyIndustry } from "../modules/recruiters/companies/companyIndustry/companyIndustryModel.js";
 import { Institute } from "../modules/profile/education/institutes/instituteModel.js";
+import { Attachment } from "../modules/attachment/attachmentModel.js";
 
 export const createRelations = async () => {
   try {
@@ -192,8 +193,6 @@ export const createRelations = async () => {
       as: "comments",
       onDelete: "CASCADE",
     });
-
-
 
     ReportReason.hasMany(Report, {
       foreignKey: "reasonId",
@@ -487,7 +486,6 @@ export const createRelations = async () => {
       as: "job",
     });
 
-
     // Experience
     Experience.belongsTo(State, {
       foreignKey: "locationId",
@@ -548,3 +546,15 @@ export const createRelations = async () => {
     console.log(error);
   }
 };
+
+Idea.hasMany(Attachment, {
+  foreignKey: "attachmentableId",
+  constraints: false,
+  scope: { attachmentableType: "idea" },
+  as: "attachments",
+});
+Attachment.belongsTo(Idea, {
+  foreignKey: "attachmentableId",
+  constraints: false,
+  as: "idea",
+});

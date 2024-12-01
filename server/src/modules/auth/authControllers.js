@@ -73,7 +73,7 @@ export const authLogInCtrl = async (req, res) => {
       response,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };
