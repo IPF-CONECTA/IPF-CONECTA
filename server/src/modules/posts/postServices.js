@@ -113,7 +113,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
           as: "profile",
           include: {
             model: User,
-            attributes: ["email", "username"],
+            attributes: ["id", "email", "username"],
           },
         },
         {

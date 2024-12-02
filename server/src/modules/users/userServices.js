@@ -85,7 +85,7 @@ export const getProfileIdByUsername = async (username) => {
 export const getUserById = async (userId) => {
   try {
     const user = await User.findByPk(userId, {
-      attributes: ["id", "email", "username"],
+      attributes: ["id", "email", "username", "banned", "suspensionExpires"],
       include: [
         {
           model: Profile,

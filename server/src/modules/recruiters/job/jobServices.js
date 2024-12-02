@@ -107,7 +107,7 @@ export const getJobByIdSvc = async (id, profileId) => {
           include: [
             {
               model: User,
-              attributes: ["username"],
+              attributes: ["id", "username"],
             },
           ],
         },

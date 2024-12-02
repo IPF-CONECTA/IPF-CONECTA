@@ -32,6 +32,14 @@ export const User = sequelize.define('user', {
     verified: {
         type: DataTypes.BOOLEAN(),
         defaultValue: false
+    },
+    banned: {
+        type: DataTypes.BOOLEAN(),
+        defaultValue: false
+    },
+    suspensionExpires: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
 
 })

@@ -59,8 +59,14 @@ export const getProfileByUsername = async (reqId, username) => {
 
 export const getProfileById = async (id) => {
   try {
-    const profile = await Profile.findByPk(id);
-    if (!profile) throw new Error("No se encontro el perfil");
+    const profile = await Profile.findByPk(id, {
+      attributes: ["id", "names", "surnames", "profilePic"],
+      include: {
+        model: User,
+        attributes: ["id", "username", "email"],
+      }
+    })
+    if (!profile) throw new Error("No se encontró el perfil");
     return profile;
   } catch (error) {
     throw error;

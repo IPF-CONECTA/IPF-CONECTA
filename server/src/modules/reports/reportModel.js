@@ -31,5 +31,17 @@ export const Report = sequelize.define('report', {
     profileId: {
         allowNull: false,
         type: DataTypes.UUID,
-    }
+    },
+    adminResponse: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    adminAction: {
+        type: DataTypes.ENUM('ignore', 'delete', 'suspend', 'ban'),
+        allowNull: true
+    },
+    suspendEnds: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
 })

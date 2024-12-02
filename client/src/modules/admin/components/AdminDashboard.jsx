@@ -167,7 +167,7 @@ export const AdminDashboard = () => {
               </div>
             </div>
             <div
-              className="border rounded-3 p-3 mb-3 w-50"
+              className="border rounded-3 p-3 mb-3 w-75"
               style={{ marginRight: "2.3rem" }}
             >
               <ReportsContainer />

@@ -41,14 +41,41 @@ export const updateAssociationStatus = async (id, status, justification) => {
   }
 };
 
-export const getReports = async () => {
+export const getReports = async (status) => {
   try {
-    const res = await axios.get(`${BASE_URL}/admin/reports`, {
+    const res = await axios.get(`${BASE_URL}/admin/report?status=${status}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       }
     })
     return { status: res.status, data: res.data }
+  } catch (error) {
+    return { status: error.status }
+  }
+}
+
+export const getReportById = async (id) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/report/${id}`, {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      }
+    })
+    return { status: res.status, data: res.data }
+  } catch (error) {
+    return { status: error.status }
+  }
+}
+
+export const resolveReport = async (data, id) => {
+  try {
+    const res = await axios.patch(`${BASE_URL}/admin/report/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}`,
+      }
+    })
+    console.log(res)
+    return { status: res.status }
   } catch (error) {
     return { status: error.status }
   }

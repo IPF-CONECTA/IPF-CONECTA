@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { BASE_URL } from "../../../constants/BASE_URL";
-import { getFullDate } from "../../../helpers/getTime";
 import { FaEye } from "react-icons/fa";
-import { Modal } from "@mui/material";
-import { Post } from "../../feed/posts/components/Post";
-import { Comments } from "../../feed/posts/components/Comments";
 import { Link } from "react-router-dom";
+import { PiNotePencilBold } from "react-icons/pi";
+import { ReportActionsModal } from "./ReportActionsModal";
+import { ReportedContentModal } from "./ReportedContentModal";
 
-export const ReportCard = ({ report }) => {
-  const [open, setOpen] = useState(false);
+export const ReportCard = ({ report, onResolve }) => {
+  const [openReport, setOpenReport] = useState(false);
+  const [openActions, setOpenActions] = useState(false);
   return (
     <>
       <tr>
-        <td>{getFullDate(report.createdAt)}</td>
+        <td>{new Date(report.createdAt).toLocaleDateString()}</td>
         <td>{report?.reportableType}</td>
         <td>{report?.reportReason?.reason}</td>
         <td> {report?.reportReason?.severity}</td>
@@ -35,30 +35,36 @@ export const ReportCard = ({ report }) => {
           <span className="border rounded px-1">{report?.status}</span>
         </td>
         <td>
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            className="btn p-1 bg-dark text-white d-flex"
-          >
-            <FaEye />
-          </button>
+          <div className="d-flex gap-1">
+            <button
+              type="button"
+              onClick={() => setOpenReport(true)}
+              className="btn p-1 bg-dark text-white d-flex"
+            >
+              <FaEye />
+            </button>
+            <button
+              onClick={() => setOpenActions(true)}
+              type="button"
+              className="btn p-1 bg-dark text-white d-flex"
+            >
+              <PiNotePencilBold />
+            </button>
+          </div>
         </td>
       </tr>
 
-      <Modal
-        className="d-flex align-items-center justify-content-center"
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        {report?.reportableType == "post" ? (
-          <div className="w-50 rounded-3 overflow-hidden">
-            <Post postId={report?.reportableId} details={true} />
-            <Comments postId={report?.reportableId} />
-          </div>
-        ) : (
-          <div>prueba</div>
-        )}
-      </Modal>
+      <ReportActionsModal
+        open={openActions}
+        setOpen={setOpenActions}
+        reportId={report.id}
+        onResolve={onResolve}
+      />
+      <ReportedContentModal
+        openReport={openReport}
+        setOpenReport={setOpenReport}
+        report={report}
+      />
     </>
   );
 };
