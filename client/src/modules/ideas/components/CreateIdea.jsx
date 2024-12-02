@@ -6,12 +6,17 @@ import {
   Card,
   Button,
   Form,
-  Modal,
+  Carousel,
 } from "react-bootstrap";
 import { useSnackbar } from "notistack";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
 import { authContext } from "../../../context/auth/Context";
 import { getIdeas, createIdea, getIdeaById } from "../services/ideaServices";
 import { BASE_URL } from "../../../constants/BASE_URL";
+import "../../../styles/IdeaModal.css";
 
 export const IdeaProjects = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -31,7 +36,7 @@ export const IdeaProjects = () => {
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIdea, setSelectedIdea] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
   const { authState } = useContext(authContext);
   const { token, user } = authState;
@@ -141,10 +146,10 @@ export const IdeaProjects = () => {
       return;
     }
     setSelectedIdea(res.data);
-    setShowModal(true);
+    setShowDialog(true);
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseDialog = () => setShowDialog(false);
 
   return (
     <Container className="my-5">
@@ -152,7 +157,7 @@ export const IdeaProjects = () => {
         <Col md={6} lg={5}>
           <Card className="shadow-lg">
             <Card.Body className="p-4">
-              <span className="fw-semibold fs-3 ">Añadir Nueva Idea</span>
+              <span className="fw-semibold fs-3 ">Añadir un Proyecto</span>
               <Form
                 onSubmit={handleAddIdea}
                 className="border-0 shadow-none p-0"
@@ -161,7 +166,7 @@ export const IdeaProjects = () => {
                   <Form.Label>Título</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Título de la idea"
+                    placeholder="Título del proyecto"
                     value={newIdea.title}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, title: e.target.value })
@@ -174,7 +179,7 @@ export const IdeaProjects = () => {
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    placeholder="Descripción de la idea"
+                    placeholder="Descripción del proyecto"
                     value={newIdea.description}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, description: e.target.value })
@@ -218,7 +223,7 @@ export const IdeaProjects = () => {
                   <Form.Control
                     as="textarea"
                     rows={2}
-                    placeholder="¿Por qué es importante esta idea?"
+                    placeholder="¿Por qué es importante este proyecto?"
                     value={newIdea.justification}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, justification: e.target.value })
@@ -294,13 +299,13 @@ export const IdeaProjects = () => {
               <Form.Group controlId="formSearch" className="mb-4">
                 <Form.Control
                   type="text"
-                  placeholder="Buscar ideas por título"
+                  placeholder="Buscar proyectos por título"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Form.Group>
 
-              <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <div style={{overflowY: "hidden" }}>
                 {filteredIdeas.length > 0 ? (
                   filteredIdeas.map((idea) => (
                     <Card
@@ -315,7 +320,6 @@ export const IdeaProjects = () => {
                           Categoría: {idea.category}
                         </Card.Subtitle>
                         <Card.Text>
-                          Creación: {idea.creationDate}
                           <br />
                           Complejidad: {idea.complexity}
                           <br />
@@ -334,39 +338,58 @@ export const IdeaProjects = () => {
           </Card>
         </Col>
       </Row>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedIdea?.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            <strong>Descripción:</strong> {selectedIdea?.description}
-          </p>
-          <p>
-            <strong>Categoría:</strong> {selectedIdea?.category}
-          </p>
-          <p>
-            <strong>Objetivos:</strong> {selectedIdea?.objectives}
-          </p>
-          <p>
-            <strong>Justificación:</strong> {selectedIdea?.justification}
-          </p>
-          <p>
-            <strong>Tecnologías:</strong> {selectedIdea?.technologies}
-          </p>
-          <p>
-            <strong>Beneficiarios:</strong> {selectedIdea?.beneficiaries}
-          </p>
-          {selectedIdea?.attachments.map((attachment) => (
-            <img src={`${BASE_URL}/images/${attachment.url}`} alt="" />
-          ))}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+      <Dialog
+        open={showDialog}
+        onClose={handleCloseDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>{selectedIdea?.title}</DialogTitle>
+        <DialogContent>
+          <div className="modal-body-container">
+            <div className="modal-text-content">
+              <p>
+                <strong>Descripción:</strong> {selectedIdea?.description}
+              </p>
+              <p>
+                <strong>Categoría:</strong> {selectedIdea?.category}
+              </p>
+              <p>
+                <strong>Objetivos:</strong> {selectedIdea?.objectives}
+              </p>
+              <p>
+                <strong>Justificación:</strong> {selectedIdea?.justification}
+              </p>
+              <p>
+                <strong>Tecnologías:</strong> {selectedIdea?.technologies}
+              </p>
+              <p>
+                <strong>Beneficiarios:</strong> {selectedIdea?.beneficiaries}
+              </p>
+            </div>
+            {selectedIdea?.attachments?.length > 0 && (
+              <div className="modal-carousel-container">
+                <Carousel className="modal-carousel">
+                  {selectedIdea.attachments.map((attachment, index) => (
+                    <Carousel.Item key={index}>
+                      <img
+                        className="d-block w-100 modal-carousel-image"
+                        src={`${BASE_URL}/images/${attachment.url}`}
+                        alt={`Attachment ${index + 1}`}
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} variant="secondary">
             Cerrar
           </Button>
-        </Modal.Footer>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

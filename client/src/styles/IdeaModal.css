@@ -1,0 +1,49 @@
+/* General styles for the modal */
+.modal-body-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-text-content {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.modal-carousel-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.modal-carousel {
+  width: 100%;
+  max-width: 600px; /* Limits the size of the carousel */
+}
+
+.modal-carousel-image {
+  width: 100%; /* Ensures the image stretches across the carousel */
+  max-width: 600px; /* Align with carousel width */
+  height: 300px; /* Fixed height for consistency */
+  object-fit: cover; /* Crops image to fit dimensions without distortion */
+  border-radius: 8px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .modal-body-container {
+    flex-direction: column;
+  }
+
+  .modal-carousel {
+    max-width: 100%; /* Full width on smaller devices */
+  }
+
+  .modal-carousel-image {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+  }
+}

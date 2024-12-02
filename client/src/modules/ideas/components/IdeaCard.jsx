@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { likeIdea } from "../services/ideaServices";
 import { authContext } from "../../../context/auth/Context";
 import { useNoti } from "../../../hooks/useNoti";
 import styles from "../../../../public/css/ideaCard.module.css";
+import "../../../styles/IdeaModal.css";
 
-export const IdeaCard = ({ idea }) => {
+export const IdeaCard = ({ idea, onClick }) => {
   const [liked, setLiked] = useState(idea.liked);
-  const navigate = useNavigate();
   const noti = useNoti();
   const { authState } = useContext(authContext);
 
@@ -28,7 +27,7 @@ export const IdeaCard = ({ idea }) => {
   return (
     <div
       className={`card h-100 shadow-sm border-0 cursor-pointer ${styles.ideaCard}`}
-      onClick={() => navigate(`/idea/${idea.id}`)}
+      onClick={() => onClick(idea)} 
     >
       <div className="card-body d-flex flex-column">
         <h5 className="card-title fw-bold text-primary">{idea.title}</h5>

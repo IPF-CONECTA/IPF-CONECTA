@@ -9,6 +9,7 @@ import { MdOutlineHelp } from "react-icons/md";
 import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
+import { FaRankingStar } from "react-icons/fa6";
 
 import { authContext } from "../../../context/auth/Context.js";
 import styles from "../../../../public/css/sidebar.module.css";
@@ -198,7 +199,7 @@ export const SideBar = () => {
         </button>
         <button
           onClick={() => {
-            navigate("/ideas-de-proyectos");
+            navigate("/crear-idea");
             setOpen(false);
           }}
           className={`d-flex align-items-center p-1 rounded btn ${styles.navItem}`}
@@ -214,6 +215,26 @@ export const SideBar = () => {
             } ms-2`}
           >
             Proyectos
+          </span>
+        </button>
+        <button
+          onClick={() => {
+            navigate("/ideas-de-proyectos");
+            setOpen(false);
+          }}
+          className={`d-flex align-items-center p-1 rounded btn ${styles.navItem}`}
+        >
+          <FaRankingStar
+            size={26}
+            color="#117bb9"
+            style={{ padding: "0.15rem" }}
+          />
+          <span
+            className={`${styles.navText} fw-semibold ${
+              open && styles.open
+            } ms-2`}
+          >
+            Ranking
           </span>
         </button>
         <button
