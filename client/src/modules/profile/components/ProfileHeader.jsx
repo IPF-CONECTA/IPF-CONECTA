@@ -10,7 +10,7 @@ import { useChatContext } from "../../../context/chat/ChatContext";
 import { authContext } from "../../../context/auth/Context";
 import { useNoti } from "../../../hooks/useNoti";
 
-export const Header = ({ profileData, setProfileData }) => {
+export const Header = ({ profileData, setProfileData, error }) => {
   const navigate = useNavigate();
 
   const { authState } = useContext(authContext);
@@ -76,7 +76,11 @@ export const Header = ({ profileData, setProfileData }) => {
         >
           <div className="w-100">
             <img
-              src={`${BASE_URL}/images/${profileData?.profile?.profilePic}`}
+              src={`${BASE_URL}/images/${
+                profileData?.profile?.profilePic
+                  ? profileData?.profile?.profilePic
+                  : "defaultPfp.jpg"
+              }`}
               height={200}
               alt="profile pic"
               className="rounded-circle bg-light border border-white border-5 "
@@ -84,49 +88,56 @@ export const Header = ({ profileData, setProfileData }) => {
             <div className="d-flex justify-content-between w-100">
               <div>
                 <div className="d-flex flex-column justify-content-center">
-                  <span className="text-dark fs-4 fw-bold">
-                    {profileData?.profile?.names +
-                      " " +
-                      profileData?.profile?.surnames}{" "}
-                    <span className="text-secondary fw-normal fs-6 ms-2">
-                      @{profileData?.profile?.user.username}
-                    </span>
-                  </span>
-
-                  {profileData?.profile?.title && (
-                    <span className="text-dark fst-italic ">
-                      {profileData.profile.title}
-                    </span>
+                  {profileData?.profile ? (
+                    <>
+                      <span className="text-dark fs-4 fw-bold">
+                        {profileData?.profile?.names +
+                          " " +
+                          profileData?.profile?.surnames}{" "}
+                        <span className="text-secondary fw-normal fs-6 ms-2">
+                          @{profileData?.profile?.user.username}
+                        </span>
+                      </span>
+                      {profileData?.profile?.title && (
+                        <span className="text-dark fst-italic ">
+                          {profileData.profile.title}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-dark fs-4 fw-bold">{error}</div>
                   )}
                 </div>
-                <div className="d-flex mb-2">
-                  <div
-                    className="text-dark-emphasis  me-3 align-items-center"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setOpenConnections(true);
-                      setTypeConnection("followers");
-                    }}
-                  >
-                    <span>{profileData?.cantFollowers}</span> seguidores
+                {profileData && (
+                  <div className="d-flex mb-2">
+                    <div
+                      className="text-dark-emphasis  me-3 align-items-center"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setOpenConnections(true);
+                        setTypeConnection("followers");
+                      }}
+                    >
+                      <span>{profileData?.cantFollowers}</span> seguidores
+                    </div>
+                    <div
+                      className="text-dark-emphasis align-items-center"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setOpenConnections(true);
+                        setTypeConnection("following");
+                      }}
+                    >
+                      <span>{profileData?.cantFollowing}</span> siguiendo
+                    </div>
+                    <ConnectionsModal
+                      openConnections={openConnections}
+                      setOpenConnections={setOpenConnections}
+                      typeConnection={typeConnection}
+                      username={profileData?.profile?.user?.username}
+                    />
                   </div>
-                  <div
-                    className="text-dark-emphasis align-items-center"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setOpenConnections(true);
-                      setTypeConnection("following");
-                    }}
-                  >
-                    <span>{profileData?.cantFollowing}</span> siguiendo
-                  </div>
-                  <ConnectionsModal
-                    openConnections={openConnections}
-                    setOpenConnections={setOpenConnections}
-                    typeConnection={typeConnection}
-                    username={profileData?.profile?.user?.username}
-                  />
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -145,6 +156,7 @@ export const Header = ({ profileData, setProfileData }) => {
                 </span>
               )}
               <button
+                disabled={!profileData}
                 className="btn btn-light border d-flex align-items-center text-decoration-none p-1 me-4"
                 title="Enviar mensaje"
                 onClick={handleChatClick}
@@ -154,6 +166,7 @@ export const Header = ({ profileData, setProfileData }) => {
                 </span>
               </button>
               <button
+                disabled={!profileData}
                 className={`btn my-1 ${styles.followBtn} ${
                   profileData?.isFollowing
                     ? `btn-outline-primary fw-bold ${

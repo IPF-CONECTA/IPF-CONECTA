@@ -30,17 +30,18 @@ export const Profile = ({ data }) => {
   const [posts, setPosts] = useState([]);
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState(null);
   const fetchProfile = async () => {
     setLoading(true);
     try {
       const res = await getProfile(data ? data : username);
+      console.log(res);
       if (res.status !== 200) {
+        setError(res.error);
         return noti(res.message, "error");
       }
       setProfileData(res.data);
     } catch (error) {
-      console.log(error);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -106,15 +107,17 @@ export const Profile = ({ data }) => {
     setSkills([]);
     setPosts([]);
 
-    fetchPosts();
-    fetchSkills();
     fetchProfile();
-    fetchProjects();
-    fetchJobOffers();
-    fetchEducations();
-    fetchExperiences();
-    if (role === "recruiter") {
+    if (profileData) {
+      fetchPosts();
+      fetchSkills();
+      fetchProjects();
       fetchJobOffers();
+      fetchEducations();
+      fetchExperiences();
+      if (role === "recruiter") {
+        fetchJobOffers();
+      }
     }
   }, [data, username]);
 
@@ -137,8 +140,12 @@ export const Profile = ({ data }) => {
           ></span>
         </div>
       ) : (
-        <div>
-          <Header profileData={profileData} setProfileData={setProfileData} />
+        <div className="border rounded-4">
+          <Header
+            profileData={profileData}
+            setProfileData={setProfileData}
+            error={error}
+          />
           <Nav role={role} />
           <main className="w-100">
             <AboutCard

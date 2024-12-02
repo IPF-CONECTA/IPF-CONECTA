@@ -52,22 +52,24 @@ export const ReportActionsModal = ({ open, setOpen, reportId, onResolve }) => {
     <>
       <Dialog maxWidth="xs" fullWidth open={open} onClose={handleClose}>
         <div className="rounded-3 bg-white p-3">
-          <div className="d-flex justify-content-between">
-            <h3>Resolver reporte</h3>
-            <div className="d-flex align-items-center gap-2">
-              <small className="fw-semibold">Ver contenido</small>
-              <button
-                className="btn d-flex p-1 btn-dark"
-                onClick={() => setOpenContent(true)}
-                type="button"
-              >
-                <FaEye />
-              </button>
+          <div className="mb-3">
+            <div className="d-flex justify-content-between">
+              <h3 className="m-0">Resolver reporte</h3>
+              <div className="d-flex align-items-center gap-2">
+                <small className="fw-semibold">Ver contenido</small>
+                <button
+                  className="btn d-flex p-1 btn-dark"
+                  onClick={() => setOpenContent(true)}
+                  type="button"
+                >
+                  <FaEye />
+                </button>
+              </div>
             </div>
+            <small className="text-secondary">
+              Revise los detalles del reporte y tome una acción
+            </small>
           </div>
-          <small className="text-secondary">
-            Revise los detalles del reporte y tome una acción
-          </small>
           <div>
             <div className="profileData border rounded p-1 my-2 d-flex align-items-center gap-2">
               <Link

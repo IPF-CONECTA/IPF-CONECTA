@@ -36,6 +36,8 @@ export const getRecommendedProfilesSvc = async (profileId) => {
         model: User,
         attributes: ["id", "email", "username"],
         where: {
+          banned: false,
+          suspensionExpires: [Op.or]([null, { [Op.lt]: new Date() }]),
           [Op.or]: [
             { roleId: BASIC_ROLES.recruiter },
             { roleId: BASIC_ROLES.student },

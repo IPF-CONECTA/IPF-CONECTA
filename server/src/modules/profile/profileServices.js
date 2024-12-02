@@ -13,7 +13,7 @@ export const getProfileByUsername = async (reqId, username) => {
         where: {
           username,
         },
-        attributes: ["id", "username", "email"],
+        attributes: ["id", "username", "email", "banned", "suspensionExpires"],
         include: {
           model: Role,
           attributes: ["name"],
@@ -53,7 +53,7 @@ export const getProfileByUsername = async (reqId, username) => {
     }
     return res;
   } catch (error) {
-    throw error;
+    console.log("Error en getProfileByUsername");
   }
 };
 
@@ -63,6 +63,7 @@ export const getProfileById = async (id) => {
       attributes: ["id", "names", "surnames", "profilePic"],
       include: {
         model: User,
+        where: { banned: false },
         attributes: ["id", "username", "email"],
       }
     })

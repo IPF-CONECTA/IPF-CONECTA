@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Comments } from "../components/Comments";
 import { getPost } from "../../services/feedServices";
+import { useNoti } from "../../../../hooks/useNoti";
 
 export const PostPage = () => {
   const { postId } = useParams();
   const [write, setWrite] = useState(false);
   const [answersTo, setAnswersTo] = useState(null);
+  const noti = useNoti();
   const navigate = useNavigate();
   const fetchPost = async () => {
     try {

@@ -47,7 +47,7 @@ export const getProfile = async (username) => {
     );
     return { data: res.data, status: res.status };
   } catch (error) {
-    return { status: error.status, error: error.message };
+    return { status: error.status, error: error.response.data.message };
   }
 };
 

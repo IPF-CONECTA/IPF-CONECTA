@@ -229,7 +229,7 @@ export const getPostByIdSvc = async (postId, profileId) => {
 
     return post;
   } catch (error) {
-    throw new Error(error.message);
+    console.log("Error en get post by id")
   }
 };
 

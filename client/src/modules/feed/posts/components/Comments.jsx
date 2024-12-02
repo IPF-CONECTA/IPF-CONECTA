@@ -19,7 +19,7 @@ export const Comments = ({ postId, write, setWrite, viewOnly }) => {
     setLoading(true);
     try {
       const res = await getPost(postId);
-      if (res.message) {
+      if (res.status !== 200) {
         return noti(res.message, "error");
       }
       setPost(res.data);
@@ -51,7 +51,7 @@ export const Comments = ({ postId, write, setWrite, viewOnly }) => {
   };
   return (
     <div className="w-100">
-      {viewOnly && (
+      {viewOnly && post && !loading && (
         <form
           onSubmit={handleSubmit}
           className={`border-0 border-bottom d-flex flex-column align-items-end p-3 ${styles.form}`}

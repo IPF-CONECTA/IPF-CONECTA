@@ -56,60 +56,62 @@ export const AboutCard = ({ own, aboutData, username }) => {
   );
 
   return (
-    <div
-      className="w-100 border-bottom border-top d-flex flex-column p-4"
-      id="resumen"
-    >
-      <div className="d-flex justify-content-between mb-2">
-        <span className="fw-bold fs-5">Acerca de</span>
-        {own && !editDescription && (
-          <button
-            type="button"
-            onClick={() => setEditDescription(true)}
-            className="btn d-flex p-0 align-items-center"
-          >
-            <span className="material-symbols-outlined text-dark-emphasis">
-              edit
-            </span>
-          </button>
-        )}
-      </div>
-      {editDescription ? (
-        renderForm()
-      ) : (
-        <>
-          <div>
-            {about?.length > 160 ? (
-              showDescription ? (
+    aboutData && (
+      <div
+        className="w-100 border-bottom border-top d-flex flex-column p-4"
+        id="resumen"
+      >
+        <div className="d-flex justify-content-between mb-2">
+          <span className="fw-bold fs-5">Acerca de</span>
+          {own && !editDescription && (
+            <button
+              type="button"
+              onClick={() => setEditDescription(true)}
+              className="btn d-flex p-0 align-items-center"
+            >
+              <span className="material-symbols-outlined text-dark-emphasis">
+                edit
+              </span>
+            </button>
+          )}
+        </div>
+        {editDescription ? (
+          renderForm()
+        ) : (
+          <>
+            <div>
+              {about?.length > 160 ? (
+                showDescription ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: about?.replace(/\n/g, "<br />"),
+                    }}
+                  ></div>
+                ) : (
+                  <div>
+                    {about.slice(0, 160)}
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShowDescription(true)}
+                      className="text-secondary"
+                    >
+                      ...Ver más
+                    </span>
+                  </div>
+                )
+              ) : about !== null ? (
                 <div
                   dangerouslySetInnerHTML={{
                     __html: about?.replace(/\n/g, "<br />"),
                   }}
                 ></div>
               ) : (
-                <div>
-                  {about.slice(0, 160)}
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setShowDescription(true)}
-                    className="text-secondary"
-                  >
-                    ...Ver más
-                  </span>
-                </div>
-              )
-            ) : about !== null ? (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: about?.replace(/\n/g, "<br />"),
-                }}
-              ></div>
-            ) : (
-              <span className="text-secondary">Sin descripción</span>
-            )}
-          </div>
-        </>
-      )}
-    </div>
+                <span className="text-secondary">Sin descripción</span>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    )
   );
 };

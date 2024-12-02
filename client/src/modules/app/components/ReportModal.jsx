@@ -22,7 +22,6 @@ export const ReportModal = ({
   useEffect(() => {
     const fetchReportReasons = async () => {
       const res = await getReportReasons();
-      console.log(res);
       if (res.status == 200) {
         return setReportReasons(res.data);
       }

@@ -25,8 +25,6 @@ export const PostList = () => {
     setError(null);
     try {
       const res = await getPosts(reset ? 1 : page);
-      console.log("posts en la pag", page);
-      console.log(res);
       if (reset) {
         setPosts(res.data.rows);
         setPage(2);
@@ -83,8 +81,9 @@ export const PostList = () => {
   };
 
   const handleSubmit = async (event) => {
+    console.log(content.length);
     event.preventDefault();
-    if (content.length === 0 || content.length > 200) return;
+    if (content.length === 0 || content.length > 255) return;
     setIsSubmitting(true);
     const status = await postSvc(content, attachments);
     if (status !== 201) {

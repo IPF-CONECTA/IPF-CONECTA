@@ -6,11 +6,14 @@ export const getProfileByUsernameCtrl = async (req, res) => {
     const { username } = req.params
     try {
         const response = await getProfileByUsername(reqId, username)
-        if (!res) return res.status(404).json()
+        if (!response) return res.status(404).json({ message: "Cuenta no encontrada" })
+        if (new Date(response.profile.dataValues.user.dataValues.suspensionExpires) > new Date() || response.profile.dataValues.user.dataValues.banned) {
+            return res.status(403).json({ message: "Cuenta suspendida" })
+        }
         res.status(200).json(response)
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: "Error interno en el servidor" })
+        res.status(500).json()
     }
 
 }

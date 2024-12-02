@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import FsLightbox from "fslightbox-react";
 import { getDateWithHour, getTime } from "../../../../helpers/getTime";
 import { ProfileHover } from "../../../profile/components/ProfileHover";
+import { TbHelpTriangleFilled } from "react-icons/tb";
+
 import {
   getProfileInfo,
   like,
@@ -50,7 +52,8 @@ export const Post = ({
       setLoading(true);
       try {
         const res = await getPost(postId);
-        if (res.status !== 200) {
+        console.log(res);
+        if (res.status !== 200 && res.status !== 404) {
           return noti("Hubo un error al obtener la publicación", "error");
         }
         setPost(res.data);
@@ -155,7 +158,7 @@ export const Post = ({
 
   const handleDelete = async () => {
     const res = await deletePost(post?.id);
-    if (res.status !== 204) {
+    if (res.status !== 200) {
       return noti("Hubo un error al eliminar el post", "error");
     }
     noti("Post eliminado", "success");
@@ -171,7 +174,7 @@ export const Post = ({
     setIsSubmitting(true);
     try {
       const status = await postSvc(content, null, post?.id);
-      if (status !== 201) {
+      if (status !== 201 || status !== 404) {
         return noti("Hubo un error al publicar el post", "error");
       }
 
@@ -232,7 +235,7 @@ export const Post = ({
             aria-hidden={`true`}
           ></span>
         </div>
-      ) : (
+      ) : post ? (
         <>
           <article
             onClick={() => {
@@ -789,6 +792,11 @@ export const Post = ({
             />
           )}
         </>
+      ) : (
+        <div className="w-100 h-100 d-flex flex-column   align-items-center justify-content-center">
+          <TbHelpTriangleFilled size={40} />
+          <span className="fw-semibold">La pagina solicitada no existe</span>
+        </div>
       )}
       {showAnswerModal && !details && (
         <AnswerModal
