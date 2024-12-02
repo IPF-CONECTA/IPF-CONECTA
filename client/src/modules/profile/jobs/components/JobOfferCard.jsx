@@ -9,7 +9,7 @@ import { JobDetails } from "../../../recruiter/job/components/JobDetails";
 import { JobForm } from "../components/JobForm";
 import { jobPostulationsServices } from "../../../jobs/postulations/services/jobPostulationsServices";
 import { GrNotes } from "react-icons/gr";
-
+import { jobsServices } from "../services/jobsServices";
 export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
   const [openModal, setOpenModal] = useState(false);
   const [jobPostulationsNumber, setJobPostulationsNumber] = useState(0);
@@ -26,6 +26,14 @@ export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
       }
     });
   });
+
+  const handleChangeJobStatus = async (jobId) => {
+    const res = await jobsServices.changeJobStatus(jobId);
+    if (res.status !== 200) {
+      console.log("error");
+    }
+    onJobUpdate();
+  };
 
   return (
     <div className="d-flex justify-content-between w-100">
@@ -75,6 +83,16 @@ export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
               edit
             </span>
           </button>
+          <button
+            title="Cambiar estado"
+            className="btn d-flex p-1"
+            onClick={() => handleChangeJobStatus(jobOffer.id)}
+          >
+            <span className="material-symbols-outlined text-dark-emphasis">
+              {jobOffer?.active ? "visibility" : "visibility_off"}
+            </span>
+          </button>
+
           <Link
             to={`/empleo/${jobOffer.id}/postulaciones`}
             className="link-offset-1-hover text-decoration-none"

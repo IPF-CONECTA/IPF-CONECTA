@@ -71,4 +71,20 @@ export const jobsServices = {
       return { status: error.status };
     }
   },
+  changeJobStatus: async (jobId) => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/change-job-status/${jobId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authService.getToken()}`,
+          },
+        }
+      );
+      return { data: response.data, status: response.status };
+    } catch (error) {
+      return { status: error.status };
+    }
+  },
 };

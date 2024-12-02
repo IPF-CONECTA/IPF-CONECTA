@@ -91,7 +91,7 @@ export const Profile = ({ data }) => {
 
   const fetchPosts = async () => {
     const res = await postsServices.getPostsByUsername(data ? data : username);
-    if (res.status !== 200 && res.status !== 404) {
+    if (res?.status !== 200 && res?.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
     }
     setPosts(res.data);
@@ -120,7 +120,7 @@ export const Profile = ({ data }) => {
 
   useEffect(() => {
     if (profileData) {
-      setRole(profileData?.profile.user.role.name);
+      setRole(profileData.profile.user.role.name);
     }
   }),
     [profileData];
@@ -143,7 +143,7 @@ export const Profile = ({ data }) => {
           <main className="w-100">
             <AboutCard
               own={profileData?.own}
-              aboutData={profileData.profile.about}
+              aboutData={profileData?.profile?.about}
               username={username}
             />
             <PostsContainer
@@ -152,52 +152,53 @@ export const Profile = ({ data }) => {
               postsData={posts}
               onPostSubmit={fetchPosts}
             />
-            {(profileData.own || experiences?.length > 0) && (
+            {(profileData?.own || experiences?.length > 0) && (
               <ExperienceContainer
                 username={username}
-                own={profileData.own}
+                own={profileData?.own}
                 experiencesData={experiences}
                 onExperienceSubmit={fetchExperiences}
               />
             )}
-            {(profileData.own || educations?.length > 0) && (
+            {(profileData?.own || educations?.length > 0) && (
               <EducationsContainer
                 educationsData={educations}
-                own={profileData.own}
+                own={profileData?.own}
                 onEducationSubmit={fetchEducations}
                 username={username}
               />
             )}
             {role === "student" &&
-              (profileData.own || projects?.length > 0) && (
+              (profileData?.own || projects?.length > 0) && (
                 <Projects
-                  own={profileData.own}
-                  username={profileData.profile.user.username}
-                  names={profileData.profile.names}
+                  own={profileData?.own}
+                  username={profileData?.profile.user.username}
+                  names={profileData?.profile.names}
                   projectsData={projects}
                   onProjectSubmit={fetchProjects}
                 />
               )}
             {role === "recruiter" && (
               <JobOffers
-                own={profileData.own}
+                own={profileData?.own}
                 jobOffersData={jobOffers}
                 onJobUpdate={fetchJobOffers}
               />
             )}
 
-            {(profileData.own || skills?.length > 0) && (
+            {(profileData?.own || skills?.length > 0) && (
               <SkillsContainer
                 skillsData={skills}
-                own={profileData.own}
+                own={profileData?.own}
                 onSkillSubmit={fetchSkills}
                 username={username}
               />
             )}
-            {(profileData.own || profileData.profile.languages?.length > 0) && (
+            {(profileData?.own ||
+              profileData?.profile.languages?.length > 0) && (
               <LanguageSelector
-                languagesData={profileData.profile.languages}
-                own={profileData.own}
+                languagesData={profileData?.profile.languages}
+                own={profileData?.own}
                 username={username}
               />
             )}

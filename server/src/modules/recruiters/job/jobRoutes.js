@@ -11,6 +11,7 @@ import {
   getJobsByUsernameCtrl,
   deleteJobCtrl,
   editJobCtrl,
+  changeJobStatusCtrl,
 } from "./jobControllers.js";
 import { jobSchema } from "./jobSchema.js";
 import { validateSchema } from "../../../middlewares/expressValidator.js";
@@ -55,6 +56,13 @@ jobRoutes.put(
   validateSchema,
   isRecruiter,
   editJobCtrl
+);
+
+jobRoutes.put(
+  "/change-job-status/:id",
+  isToken,
+  isRecruiter,
+  changeJobStatusCtrl
 );
 
 export default jobRoutes;

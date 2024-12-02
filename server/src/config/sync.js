@@ -34,15 +34,15 @@ export const createTablesAndRelations = async () => {
 
   await createRelations();
   console.log("Relations created successfully");
-  // await sequelize.sync({ force: false });
-  await Report.sync({ force: false });
-  // await Experience.sync({ force: true })
+  await sequelize.sync({ force: false });
   console.log("Tables created successfully");
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // // ===================================================================================
+  // await Report.sync({ force: false });
+  // await Experience.sync({ force: true });
   // await Attachment.sync({ force: true });
-  // await createRoles();
+  // // await createRoles();
   // await createUserStates();
   // await createLangLevels();
   // await createSkills();
@@ -55,7 +55,7 @@ export const createTablesAndRelations = async () => {
   // await createContractTypes();
   // await createCompanyIndustry();
   // await createModalities();
-  // await createInstitutes()
+  // await createInstitutes();
   console.log("Data created successfully");
   console.timeEnd("Db created in:");
 };

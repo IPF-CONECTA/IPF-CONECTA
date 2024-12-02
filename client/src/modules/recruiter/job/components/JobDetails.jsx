@@ -87,6 +87,7 @@ export const JobDetails = ({ jobId }) => {
       </aside>
     );
   }
+  console.log(selectedJob);
 
   return (
     selectedJob && (
@@ -144,23 +145,29 @@ export const JobDetails = ({ jobId }) => {
               </button>
 
               {authState.role !== "recruiter" &&
-                (postulate ? (
-                  <button
-                    disabled
-                    type="submit"
-                    className="btn btn-outline-success "
-                    onClick={() => setPostulate(false)}
-                  >
-                    Postulado{" "}
-                  </button>
+                (selectedJob?.active === true ? (
+                  postulate ? (
+                    <button
+                      disabled
+                      type="submit"
+                      className="btn btn-outline-success"
+                      onClick={() => setPostulate(false)}
+                    >
+                      Postulado
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-success fw-semibold"
+                      onClick={() => handleCreatePostulation(selectedJob?.id)}
+                    >
+                      Postularse
+                    </button>
+                  )
                 ) : (
-                  <button
-                    type="submit"
-                    className="btn btn-success fw-semibold"
-                    onClick={() => handleCreatePostulation(selectedJob?.id)}
-                  >
-                    Postularse{" "}
-                  </button>
+                  <p className="text-danger fw-bold">
+                    Ya no acepta postulaciones
+                  </p>
                 ))}
             </div>
           </header>

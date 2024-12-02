@@ -8,6 +8,10 @@ export const createJobPostulationSvc = async (profId, jobId) => {
     const profile = await Profile.findByPk(profId);
     const profileId = profile.id;
 
+    const job = await Job.findByPk(jobId);
+    if (job.active === false)
+      throw new Error("El trabajo ya no acepta postulaciones");
+
     const exists = await JobPostulation.findOne({
       where: { profileId, jobId },
     });

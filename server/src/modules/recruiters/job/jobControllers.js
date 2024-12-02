@@ -7,6 +7,7 @@ import {
   getJobByIdSvc,
   getJobsSvc,
   updateJobSvc,
+  changeJobStatusSvc,
 } from "./jobServices.js";
 
 export const createNewJobCtrl = async (req, res) => {
@@ -114,6 +115,17 @@ export const editJobCtrl = async (req, res) => {
 
     const updatedJob = await updateJobSvc(jobId, req.body.jobData, profileId);
     res.status(200).json(updatedJob);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
+
+export const changeJobStatusCtrl = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const job = await changeJobStatusSvc(id);
+    return res.status(200).json(job);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
