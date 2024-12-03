@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { Modal, Button } from "react-bootstrap";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  IconButton,
+} from "@mui/material";
 import { getProfile } from "../../../feed/services/feedServices";
 import {
   getUserLanguages,
@@ -24,7 +31,7 @@ export const LanguagesEdit = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [availableLanguages, setAvailableLanguages] = useState([]);
   const [availableLanguageLevels, setAvailableLanguageLevels] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newLang, setNewLang] = useState(null);
   const [newLangLevel, setNewLangLevel] = useState(null);
   const [editingLanguageId, setEditingLanguageId] = useState(null);
@@ -102,7 +109,7 @@ export const LanguagesEdit = () => {
   };
 
   const handleEditClick = (language) => {
-    setIsModalOpen(true);
+    setIsDialogOpen(true);
     setEditingLanguageId(language.id);
     setNewLang({
       value: language.langId,
@@ -122,7 +129,7 @@ export const LanguagesEdit = () => {
         newLangLevel.value
       );
       noti("Idioma actualizado con éxito", "success");
-      setIsModalOpen(false);
+      setIsDialogOpen(false);
       await fetchUserLanguages();
     } catch (error) {
       console.error("Error updating language:", error);
@@ -171,34 +178,21 @@ export const LanguagesEdit = () => {
                         {getLanguageLevelName(language.langLevelId)}
                       </span>
                       <div className="d-flex">
-                        <Button
-                          onClick={() => handleEditClick(language)}
-                          className="me-2"
-                          style={{
-                            backgroundColor: "transparent",
-                            border: "none",
-                            color: "black",
-                          }}
-                        >
+                        <IconButton onClick={() => handleEditClick(language)}>
                           <span className="material-symbols-outlined">
                             edit
                           </span>
-                        </Button>
-                        <Button
+                        </IconButton>
+                        <IconButton
                           onClick={() => {
                             setSelectedLanguage(language);
                             setOpenConfirmDelete(true);
-                          }}
-                          style={{
-                            backgroundColor: "transparent",
-                            border: "none",
-                            color: "black",
                           }}
                         >
                           <span className="material-symbols-outlined">
                             do_not_disturb_on
                           </span>
-                        </Button>
+                        </IconButton>
                       </div>
                     </div>
                     <hr className="m-0 p-0" />
@@ -211,97 +205,90 @@ export const LanguagesEdit = () => {
               )}
             </ul>
 
-            <Modal
-              show={isModalOpen}
-              onHide={() => setIsModalOpen(false)}
-              centered
-              size="sm"
+            <Dialog
+              open={isDialogOpen}
+              onClose={() => setIsDialogOpen(false)}
+              fullWidth
+              maxWidth="sm"
             >
-              <Modal.Header closeButton>
-                <Modal.Title>Editar idioma</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Select
-                  value={newLang}
-                  onChange={setNewLang}
-                  options={availableLanguages}
-                  className="mb-3"
-                  isSearchable
-                />
-                <Select
-                  value={newLangLevel}
-                  onChange={setNewLangLevel}
-                  options={availableLanguageLevels}
-                  className="mb-3"
-                  isSearchable
-                />
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  onClick={() => setIsModalOpen(false)}
-                  style={{
-                    backgroundColor: "gray",
-                    border: "none",
-                    color: "black",
-                  }}
-                >
-                  Cancelar
-                </Button>
+              <DialogTitle>Editar Idioma</DialogTitle>
+              <DialogContent
+                dividers
+                style={{ maxHeight: "400px", overflowY: "auto" }}
+              >
+                <div className="form-group">
+                  <Select
+                    options={availableLanguages}
+                    value={newLang}
+                    onChange={setNewLang}
+                    placeholder="Seleccionar idioma..."
+                    isClearable
+                    isSearchable
+                    menuPortalTarget={document.body}
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+                    }}
+                  />
+                </div>
+                <div className="form-group mt-3">
+                  <label htmlFor="languageLevel">Nivel del idioma:</label>
+                  <Select
+                    options={availableLanguageLevels}
+                    value={newLangLevel}
+                    onChange={setNewLangLevel}
+                    placeholder="Seleccionar nivel..."
+                    isClearable
+                    isSearchable
+                    menuPortalTarget={document.body}
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+                    }}
+                  />
+                </div>
+              </DialogContent>
+              <DialogActions>
                 <Button
                   onClick={handleSaveEdit}
-                  style={{
-                    backgroundColor: "green",
-                    border: "none",
-                    color: "black",
-                  }}
+                  style={{ backgroundColor: "#212529", color: "#fff" }}
                 >
-                  Guardar
+                  Guardar cambios
                 </Button>
-              </Modal.Footer>
-            </Modal>
+              </DialogActions>
+            </Dialog>
 
-            <Modal
-              show={openConfirmDelete}
-              onHide={() => setOpenConfirmDelete(false)}
-              centered
-              size="sm"
+            <Dialog
+              open={openConfirmDelete}
+              onClose={() => setOpenConfirmDelete(false)}
+              maxWidth={"xs"}
             >
-              <Modal.Header closeButton>
-                <Modal.Title>Confirmar eliminación</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <p>
-                  ¿Estás seguro de que deseas eliminar{" "}
-                  <strong>{getLanguageName(selectedLanguage?.langId)}</strong>{" "}
+              <div className="p-3">
+                <span className="fs-3 fw-semibold">Confirmar eliminación</span>
+                <p className="mb-3">
+                  ¿Estás seguro de que deseas eliminar
+                  <span className="fw-semibold">
+                    {" "}
+                    {selectedLanguage?.[0]}
+                  </span>{" "}
                   de tu perfil?
                 </p>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  onClick={() => setOpenConfirmDelete(false)}
-                  style={{
-                    backgroundColor: "yellow",
-                    border: "none",
-                    color: "black",
-                  }}
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  onClick={confirmDelete}
-                  style={{
-                    backgroundColor: "red",
-                    border: "none",
-                    color: "black",
-                  }}
-                >
-                  Eliminar
-                </Button>
-              </Modal.Footer>
-            </Modal>
+                <div className="w-100 d-flex justify-content-end">
+                  <button
+                    className="btn btn-outline-warning me-2 fw-semibold"
+                    onClick={() => setOpenConfirmDelete(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    className="btn btn-outline-danger fw-semibold"
+                    onClick={confirmDelete}
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </div>
+            </Dialog>
           </section>
         </div>
-        <RecommendedAccounts />
       </div>
     </>
   );

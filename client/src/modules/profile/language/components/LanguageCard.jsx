@@ -6,13 +6,19 @@ import {
   getAvailableLanguages,
   getAvailableLanguageLevels,
 } from "../services/languageService.js";
-import { Modal, Button } from "react-bootstrap";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import Select from "react-select";
 
 export const LanguageSelector = () => {
   const { username } = useParams();
   const [profileLanguages, setProfileLanguages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState("");
   const [availableLanguages, setAvailableLanguages] = useState([]);
@@ -63,7 +69,7 @@ export const LanguageSelector = () => {
         selectedLevel
       );
       setProfileLanguages((prevLanguages) => [...prevLanguages, newLanguage]);
-      setShowModal(false);
+      setShowDialog(false);
       setSelectedLanguage(null);
       setSelectedLevel("");
     } catch (error) {
@@ -89,7 +95,7 @@ export const LanguageSelector = () => {
           <div className="d-flex justify-content-end">
             <button
               className="btn d-flex p-0 align-items-center me-3"
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowDialog(true)}
             >
               <span className="material-symbols-outlined text-dark-emphasis">
                 add
@@ -131,11 +137,17 @@ export const LanguageSelector = () => {
         </ul>
       </div>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar Idioma</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Agregar Idioma</DialogTitle>
+        <DialogContent
+          dividers
+          style={{ maxHeight: "400px", overflowY: "auto" }}
+        >
           <div className="form-group">
             <Select
               options={languageOptions}
@@ -144,6 +156,10 @@ export const LanguageSelector = () => {
               placeholder="Seleccionar idioma..."
               isClearable
               isSearchable
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+              }}
             />
           </div>
           <div className="form-group mt-3">
@@ -157,18 +173,22 @@ export const LanguageSelector = () => {
               placeholder="Seleccionar nivel..."
               isClearable
               isSearchable
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+              }}
             />
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cerrar
-          </Button>
-          <Button variant="primary" onClick={handleAddLanguage}>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleAddLanguage}
+            style={{ backgroundColor: "#212529", color: "#fff" }}
+          >
             Agregar
           </Button>
-        </Modal.Footer>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
