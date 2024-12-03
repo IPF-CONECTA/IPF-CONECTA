@@ -35,6 +35,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
       modalityId: job ? job.modalityId : "",
       contractTypeId: job ? job.contractTypeId : "",
       skills: job ? job.skills : [],
+      active: job ? job.active : true,
     },
   });
   const [companies, setCompanies] = useState([]);
@@ -307,6 +308,18 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
               />
             )}
           />
+        </div>
+        <div className="mb3 active postulations">
+          <label>Estado de la oferta</label>
+          <div className="form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              {...register("active")}
+              defaultChecked={job ? job.active : true}
+            />
+            <label className="form-check-label">Activo</label>
+          </div>
         </div>
         <div className="mb-3 modality">
           <label>Modalidad</label>

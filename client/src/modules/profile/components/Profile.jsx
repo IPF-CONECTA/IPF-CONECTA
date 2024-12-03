@@ -92,7 +92,7 @@ export const Profile = ({ data }) => {
 
   const fetchPosts = async () => {
     const res = await postsServices.getPostsByUsername(data ? data : username);
-    if (res.status !== 200 && res.status !== 404) {
+    if (res?.status !== 200 && res?.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
     }
     setPosts(res.data);
@@ -123,7 +123,7 @@ export const Profile = ({ data }) => {
 
   useEffect(() => {
     if (profileData) {
-      setRole(profileData?.profile.user.role.name);
+      setRole(profileData.profile.user.role.name);
     }
   }),
     [profileData];

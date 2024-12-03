@@ -88,7 +88,7 @@ export const getJobByIdSvc = async (id, profileId) => {
   try {
     const job = await Job.findByPk(id, {
       attributes: {
-        exclude: ["active", "companyId", "updatedAt"],
+        exclude: ["companyId", "updatedAt"],
       },
       include: [
         {
@@ -250,6 +250,7 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
         description: jobData.description,
         contractTypeId: jobData.contractTypeId,
         applicationLink: jobData.applicationLink,
+        active: jobData.active,
       },
       { where: { id: jobId }, transaction: t }
     );
@@ -285,4 +286,15 @@ export const updateJobSvc = async (jobId, jobData, profileId) => {
     await t.rollback();
     throw new Error(error.message);
   }
+};
+
+export const changeJobStatusSvc = async (jobId) => {
+  try {
+    const job = await Job.findByPk(jobId);
+    if (!job) throw new Error("La oferta de trabajo no existe");
+
+    job.active = !job.active;
+    await job.save();
+    return job;
+  } catch (error) {}
 };

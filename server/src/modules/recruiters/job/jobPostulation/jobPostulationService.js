@@ -8,6 +8,10 @@ export const createJobPostulationSvc = async (profId, jobId) => {
     const profile = await Profile.findByPk(profId);
     const profileId = profile.id;
 
+    const job = await Job.findByPk(jobId);
+    if (job.active === false)
+      throw new Error("El trabajo ya no acepta postulaciones");
+
     const exists = await JobPostulation.findOne({
       where: { profileId, jobId },
     });
@@ -24,19 +28,36 @@ export const getJobPostulationsSvc = async (jobId) => {
   try {
     return await Job.findByPk(jobId, {
       attributes: ["title"],
-      include: [{
-        model: JobPostulation,
-        as: "postulate",
-        include: [{
-          model: Profile,
-          attributes: ["names", "surnames", "title", "profilePic"],
-          include: [{
-            model: User,
-            attributes: ["username"]
-          }]
-        }]
-      }]
-    })
+      include: [
+        {
+          model: JobPostulation,
+          as: "postulate",
+          include: [
+            {
+              model: Profile,
+              attributes: ["names", "surnames", "title", "profilePic"],
+              include: [
+                {
+                  model: User,
+                  attributes: ["username"],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changeJobPostulationStatusSvc = async (id) => {
+  try {
+    const jobPostulation = await JobPostulation.findByPk(id);
+    jobPostulation.approved = !jobPostulation.approved;
+    await jobPostulation.save();
+    return jobPostulation;
   } catch (error) {
     throw error;
   }

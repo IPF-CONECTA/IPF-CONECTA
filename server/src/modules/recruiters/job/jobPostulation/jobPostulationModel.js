@@ -15,4 +15,8 @@ export const JobPostulation = sequelize.define("jobPostulation", {
     type: DataTypes.UUID,
     allowNull: false,
   },
+  approved: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });

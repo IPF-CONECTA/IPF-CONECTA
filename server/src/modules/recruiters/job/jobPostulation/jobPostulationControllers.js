@@ -2,6 +2,7 @@ import { getJobByIdSvc } from "../jobServices.js";
 import {
   createJobPostulationSvc,
   getJobPostulationsSvc,
+  changeJobPostulationStatusSvc,
 } from "./jobPostulationService.js";
 
 export const createJobPostulationCtrl = async (req, res) => {
@@ -32,6 +33,17 @@ export const getPostulationsCtrl = async (req, res) => {
 
     const postulations = await getJobPostulationsSvc(jobId);
     res.status(200).json(postulations);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json();
+  }
+};
+
+export const changeJobPostulationStatusCtrl = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const jobPostulation = await changeJobPostulationStatusSvc(id);
+    res.status(200).json(jobPostulation);
   } catch (error) {
     console.log(error);
     res.status(500).json();
