@@ -141,6 +141,22 @@ export const getProfileInfoSvc = async (id, followingId) => {
   }
 };
 
+export const searchUsers = async (query) => {
+  try {
+    // Lógica para buscar usuarios en la base de datos
+    const users = await User.findAll({
+      where: {
+        username: {
+          [Op.like]: `%${query}%`, // Usar operador `like` para búsqueda parcial
+        },
+      },
+    });
+    return users;
+  } catch (error) {
+    throw new Error('Error al buscar usuarios');
+  }
+};
+
 export const createUser = async (user) => {
   const t = await sequelize.transaction();
   try {

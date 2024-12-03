@@ -1,0 +1,120 @@
+[
+    {
+      "username": "alexsh1",
+      "names": "Alejandro",
+      "surnames": "Ruiz Díaz",
+      "email": "alexsh8821@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "Milanesa",
+      "names": "Diego David",
+      "surnames": "Jara Gallardo",
+      "email": "diegojara88574@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "silfarias20",
+      "names": "Silvana Abigail",
+      "surnames": "Farias",
+      "email": "silvifarias17@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "danteb",
+      "names": "Dante",
+      "surnames": "Benitez",
+      "email": "benitezdante123@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "clorodev",
+      "names": "Gonzalo Alejandro",
+      "surnames": "Aquino",
+      "email": "clorodev@proton.me",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "eric_merccado",
+      "names": "Eric Alejandro",
+      "surnames": "Mercado",
+      "email": "ericmerccado@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "fausto_cuquejo",
+      "names": "Fausto Joaquín De Jesús",
+      "surnames": "Cuquejo Ortega",
+      "email": "ofaustojoaquindejesus@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "solchuuxx",
+      "names": "Natali Solange",
+      "surnames": "Stevens",
+      "email": "natalistevens1@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "wiclok",
+      "names": "Brian",
+      "surnames": "Cespedes",
+      "email": "cespedes.aguilera.brian@gmai.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "fabian_17",
+      "names": "Carlos Fabián",
+      "surnames": "Villagra",
+      "email": "fabianvillagra28@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "CaluBritez",
+      "names": "Lucas Gaston",
+      "surnames": "Britez",
+      "email": "lucas_britez@hotmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "mauribar23",
+      "names": "Mauricio",
+      "surnames": "Barrientos",
+      "email": "mauribarrientos23@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    },
+    {
+      "username": "quizas_male",
+      "names": "Malena Analuz",
+      "surnames": "Gonzalez",
+      "email": "malenagonzalez959@gmail.com",
+      "role": "student",
+      "password": "Pa$$w0rd!",
+      "cuil": "12345678910"
+    }
+  ]
+  

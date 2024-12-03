@@ -1,5 +1,5 @@
 
-import { createUser, getProfileIdByUsername, getProfileInfoSvc, getRecommendedProfilesSvc, getUsers, isEmailAvailable, isUsernameAvailable } from './userServices.js';
+import { createUser, getProfileIdByUsername, getProfileInfoSvc,searchUsers , getRecommendedProfilesSvc, getUsers, isEmailAvailable, isUsernameAvailable } from './userServices.js';
 
 export const getUsersController = async (_req, res) => {
     try {
@@ -15,6 +15,30 @@ export const getUsersController = async (_req, res) => {
 
     }
 };
+
+export const searchUsersCtrl = async (req, res) => {
+    const { query } = req.query; // Obtener el término de búsqueda desde el query parameter
+    try {
+      // Buscar usuarios en la base de datos según el término de búsqueda
+      const users = await searchUsers(query); // Asumiendo que tienes un servicio `searchUsers`
+      
+      // Eliminar duplicados basados en el username
+      const uniqueUsers = Array.from(new Set(users.map(a => a.username)))
+        .map(username => {
+          return users.find(a => a.username === username);
+        });
+  
+      if (uniqueUsers.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron usuarios.' });
+      }
+  
+      res.status(200).json(uniqueUsers); // Devolver los usuarios únicos
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error en la búsqueda de usuarios.' });
+    }
+  };
+  
 
 export const getUserByIdCtrl = async (req, res) => {
     try {

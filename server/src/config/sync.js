@@ -34,7 +34,7 @@ import { Idea } from "../modules/ideas/ideaModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
-
+  // await sequelize.sync({ force: true })
   await createRelations();
   console.log("Relations created successfully");
   console.log("Tables created successfully");
