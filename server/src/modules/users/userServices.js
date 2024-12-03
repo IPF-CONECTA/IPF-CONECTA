@@ -37,7 +37,10 @@ export const getRecommendedProfilesSvc = async (profileId) => {
         attributes: ["id", "email", "username"],
         where: {
           banned: false,
-          suspensionExpires: [Op.or]([null, { [Op.lt]: new Date() }]),
+          [Op.or]: [
+            { suspensionExpires: null },
+            { suspensionExpires: { [Op.lt]: new Date() } },
+          ],
           [Op.or]: [
             { roleId: BASIC_ROLES.recruiter },
             { roleId: BASIC_ROLES.student },
@@ -78,7 +81,7 @@ export const isUsernameAvailable = async (username, userId) => {
 
 export const getProfileIdByUsername = async (username) => {
   try {
-    
+
     const user = await User.findOne({ where: { username }, include: { model: Profile } })
     return user.profile.id
   } catch (error) {
@@ -100,7 +103,7 @@ export const getUserById = async (userId) => {
         },
       ],
     });
-    
+
     return user;
   } catch (error) {
     console.log(error);
@@ -146,10 +149,17 @@ export const searchUsers = async (query) => {
     // Lógica para buscar usuarios en la base de datos
     const users = await User.findAll({
       where: {
+        roleId: {
+          [Op.not]: ALL_ROLES.admin, // Excluir usuarios con rol de administrador
+        },
         username: {
           [Op.like]: `%${query}%`, // Usar operador `like` para búsqueda parcial
         },
       },
+      include: {
+        model: Profile,
+        attributes: ['profilePic']
+      }
     });
     return users;
   } catch (error) {

@@ -88,6 +88,7 @@ export const PostList = () => {
     const status = await postSvc(content, attachments);
     if (status !== 201) {
       setIsSubmitting(false);
+      console.log("postlist error");
       return noti("Hubo un error al publicar el post", "error");
     }
     setPosts([]);

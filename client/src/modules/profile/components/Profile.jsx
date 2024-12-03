@@ -92,6 +92,7 @@ export const Profile = ({ data }) => {
 
   const fetchPosts = async () => {
     const res = await postsServices.getPostsByUsername(data ? data : username);
+    console.log(res);
     if (res?.status !== 200 && res?.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
     }
@@ -106,18 +107,15 @@ export const Profile = ({ data }) => {
     setProjects([]);
     setSkills([]);
     setPosts([]);
-
     fetchProfile();
-    if (profileData) {
-      fetchPosts();
-      fetchSkills();
-      fetchProjects();
+    fetchPosts();
+    fetchSkills();
+    fetchProjects();
+    fetchJobOffers();
+    fetchEducations();
+    fetchExperiences();
+    if (role === "recruiter") {
       fetchJobOffers();
-      fetchEducations();
-      fetchExperiences();
-      if (role === "recruiter") {
-        fetchJobOffers();
-      }
     }
   }, [data, username]);
 

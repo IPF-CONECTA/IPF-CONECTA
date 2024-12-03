@@ -5,6 +5,8 @@ export const updateAboutCtrl = async (req, res) => {
     const reqUser = req.user.profile.id;
     const { about, username } = req.body;
     try {
+        console.log(about)
+        console.log(username)
         const profileId = await getProfileIdByUsername(username)
         if (!about && !profileId) {
             return res.status(400).json()

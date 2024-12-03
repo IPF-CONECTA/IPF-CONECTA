@@ -12,7 +12,6 @@ export const FeedPage = () => {
       <main className="d-flex justify-content-center w-100 ">
         <SideBar />
         <PostList />
-        <UserSearch/>
         <div className={`${styles.asideContainer}`}>
           <RecommendedAccounts />
         </div>
