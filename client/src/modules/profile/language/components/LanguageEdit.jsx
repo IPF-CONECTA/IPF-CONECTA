@@ -204,7 +204,6 @@ export const LanguagesEdit = () => {
                 </li>
               )}
             </ul>
-
             <Dialog
               open={isDialogOpen}
               onClose={() => setIsDialogOpen(false)}
@@ -255,7 +254,6 @@ export const LanguagesEdit = () => {
                 </Button>
               </DialogActions>
             </Dialog>
-
             <Dialog
               open={openConfirmDelete}
               onClose={() => setOpenConfirmDelete(false)}

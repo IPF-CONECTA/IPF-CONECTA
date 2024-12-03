@@ -106,9 +106,9 @@ export const Profile = ({ data }) => {
     setProjects([]);
     setSkills([]);
     setPosts([]);
-
+    
     fetchProfile();
-    if (profileData) {
+    // if (profileData) {
       fetchPosts();
       fetchSkills();
       fetchProjects();
@@ -117,7 +117,7 @@ export const Profile = ({ data }) => {
       fetchExperiences();
       if (role === "recruiter") {
         fetchJobOffers();
-      }
+      // }
     }
   }, [data, username]);
 

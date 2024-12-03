@@ -14,7 +14,7 @@ export const PostsContainer = ({ username, own, postsData }) => {
   }, [postsData]);
 
   return (
-    postsData.length > 0 && (
+    // postsData.length > 0 && (
       <div className="border-bottom">
         <div className="w-100 border-bottom" id="posts">
           <div className="p-2">
@@ -72,5 +72,5 @@ export const PostsContainer = ({ username, own, postsData }) => {
         )}
       </div>
     )
-  );
+  // );
 };

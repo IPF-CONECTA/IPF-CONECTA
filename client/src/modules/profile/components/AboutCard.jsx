@@ -56,7 +56,7 @@ export const AboutCard = ({ own, aboutData, username }) => {
   );
 
   return (
-    aboutData && (
+    
       <div
         className="w-100 border-bottom border-top d-flex flex-column p-4"
         id="resumen"
@@ -112,6 +112,6 @@ export const AboutCard = ({ own, aboutData, username }) => {
           </>
         )}
       </div>
-    )
+    
   );
 };

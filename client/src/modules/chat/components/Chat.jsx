@@ -104,7 +104,7 @@ export const Chat = () => {
         <div>
           <h5 className="mb-0">
             {receiver
-              ? receiver?.names + "" + receiver?.surnames
+              ? receiver?.names + " " + receiver?.surnames
               : "Selecciona un chat"}
           </h5>
           {receiver && (
