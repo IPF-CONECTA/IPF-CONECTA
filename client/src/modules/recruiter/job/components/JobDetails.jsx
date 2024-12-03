@@ -26,7 +26,7 @@ export const JobDetails = ({ jobId }) => {
         try {
           setLoading(true);
           const res = await getJobInfo(jobId, authState.isLogged);
-          console.log(res.data);
+          console.log(res);
           if (res.status !== 200) {
             noti("hubo un error");
           }

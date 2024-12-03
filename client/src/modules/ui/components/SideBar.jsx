@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BiSolidHomeAlt2 } from "react-icons/bi";
 import { MdAccountCircle } from "react-icons/md";
@@ -25,9 +25,24 @@ export const SideBar = () => {
   const location = useLocation();
   const noti = useNoti();
   const navigate = useNavigate();
+  const sidebarRef = useRef(null);
+
   useEffect(() => {
     setOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -41,6 +56,7 @@ export const SideBar = () => {
   };
   return (
     <nav
+      ref={sidebarRef}
       className={`d-flex flex-column bg-white gap-5 justify-content-between align-items-start position-fixed start-0 h-100 border border-start-0 rounded-end-5 p-3 ${
         styles.navContainer
       } ${open && styles.open}`}

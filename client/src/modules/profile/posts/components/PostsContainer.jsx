@@ -9,11 +9,13 @@ export const PostsContainer = ({ username, own, postsData }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    if (!postsData) return;
     const posts = postsData.rows?.slice(0, 3);
     setPosts(posts);
   }, [postsData]);
 
   return (
+    postsData &&
     postsData.length > 0 && (
       <div className="border-bottom">
         <div className="w-100 border-bottom" id="posts">

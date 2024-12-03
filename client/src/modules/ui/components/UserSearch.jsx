@@ -3,20 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../../constants/BASE_URL"; // Importación correcta de BASE_URL
 import "../../../../public/css/UserSerach.module.css";
 import styles from "../../../../public/css/jobSearch.module.css";
+import styles2 from "../../../../public/css/sidebar.module.css";
 import { FaSearch } from "react-icons/fa";
 import { authContext } from "../../../context/auth/Context";
 import axios from "axios";
 
-function UserSearch({ open }) {
+function UserSearch({ open, setOpen }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { authState } = useContext(authContext);
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   useEffect(() => {
     setSearchQuery("");
@@ -59,17 +57,15 @@ function UserSearch({ open }) {
     return () => clearTimeout(debounceTimeout);
   }, [searchQuery]);
 
-  const goToProfile = (username) => {
-    navigate(`/perfil/${username}`);
-  };
-
+  console.log(open);
   return (
-    <div>
+    <>
       <div className="d-flex align-items-center">
         <button
           type="submit"
           onClick={() => setOpen(!open)}
-          className={`btn p-0 me-1 d-flex ${styles.searchButton}`}
+          className={`btn p-0 me-1`}
+          style={{ zIndex: 1999 }}
         >
           <FaSearch
             size={26}
@@ -77,28 +73,28 @@ function UserSearch({ open }) {
             color={`${authState.isLogged ? "#117bb9" : "#7c848b"}`}
           />
         </button>
-        {open && (
-          <div
-            className={`w-100 border rounded-3 overflow-hidden d-flex align-items-center`}
-          >
-            <input
-              autoComplete="off"
-              type="text"
-              name="searchBar"
-              id="SearchBar"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className={`w-100 m-0 p-1 border-0`}
-              placeholder="Buscar"
-            />
-          </div>
-        )}
+        <div
+          className={`w-100 border rounded-3 overflow-hidden d-flex align-items-center ${
+            styles2.navText
+          } ${open && styles2.open}`}
+        >
+          <input
+            autoComplete="off"
+            type="text"
+            name="searchBar"
+            id="SearchBar"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-100 m-0 p-1 border-0`}
+            placeholder="Buscar"
+          />
+        </div>
       </div>
 
       {searchQuery && (
         <div
           className="dropdown position-fixed bg-white rounded-3 border overflow-hidden me-3 shadow p-1"
-          style={{ zIndex: "1001", width: "180px", left: "50px" }}
+          style={{ zIndex: "1001", width: "150px", left: "50px", top: "227px" }}
         >
           {!loading && !error && users.length > 0 && (
             <div className="dropdown-list">
@@ -107,7 +103,7 @@ function UserSearch({ open }) {
                   <div
                     key={user.id}
                     className={`dropdown-item user-container`}
-                    onClick={() => goToProfile(user.username)}
+                    onClick={() => navigate(`/perfil/${user.username}`)}
                     style={{
                       zIndex: 1000,
                       display: "flex",
@@ -167,7 +163,7 @@ function UserSearch({ open }) {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
 
