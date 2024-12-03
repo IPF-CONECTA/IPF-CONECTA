@@ -179,7 +179,9 @@ export const Post = ({
     setIsSubmitting(true);
     try {
       const status = await postSvc(content, null, post?.id);
-      if (status !== 201 || status !== 404) {
+      console.log(status);
+      if (status !== 201 && status !== 404) {
+        console.log("post error");
         return noti("Hubo un error al publicar el post", "error");
       }
 
