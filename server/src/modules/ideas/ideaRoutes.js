@@ -1,17 +1,18 @@
 import { Router } from "express";
 import {
-    createIdea,
-    getIdeas,
-    getIdeaDetails,
-    updateIdea,
-    deleteIdea,
-    getIdeasOBVotes,
+  createIdea,
+  getIdeas,
+  getIdeaDetails,
+  updateIdea,
+  deleteIdea,
+  getIdeasOBVotes,
 } from "./ideaControllers.js";
 import { isToken } from "../../middlewares/jwt/isVerifiedAccount.js";
+import upload from "../../config/multerConfig.js";
 
 const ideaRoutes = Router();
 
-ideaRoutes.post("/idea", isToken, createIdea);
+ideaRoutes.post("/idea", upload.array("images", 4), isToken, createIdea);
 ideaRoutes.get("/ideasLogged", isToken, getIdeas);
 ideaRoutes.get("/ideas", getIdeas);
 ideaRoutes.get("/ideasByVotes", getIdeasOBVotes);

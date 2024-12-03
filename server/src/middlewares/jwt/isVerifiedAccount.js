@@ -27,6 +27,7 @@ export const isVerifiedAccount = async (req, res, next) => {
 export const isToken = async (req, res, next) => {
   try {
     let token = req.headers.authorization;
+   
     if (!token) {
       throw new Error("Inicie sesión para continuar");
     }

@@ -78,6 +78,7 @@ export const isUsernameAvailable = async (username, userId) => {
 
 export const getProfileIdByUsername = async (username) => {
   try {
+    
     const user = await User.findOne({ where: { username }, include: { model: Profile } })
     return user.profile.id
   } catch (error) {
@@ -99,6 +100,7 @@ export const getUserById = async (userId) => {
         },
       ],
     });
+    
     return user;
   } catch (error) {
     console.log(error);

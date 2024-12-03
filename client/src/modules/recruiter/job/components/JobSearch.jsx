@@ -20,6 +20,10 @@ export const JobSearch = () => {
     try {
       async function fetchData() {
         const res = await getJobs();
+        if (res.status !== 200) {
+          
+          return;
+        }
         setJobs(res.data.jobs);
         setCantJobs(res.data.total);
       }

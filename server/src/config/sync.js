@@ -8,6 +8,8 @@ import { Skillable } from "../modules/skills/skillable/skillableModel.js";
 
 import { Attachment } from "../modules/attachment/attachmentModel.js";
 import { Experience } from "../modules/profile/experiences/experiencesModel.js";
+import { Profile } from "../modules/profile/profileModel.js";
+import { User } from "../modules/users/userModel.js";
 
 import { createLangs } from "../modules/langs/langModel.js";
 import { createRoles } from "../modules/roles/roleModel.js";
@@ -28,19 +30,15 @@ import { createCompanyIndustry } from "../modules/recruiters/companies/companyIn
 import { createInstitutes } from "../modules/profile/education/institutes/instituteModel.js";
 import { Education } from "../modules/profile/education/educationModel.js";
 import { Report } from "../modules/reports/reportModel.js";
+import { Idea } from "../modules/ideas/ideaModel.js";
 
 export const createTablesAndRelations = async () => {
   console.time("Db created in:");
 
   await createRelations();
   console.log("Relations created successfully");
-<<<<<<< HEAD
-  // await sequelize.sync({ force: false });
-  // await Experience.sync({ force: true })
-=======
-  await sequelize.sync({ force: false });
->>>>>>> origin/rios
   console.log("Tables created successfully");
+  await Idea.sync({ force: true });
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // // ===================================================================================

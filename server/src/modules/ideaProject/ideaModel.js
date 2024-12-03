@@ -27,4 +27,25 @@ export const Idea = sequelize.define("idea", {
     allowNull: false,
     defaultValue: "active",
   },
+  objectives: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  justification: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  technologies: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  complexity: {
+    type: DataTypes.STRING(64),
+    allowNull: false,
+    defaultValue: "media",
+  },
+  beneficiaries: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
 });

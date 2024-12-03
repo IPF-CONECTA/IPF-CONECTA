@@ -1,9 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  Carousel,
+} from "react-bootstrap";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
 import { authContext } from "../../../context/auth/Context";
-import { getIdeas, createIdea } from "../services/ideaServices";
+import { getIdeas, createIdea, getIdeaById } from "../services/ideaServices";
+import { BASE_URL } from "../../../constants/BASE_URL";
+import "../../../styles/IdeaModal.css";
 
 export const IdeaProjects = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -14,15 +27,20 @@ export const IdeaProjects = () => {
     description: "",
     category: "Tecnología",
     state: "Activo",
+    objectives: "",
+    justification: "",
+    technologies: "",
+    complexity: "Media",
+    beneficiaries: "",
+    attachments: [],
   });
   const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState("");
+  const [selectedIdea, setSelectedIdea] = useState(null);
+  const [showDialog, setShowDialog] = useState(false);
 
   const { authState } = useContext(authContext);
   const { token, user } = authState;
-
   const userId = user?.profile?.id;
-  const navigate = useNavigate();
 
   const loadIdeas = async () => {
     try {
@@ -34,7 +52,6 @@ export const IdeaProjects = () => {
         throw new Error("Error al obtener las ideas");
       }
     } catch (error) {
-      setError(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
@@ -52,6 +69,7 @@ export const IdeaProjects = () => {
 
   const handleAddIdea = async (e) => {
     e.preventDefault();
+
     if (!userId) {
       enqueueSnackbar("User ID is missing. Please log in again.", {
         variant: "error",
@@ -59,11 +77,31 @@ export const IdeaProjects = () => {
       return;
     }
 
+    const {
+      title,
+      description,
+      category,
+      state,
+      objectives,
+      justification,
+      technologies,
+      complexity,
+      beneficiaries,
+      attachments,
+    } = newIdea;
+
+    console.log("New Idea:", newIdea);
+
     if (
-      !newIdea.title ||
-      !newIdea.description ||
-      !newIdea.category ||
-      !newIdea.state
+      !title ||
+      !description ||
+      !category ||
+      !state ||
+      !objectives ||
+      !justification ||
+      !technologies ||
+      !complexity ||
+      !beneficiaries
     ) {
       enqueueSnackbar("Por favor, completa todos los campos.", {
         variant: "warning",
@@ -72,7 +110,8 @@ export const IdeaProjects = () => {
     }
 
     try {
-      const res = await createIdea({ ...newIdea, profileId: userId });
+      const res = await createIdea(newIdea);
+
       if (res.status === 201) {
         enqueueSnackbar("Idea añadida exitosamente!", { variant: "success" });
         setNewIdea({
@@ -80,6 +119,12 @@ export const IdeaProjects = () => {
           description: "",
           category: "Tecnología",
           state: "Activo",
+          objectives: "",
+          justification: "",
+          technologies: "",
+          complexity: "Media",
+          beneficiaries: "",
+          attachments: [],
         });
         await loadIdeas();
       } else {
@@ -92,9 +137,19 @@ export const IdeaProjects = () => {
     }
   };
 
-  const handleShowIdeaDetails = (ideaId) => {
-    navigate(`/idea/${ideaId}`);
+  const handleShowIdeaDetails = async (ideaId) => {
+    const res = await getIdeaById(ideaId);
+    if (res.status !== 200) {
+      enqueueSnackbar("Error al obtener los detalles de la idea", {
+        variant: "error",
+      });
+      return;
+    }
+    setSelectedIdea(res.data);
+    setShowDialog(true);
   };
+
+  const handleCloseDialog = () => setShowDialog(false);
 
   return (
     <Container className="my-5">
@@ -102,7 +157,7 @@ export const IdeaProjects = () => {
         <Col md={6} lg={5}>
           <Card className="shadow-lg">
             <Card.Body className="p-4">
-              <span className="fw-semibold fs-3 ">Añadir Nueva Idea</span>
+              <span className="fw-semibold fs-3 ">Añadir un Proyecto</span>
               <Form
                 onSubmit={handleAddIdea}
                 className="border-0 shadow-none p-0"
@@ -111,7 +166,7 @@ export const IdeaProjects = () => {
                   <Form.Label>Título</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Título de la idea"
+                    placeholder="Título del proyecto"
                     value={newIdea.title}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, title: e.target.value })
@@ -124,12 +179,24 @@ export const IdeaProjects = () => {
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    placeholder="Descripción de la idea"
+                    placeholder="Descripción del proyecto"
                     value={newIdea.description}
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, description: e.target.value })
                     }
                     required
+                  />
+                </Form.Group>
+                <Form.Group controlId="formObjectives" className="mb-3">
+                  <Form.Label>Objetivos</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    placeholder="Objetivos principales"
+                    value={newIdea.objectives}
+                    onChange={(e) =>
+                      setNewIdea({ ...newIdea, objectives: e.target.value })
+                    }
                   />
                 </Form.Group>
                 <Form.Group controlId="formCategory" className="mb-3">
@@ -141,30 +208,80 @@ export const IdeaProjects = () => {
                     onChange={(e) =>
                       setNewIdea({ ...newIdea, category: e.target.value })
                     }
-                    required
                   >
                     <option>Tecnología</option>
-                    <option>Salud</option>
                     <option>Educación</option>
-                    <option>Negocios</option>
+                    <option>Salud</option>
                     <option>Medio Ambiente</option>
+                    <option>Emprendimiento</option>
+                    <option>Otros</option>
                   </Form.Control>
                 </Form.Group>
-                <Form.Group controlId="formState" className="mb-3">
-                  <Form.Label>Estado</Form.Label>
+
+                <Form.Group controlId="formJustification" className="mb-3">
+                  <Form.Label>Justificación</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    placeholder="¿Por qué es importante este proyecto?"
+                    value={newIdea.justification}
+                    onChange={(e) =>
+                      setNewIdea({ ...newIdea, justification: e.target.value })
+                    }
+                  />
+                </Form.Group>
+                <Form.Group controlId="formTechnologies" className="mb-3">
+                  <Form.Label>Tecnologías</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Tecnologías a utilizar"
+                    value={newIdea.technologies}
+                    onChange={(e) =>
+                      setNewIdea({ ...newIdea, technologies: e.target.value })
+                    }
+                  />
+                </Form.Group>
+                <Form.Group controlId="formComplexity" className="mb-3">
+                  <Form.Label>Nivel de Complejidad</Form.Label>
                   <Form.Control
                     as="select"
                     className="w-100"
-                    value={newIdea.state}
+                    value={newIdea.complexity}
                     onChange={(e) =>
-                      setNewIdea({ ...newIdea, state: e.target.value })
+                      setNewIdea({ ...newIdea, complexity: e.target.value })
                     }
-                    required
                   >
-                    <option>Activo</option>
-                    <option>Finalizado</option>
+                    <option>Baja</option>
+                    <option>Media</option>
+                    <option>Alta</option>
                   </Form.Control>
                 </Form.Group>
+                <Form.Group controlId="formBeneficiaries" className="mb-3">
+                  <Form.Label>Beneficiarios</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="¿Quiénes se benefician?"
+                    value={newIdea.beneficiaries}
+                    onChange={(e) =>
+                      setNewIdea({ ...newIdea, beneficiaries: e.target.value })
+                    }
+                  />
+                </Form.Group>
+                <Form.Group controlId="formAttachments" className="mb-3">
+                  <Form.Label>Archivos Adjuntos</Form.Label>
+                  <Form.Control
+                    type="file"
+                    multiple
+                    name="attachments"
+                    onChange={(e) =>
+                      setNewIdea({
+                        ...newIdea,
+                        attachments: Array.from(e.target.files),
+                      })
+                    }
+                  />
+                </Form.Group>
+
                 <div className="d-flex justify-content-end">
                   <Button variant="primary" type="submit" className="mt-3">
                     Añadir Idea
@@ -182,12 +299,13 @@ export const IdeaProjects = () => {
               <Form.Group controlId="formSearch" className="mb-4">
                 <Form.Control
                   type="text"
-                  placeholder="Buscar ideas por título"
+                  placeholder="Buscar proyectos por título"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Form.Group>
-              <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+
+              <div style={{overflowY: "hidden" }}>
                 {filteredIdeas.length > 0 ? (
                   filteredIdeas.map((idea) => (
                     <Card
@@ -201,6 +319,12 @@ export const IdeaProjects = () => {
                         <Card.Subtitle className="mb-2 text-muted">
                           Categoría: {idea.category}
                         </Card.Subtitle>
+                        <Card.Text>
+                          <br />
+                          Complejidad: {idea.complexity}
+                          <br />
+                          Beneficiarios: {idea.beneficiaries}
+                        </Card.Text>
                       </Card.Body>
                     </Card>
                   ))
@@ -214,6 +338,58 @@ export const IdeaProjects = () => {
           </Card>
         </Col>
       </Row>
+      <Dialog
+        open={showDialog}
+        onClose={handleCloseDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>{selectedIdea?.title}</DialogTitle>
+        <DialogContent>
+          <div className="modal-body-container">
+            <div className="modal-text-content">
+              <p>
+                <strong>Descripción:</strong> {selectedIdea?.description}
+              </p>
+              <p>
+                <strong>Categoría:</strong> {selectedIdea?.category}
+              </p>
+              <p>
+                <strong>Objetivos:</strong> {selectedIdea?.objectives}
+              </p>
+              <p>
+                <strong>Justificación:</strong> {selectedIdea?.justification}
+              </p>
+              <p>
+                <strong>Tecnologías:</strong> {selectedIdea?.technologies}
+              </p>
+              <p>
+                <strong>Beneficiarios:</strong> {selectedIdea?.beneficiaries}
+              </p>
+            </div>
+            {selectedIdea?.attachments?.length > 0 && (
+              <div className="modal-carousel-container">
+                <Carousel className="modal-carousel">
+                  {selectedIdea.attachments.map((attachment, index) => (
+                    <Carousel.Item key={index}>
+                      <img
+                        className="d-block w-100 modal-carousel-image"
+                        src={`${BASE_URL}/images/${attachment.url}`}
+                        alt={`Attachment ${index + 1}`}
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} variant="secondary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

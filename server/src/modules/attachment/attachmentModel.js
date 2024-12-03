@@ -12,7 +12,7 @@ export const Attachment = sequelize.define('attachment', {
         allowNull: false,
     },
     attachmentableType: {
-        type: DataTypes.ENUM('project', 'post', 'experience', 'education', 'company', 'certificate', 'profilePic', 'logo'),
+        type: DataTypes.ENUM('project', 'post', 'experience', 'education', 'company', 'certificate', 'profilePic', 'logo', 'idea'),
         allowNull: false
     },
     url: {
