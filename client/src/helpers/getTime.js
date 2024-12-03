@@ -48,7 +48,7 @@ export const getDateMonth = (dt) => { // Nov. 2024
   return date.toFormat("LLL. yyyy");
 };
 
-export const getFullDate = (dt) => { // 12 de nov de 2024 o Hace 2 horas si es de esta semana
+export const getFullDateOrTime = (dt) => { // 12 de nov de 2024 o Hace 2 horas si es de esta semana
   let date = DateTime.fromISO(dt);
   const currentYear = DateTime.now().year;
   const startOfWeek = DateTime.now().startOf('week');
@@ -61,6 +61,14 @@ export const getFullDate = (dt) => { // 12 de nov de 2024 o Hace 2 horas si es d
     return date.toFormat("dd LLL");
   }
 
+  return date.toFormat("dd LLL yyyy");
+};
+export const getFullDate = (dt) => { // 12 de nov de 2024
+  let date = DateTime.fromISO(dt);
+  const currentYear = DateTime.now().year;
+  if (date.year === currentYear) {
+    return date.toFormat("dd LLL");
+  }
   return date.toFormat("dd LLL yyyy");
 };
 
