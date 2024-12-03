@@ -7,7 +7,10 @@ export const ReportsPage = () => {
   return (
     <>
       <SideBar />
-      <main className="py-3 pe-5" style={{ marginLeft: "6rem" }}>
+      <main
+        className="py-3 pe-5"
+        style={{ marginLeft: "6rem", height: "100vh" }}
+      >
         <nav aria-label="breadcrumb" className="fs-5 fw-semibold">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">

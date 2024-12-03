@@ -6,31 +6,46 @@ import { PiNotePencilBold } from "react-icons/pi";
 import { ReportActionsModal } from "./ReportActionsModal";
 import { ReportedContentModal } from "./ReportedContentModal";
 
-export const ReportCard = ({ report, onResolve }) => {
+export const ReportCard = ({ report, onResolve, details = true }) => {
+  console.log(details);
   const [openReport, setOpenReport] = useState(false);
   const [openActions, setOpenActions] = useState(false);
   return (
     <>
       <tr>
-        <td>{new Date(report.createdAt).toLocaleDateString()}</td>
+        {details && <td>{new Date(report.createdAt).toLocaleDateString()}</td>}
         <td>{report?.reportableType}</td>
-        <td>{report?.reportReason?.reason}</td>
-        <td> {report?.reportReason?.severity}</td>
-        <td>{report?.description.slice(0, 30)}</td>
-        <td>
-          <Link
-            to={`/perfil/${report?.profile?.user?.username}`}
-            target="_blank"
-          >
-            <img
-              src={`${BASE_URL}/images/${report.profile.profilePic}`}
-              alt="foto de perfil"
-              title="Ver perfil"
-              className="rounded-circle"
-              height={30}
-            />
-          </Link>
+        <td
+          className="text-truncate"
+          style={{ width: details ? "200px" : "50px" }}
+        >
+          {report?.reportReason?.reason}
         </td>
+        <td> {report?.reportReason?.severity}</td>
+        <td
+          className="text-truncate"
+          style={{ width: details ? "200px" : "50px" }}
+        >
+          {report?.description.slice(0, 30)}
+        </td>
+        {details && (
+          <>
+            <td>
+              <Link
+                to={`/perfil/${report?.profile?.user?.username}`}
+                target="_blank"
+              >
+                <img
+                  src={`${BASE_URL}/images/${report.profile.profilePic}`}
+                  alt="foto de perfil"
+                  title="Ver perfil"
+                  className="rounded-circle"
+                  height={30}
+                />
+              </Link>
+            </td>
+          </>
+        )}
         <td>
           <div className="d-flex align-items-center">
             <span
@@ -44,26 +59,28 @@ export const ReportCard = ({ report, onResolve }) => {
             </span>
           </div>
         </td>
-        <td>
-          {report.status === "pending" && (
-            <div className="d-flex gap-1">
-              <button
-                type="button"
-                onClick={() => setOpenReport(true)}
-                className="btn p-1 bg-dark text-white d-flex"
-              >
-                <FaEye />
-              </button>
-              <button
-                onClick={() => setOpenActions(true)}
-                type="button"
-                className="btn p-1 bg-dark text-white d-flex"
-              >
-                <PiNotePencilBold />
-              </button>
-            </div>
-          )}
-        </td>
+        {details && (
+          <td>
+            {report.status === "pending" && (
+              <div className="d-flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setOpenReport(true)}
+                  className="btn p-1 bg-dark text-white d-flex"
+                >
+                  <FaEye />
+                </button>
+                <button
+                  onClick={() => setOpenActions(true)}
+                  type="button"
+                  className="btn p-1 bg-dark text-white d-flex"
+                >
+                  <PiNotePencilBold />
+                </button>
+              </div>
+            )}
+          </td>
+        )}
       </tr>
 
       <ReportActionsModal

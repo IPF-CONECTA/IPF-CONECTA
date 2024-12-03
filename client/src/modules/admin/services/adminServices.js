@@ -42,13 +42,14 @@ export const updateAssociationStatus = async (id, status, justification) => {
   }
 };
 
-export const getReports = async (status, reportableType, reasonId, orderBy) => {
+export const getReports = async (status, reportableType, reasonId, orderBy, page) => {
   try {
     const queryParams = {
       ...(status && { status }),
       ...(reportableType && { reportableType }),
       ...(reasonId && { reasonId }),
       ...(orderBy && { orderBy }),
+      ...(page && { page }),
     };
 
     const queryString = qs.stringify(queryParams);

@@ -2,10 +2,15 @@ import { getReportByIdSvc, getReportsSvc, resolveReportSvc } from "./reportServi
 
 export const getReportsFiltered = async (req, res) => {
     const { reportableType, status, reasonId, orderBy } = req.query;
-
+    const pageAsNumber = Number.parseInt(req.query.page)
+    let page = 1
+    if (!Number.isNaN(pageAsNumber) && pageAsNumber > 1) {
+        page = pageAsNumber
+    }
     try {
-        const reports = await getReportsSvc(reportableType, status, reasonId, orderBy)
-        if (reports.length == 0) return res.status(404).json()
+        const reports = await getReportsSvc(reportableType, status, reasonId, orderBy, page - 1)
+        console.log(reports)
+        if (reports.count == 0) return res.status(404).json()
         res.status(200).json(reports)
     } catch (error) {
         console.log(error)

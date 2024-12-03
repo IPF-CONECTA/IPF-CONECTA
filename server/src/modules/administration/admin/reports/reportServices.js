@@ -7,7 +7,8 @@ import { getJobByIdSvc } from "../../../recruiters/job/jobServices.js";
 import { getPostByIdSvc } from "../../../posts/postServices.js";
 import { getProfileById } from "../../../profile/profileServices.js";
 
-export const getReportsSvc = async (reportableType, status, reasonId, orderBy) => {
+export const getReportsSvc = async (reportableType, status, reasonId, orderBy, page) => {
+    console.log(page)
     const where = {
         [Op.and]: [
             reportableType && { reportableType },
@@ -15,7 +16,7 @@ export const getReportsSvc = async (reportableType, status, reasonId, orderBy) =
             reasonId && { reasonId },
         ].filter(Boolean),
     };
-
+    console.log(where)
     const order = [];
     if (orderBy === 'date_asc') {
         order.push(['createdAt', 'ASC']);
@@ -27,8 +28,11 @@ export const getReportsSvc = async (reportableType, status, reasonId, orderBy) =
         order.push([{ model: ReportReason }, 'severity', 'DESC']);
     }
 
-    return await Report.findAll({
+
+    const reports = await Report.findAndCountAll({
         where,
+        limit: 9,
+        offset: page * 9,
         include: [
             {
                 model: ReportReason,
@@ -44,6 +48,9 @@ export const getReportsSvc = async (reportableType, status, reasonId, orderBy) =
         ],
         order,
     });
+
+    reports.totalPages = Math.ceil(reports.count / 8);
+    return reports
 };
 
 export const getReportByIdSvc = async (id) => {
