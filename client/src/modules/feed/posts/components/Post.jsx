@@ -1,7 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FsLightbox from "fslightbox-react";
-import { getDateWithHour, getTime } from "../../../../helpers/getTime";
+import {
+  getDateWithHour,
+  getFullDate,
+  getTime,
+} from "../../../../helpers/getTime";
 import { ProfileHover } from "../../../profile/components/ProfileHover";
 import { TbHelpTriangleFilled } from "react-icons/tb";
 
@@ -285,7 +289,7 @@ export const Post = ({
                       {!details && (
                         <span className={`text-secondary ${styles.smallText}`}>
                           {" "}
-                          {getTime(post?.createdAt)}
+                          {getFullDate(post?.createdAt)}
                         </span>
                       )}
                     </div>

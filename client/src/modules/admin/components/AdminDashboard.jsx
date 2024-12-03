@@ -77,7 +77,7 @@ export const AdminDashboard = () => {
             <div className="w-50">
               <div className="border rounded-3 p-3 mb-3">
                 <span className="fw-bold fs-3 ">
-                  Asociaciones pendientes ({associations.length})
+                  Asociaciones ({associations.length})
                 </span>
                 <div className="d-flex flex-column gap-2 mt-2">
                   {associations.slice(0, 3).map((assoc) => (
@@ -130,7 +130,7 @@ export const AdminDashboard = () => {
               </div>
               <div className="border rounded-3 p-3">
                 <span className="fw-bold fs-3">
-                  Empresas pendientes ({companies.length})
+                  Empresas ({companies.length})
                 </span>
                 <div className="row  row-cols-xxl-3 row-cols-md-2 row-cols-sm-1 px-2 mt-2">
                   {companies.slice(0, 8).map((company) => (
@@ -170,7 +170,7 @@ export const AdminDashboard = () => {
               className="border rounded-3 p-3 mb-3 w-75"
               style={{ marginRight: "2.3rem" }}
             >
-              <ReportsContainer />
+              <ReportsContainer details={false} />
             </div>
           </div>
         ) : (

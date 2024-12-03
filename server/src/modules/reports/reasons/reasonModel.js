@@ -26,7 +26,6 @@ export const ReportReason = sequelize.define('reportReason', {
 export const createReportReasons = async () => {
     try {
         await ReportReason.bulkCreate([
-            { reason: 'Explotación infantil', severity: 10 },
             { reason: 'Amenazas o violencia', severity: 9 },
             { reason: 'Organizaciones extremistas o peligrosas', severity: 9 },
             { reason: 'Incitación al odio', severity: 8 },
@@ -40,6 +39,7 @@ export const createReportReasons = async () => {
             { reason: 'Mensaje no deseado (spam)', severity: 3 },
             { reason: 'Cuenta falsa', severity: 3 },
             { reason: 'Infracción', severity: 2 },
+            { reason: 'Otro', severity: 1 }
         ])
     } catch (error) {
         console.error('Failed to import report reasons:', error);

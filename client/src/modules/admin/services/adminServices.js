@@ -1,6 +1,7 @@
 import axios from "axios";
 import { authService } from "../../auth/services/authService";
 import { BASE_URL } from "../../../constants/BASE_URL";
+import qs from 'query-string';
 export const getAssociationsSvc = async (status) => {
   try {
     const res = await axios.get(
@@ -41,9 +42,17 @@ export const updateAssociationStatus = async (id, status, justification) => {
   }
 };
 
-export const getReports = async (status) => {
+export const getReports = async (status, reportableType, reasonId, orderBy) => {
   try {
-    const res = await axios.get(`${BASE_URL}/admin/report?status=${status}`, {
+    const queryParams = {
+      ...(status && { status }),
+      ...(reportableType && { reportableType }),
+      ...(reasonId && { reasonId }),
+      ...(orderBy && { orderBy }),
+    };
+
+    const queryString = qs.stringify(queryParams);
+    const res = await axios.get(`${BASE_URL}/admin/report?${queryString}`, {
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
       }

@@ -100,12 +100,12 @@ export const ReportActionsModal = ({ open, setOpen, reportId, onResolve }) => {
 
             <div className="d-flex flex-column gap-2 mb-2">
               <div>
-                <span className="fw-semibold">Descripción:</span>
-                <p>{report?.description}</p>
-              </div>
-              <div>
                 <span className="fw-semibold">Razón:</span>
                 <p>{report?.reportReason?.reason}</p>
+              </div>
+              <div>
+                <span className="fw-semibold">Descripción:</span>
+                <p>{report?.description}</p>
               </div>
 
               <div>

@@ -11,7 +11,6 @@ import {
   CreateProjectPage,
   FeedPage,
   HomePage,
-  JobCreatePage,
   JobSearchPage,
   LoginPage,
   MessageRecruiterPage,
@@ -35,6 +34,7 @@ import {
   ProfilePostPage,
   LanguageCardPage,
   LanguageEditPage,
+  ReportsPage,
 } from "../pages";
 import { AllSkillsPage } from "../modules/profile/skills/pages/AllSkillsPage";
 
@@ -59,6 +59,7 @@ export const Routers = () => {
               path="/admin/asociaciones"
               element={<AdminAssociationsPanelPage />}
             />
+            <Route path="/admin/reportes" element={<ReportsPage />} />
           </Route>
           <Route path="mensajes" element={<MessagingPage />} />
           <Route path="chat/:username" element={<ChatPage />} />

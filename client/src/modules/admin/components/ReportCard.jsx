@@ -32,25 +32,37 @@ export const ReportCard = ({ report, onResolve }) => {
           </Link>
         </td>
         <td>
-          <span className="border rounded px-1">{report?.status}</span>
+          <div className="d-flex align-items-center">
+            <span
+              className={`border  rounded px-2 py-1 ${
+                report?.status == "pending"
+                  ? "bg-danger text-white"
+                  : "bg-success-subtle"
+              }`}
+            >
+              {report?.status == "pending" ? "Pendiente" : "Resuelto"}
+            </span>
+          </div>
         </td>
         <td>
-          <div className="d-flex gap-1">
-            <button
-              type="button"
-              onClick={() => setOpenReport(true)}
-              className="btn p-1 bg-dark text-white d-flex"
-            >
-              <FaEye />
-            </button>
-            <button
-              onClick={() => setOpenActions(true)}
-              type="button"
-              className="btn p-1 bg-dark text-white d-flex"
-            >
-              <PiNotePencilBold />
-            </button>
-          </div>
+          {report.status === "pending" && (
+            <div className="d-flex gap-1">
+              <button
+                type="button"
+                onClick={() => setOpenReport(true)}
+                className="btn p-1 bg-dark text-white d-flex"
+              >
+                <FaEye />
+              </button>
+              <button
+                onClick={() => setOpenActions(true)}
+                type="button"
+                className="btn p-1 bg-dark text-white d-flex"
+              >
+                <PiNotePencilBold />
+              </button>
+            </div>
+          )}
         </td>
       </tr>
 
