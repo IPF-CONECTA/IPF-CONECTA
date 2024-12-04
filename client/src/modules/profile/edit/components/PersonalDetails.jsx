@@ -6,6 +6,7 @@ import "react-phone-number-input/style.css";
 import { useNoti } from "../../../../hooks/useNoti";
 import { updatePersonalDetails } from "../services/editProfileServices";
 import { formatDateToForm } from "../../../../helpers/getTime";
+import { useNavigate } from "react-router-dom";
 
 const CustomPhoneInput = React.forwardRef(({ className, ...props }, ref) => (
   <input
@@ -16,20 +17,22 @@ const CustomPhoneInput = React.forwardRef(({ className, ...props }, ref) => (
 ));
 
 export const PersonalDetails = ({ profileData, setProfileData }) => {
-  console.log(new Date(profileData.profile.birthdate).toLocaleDateString());
   const [phone, setPhone] = useState(profileData.profile.phonenumber || null);
-
   const { register, handleSubmit } = useForm();
-  const noti = useNoti();
   const [sending, setSending] = useState(false);
-
+  const noti = useNoti();
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     data.phonenumber = phone;
+    console.log(data);
     setSending(true);
     try {
       const res = await updatePersonalDetails(data);
       if (res.status !== 201) {
         return noti("Hubo un error al actualizar tu perfil", "error");
+      }
+      if (data.username !== profileData.profile.user.username) {
+        navigate(`/perfil/${data.username}`);
       }
       setProfileData({
         ...profileData,

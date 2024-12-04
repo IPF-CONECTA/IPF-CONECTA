@@ -11,14 +11,14 @@ import { isStudent } from "../../../../middlewares/jwt/isStudent.js";
 const jobPostulationRoutes = Router();
 
 jobPostulationRoutes.post(
-  "/create-job-postulation",
+  "/postulation",
   isToken,
   isStudent,
   createJobPostulationCtrl
 );
-jobPostulationRoutes.get("/postulations/:jobId", isToken, getPostulationsCtrl);
+jobPostulationRoutes.get("/postulation/:jobId", isToken, getPostulationsCtrl);
 jobPostulationRoutes.put(
-  "/change-job-postulation-status/:id",
+  "/postulation/toggle-favorite/:id",
   isToken,
   changeJobPostulationStatusCtrl
 );

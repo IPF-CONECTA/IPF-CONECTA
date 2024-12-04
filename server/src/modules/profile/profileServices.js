@@ -122,7 +122,7 @@ export const updateProfileSvc = async (id, data) => {
       title: data.title,
     }, { where: { id: profile.id }, transaction: t });
 
-    await User.update({ email: data.email !== profile.user.email && data.email, username: data.username !== profile.user.username && data.username }, { where: { id: profile.userId }, transaction: t });
+    await User.update({ email: data.email !== profile.user.email ? data.email : profile.user.email, username: data.username !== profile.user.username ? data.username : profile.user.username }, { where: { id: profile.userId }, transaction: t });
 
     await t.commit();
     return updatedProfile;

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Switch } from "@mui/material";
+
 import DOMPurify from "dompurify";
 import { Dialog } from "@mui/material";
 import styles from "../../../../../public/css/jobProfileCard.module.css";
@@ -83,15 +85,20 @@ export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
               edit
             </span>
           </button>
-          <button
-            title="Cambiar estado"
-            className="btn d-flex p-1"
-            onClick={() => handleChangeJobStatus(jobOffer.id)}
+          <div
+            title="archivar"
+            className="d-flex align-items-center border px-2 rounded-3"
           >
             <span className="material-symbols-outlined text-dark-emphasis">
               {jobOffer?.active ? "visibility" : "visibility_off"}
             </span>
-          </button>
+            <Switch
+              checked={jobOffer?.active}
+              onChange={() => handleChangeJobStatus(jobOffer.id)}
+              color="primary"
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </div>
 
           <Link
             to={`/empleo/${jobOffer.id}/postulaciones`}

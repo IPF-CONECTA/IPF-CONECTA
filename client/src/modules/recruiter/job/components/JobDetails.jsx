@@ -56,7 +56,7 @@ export const JobDetails = ({ jobId }) => {
         navigate(selectedJob.applicationLink);
       }
       const response = await axios.post(
-        `${BASE_URL}/create-job-postulation`,
+        `${BASE_URL}/postulation`,
         {
           profileId: authState.user.profile.id,
           jobId: id,
