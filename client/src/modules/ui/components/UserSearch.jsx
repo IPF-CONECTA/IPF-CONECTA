@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../../constants/BASE_URL"; // Importación correcta de BASE_URL
 import "../../../../public/css/UserSerach.module.css";
+import styles from "../../../../public/css/jobSearch.module.css";
+import styles2 from "../../../../public/css/sidebar.module.css";
+import { FaSearch } from "react-icons/fa";
+import { authContext } from "../../../context/auth/Context";
+import axios from "axios";
 
-function UserSearch() {
+function UserSearch({ open, setOpen }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { authState } = useContext(authContext);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  useEffect(() => {
+    setSearchQuery("");
+    setUsers([]);
+  }, [open]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,31 +32,24 @@ function UserSearch() {
       setError("");
 
       try {
-        const response = await fetch(
-          `http://localhost:4000/search-users?query=${searchQuery}`,
+        const res = await axios.get(
+          `${BASE_URL}/search-users?query=${searchQuery}`,
           {
-            method: "GET",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "application/json",
             },
           }
         );
+        console.log(res);
 
-        const data = await response.json();
-
-        if (response.ok) {
-          setUsers(data);
-        } else {
-          setError(data.message || "No se encontraron usuarios.");
-        }
+        setUsers(res.data);
       } catch (err) {
-        setError("Hubo un error al buscar usuarios.");
+        setError(err.response.data.message);
       } finally {
         setLoading(false);
       }
     };
-
+    setLoading(true);
     const debounceTimeout = setTimeout(() => {
       fetchUsers();
     }, 500);
@@ -57,76 +57,113 @@ function UserSearch() {
     return () => clearTimeout(debounceTimeout);
   }, [searchQuery]);
 
-  const goToProfile = (username) => {
-    navigate(`/perfil/${username}`);
-  };
-
+  console.log(open);
   return (
-    <div className="user-search">
-      <input
-        type="text"
-        placeholder="Buscar usuarios..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="user-search-input"
-      />
+    <>
+      <div className="d-flex align-items-center">
+        <button
+          type="submit"
+          onClick={() => setOpen(!open)}
+          className={`btn p-0 me-1`}
+          style={{ zIndex: 1999 }}
+        >
+          <FaSearch
+            size={26}
+            className="ms-1"
+            color={`${authState.isLogged ? "#117bb9" : "#7c848b"}`}
+          />
+        </button>
+        <div
+          className={`w-100 border rounded-3 overflow-hidden d-flex align-items-center ${
+            styles2.navText
+          } ${open && styles2.open}`}
+        >
+          <input
+            autoComplete="off"
+            type="text"
+            name="searchBar"
+            id="SearchBar"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-100 m-0 p-1 border-0`}
+            placeholder="Buscar"
+          />
+        </div>
+      </div>
 
       {searchQuery && (
-        <div className="dropdown">
-          {loading && <p className="loading-text">Cargando...</p>}
-          {error && <p className="error-text">{error}</p>}
+        <div
+          className="dropdown position-fixed bg-white rounded-3 border overflow-hidden me-3 shadow p-1"
+          style={{ zIndex: "1001", width: "150px", left: "50px", top: "227px" }}
+        >
           {!loading && !error && users.length > 0 && (
             <div className="dropdown-list">
-              {users.map((user) => (
-                <div
-                  key={user.id}
-                  className="dropdown-item user-container"
-                  onClick={() => goToProfile(user.username)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    padding: "8px 12px",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
+              {users.slice(0, 3).map((user, index) => (
+                <>
                   <div
+                    key={user.id}
+                    className={`dropdown-item user-container`}
+                    onClick={() => navigate(`/perfil/${user.username}`)}
                     style={{
-                      width: "40px",
-                      height: "40px",
-                      overflow: "hidden",
-                      borderRadius: "50%",
-                      marginRight: "10px",
+                      zIndex: 1000,
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
                     }}
                   >
-                    <img
-                      src={
-                        user.profilePic
-                          ? `${BASE_URL}/images/${user.profilePic}`
-                          : "/img/default-avatar.png"
-                      }
-                      alt={`${user.username} avatar`}
-                      className="user-avatar"
+                    <div
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
+                        width: "40px",
+                        height: "40px",
+                        overflow: "hidden",
                       }}
-                    />
+                      className={`d-flex w-100 gap-2 align-items-center text-truncate ${
+                        index !== 2 && users.length > index
+                          ? "border-bottom"
+                          : ""
+                      }`}
+                    >
+                      <img
+                        src={
+                          user.profile.profilePic
+                            ? `${BASE_URL}/images/${user.profile.profilePic}`
+                            : "/img/default-avatar.png"
+                        }
+                        alt={`${user.username} avatar`}
+                        className="rounded-circle"
+                        height={30}
+                        style={{
+                          objectFit: "cover",
+                        }}
+                      />
+                      <span className="">{user.username}</span>
+                    </div>
                   </div>
-                  <span className="username" style={{ fontWeight: "bold" }}>
-                    {user.username}
-                  </span>
-                </div>
+                </>
               ))}
             </div>
           )}
-          {!loading && !error && users.length === 0 && (
-            <p className="no-results">No se encontraron usuarios.</p>
+          {loading ? (
+            <div className="d-flex flex-column gap-2">
+              <div className="d-flex gap-1 placeholder-wave">
+                <p className="placeholder col-2 rounded-circle bg-dark-subtle fs-4"></p>
+                <p className="placeholder col-10 rounded-3 bg-dark-subtle"></p>
+              </div>
+              <div className="d-flex gap-1 placeholder-wave">
+                <p className="placeholder col-2 rounded-circle bg-dark-subtle fs-4"></p>
+                <p className="placeholder col-10 rounded-3 bg-dark-subtle"></p>
+              </div>
+              <div className="d-flex gap-1 placeholder-wave">
+                <p className="placeholder col-2 rounded-circle bg-dark-subtle fs-4"></p>
+                <p className="placeholder col-10 rounded-3 bg-dark-subtle"></p>
+              </div>
+            </div>
+          ) : (
+            error && <p className="text-secondary">{error}</p>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
 

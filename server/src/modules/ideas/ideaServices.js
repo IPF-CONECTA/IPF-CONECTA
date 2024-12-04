@@ -1,6 +1,8 @@
 import { sequelize } from "../../config/db.js";
 import { Idea } from "./ideaModel.js";
 import { Vote } from "./votes/voteModel.js";
+import { Profile } from "../profile/profileModel.js";
+import { User } from "../users/userModel.js";
 import {
   createAttachmentsSvc,
   getAttachmentsSvc,
@@ -41,6 +43,14 @@ export const getIdeasSvc = async (id) => {
           as: "votes",
           attributes: ["id", "profileId"],
         },
+        {
+          model: Profile,
+          attributes: ["id", "names", "surnames", "profilePic"],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
       ],
       limit: 6,
       attributes: {
@@ -79,6 +89,14 @@ export const getIdeasOrderByVotesSvc = async (id) => {
           model: Vote,
           as: "votes",
           attributes: ["id", "profileId"],
+        },
+        {
+          model: Profile,
+          attributes: ["id", "names", "surnames", "profilePic"],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
         },
       ],
       limit: 3,
@@ -128,6 +146,14 @@ export const getIdeaByIdSvc = async (id) => {
           model: Vote,
           as: "votes",
           attributes: ["id", "profileId"],
+        },
+        {
+          model: Profile,
+          attributes: ["id", "names", "surnames", "profilePic"],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
         },
       ],
     });

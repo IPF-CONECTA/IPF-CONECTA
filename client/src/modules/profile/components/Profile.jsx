@@ -92,6 +92,7 @@ export const Profile = ({ data }) => {
 
   const fetchPosts = async () => {
     const res = await postsServices.getPostsByUsername(data ? data : username);
+    console.log("Respuesta de posts", res);
     if (res?.status !== 200 && res?.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
     }

@@ -13,9 +13,11 @@ export const postsServices = {
           },
         }
       );
+      console.log("res", res)
       return { data: res.data, status: res.status };
     } catch (error) {
-      console.error(error);
+      console.log("error", error)
+      return { status: error.status };
     }
   },
 };

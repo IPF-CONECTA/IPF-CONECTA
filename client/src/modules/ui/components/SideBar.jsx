@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BiSolidHomeAlt2 } from "react-icons/bi";
 import { MdAccountCircle } from "react-icons/md";
@@ -10,12 +10,13 @@ import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { FaRankingStar } from "react-icons/fa6";
-
+import { FaSearch } from "react-icons/fa";
 import { authContext } from "../../../context/auth/Context.js";
 import styles from "../../../../public/css/sidebar.module.css";
 import { useNoti } from "../../../hooks/useNoti.jsx";
 import { BASE_URL } from "../../../constants/BASE_URL.js";
 import { useChatContext } from "../../../context/chat/ChatContext.jsx";
+import UserSearch from "./UserSearch.jsx";
 
 export const SideBar = () => {
   const [open, setOpen] = useState(false);
@@ -24,9 +25,24 @@ export const SideBar = () => {
   const location = useLocation();
   const noti = useNoti();
   const navigate = useNavigate();
+  const sidebarRef = useRef(null);
+
   useEffect(() => {
     setOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -40,11 +56,12 @@ export const SideBar = () => {
   };
   return (
     <nav
-      className={`d-flex flex-column bg-white gap-4 justify-content-between align-items-start position-fixed start-0 h-100 border border-start-0 rounded-end-5 p-3 ${
+      ref={sidebarRef}
+      className={`d-flex flex-column bg-white gap-5 justify-content-between align-items-start position-fixed start-0 h-100 border border-start-0 rounded-end-5 p-3 ${
         styles.navContainer
       } ${open && styles.open}`}
     >
-      <div className="d-flex flex-column mt-4" style={{ gap: "1.5rem" }}>
+      <div className="d-flex flex-column mt-4" style={{ gap: "1rem" }}>
         <button
           onClick={() => {
             navigate("/");
@@ -118,6 +135,7 @@ export const SideBar = () => {
                 Social
               </span>
             </button>
+            <UserSearch open={open} setOpen={setOpen} />
             <button
               onClick={() =>
                 handleNavigatePrivate(`/perfil/${authState?.user?.username}`)

@@ -9,7 +9,6 @@ export const getIdeasLogged = async () => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-
     return { data: res.data, status: res.status };
   } catch (error) {
     return {
@@ -42,7 +41,6 @@ export const getIdeaById = async (ideaId) => {
         Authorization: `Bearer ${authService.getToken()}`,
       },
     });
-
     return { data: res.data, status: res.status };
   } catch (error) {
     return {
@@ -81,7 +79,6 @@ export const getRankingIdeasLogged = async () => {
 };
 
 export const createIdea = async (newIdea) => {
-  console.log("ideas", newIdea);
   const formData = new FormData();
   formData.append("title", newIdea.title);
   formData.append("description", newIdea.description);

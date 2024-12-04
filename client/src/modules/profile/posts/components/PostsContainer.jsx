@@ -9,6 +9,7 @@ export const PostsContainer = ({ username, own, postsData }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    if (!postsData) return;
     const posts = postsData.rows?.slice(0, 3);
     setPosts(posts);
   }, [postsData]);

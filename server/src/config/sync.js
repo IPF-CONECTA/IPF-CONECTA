@@ -38,7 +38,7 @@ export const createTablesAndRelations = async () => {
   await createRelations();
   console.log("Relations created successfully");
   console.log("Tables created successfully");
-  await Idea.sync({ force: true });
+  // await User.sync({ force: true });
   // ===================================================================================
   // || COMENTAR LO DE ABAJO UNA VEZ IMPORTADAS LAS TABLAS Y CAMBIAR { force: false } ||
   // // ===================================================================================

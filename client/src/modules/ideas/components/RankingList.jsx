@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import styles from "../../../../public/css/ranking.module.css";
 import { BASE_URL } from "../../../constants/BASE_URL";
+import { Link } from "react-router-dom";
 
 export const RankingList = () => {
   const [ideas, setIdeas] = useState([]);
@@ -90,56 +91,105 @@ export const RankingList = () => {
         onClose={handleCloseDialog}
         fullWidth
         maxWidth="md"
-        className="idea-modal"
       >
-        <DialogTitle className="modal-title">{selectedIdea?.title}</DialogTitle>
+        <DialogTitle className="fw-bold fs-4 text-primary text-center mb-3">
+          {selectedIdea?.title || "Título de la idea"}
+        </DialogTitle>
         <DialogContent>
-          <div className="modal-body-container">
-            <div className="modal-text-content">
-              <p>
-                <strong>Descripción:</strong> {selectedIdea?.description}
+          <div className="creator-info mb-5">
+            <h5 className="fw-bold text-dark">Creado por</h5>
+            <div className="d-flex align-items-center mt-3 p-3 border rounded shadow-sm">
+              <img
+                className="me-3 rounded-circle"
+                src={
+                  selectedIdea?.profile?.profilePic
+                    ? `${BASE_URL}/images/${selectedIdea.profile.profilePic}`
+                    : "default-profile.png"
+                }
+                alt="Foto de perfil"
+                height={50}
+                width={50}
+              />
+              <div className="flex-grow-1">
+                <h6 className="fw-bold fs-5 mb-1">
+                  {selectedIdea?.profile?.names || "Nombre"}{" "}
+                  {selectedIdea?.profile?.surnames || "Apellido"}
+                </h6>
+                <p className="text-secondary mb-1">
+                  @{selectedIdea?.profile?.user?.username || "username"}
+                </p>
+              </div>
+              <Link
+                to={`/perfil/${selectedIdea?.profile?.user?.username || ""}`}
+                className="btn btn-outline-info btn-sm"
+              >
+                Ver perfil
+              </Link>
+            </div>
+          </div>
+
+          <div className="idea-details">
+            <h5 className="fw-bold text-dark mb-3">Detalles del Proyecto</h5>
+            <div className="ps-3 border-start border-2">
+              <p className="mb-3">
+                <strong className="fw-bold">Descripción:</strong>{" "}
+                <span style={{ color: "#212529" }}>
+                  {selectedIdea?.description || "Sin descripción"}
+                </span>
               </p>
-              <p>
-                <strong>Categoría:</strong> {selectedIdea?.category}
+              <p className="mb-3">
+                <strong className="fw-bold">Categoría:</strong>{" "}
+                <span style={{ color: "#212529" }}>
+                  {selectedIdea?.category || "Sin categoría"}
+                </span>
               </p>
-              <p>
-                <strong>Objetivos:</strong> {selectedIdea?.objectives}
+              <p className="mb-3">
+                <strong className="fw-bold">Objetivos:</strong>{" "}
+                <span style={{ color: "#212529" }}>
+                  {selectedIdea?.objectives || "Sin objetivos"}
+                </span>
               </p>
-              <p>
-                <strong>Justificación:</strong> {selectedIdea?.justification}
+              <p className="mb-3">
+                <strong className="fw-bold">Justificación:</strong>{" "}
+                <span style={{ color: "#212529" }}>
+                  {selectedIdea?.justification || "Sin justificación"}
+                </span>
               </p>
-              <p>
-                <strong>Tecnologías:</strong> {selectedIdea?.technologies}
+              <p className="mb-3">
+                <strong className="fw-bold">Tecnologías:</strong>{" "}
+                <span style={{ color: "#212529" }}>
+                  {selectedIdea?.technologies || "Sin tecnologías"}
+                </span>
               </p>
-              <p>
-                <strong>Beneficiarios:</strong> {selectedIdea?.beneficiaries}
+              <p className="mb-3">
+                <strong className="fw-bold">Beneficiarios:</strong>{" "}
+                <span style={{ color: "#212529" }}>
+                  {selectedIdea?.beneficiaries || "Sin beneficiarios"}
+                </span>
               </p>
             </div>
-
-            {selectedIdea?.attachments?.length > 0 && (
-              <div className="modal-carousel-container">
-                <Carousel className="modal-carousel">
-                  {selectedIdea.attachments.map((attachment, index) => (
-                    <Carousel.Item key={index}>
-                      <img
-                        className="modal-carousel-image"
-                        src={`${BASE_URL}/images/${attachment.url}`}
-                        alt={`Attachment ${index + 1}`}
-                      />
-                    </Carousel.Item>
-                  ))}
-                </Carousel>
-              </div>
-            )}
           </div>
+
+          {selectedIdea?.attachments?.length > 0 && (
+            <div className="attachments mt-5">
+              <h5 className="fw-bold text-dark mb-3">Adjuntos</h5>
+              <Carousel className="shadow-sm rounded">
+                {selectedIdea.attachments.map((attachment, index) => (
+                  <Carousel.Item key={index}>
+                    <img
+                      className="d-block w-100"
+                      src={`${BASE_URL}/images/${attachment.url}`}
+                      alt={`Adjunto ${index + 1}`}
+                      height={400}
+                    />
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleCloseDialog}
-            variant="contained"
-            color="primary"
-            className="close-button"
-          >
+          <Button onClick={handleCloseDialog} variant="secondary">
             Cerrar
           </Button>
         </DialogActions>
