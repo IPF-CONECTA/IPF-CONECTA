@@ -55,7 +55,7 @@ export const getJobPostulationsSvc = async (jobId) => {
 export const changeJobPostulationStatusSvc = async (id) => {
   try {
     const jobPostulation = await JobPostulation.findByPk(id);
-    jobPostulation.approved = !jobPostulation.approved;
+    jobPostulation.favorite = !jobPostulation.favorite;
     await jobPostulation.save();
     return jobPostulation;
   } catch (error) {

@@ -198,6 +198,7 @@ export const getJobsByUsernameSvc = async (username) => {
     const jobs = await Job.findAll({
       where: { profileId: profile.id },
       include: { model: Company, attributes: ["name", "logoUrl"] },
+      order: [["createdAt", "DESC"]],
     });
 
     await Promise.all(
@@ -296,5 +297,5 @@ export const changeJobStatusSvc = async (jobId) => {
     job.active = !job.active;
     await job.save();
     return job;
-  } catch (error) {}
+  } catch (error) { }
 };

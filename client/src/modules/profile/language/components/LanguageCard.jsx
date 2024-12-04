@@ -14,6 +14,7 @@ import {
   Button,
 } from "@mui/material";
 import Select from "react-select";
+import { getProfile } from "../../../feed/services/feedServices.js";
 
 export const LanguageSelector = () => {
   const { username } = useParams();
@@ -23,7 +24,7 @@ export const LanguageSelector = () => {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [availableLanguages, setAvailableLanguages] = useState([]);
   const [availableLanguageLevels, setAvailableLanguageLevels] = useState([]);
-
+  const [own, setOwn] = useState(false);
   const fetchUserLanguages = async () => {
     try {
       const languages = await getUserLanguages(username);
@@ -55,6 +56,7 @@ export const LanguageSelector = () => {
     fetchUserLanguages();
     fetchAvailableLanguages();
     fetchAvailableLanguageLevels();
+    fetchProfile();
   }, [username]);
 
   const handleAddLanguage = async () => {
@@ -77,6 +79,12 @@ export const LanguageSelector = () => {
     }
   };
 
+  const fetchProfile = async () => {
+    const res = await getProfile(username);
+    if (res.status == 200) {
+      setOwn(res.data.own);
+    }
+  };
   const languageOptions = availableLanguages.map((language) => ({
     value: language.id,
     label: language.name,
@@ -113,27 +121,33 @@ export const LanguageSelector = () => {
         </div>
 
         <ul className="list-group w-100">
-          {profileLanguages.map((language) => {
-            const langDetails = availableLanguages.find(
-              (lang) => lang.id === language.langId
-            );
-            const levelDetails = availableLanguageLevels.find(
-              (level) => level.id === language.langLevelId
-            );
+          {profileLanguages.length > 0 ? (
+            profileLanguages.map((language) => {
+              const langDetails = availableLanguages.find(
+                (lang) => lang.id === language.langId
+              );
+              const levelDetails = availableLanguageLevels.find(
+                (level) => level.id === language.langLevelId
+              );
 
-            return (
-              <li
-                key={language.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <span>
-                  Idioma: {langDetails ? langDetails.name : "Desconocido"} -
-                  Nivel del Idioma:{" "}
-                  {levelDetails ? levelDetails.level : "Desconocido"}
-                </span>
-              </li>
-            );
-          })}
+              return (
+                <li
+                  key={language.id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span>
+                    Idioma: {langDetails ? langDetails.name : "Desconocido"} -
+                    Nivel del Idioma:{" "}
+                    {levelDetails ? levelDetails.level : "Desconocido"}
+                  </span>
+                </li>
+              );
+            })
+          ) : (
+            <li className="list-group-item border rounded p-2 text-secondary">
+              No se han agregado idiomas a tu perfil.
+            </li>
+          )}
         </ul>
       </div>
 

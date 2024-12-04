@@ -22,8 +22,8 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
       return;
     }
     Promise.all(
-      selectedSkill[1].map((ass) => {
-        return deleteSkill(ass.id, selectedSkill[2]);
+      selectedSkill[1].map((skill) => {
+        return deleteSkill(skill.id, selectedSkill[2]);
       })
     );
     noti("Habilidad eliminada", "success");
@@ -32,7 +32,7 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
     setSelectedSkill(null);
   };
   return (
-    <section>
+    <section className="p-4">
       <div className="d-flex justify-content-between mb-2">
         <div className="d-flex ">
           <button
@@ -63,7 +63,7 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
           </>
         )}
       </div>
-      <ul className="p-0 m-0 mx-4 list-unstyled border border-bottom-0 rounded">
+      <ul className="mx-4 list-unstyled border  rounded">
         {skills && skills.length >= 1 ? (
           skills.map((skill, index) => (
             <SkillCard
@@ -76,7 +76,7 @@ export const AllSkills = ({ own, skillsData, onSkillSubmit, username }) => {
             />
           ))
         ) : own ? (
-          <li className="list-group-item text-secondary">
+          <li className="list-group-item text-secondary p-2">
             Agrega habilidades a tu perfil.
           </li>
         ) : (

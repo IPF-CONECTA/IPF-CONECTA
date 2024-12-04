@@ -14,6 +14,7 @@ import { findLocation } from "../../experiences/services/locationServices";
 import { SlideDown } from "../../../ui/transitions/SlideDown";
 import { jobsServices } from "../services/jobsServices";
 import Editor from "../../../ui/components/Editor";
+import { Switch } from "@mui/material";
 
 export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
   const noti = useNoti();
@@ -309,18 +310,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
             )}
           />
         </div>
-        <div className="mb3 active postulations">
-          <label>Estado de la oferta</label>
-          <div className="form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              {...register("active")}
-              defaultChecked={job ? job.active : true}
-            />
-            <label className="form-check-label">Activo</label>
-          </div>
-        </div>
+
         <div className="mb-3 modality">
           <label>Modalidad</label>
           <select

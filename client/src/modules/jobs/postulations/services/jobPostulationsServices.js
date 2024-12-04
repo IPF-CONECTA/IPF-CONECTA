@@ -5,7 +5,7 @@ import { authService } from "../../../auth/services/authService";
 export const jobPostulationsServices = {
   getPostulationsByJobId: async (jobId) => {
     try {
-      const res = await axios.get(`${BASE_URL}/postulations/${jobId}`, {
+      const res = await axios.get(`${BASE_URL}/postulation/${jobId}`, {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
         },
@@ -22,7 +22,7 @@ export const jobPostulationsServices = {
   changeJobPostulationStatus: async (jobPostulationId) => {
     try {
       const res = await axios.put(
-        `${BASE_URL}/change-job-postulation-status/${jobPostulationId}`,
+        `${BASE_URL}/postulation/toggle-favorite/${jobPostulationId}`,
         {},
         {
           headers: {

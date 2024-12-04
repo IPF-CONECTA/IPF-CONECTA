@@ -16,6 +16,7 @@ import {
   getAvailableLanguages,
   getAvailableLanguageLevels,
   updateLanguage,
+  addLanguage,
 } from "../services/languageService.js";
 import { Header } from "../../components/ProfileHeader";
 import { Nav, SideBar } from "../../../ui/components";
@@ -37,6 +38,8 @@ export const LanguagesEdit = () => {
   const [editingLanguageId, setEditingLanguageId] = useState(null);
   const noti = useNoti();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState("");
 
   const fetchUserLanguages = async () => {
     try {
@@ -44,6 +47,26 @@ export const LanguagesEdit = () => {
       setProfileLanguages(languages);
     } catch (error) {
       console.error("Error fetching user's languages:", error);
+    }
+  };
+
+  const handleAddLanguage = async () => {
+    if (!selectedLanguage || !selectedLevel) {
+      alert("Por favor, selecciona un idioma y un nivel.");
+      return;
+    }
+    try {
+      const newLanguage = await addLanguage(
+        username,
+        selectedLanguage.value,
+        selectedLevel
+      );
+      setProfileLanguages((prevLanguages) => [...prevLanguages, newLanguage]);
+      setShowDialog(false);
+      setSelectedLanguage(null);
+      setSelectedLevel("");
+    } catch (error) {
+      console.error("Error adding language:", error);
     }
   };
 
@@ -151,9 +174,9 @@ export const LanguagesEdit = () => {
     <>
       <SideBar />
       <div className="d-flex justify-content-evenly px-5 pt-4">
-        <div className={`${styles.profileContainer} border rounded`}>
+        <div className={`${styles.profileContainer} border rounded-4`}>
           <Header profileData={profileData} setProfileData={setProfileData} />
-          <section>
+          <section className="p-4">
             <div className="d-flex justify-content-between mb-2">
               <div className="d-flex">
                 <button
@@ -167,6 +190,68 @@ export const LanguagesEdit = () => {
                 </button>
                 <span className="fs-5 fw-bold">Idiomas</span>
               </div>
+              {profileData?.own && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setShowDialog(true)}
+                    className="btn p-0 me-3 d-flex align-items-center"
+                  >
+                    <span className="material-symbols-outlined text-secondary">
+                      add
+                    </span>
+                  </button>
+                  <Dialog
+                    open={showDialog}
+                    onClose={() => setShowDialog(false)}
+                    fullWidth
+                    maxWidth="sm"
+                  >
+                    <DialogTitle>Agregar Idioma</DialogTitle>
+                    <DialogContent
+                      dividers
+                      style={{ maxHeight: "400px", overflowY: "auto" }}
+                    >
+                      <div className="form-group">
+                        <Select
+                          options={availableLanguages}
+                          value={selectedLanguage}
+                          onChange={setSelectedLanguage}
+                          placeholder="Seleccionar idioma..."
+                          isClearable
+                          isSearchable
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+                          }}
+                        />
+                      </div>
+                      <div className="form-group mt-3">
+                        <label htmlFor="languageLevel">Nivel del idioma:</label>
+                        <Select
+                          options={availableLanguageLevels}
+                          onChange={(option) => setSelectedLevel(option.value)}
+                          placeholder="Seleccionar nivel..."
+                          isClearable
+                          isSearchable
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+                          }}
+                        />
+                      </div>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={handleAddLanguage}
+                        style={{ backgroundColor: "#212529", color: "#fff" }}
+                      >
+                        Agregar
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </>
+              )}
             </div>
             <ul className="p-0 m-0 list-unstyled">
               {profileLanguages && profileLanguages.length >= 1 ? (
@@ -195,11 +280,10 @@ export const LanguagesEdit = () => {
                         </IconButton>
                       </div>
                     </div>
-                    <hr className="m-0 p-0" />
                   </li>
                 ))
               ) : (
-                <li className="list-group-item text-secondary">
+                <li className="list-group-item border rounded p-2 mx-4 text-secondary">
                   No se han agregado idiomas a tu perfil.
                 </li>
               )}
@@ -289,6 +373,7 @@ export const LanguagesEdit = () => {
             </Dialog>
           </section>
         </div>
+        <RecommendedAccounts />
       </div>
     </>
   );
