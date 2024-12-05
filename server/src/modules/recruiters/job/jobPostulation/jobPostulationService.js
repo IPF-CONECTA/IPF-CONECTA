@@ -26,12 +26,15 @@ export const createJobPostulationSvc = async (profId, jobId) => {
 
 export const getJobPostulationsSvc = async (jobId) => {
   try {
-    return await Job.findByPk(jobId, {
+    console.log('SE EJECUTO ACA==============')
+    const postulations = await Job.findByPk(jobId, {
       attributes: ["title"],
       include: [
         {
           model: JobPostulation,
+          separate: true,
           as: "postulate",
+          order: [["favorite", "DESC"]],
           include: [
             {
               model: Profile,
@@ -47,6 +50,8 @@ export const getJobPostulationsSvc = async (jobId) => {
         },
       ],
     });
+    console.log(postulations.postulate)
+    return postulations
   } catch (error) {
     throw error;
   }

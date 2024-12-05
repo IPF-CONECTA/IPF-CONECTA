@@ -19,7 +19,6 @@ export const JobPostulations = () => {
   const [profileData, setProfileData] = useState({});
 
   const [job, setJob] = useState();
-  const [open, setOpen] = useState(false);
   const { setChatId, setReceiver } = useChatContext();
   const navigate = useNavigate();
   const username = authState.user?.username;
@@ -45,7 +44,7 @@ export const JobPostulations = () => {
     }
     const updatedJob = job?.postulate?.map((postulation) => {
       if (postulation.id === jobPostulationId) {
-        postulation.approved = !postulation.approved;
+        postulation.favorite = !postulation.favorite;
       }
       return postulation;
     });
@@ -69,10 +68,6 @@ export const JobPostulations = () => {
     fetchJob();
   }, [jobId]);
 
-  const sortedPostulations = job?.postulate?.sort(
-    (a, b) => b.approved - a.approved
-  );
-
   return (
     <div style={{ width: "65%" }} className="border rounded-4">
       {profileData && (
@@ -94,14 +89,14 @@ export const JobPostulations = () => {
           </span>
         </div>
 
-        {sortedPostulations?.length > 0 ? (
+        {job?.postulate?.length > 0 ? (
           <>
             <div className="d-flex flex-column mx-5">
               <ul className="list-group list-group-flush ">
-                {sortedPostulations?.map((postulation) => (
+                {job?.postulate?.map((postulation, i) => (
                   <li
                     className="list-group-item mb-1 border w-100 mx-auto"
-                    key={postulation.id}
+                    key={postulation.id + i}
                   >
                     <div className="column d-flex justify-content-between">
                       <div className="d-flex">
@@ -140,29 +135,17 @@ export const JobPostulations = () => {
                             className="material-symbols-outlined mx-3 "
                             onClick={() => handleStatusClick(postulation.id)}
                             style={{
-                              color: postulation.approved ? "gold" : "",
+                              color: postulation.favorite ? "gold" : "",
                               cursor: "pointer",
                             }}
                           >
                             stars
                           </span>
-                          <button
-                            onClick={() => setOpen(true)}
-                            className="btn btn-outline-dark"
-                            style={{ height: "fit-content" }}
-                          >
-                            Perfil
-                          </button>
+
+                          <DialogProfile
+                            data={postulation.profile.user.username}
+                          />
                         </div>
-                        <Dialog
-                          maxWidth="md"
-                          open={open}
-                          onClose={() => setOpen(false)}
-                        >
-                          <DialogContent>
-                            <Profile data={postulation.profile.user.username} />
-                          </DialogContent>
-                        </Dialog>
                         <div className="ms-auto d-flex column"></div>
                         <button
                           onClick={() =>
@@ -208,3 +191,22 @@ export const JobPostulations = () => {
     </div>
   );
 };
+
+function DialogProfile({ data }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="btn btn-outline-dark"
+        style={{ height: "fit-content" }}
+      >
+        Perfil
+      </button>
+      <Dialog maxWidth="md" open={open} onClose={() => setOpen(false)}>
+        <Profile data={data} />
+      </Dialog>
+    </>
+  );
+}

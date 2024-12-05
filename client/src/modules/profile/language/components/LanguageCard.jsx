@@ -17,6 +17,7 @@ import Select from "react-select";
 import { getProfile } from "../../../feed/services/feedServices.js";
 
 export const LanguageSelector = ({ own }) => {
+  console.log(own);
   const { username } = useParams();
   const [profileLanguages, setProfileLanguages] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
@@ -95,8 +96,7 @@ export const LanguageSelector = ({ own }) => {
   }));
 
   return (
-    own ||
-    (profileLanguages.length > 0 && (
+    (own || profileLanguages.length > 0) && (
       <div className="border-bottom w-100">
         <div className="p-4">
           <div className="d-flex justify-content-between mb-2">
@@ -110,6 +110,7 @@ export const LanguageSelector = ({ own }) => {
                   add
                 </span>
               </button>
+
               <Link
                 to={`/languages/${username}/edit`}
                 className="btn d-flex p-0 align-items-center"
@@ -205,6 +206,6 @@ export const LanguageSelector = ({ own }) => {
           </DialogActions>
         </Dialog>
       </div>
-    ))
+    )
   );
 };

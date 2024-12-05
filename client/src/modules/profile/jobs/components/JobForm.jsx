@@ -247,6 +247,7 @@ export const JobForm = ({ openModal, setOpenModal, onJobUpdate, job }) => {
         <div className="mb-3 description">
           <label htmlFor="description">Descripción</label>
           <Editor
+            key={job ? job.title : "new"}
             {...register("description")}
             initialValue={
               job

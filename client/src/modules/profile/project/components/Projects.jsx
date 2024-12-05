@@ -30,11 +30,14 @@ export const Projects = ({ username, projectsData, own, onProjectSubmit }) => {
                   add
                 </span>
               </button>
-              <button className="btn d-flex p-0 align-items-center">
+              <Link
+                to={`/${username}/proyectos`}
+                className="btn d-flex p-0 align-items-center"
+              >
                 <span className="material-symbols-outlined text-dark-emphasis">
                   edit
                 </span>
-              </button>
+              </Link>
             </div>
           )}
         </div>

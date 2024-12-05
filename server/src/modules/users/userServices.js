@@ -153,7 +153,7 @@ export const searchUsers = async (query) => {
           [Op.not]: ALL_ROLES.admin, // Excluir usuarios con rol de administrador
         },
         username: {
-          [Op.like]: `%${query}%`, // Usar operador `like` para búsqueda parcial
+          [Op.iLike]: `%${query}%`, // Usar operador `like` para búsqueda parcial
         },
       },
       include: {

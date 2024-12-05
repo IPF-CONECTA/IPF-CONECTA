@@ -28,7 +28,10 @@ export const Messaging = () => {
 
   return (
     <>
-      <div className="d-flex w-50 flex-column" style={{ marginLeft: "6rem" }}>
+      <div
+        className="d-flex w-50 flex-column h-100 overflow-auto"
+        style={{ marginLeft: "6rem" }}
+      >
         <div className="list-group w-100 h-100 border rounded-4 px-3 py-3">
           <span className="fs-3 fw-semibold">Mensajes</span>
 

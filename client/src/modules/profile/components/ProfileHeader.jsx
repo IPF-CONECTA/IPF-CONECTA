@@ -68,7 +68,7 @@ export const Header = ({ profileData, setProfileData, error }) => {
         <img
           src="/img/banner.jpg"
           alt="foto de banner"
-          className="w-100 rounded-top-4"
+          className="w-100 rounded-top-4 pe-none"
         />
         <div
           className={`me-3 d-flex align-items-start px-5 justify-content-between position-absolute`}
@@ -83,7 +83,7 @@ export const Header = ({ profileData, setProfileData, error }) => {
               }`}
               height={200}
               alt="profile pic"
-              className="rounded-circle bg-light border border-white border-5 "
+              className="rounded-circle bg-light border border-white border-5 pe-none"
             />
             <div className="d-flex justify-content-between w-100">
               <div>

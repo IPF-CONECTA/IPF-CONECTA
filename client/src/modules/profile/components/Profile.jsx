@@ -20,6 +20,7 @@ import { postsServices } from "../posts/services/postsServices";
 
 export const Profile = ({ data }) => {
   const noti = useNoti();
+
   const { username } = useParams();
   const [profileData, setProfileData] = useState(null);
   const [experiences, setExperiences] = useState([]);
@@ -35,12 +36,20 @@ export const Profile = ({ data }) => {
     setLoading(true);
     try {
       const res = await getProfile(data ? data : username);
-      console.log(res);
       if (res.status !== 200) {
         setError(res.error);
         return noti(res.message, "error");
       }
+      setRole(res.data.profile.user.role.name);
       setProfileData(res.data);
+      fetchProjects();
+      fetchEducations();
+      fetchExperiences();
+      fetchSkills();
+      fetchPosts();
+      if (res.data.profile.user.role.name === "recruiter") {
+        fetchJobOffers();
+      }
     } catch (error) {
       setLoading(false);
     } finally {
@@ -109,25 +118,8 @@ export const Profile = ({ data }) => {
     setPosts([]);
 
     fetchProfile();
-    // if (profileData) {
-    fetchPosts();
-    fetchSkills();
-    fetchProjects();
-    fetchJobOffers();
-    fetchEducations();
-    fetchExperiences();
-    if (role === "recruiter") {
-      fetchJobOffers();
-      // }
-    }
   }, [data, username]);
 
-  useEffect(() => {
-    if (profileData) {
-      setRole(profileData.profile.user.role.name);
-    }
-  }),
-    [profileData];
   return (
     <>
       {loading ? (

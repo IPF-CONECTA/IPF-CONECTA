@@ -91,14 +91,14 @@ export const authLogInSvc = async (user) => {
       }
     })
 
+    if (!isUser) {
+      throw new Error('No se encontro una cuenta con ese email o nombre de usuario')
+    }
     if (isUser.dataValues.banned) {
       throw new Error("Tu cuenta se encuentra suspendida permanentemente. Revisa la casilla de tu correo electrónico para más información");
     }
     if (isUser.dataValues.suspensionExpires && new Date(isUser.dataValues.suspensionExpires) > new Date()) {
       throw new Error(`Tu cuenta se encuentra suspendida temporalmente hasta el ${isUser.dataValues.suspensionExpires}. Revisa la casilla de tu correo electrónico para más información`);
-    }
-    if (!isUser) {
-      throw new Error('No se encontro una cuenta con ese email o nombre de usuario')
     }
     const validPassword = await bcrypt.compare(user.password, isUser.password);
     if (!validPassword) throw new Error("Contraseña incorrecta");

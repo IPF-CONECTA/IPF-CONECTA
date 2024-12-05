@@ -162,22 +162,6 @@ export const SideBar = () => {
               </span>
             </button>
             <button
-              className={`d-flex align-items-center p-1 rounded btn  ${styles.navItem}`}
-            >
-              <IoNotifications
-                size={26}
-                color={`${authState.isLogged ? "#117bb9" : "#7c848b"}`}
-              />
-              <span
-                className={`${styles.navText} fw-semibold ${
-                  open && styles.open
-                } ms-2`}
-                style={{ color: authState.isLogged ? "#117bb9" : "#7c848b" }}
-              >
-                Notificaciones
-              </span>
-            </button>
-            <button
               onClick={() => {
                 handleNavigatePrivate("/mensajes");
                 setReceiver(null);

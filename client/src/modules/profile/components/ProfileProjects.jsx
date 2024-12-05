@@ -18,7 +18,7 @@ export const ProfileProjects = () => {
       <div className="container">
         <h1 className="text-center mt-2 mb-2">Proyectos de: {username}</h1>
         <div className="row">
-          {projects.map((project) => {
+          {projects?.map((project) => {
             return (
               <div className="col-md-3 mb-4" key={project.id}>
                 <div className="card">

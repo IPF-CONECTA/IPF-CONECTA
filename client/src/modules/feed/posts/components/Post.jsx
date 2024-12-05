@@ -5,6 +5,7 @@ import {
   getDateWithHour,
   getFullDate,
   getTime,
+  getFullDateOrTime,
 } from "../../../../helpers/getTime";
 import { ProfileHover } from "../../../profile/components/ProfileHover";
 import { TbHelpTriangleFilled } from "react-icons/tb";
@@ -292,7 +293,7 @@ export const Post = ({
                       {!details && (
                         <span className={`text-secondary ${styles.smallText}`}>
                           {" "}
-                          {getFullDate(post?.createdAt)}
+                          {getFullDateOrTime(post?.createdAt)}
                         </span>
                       )}
                     </div>

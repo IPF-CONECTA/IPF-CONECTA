@@ -46,7 +46,7 @@ export const AllPostsContainer = ({
         </div>
         <div className="d-flex flex-column align-items-center w-100">
           {" "}
-          <ul className="">
+          <ul className="w-100">
             {posts.count >= 1 ? (
               posts.rows.map((post, index) => (
                 <Post postData={post} key={index} />
