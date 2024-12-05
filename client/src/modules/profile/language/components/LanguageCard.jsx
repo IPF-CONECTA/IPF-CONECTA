@@ -16,7 +16,7 @@ import {
 import Select from "react-select";
 import { getProfile } from "../../../feed/services/feedServices.js";
 
-export const LanguageSelector = () => {
+export const LanguageSelector = ({ own }) => {
   const { username } = useParams();
   const [profileLanguages, setProfileLanguages] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
@@ -24,7 +24,6 @@ export const LanguageSelector = () => {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [availableLanguages, setAvailableLanguages] = useState([]);
   const [availableLanguageLevels, setAvailableLanguageLevels] = useState([]);
-  const [own, setOwn] = useState(false);
   const fetchUserLanguages = async () => {
     try {
       const languages = await getUserLanguages(username);
@@ -96,113 +95,116 @@ export const LanguageSelector = () => {
   }));
 
   return (
-    <div className="border-bottom w-100">
-      <div className="p-4">
-        <div className="d-flex justify-content-between mb-2">
-          <span className="fs-5 fw-bold">Idiomas</span>
-          <div className="d-flex justify-content-end">
-            <button
-              className="btn d-flex p-0 align-items-center me-3"
-              onClick={() => setShowDialog(true)}
-            >
-              <span className="material-symbols-outlined text-dark-emphasis">
-                add
-              </span>
-            </button>
-            <Link
-              to={`/languages/${username}/edit`}
-              className="btn d-flex p-0 align-items-center"
-            >
-              <span className="material-symbols-outlined text-dark-emphasis">
-                edit
-              </span>
-            </Link>
+    own ||
+    (profileLanguages.length > 0 && (
+      <div className="border-bottom w-100">
+        <div className="p-4">
+          <div className="d-flex justify-content-between mb-2">
+            <span className="fs-5 fw-bold">Idiomas</span>
+            <div className="d-flex justify-content-end">
+              <button
+                className="btn d-flex p-0 align-items-center me-3"
+                onClick={() => setShowDialog(true)}
+              >
+                <span className="material-symbols-outlined text-dark-emphasis">
+                  add
+                </span>
+              </button>
+              <Link
+                to={`/languages/${username}/edit`}
+                className="btn d-flex p-0 align-items-center"
+              >
+                <span className="material-symbols-outlined text-dark-emphasis">
+                  edit
+                </span>
+              </Link>
+            </div>
           </div>
+
+          <ul className="list-group w-100">
+            {profileLanguages.length > 0 ? (
+              profileLanguages.map((language) => {
+                const langDetails = availableLanguages.find(
+                  (lang) => lang.id === language.langId
+                );
+                const levelDetails = availableLanguageLevels.find(
+                  (level) => level.id === language.langLevelId
+                );
+
+                return (
+                  <li
+                    key={language.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <span>
+                      Idioma: {langDetails ? langDetails.name : "Desconocido"} -
+                      Nivel del Idioma:{" "}
+                      {levelDetails ? levelDetails.level : "Desconocido"}
+                    </span>
+                  </li>
+                );
+              })
+            ) : (
+              <li className="list-group-item border rounded p-2 text-secondary">
+                No se han agregado idiomas a tu perfil.
+              </li>
+            )}
+          </ul>
         </div>
 
-        <ul className="list-group w-100">
-          {profileLanguages.length > 0 ? (
-            profileLanguages.map((language) => {
-              const langDetails = availableLanguages.find(
-                (lang) => lang.id === language.langId
-              );
-              const levelDetails = availableLanguageLevels.find(
-                (level) => level.id === language.langLevelId
-              );
-
-              return (
-                <li
-                  key={language.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  <span>
-                    Idioma: {langDetails ? langDetails.name : "Desconocido"} -
-                    Nivel del Idioma:{" "}
-                    {levelDetails ? levelDetails.level : "Desconocido"}
-                  </span>
-                </li>
-              );
-            })
-          ) : (
-            <li className="list-group-item border rounded p-2 text-secondary">
-              No se han agregado idiomas a tu perfil.
-            </li>
-          )}
-        </ul>
-      </div>
-
-      <Dialog
-        open={showDialog}
-        onClose={() => setShowDialog(false)}
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle>Agregar Idioma</DialogTitle>
-        <DialogContent
-          dividers
-          style={{ maxHeight: "400px", overflowY: "auto" }}
+        <Dialog
+          open={showDialog}
+          onClose={() => setShowDialog(false)}
+          fullWidth
+          maxWidth="sm"
         >
-          <div className="form-group">
-            <Select
-              options={languageOptions}
-              value={selectedLanguage}
-              onChange={setSelectedLanguage}
-              placeholder="Seleccionar idioma..."
-              isClearable
-              isSearchable
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 1300 }),
-              }}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label htmlFor="languageLevel">Nivel del idioma:</label>
-            <Select
-              options={languageLevelOptions}
-              value={languageLevelOptions.find(
-                (level) => level.value === selectedLevel
-              )}
-              onChange={(option) => setSelectedLevel(option.value)}
-              placeholder="Seleccionar nivel..."
-              isClearable
-              isSearchable
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 1300 }),
-              }}
-            />
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleAddLanguage}
-            style={{ backgroundColor: "#212529", color: "#fff" }}
+          <DialogTitle>Agregar Idioma</DialogTitle>
+          <DialogContent
+            dividers
+            style={{ maxHeight: "400px", overflowY: "auto" }}
           >
-            Agregar
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+            <div className="form-group">
+              <Select
+                options={languageOptions}
+                value={selectedLanguage}
+                onChange={setSelectedLanguage}
+                placeholder="Seleccionar idioma..."
+                isClearable
+                isSearchable
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+                }}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label htmlFor="languageLevel">Nivel del idioma:</label>
+              <Select
+                options={languageLevelOptions}
+                value={languageLevelOptions.find(
+                  (level) => level.value === selectedLevel
+                )}
+                onChange={(option) => setSelectedLevel(option.value)}
+                placeholder="Seleccionar nivel..."
+                isClearable
+                isSearchable
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 1300 }),
+                }}
+              />
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleAddLanguage}
+              style={{ backgroundColor: "#212529", color: "#fff" }}
+            >
+              Agregar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    ))
   );
 };

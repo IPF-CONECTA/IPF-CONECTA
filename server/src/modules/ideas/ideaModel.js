@@ -11,7 +11,7 @@ export const Idea = sequelize.define("idea", {
     allowNull: false,
   },
   description: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   category: {
@@ -28,11 +28,11 @@ export const Idea = sequelize.define("idea", {
     defaultValue: "active",
   },
   objectives: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   justification: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   technologies: {
@@ -45,7 +45,7 @@ export const Idea = sequelize.define("idea", {
     defaultValue: "media",
   },
   beneficiaries: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.TEXT,
     allowNull: false,
   },
 });

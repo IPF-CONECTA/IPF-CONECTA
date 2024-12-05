@@ -4,11 +4,11 @@ import { postsServices } from "../services/postsServices";
 
 import { getDateWithHour } from "../../../../helpers/getTime";
 
-export const PostCard = ({ post, username, own }) => {
+export const PostCard = ({ post, username, profile = false }) => {
   const navigate = useNavigate();
   return (
     <li
-      className="list-group-item card "
+      className="list-group-item card text-truncate"
       style={{ cursor: "pointer" }}
       onClick={() => navigate(`/${username}/post/${post?.id}`)}
     >
@@ -26,7 +26,13 @@ export const PostCard = ({ post, username, own }) => {
           </span>
         </div>
 
-        <p className="card-text mb-2">{post.content}</p>
+        <p className="card-text mb-2">
+          {profile
+            ? post.content.length > 70
+              ? post.content.slice(0, 70)
+              : post.content
+            : post.content}
+        </p>
         {post.attachments?.length > 0 && (
           <div className="mb-3 fs-1 d-flex" style={{ height: "100px" }}>
             {post.attachments.map((attachment, index) => {

@@ -16,6 +16,7 @@ export const createIdea = async (req, res) => {
       return res.status(400).json({ message: "Error al crear la idea" });
     return res.status(201).json(newIdea);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ message: error.message });
   }
 };

@@ -107,17 +107,17 @@ export const Profile = ({ data }) => {
     setProjects([]);
     setSkills([]);
     setPosts([]);
-    
+
     fetchProfile();
     // if (profileData) {
-      fetchPosts();
-      fetchSkills();
-      fetchProjects();
+    fetchPosts();
+    fetchSkills();
+    fetchProjects();
+    fetchJobOffers();
+    fetchEducations();
+    fetchExperiences();
+    if (role === "recruiter") {
       fetchJobOffers();
-      fetchEducations();
-      fetchExperiences();
-      if (role === "recruiter") {
-        fetchJobOffers();
       // }
     }
   }, [data, username]);
@@ -202,14 +202,11 @@ export const Profile = ({ data }) => {
                 username={username}
               />
             )}
-            {(profileData?.own ||
-              profileData?.profile.languages?.length > 0) && (
-              <LanguageSelector
-                languagesData={profileData?.profile.languages}
-                own={profileData?.own}
-                username={username}
-              />
-            )}
+            <LanguageSelector
+              languagesData={profileData?.profile.languages}
+              own={profileData?.own}
+              username={username}
+            />
           </main>
         </div>
       )}
