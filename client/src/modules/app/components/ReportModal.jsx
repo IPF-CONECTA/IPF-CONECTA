@@ -63,7 +63,9 @@ export const ReportModal = ({
             Razón
           </option>
           {reportReasons.map((reason) => (
-            <option value={reason.id}>{reason.reason}</option>
+            <option key={reason.id} value={reason.id}>
+              {reason.reason}
+            </option>
           ))}
         </select>
         {errors.reason && (

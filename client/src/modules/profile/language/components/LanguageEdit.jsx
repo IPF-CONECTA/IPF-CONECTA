@@ -253,13 +253,16 @@ export const LanguagesEdit = () => {
                 </>
               )}
             </div>
-            <ul className="p-0 m-0 list-unstyled">
+            <ul className="p-0 m-0 list-unstyled d-flex flex-column gap-2">
               {profileLanguages && profileLanguages.length >= 1 ? (
                 profileLanguages.map((language) => (
-                  <li key={language.id}>
-                    <div className="d-flex justify-content-between p-2">
+                  <li
+                    key={language.id}
+                    className="list-group-item border m-0 rounded mx-4"
+                  >
+                    <div className="d-flex justify-content-between align-items-center p-2">
                       <span>
-                        Idioma: {getLanguageName(language.langId)} - Nivel:{" "}
+                        {getLanguageName(language.langId)} -{" "}
                         {getLanguageLevelName(language.langLevelId)}
                       </span>
                       <div className="d-flex">

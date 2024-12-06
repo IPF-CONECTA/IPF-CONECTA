@@ -65,6 +65,7 @@ export const getReportByIdSvc = async (id) => {
     if (!report) throw new Error("No se encontró el reporte");
 
     let data;
+    console.log(id)
     switch (report.reportableType) {
         case "job":
             (data = await getJobByIdSvc(report.reportableId));
@@ -94,8 +95,9 @@ export const resolveReportSvc = async (id, action, suspendEnds, reason) => {
         let profile;
         switch (report.reportableType) {
             case "job":
-                data = await getJobByIdSvc(report.reportableId);
-                profile = data.job.profile;
+                const res = await getJobByIdSvc(report.reportableId);
+                data = res.job;
+                profile = data.profile;
                 break;
             case "post":
                 data = await getPostByIdSvc(report.reportableId);
@@ -107,6 +109,7 @@ export const resolveReportSvc = async (id, action, suspendEnds, reason) => {
             default:
                 break;
         }
+        console.log(data)
         if (!profile || !profile.user) {
             throw new Error("No se encontró el perfil o el usuario asociado");
         }

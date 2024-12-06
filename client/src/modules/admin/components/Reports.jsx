@@ -80,7 +80,7 @@ export const ReportsContainer = ({ details = true }) => {
               <th scope="col">Descripción</th>
               {details && <th scope="col">Reportado por</th>}
               <th scope="col">Estado</th>
-              {details && <th scope="col">Reportado por</th>}
+              {details && <th scope="col">Acciones</th>}
             </tr>
           </thead>
           <tbody>

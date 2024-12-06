@@ -53,7 +53,6 @@ export const LanguageSelector = ({ own }) => {
   };
 
   useEffect(() => {
-    fetchUserLanguages();
     fetchAvailableLanguages();
     fetchAvailableLanguageLevels();
     fetchProfile();
@@ -82,6 +81,9 @@ export const LanguageSelector = ({ own }) => {
   const fetchProfile = async () => {
     const res = await getProfile(username);
     if (res.status == 200) {
+      console.log(res.data);
+      fetchUserLanguages();
+
       setOwn(res.data.own);
     }
   };

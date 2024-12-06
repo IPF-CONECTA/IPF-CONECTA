@@ -80,7 +80,7 @@ export const ExperienceCard = ({
             {" · "}
             {getTimeQuantity(
               experience.startDate,
-              experience.endDate ? experience.endDate : new Date().getDate()
+              experience.endDate ? experience.endDate : new Date().toISOString()
             )}
           </span>
           <span className={`text-secondary ${styles.smallText}`}>

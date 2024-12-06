@@ -36,6 +36,7 @@ export const Profile = ({ data }) => {
     setLoading(true);
     try {
       const res = await getProfile(data ? data : username);
+      console.log(res);
       if (res.status !== 200) {
         setError(res.error);
         return noti(res.message, "error");
@@ -139,7 +140,7 @@ export const Profile = ({ data }) => {
             setProfileData={setProfileData}
             error={error}
           />
-          <Nav role={role} />
+          {!error && <Nav role={role} />}
           <main className="w-100">
             <AboutCard
               own={profileData?.own}

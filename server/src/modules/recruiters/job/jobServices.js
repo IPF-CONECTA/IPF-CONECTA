@@ -128,14 +128,18 @@ export const getJobByIdSvc = async (id, profileId) => {
     );
     job.dataValues.skills = await getSkillables(job.id);
 
-    if (!profileId) return { job, postulated: false };
+    if (!profileId) {
+      console.log("no se recibio profileID")
+      return { job, postulated: false }
+    };
     const postulate = await JobPostulation.findOne({
       where: {
         profileId,
         jobId: id,
       },
     });
-
+    console.log(postulate)
+    console.log(postulate ? true : false)
     return {
       job,
       postulated: postulate ? true : false,
