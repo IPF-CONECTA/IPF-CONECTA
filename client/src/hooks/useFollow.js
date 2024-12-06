@@ -10,7 +10,6 @@ export const useFollow = (initialProfile) => {
   const noti = useNoti();
   const handleFollowOrUnfollow = async (event) => {
     if (authState.role == "admin") {
-      console.log("se cumple")
       return noti("No tienes permisos para esto", "warning")
     }
     event.stopPropagation();

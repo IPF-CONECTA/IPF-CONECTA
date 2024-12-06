@@ -40,7 +40,6 @@ function UserSearch({ open, setOpen }) {
             },
           }
         );
-        console.log(res);
 
         setUsers(res.data);
       } catch (err) {
@@ -57,7 +56,6 @@ function UserSearch({ open, setOpen }) {
     return () => clearTimeout(debounceTimeout);
   }, [searchQuery]);
 
-  console.log(open);
   return (
     <>
       <div className="d-flex align-items-center">

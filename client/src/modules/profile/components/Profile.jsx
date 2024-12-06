@@ -36,7 +36,6 @@ export const Profile = ({ data }) => {
     setLoading(true);
     try {
       const res = await getProfile(data ? data : username);
-      console.log(res);
       if (res.status !== 200) {
         setError(res.error);
         return noti(res.message, "error");
@@ -102,7 +101,6 @@ export const Profile = ({ data }) => {
 
   const fetchPosts = async () => {
     const res = await postsServices.getPostsByUsername(data ? data : username);
-    console.log("Respuesta de posts", res);
     if (res?.status !== 200 && res?.status !== 404) {
       return noti("Hubo un error al obtener los posts", "error");
     }

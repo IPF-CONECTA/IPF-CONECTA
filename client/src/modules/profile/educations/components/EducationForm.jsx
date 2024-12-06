@@ -106,8 +106,6 @@ export const EducationForm = ({
       skills: data?.skills,
     };
 
-    console.log(educationData);
-
     if (education) {
       await educationsServices.editEducation(education.id, educationData);
       noti("Formación académica editada", "success");
@@ -130,7 +128,6 @@ export const EducationForm = ({
   };
 
   const handleSkillChange = (selectedOption) => {
-    console.log(selectedOption);
     const skills = Array.isArray(selectedOption)
       ? selectedOption
       : [selectedOption];

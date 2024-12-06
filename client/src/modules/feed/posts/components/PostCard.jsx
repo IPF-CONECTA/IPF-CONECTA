@@ -79,7 +79,6 @@ export const PostCard = ({ post }) => {
     event.stopPropagation();
     const status = await postSvc(content, post.id);
     if (status !== 201) {
-      console.log("postcard error");
       return noti("Hubo un error al publicar el post", "error");
     }
     setShowProgress(true);

@@ -6,7 +6,6 @@ import { changePfp } from "../services/editProfileServices";
 import { authContext } from "../../../../context/auth/Context";
 
 export const EditPfp = ({ profileData, setProfileData }) => {
-  console.log(profileData);
   const noti = useNoti();
   const [profilePicPreview, setProfilePicPreview] = useState([
     profileData?.profile?.profilePic,
@@ -30,7 +29,6 @@ export const EditPfp = ({ profileData, setProfileData }) => {
         "warning"
       );
     const res = await changePfp(file);
-    console.log(res);
     if (res.status !== 201)
       return noti("Hubo un error al actualizar tu foto de perfil", "warning");
     setProfilePicPreview([res.data, false]);

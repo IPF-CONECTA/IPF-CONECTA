@@ -41,7 +41,6 @@ export const Comments = ({ postId, write, setWrite, viewOnly }) => {
 
     const status = await postSvc(content, null, postId);
     if (status !== 201) {
-      console.log("comments error");
       return noti("Hubo un error al publicar el post", "error");
     }
     setTimeout(() => {

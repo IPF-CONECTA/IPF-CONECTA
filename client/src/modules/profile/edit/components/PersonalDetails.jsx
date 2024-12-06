@@ -24,7 +24,6 @@ export const PersonalDetails = ({ profileData, setProfileData }) => {
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     data.phonenumber = phone;
-    console.log(data);
     setSending(true);
     try {
       const res = await updatePersonalDetails(data);

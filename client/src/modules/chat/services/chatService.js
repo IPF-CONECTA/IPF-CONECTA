@@ -72,7 +72,6 @@ export const chatService = {
       const res = await axios.get(`${BASE_URL}/get-profile-chats`, {
         headers: { Authorization: `Bearer ${authService.getToken()}` },
       });
-      console.log(res)
       return { data: res.data, status: res.status };
     } catch (error) {
       console.error(error);

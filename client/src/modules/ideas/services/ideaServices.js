@@ -102,7 +102,6 @@ export const createIdea = async (newIdea) => {
     });
     return { status: res.status };
   } catch (error) {
-    console.log("Error al crear la idea", error);
     return {
       status: error.status,
       error: error.response?.data || "Hubo un error al crear la idea",

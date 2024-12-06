@@ -81,14 +81,12 @@ export const PostList = () => {
   };
 
   const handleSubmit = async (event) => {
-    console.log(content.length);
     event.preventDefault();
     if (content.length === 0 || content.length > 255) return;
     setIsSubmitting(true);
     const status = await postSvc(content, attachments);
     if (status !== 201) {
       setIsSubmitting(false);
-      console.log("postlist error");
       return noti("Hubo un error al publicar el post", "error");
     }
     setPosts([]);

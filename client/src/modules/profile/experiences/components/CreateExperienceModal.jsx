@@ -261,7 +261,6 @@ export const CreateExperienceModal = ({
   const submitExperience = async (data) => {
     data.images = newImages;
     data.isRecruited = isRecruited;
-    console.log({ data });
     try {
       const res = await createExperience(data, selectedSkills, username);
       if (res.status !== 201) {
@@ -283,7 +282,6 @@ export const CreateExperienceModal = ({
   };
 
   const handleSwitchChange = (e) => {
-    console.log("SE CAMBIO EL VALOR A", e.target.checked);
     setIsRecruited(e.target.checked);
   };
 

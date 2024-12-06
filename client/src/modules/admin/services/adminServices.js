@@ -84,7 +84,6 @@ export const resolveReport = async (data, id) => {
         Authorization: `Bearer ${authService.getToken()}`,
       }
     })
-    console.log(res)
     return { status: res.status }
   } catch (error) {
     return { status: error.status }

@@ -35,7 +35,6 @@ export const Post = ({
 }) => {
   const { authState } = useContext(authContext);
   const [post, setPost] = useState(postData);
-  console.log(post);
   const navigate = useNavigate();
   const [lightboxController, setLightboxController] = useState({
     toggler: false,
@@ -58,7 +57,6 @@ export const Post = ({
       setLoading(true);
       try {
         const res = await getPost(postId);
-        console.log(res);
         if (res.status !== 200 && res.status !== 404) {
           return noti("Hubo un error al obtener la publicación", "error");
         }
@@ -180,9 +178,7 @@ export const Post = ({
     setIsSubmitting(true);
     try {
       const status = await postSvc(content, null, post?.id);
-      console.log(status);
       if (status !== 201 && status !== 404) {
-        console.log("post error");
         return noti("Hubo un error al publicar el post", "error");
       }
 

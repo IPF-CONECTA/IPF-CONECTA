@@ -29,7 +29,6 @@ export const AdminAssociationsPanel = () => {
   useEffect(() => {
     const getAssociations = async () => {
       const res = await getAssociationsSvc(tab);
-      console.log(res);
       if (res.status === 404) {
         noti("No se encontraron asociaciones", "warning");
       } else if (res.status !== 200) {

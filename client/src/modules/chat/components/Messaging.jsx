@@ -20,7 +20,6 @@ export const Messaging = () => {
   useEffect(() => {
     const getChats = async () => {
       const res = await chatService.getChatsByProfile();
-      console.log(res.data);
       setChats(res.data);
     };
     getChats();

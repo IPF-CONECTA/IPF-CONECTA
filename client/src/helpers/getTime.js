@@ -78,7 +78,6 @@ export const getYear = (dt) => { // 2024
 };
 
 export const getTimeQuantity = (startDate, endDate) => { // 2 años y 3 meses
-  console.log('endDate', endDate)
   let start = DateTime.fromISO(startDate);
   endDate = endDate ? endDate : DateTime.now().toISODate();
   let end = DateTime.fromISO(endDate);

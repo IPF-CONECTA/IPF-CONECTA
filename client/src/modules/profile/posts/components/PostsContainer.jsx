@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { PostCard } from "../components/PostCard";
 
 export const PostsContainer = ({ username, own, postsData }) => {
-  console.log(postsData);
   const navigate = useNavigate();
 
   const [posts, setPosts] = useState([]);

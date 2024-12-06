@@ -13,7 +13,6 @@ export const postsServices = {
           },
         }
       );
-      console.log("res", res)
       return { data: res.data, status: res.status };
     } catch (error) {
       console.log("error", error)

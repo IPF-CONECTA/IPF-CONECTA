@@ -62,7 +62,6 @@ export const JobPostulations = () => {
   useEffect(() => {
     const fetchJob = async () => {
       const res = await jobPostulationsServices.getPostulationsByJobId(jobId);
-      console.log(res);
       setJob(res.data);
     };
     fetchJob();

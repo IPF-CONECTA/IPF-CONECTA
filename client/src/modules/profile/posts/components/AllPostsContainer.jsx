@@ -15,7 +15,6 @@ export const AllPostsContainer = ({
     setPosts(postData);
   }, [postData]);
 
-  console.log(posts);
   return (
     <div className="bg-body-tertiary w-100">
       <div className="p-4 d-flex flex-column ">

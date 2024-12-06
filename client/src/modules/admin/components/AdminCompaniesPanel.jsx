@@ -128,8 +128,6 @@ export const AdminCompaniesPanel = () => {
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;
 
-  console.log(companies);
-
   return (
     <div className={`container mt-4 ${styles.AdminPanel}`}>
       <div className="btn-group mb-3" role="group">
@@ -185,7 +183,6 @@ export const AdminCompaniesPanel = () => {
         </div>
       </div>
 
-      {console.log(selectedCompany)}
       {selectedCompany && (
         <Dialog
           open={Boolean(selectedCompany)}

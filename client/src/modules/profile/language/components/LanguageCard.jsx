@@ -17,7 +17,6 @@ import Select from "react-select";
 import { getProfile } from "../../../feed/services/feedServices.js";
 
 export const LanguageSelector = ({ own }) => {
-  console.log(own);
   const { username } = useParams();
   const [profileLanguages, setProfileLanguages] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
@@ -81,10 +80,7 @@ export const LanguageSelector = ({ own }) => {
   const fetchProfile = async () => {
     const res = await getProfile(username);
     if (res.status == 200) {
-      console.log(res.data);
       fetchUserLanguages();
-
-      setOwn(res.data.own);
     }
   };
   const languageOptions = availableLanguages.map((language) => ({

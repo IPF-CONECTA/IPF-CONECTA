@@ -13,7 +13,6 @@ export const ExperienceContainer = ({
   const [openExperienceModal, setOpenExperienceModal] = useState(false);
   useEffect(() => {
     const experiences = experiencesData.slice(0, 3);
-    console.log(experiencesData);
     setExperiences(experiences);
   }, [experiencesData]);
 

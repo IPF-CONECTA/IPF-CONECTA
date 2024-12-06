@@ -26,13 +26,10 @@ export const JobDetails = ({ jobId }) => {
         try {
           setLoading(true);
           const res = await getJobInfo(jobId, authState.isLogged);
-          console.log(res.data.postulated);
           if (res.status !== 200) {
             noti("hubo un error");
           }
-          console.log("data", res.data);
           setSelectedJob(res.data.job);
-          console.log("respuesta", res.data.postulated);
           setPostulate(res.data.postulated);
         } catch (error) {
           console.error("Error fetching job data:", error);
@@ -43,7 +40,6 @@ export const JobDetails = ({ jobId }) => {
     };
     getJob();
   }, [jobId]);
-  console.log(postulate);
   const handleCreatePostulation = async (id) => {
     if (!authState.isLogged) {
       noti("Inicia sesión para postularte", "info");
@@ -71,7 +67,6 @@ export const JobDetails = ({ jobId }) => {
       setPostulate(true);
       noti(response.data.message, "success");
     } catch (error) {
-      console.log(error);
       noti(error.response.data.error, "error");
     }
   };

@@ -7,7 +7,6 @@ import { ReportActionsModal } from "./ReportActionsModal";
 import { ReportedContentModal } from "./ReportedContentModal";
 
 export const ReportCard = ({ report, onResolve, details = true }) => {
-  console.log(details);
   const [openReport, setOpenReport] = useState(false);
   const [openActions, setOpenActions] = useState(false);
   return (

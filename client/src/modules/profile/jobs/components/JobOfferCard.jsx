@@ -23,7 +23,6 @@ export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
   useEffect(() => {
     jobPostulationsServices.getPostulationsByJobId(jobOffer.id).then((res) => {
       if (res.status === 200) {
-        console.log(res.data);
         setJobPostulationsNumber(res.data.postulate.length);
       }
     });
@@ -32,7 +31,6 @@ export const JobOfferCard = ({ jobOffer, own, edit, onJobUpdate }) => {
   const handleChangeJobStatus = async (jobId) => {
     const res = await jobsServices.changeJobStatus(jobId);
     if (res.status !== 200) {
-      console.log("error");
     }
     onJobUpdate();
   };

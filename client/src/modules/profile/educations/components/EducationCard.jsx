@@ -89,60 +89,62 @@ export const EducationCard = ({
               <em>{education?.discipline?.name}</em>
             </div>
             <p>{education?.description}</p>
-            <ul className="p-0 m-0 d-flex align-items-center flex-row">
-              <span className="material-symbols-outlined fw-lighter me-2">
-                grade
-              </span>
-              <ul className={` ${styles.smallText} fw-semibold p-0`}>
-                {skills.map((skill, index) => (
-                  <li key={skill.id} className="d-inline me-2">
-                    <span>{skill.name}</span>
-                    {index !== education.skills.length - 1 && ","}
-                  </li>
-                ))}
-                {education.skills.length > 3 && (
-                  <li
-                    className="d-inline me-2 fw-semibold"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setShowAllSkills(true)}
+            {education.skills.length > 0 && (
+              <ul className="p-0 m-0 d-flex align-items-center flex-row">
+                <span className="material-symbols-outlined fw-lighter me-2">
+                  grade
+                </span>
+                <ul className={` ${styles.smallText} fw-semibold p-0`}>
+                  {skills.map((skill, index) => (
+                    <li key={skill.id} className="d-inline me-2">
+                      <span>{skill.name}</span>
+                      {index !== education.skills.length - 1 && ","}
+                    </li>
+                  ))}
+                  {education.skills.length > 3 && (
+                    <li
+                      className="d-inline me-2 fw-semibold"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setShowAllSkills(true)}
+                    >
+                      y {education.skills.length - 3} más...
+                    </li>
+                  )}
+                  <Dialog
+                    open={showAllSkills}
+                    onClose={() => setShowAllSkills(false)}
+                    fullWidth
+                    maxWidth="sm"
                   >
-                    y {education.skills.length - 3} más...
-                  </li>
-                )}
-                <Dialog
-                  open={showAllSkills}
-                  onClose={() => setShowAllSkills(false)}
-                  fullWidth
-                  maxWidth="sm"
-                >
-                  <div className="p-3">
-                    <div className="d-flex justify-content-between mb-3">
-                      <span className="fw-bold fs-5 ">{education.title}</span>
-                      <button
-                        onClick={() => setShowAllSkills(false)}
-                        className="btn d-flex p-0 align-items-center"
-                      >
-                        <span className="material-symbols-outlined text-dark-emphasis">
-                          close
-                        </span>
-                      </button>
+                    <div className="p-3">
+                      <div className="d-flex justify-content-between mb-3">
+                        <span className="fw-bold fs-5 ">{education.title}</span>
+                        <button
+                          onClick={() => setShowAllSkills(false)}
+                          className="btn d-flex p-0 align-items-center"
+                        >
+                          <span className="material-symbols-outlined text-dark-emphasis">
+                            close
+                          </span>
+                        </button>
+                      </div>
+                      <ul className="p-0 m-0">
+                        {education.skills.map((skill, index) => (
+                          <React.Fragment key={skill.id}>
+                            <li key={skill.id} className="list-unstyled">
+                              {skill.name}
+                            </li>
+                            {index !== education.skills.length - 1 && (
+                              <hr className="text-body-tertiary" />
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </ul>
                     </div>
-                    <ul className="p-0 m-0">
-                      {education.skills.map((skill, index) => (
-                        <React.Fragment key={skill.id}>
-                          <li key={skill.id} className="list-unstyled">
-                            {skill.name}
-                          </li>
-                          {index !== education.skills.length - 1 && (
-                            <hr className="text-body-tertiary" />
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </ul>
-                  </div>
-                </Dialog>
+                  </Dialog>
+                </ul>
               </ul>
-            </ul>
+            )}
           </div>
 
           {edit && own && (
