@@ -674,35 +674,6 @@ export const Post = ({
                               </span>
                             </button>
                           </li>
-                          <li>
-                            <hr className="m-1" />
-                          </li>
-                          <li>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                enqueueSnackbar(
-                                  `Bloquear a ${post?.profile?.user.username}?`,
-                                  {
-                                    action: actionBlock,
-                                    autoHideDuration: 5000,
-                                    preDuplicate: true,
-                                    anchorOrigin: {
-                                      vertical: "bottom",
-                                      horizontal: "center",
-                                    },
-                                  }
-                                );
-                              }}
-                              className="dropdown-item d-flex p-0 justify-content-between"
-                            >
-                              Bloquear a {post?.profile?.names}
-                              <span className="material-symbols-outlined text-primary  ms-1">
-                                block
-                              </span>
-                            </button>
-                          </li>
                         </>
                       )}
                     </ul>

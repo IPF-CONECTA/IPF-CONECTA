@@ -155,6 +155,7 @@ export const findJobsSvc = async (query, page) => {
     let jobs = await Job.findAndCountAll({
       where: {
         [Op.or]: [{ title: { [Op.iLike]: `%${query}%` } }],
+        active: true
       },
       limit: 6,
       offset: page * 6,
