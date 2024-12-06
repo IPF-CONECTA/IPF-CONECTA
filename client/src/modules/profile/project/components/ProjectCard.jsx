@@ -9,7 +9,13 @@ import { getDateMonth } from "../../../../helpers/getTime";
 import { SkillsList } from "../../components/SkillsList";
 import { BASE_URL } from "../../../../constants/BASE_URL";
 
-const ProjectCard = ({ project }) => {
+export const ProjectCard = ({
+  project,
+  edit,
+  own,
+  onProjectSubmit,
+  username,
+}) => {
   const noti = useNoti();
   const [openImage, setOpenImage] = useState([false, 0]);
   const [showProjectModal, setShowProject] = useState(false);

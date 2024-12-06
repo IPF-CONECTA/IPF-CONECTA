@@ -30,9 +30,7 @@ export { LanguageEditPage } from "../modules/profile/language/pages/LanguageEdit
 
 export { ProfileEducationsPage } from "../modules/profile/educations/pages/ProfileEducationsPage";
 
-
 //Projects Pages:
-export { CreateProjectPage } from "../modules/profile/project/pages/CreateProjectPage";
 export { ProfileProjectsPage } from "../modules/profile/project/pages/ProfileProjectsPage";
 
 // Chat pages:
