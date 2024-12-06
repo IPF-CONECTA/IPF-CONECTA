@@ -6,7 +6,7 @@ import { useNoti } from "../../../../hooks/useNoti";
 import { SkillSearch } from "../../skills/components/FindSkills";
 import { SlideDown } from "../../../ui/transitions/SlideDown";
 
-export const CreateProjectForm = ({
+export const ProjectForm = ({
   openProjectModal,
   setOpenProjectModal,
   onProjectSubmit,

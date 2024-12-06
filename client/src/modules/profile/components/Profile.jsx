@@ -7,7 +7,7 @@ import { AboutCard } from "./AboutCard";
 import { ExperienceContainer } from "../experiences/components/ExperienceContainer";
 import { Header } from "./ProfileHeader";
 import { Nav } from "./ProfileNav";
-import { Projects } from "../project/components/Projects";
+import { ProjectsContainer } from "../project/components/ProjectsContainer";
 import { getSkills } from "../skills/services";
 import { SkillsContainer } from "../skills/components/SkillsContainer";
 import { JobOffers } from "../jobs/components/JobOffers";
@@ -170,7 +170,7 @@ export const Profile = ({ data }) => {
             )}
             {role === "student" &&
               (profileData?.own || projects?.length > 0) && (
-                <Projects
+                <ProjectsContainer
                   own={profileData?.own}
                   username={profileData?.profile.user.username}
                   names={profileData?.profile.names}

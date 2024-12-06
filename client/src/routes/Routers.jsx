@@ -8,7 +8,6 @@ import {
   CompanyConfirmedPage,
   CreateCompanyPage,
   CreateCompanyLocationPage,
-  CreateProjectPage,
   FeedPage,
   HomePage,
   JobSearchPage,
@@ -71,7 +70,7 @@ export const Routers = () => {
             element={<RecruiterJobOffersPage />}
           />
           <Route
-            path="/:username/proyectos"
+            path="/perfil/:username/proyectos"
             element={<ProfileProjectsPage />}
           />
           <Route
@@ -120,7 +119,6 @@ export const Routers = () => {
         <Route path="/iniciar-sesion" element={<LoginPage />} />
         <Route path="/registrate" element={<RegisterPage />} />
 
-        <Route path="/nuevo-proyecto" element={<CreateProjectPage />} />
         <Route path="/contacto" element={<SupportPage />} />
 
         <Route
